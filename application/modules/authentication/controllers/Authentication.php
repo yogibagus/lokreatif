@@ -208,9 +208,6 @@ class Authentication extends MX_Controller {
 					$this->session->set_userdata('attempt', $attempt);
 
 					if ($attempt == 3) {
-						$this->db->set('attempt', 'attempt+120', FALSE);
-						$this->db->where('EMAIL', $email);
-                        $this->db->update('TB_AUTH');
                         $attempt = 0;
                         $this->session->set_userdata('attempt', $attempt);
 
