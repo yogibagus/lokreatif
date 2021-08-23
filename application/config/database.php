@@ -75,12 +75,12 @@ $query_builder = TRUE;
 
 $db['default'] = array(
 	'dsn'	=> '',
-	'hostname' => 'localhost',
+	'hostname' => 'lokreatif.yntkts.my.id',
 	// 'username' => 'nestive7_admin',
 	// 'password' => '@)1l51(MQ??a',
 	// 'database' => 'nestive7_cms',
-	'username' => 'root',
-	'password' => '',
+	'username' => 'lokreatif',
+	'password' => '1sampailo',
 	'database' => 'lokreatif',
 
 	'dbdriver' => 'mysqli',

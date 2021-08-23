@@ -7,15 +7,15 @@ class M_utilities extends CI_Model {
 	}
 
 	function c_penyelenggara(){
-		return $this->db->get_where("TB_PENYELENGGARA", array('STATUS' => 1))->num_rows();
+		return $this->db->get_where("tb_penyelenggara", array('STATUS' => 1))->num_rows();
 	}
 
 	function c_peserta(){
-		return $this->db->get_where("TB_AUTH", array('ROLE' => 1))->num_rows();
+		return $this->db->get_where("tb_auth", array('ROLE' => 1))->num_rows();
 	}
 
 	function c_kegiatan(){
-		return $this->db->query("SELECT KODE_KEGIATAN FROM TB_KEGIATAN")->num_rows();
+		return $this->db->query("SELECT KODE_KEGIATAN FROM tb_kegiatan")->num_rows();
 	}
 
 }

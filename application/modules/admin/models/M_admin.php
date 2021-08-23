@@ -6,28 +6,28 @@ class M_admin extends CI_Model {
 		parent::__construct();
 	}
 
-	public function LOG_AKTIVITAS($KODE_USER, $SENDER, $TYPE){
+	public function log_aktivitas($KODE_USER, $SENDER, $TYPE){
 		$data = array(
 			'RECEIVER' 	 	=> $KODE_USER,
 			'SENDER' 		=> $SENDER,
 			'TYPE'	 		=> $TYPE,
 		);
-		$this->db->insert('LOG_AKTIVITAS', $data);
+		$this->db->insert('log_aktivitas', $data);
 	}
 
-	public function LOG_AKTIVITASKpanel($KODE_USER, $TYPE, $GROUP){
+	public function log_aktivitasKpanel($KODE_USER, $TYPE, $GROUP){
 		$data = array(
 			'RECEIVER' 	 	=> "ADMIN",
 			'SENDER' 		=> $KODE_USER,
 			'TYPE'	 		=> $TYPE,
 			'RECEIVER_GROUP'=> $GROUP,
 		);
-		$this->db->insert('LOG_AKTIVITAS', $data);
+		$this->db->insert('log_aktivitas', $data);
 	}
 
 	function cek_passAdmin($pass){
 		$kode_user 		= $this->session->userdata("kode_user");
-		$query 			= $this->db->query("SELECT * FROM TB_AUTH WHERE KODE_USER = '$kode_user'");
+		$query 			= $this->db->query("SELECT * FROM tb_auth WHERE KODE_USER = '$kode_user'");
 		$password_lama	= $query->row()->PASSWORD;
 
 		if(password_verify($pass, $password_lama)){
@@ -41,62 +41,62 @@ class M_admin extends CI_Model {
 	// COUNTING
 
 	public function count_pesertaKegiatan($kode){
-		return $this->db->get_where('PENDAFTARAN_KEGIATAN', array('KODE_KEGIATAN' => $kode))->num_rows();
+		return $this->db->get_where('pendaftaran_kegiatan', array('KODE_KEGIATAN' => $kode))->num_rows();
 	}
 
 	public function count_pesertaKompetisi($kode){
-		return $this->db->get_where('PENDAFTARAN_KEGIATAN', array('KODE_KEGIATAN' => $kode))->num_rows();
+		return $this->db->get_where('pendaftaran_kegiatan', array('KODE_KEGIATAN' => $kode))->num_rows();
 	}
 
 	public function count_pesertaKegiatanAll(){
-		return $this->db->get('PENDAFTARAN_KEGIATAN')->num_rows();
+		return $this->db->get('pendaftaran_kegiatan')->num_rows();
 	}
 
 	public function count_pesertaKompetisiAll(){
-		return $this->db->get('PENDAFTARAN_KEGIATAN')->num_rows();
+		return $this->db->get('pendaftaran_kegiatan')->num_rows();
 	}
 
 
 	// PESERTA
 	function countPeserta(){
-		$query 	= $this->db->query("SELECT * FROM TB_AUTH WHERE ROLE = 1");
+		$query 	= $this->db->query("SELECT * FROM tb_auth WHERE ROLE = 1");
 		return $query->num_rows();
 	}
 
 	function countDiffPeserta(){
-		$query 	= $this->db->query("SELECT * FROM TB_AUTH WHERE ROLE = 1 AND JOIN_DATE <= now() - INTERVAL 1 DAY");
+		$query 	= $this->db->query("SELECT * FROM tb_auth WHERE ROLE = 1 AND JOIN_DATE <= now() - INTERVAL 1 DAY");
 		return $query->num_rows();
 	}
 
 	function countNonPeserta(){
-		$query 	= $this->db->query("SELECT * FROM TB_AUTH WHERE ROLE = 1 AND NONAKTIF = 1");
+		$query 	= $this->db->query("SELECT * FROM tb_auth WHERE ROLE = 1 AND NONAKTIF = 1");
 		return $query->num_rows();
 	}
 
 	function countDiffNonPeserta(){
-		$query 	= $this->db->query("SELECT * FROM TB_AUTH WHERE ROLE = 1 AND NONAKTIF = 1 AND JOIN_DATE <= now() - INTERVAL 8 DAY");
+		$query 	= $this->db->query("SELECT * FROM tb_auth WHERE ROLE = 1 AND NONAKTIF = 1 AND JOIN_DATE <= now() - INTERVAL 8 DAY");
 		return $query->num_rows();
 	}
 
 	function countNewPeserta(){
-		$query 	= $this->db->query("SELECT * FROM TB_AUTH WHERE ROLE = 1 AND JOIN_DATE >= now() - INTERVAL 1 DAY");
+		$query 	= $this->db->query("SELECT * FROM tb_auth WHERE ROLE = 1 AND JOIN_DATE >= now() - INTERVAL 1 DAY");
 		return $query->num_rows();
 	}
 
 	// KEGIATAN
 
 	function countKegiatan(){
-		$query 	= $this->db->query("SELECT * FROM TB_KEGIATAN");
+		$query 	= $this->db->query("SELECT * FROM tb_kegiatan");
 		return $query->num_rows();
 	}
 
 	function countDiffKegiatan(){
-		$query 	= $this->db->query("SELECT * FROM TB_KEGIATAN WHERE LOG_TIME <= now() - INTERVAL 8 DAY");
+		$query 	= $this->db->query("SELECT * FROM tb_kegiatan WHERE LOG_TIME <= now() - INTERVAL 8 DAY");
 		return $query->num_rows();
 	}
 
 	function countNewKegiatan(){
-		$query 	= $this->db->query("SELECT * FROM TB_KEGIATAN WHERE LOG_TIME >= now() - INTERVAL 1 DAY");
+		$query 	= $this->db->query("SELECT * FROM tb_kegiatan WHERE LOG_TIME >= now() - INTERVAL 1 DAY");
 		return $query->num_rows();
 	}
 
@@ -105,19 +105,19 @@ class M_admin extends CI_Model {
 	// PESERTA
 
 	function get_peserta(){
-		$query 	= $this->db->query("SELECT * FROM TB_AUTH a JOIN TB_PESERTA b ON a.KODE_USER = b.KODE_USER WHERE a.ROLE = 1");
+		$query 	= $this->db->query("SELECT * FROM tb_auth a JOIN tb_peserta b ON a.KODE_USER = b.KODE_USER WHERE a.ROLE = 1");
 		return $query->result();
 	}
 
 	// AKTIVITAS & NOTIFIKASI
 
 	public function count_aktivitasAdmin(){
-		$query = $this->db->query("SELECT * FROM LOG_AKTIVITAS a JOIN LOG_TYPE b ON a.TYPE = b.ID_TYPE WHERE b.TYPE = 0");
+		$query = $this->db->query("SELECT * FROM log_aktivitas a JOIN log_type b ON a.TYPE = b.ID_TYPE WHERE b.TYPE = 0");
 		return $query->num_rows();
 	}
 
 	public function get_aktivitasAdmin($limit, $start){
-		$query = $this->db->query("SELECT a.*, b.* FROM LOG_AKTIVITAS a JOIN LOG_TYPE b ON a.TYPE = b.ID_TYPE WHERE b.TYPE = 0 ORDER BY a.CREATED_AT DESC LIMIT $start, $limit");
+		$query = $this->db->query("SELECT a.*, b.* FROM log_aktivitas a JOIN log_type b ON a.TYPE = b.ID_TYPE WHERE b.TYPE = 0 ORDER BY a.CREATED_AT DESC LIMIT $start, $limit");
 		if ($query->num_rows() > 0) {
 			return $query->result();
 		}else {
@@ -126,12 +126,12 @@ class M_admin extends CI_Model {
 	}
 
 	public function count_notifikasiAdmin(){
-		$query = $this->db->query("SELECT * FROM LOG_AKTIVITAS a JOIN LOG_TYPE b ON a.TYPE = b.ID_TYPE WHERE b.TYPE = 1");
+		$query = $this->db->query("SELECT * FROM log_aktivitas a JOIN log_type b ON a.TYPE = b.ID_TYPE WHERE b.TYPE = 1");
 		return $query->num_rows();
 	}
 
 	public function get_notifikasiAdmin($limit, $start){
-		$query = $this->db->query("SELECT a.*, b.* FROM LOG_AKTIVITAS a JOIN LOG_TYPE b ON a.TYPE = b.ID_TYPE WHERE b.TYPE = 1 ORDER BY a.CREATED_AT DESC LIMIT $start, $limit");
+		$query = $this->db->query("SELECT a.*, b.* FROM log_aktivitas a JOIN log_type b ON a.TYPE = b.ID_TYPE WHERE b.TYPE = 1 ORDER BY a.CREATED_AT DESC LIMIT $start, $limit");
 		if ($query->num_rows() > 0) {
 			return $query->result();
 		}else {
@@ -145,10 +145,10 @@ class M_admin extends CI_Model {
 		$this->db->select("PROFIL");
 		if($part[0] == "USR" || $part[0] == "ADM" || $part[0] == "JRI"):
 			$this->db->where("KODE_USER", $kode);
-			$sender = $this->db->get("TB_PESERTA")->row()->PROFIL;
+			$sender = $this->db->get("tb_peserta")->row()->PROFIL;
 		elseif($part[0] == "PYL"):
 			$this->db->where("KODE_PENYELENGGARA", $kode);
-			$sender = $this->db->get("TB_PENYELENGGARA")->row()->PROFIL;
+			$sender = $this->db->get("tb_penyelenggara")->row()->PROFIL;
 		else:
 			$sender = "System";
 		endif;
@@ -166,10 +166,10 @@ class M_admin extends CI_Model {
 			$this->db->select("NAMA");
 			if($part[0] == "USR" || $part[0] == "ADM" || $part[0] == "JRI"):
 				$this->db->where("KODE_USER", $kode);
-				$sender = $this->db->get("TB_PESERTA")->row()->NAMA;
+				$sender = $this->db->get("tb_peserta")->row()->NAMA;
 			elseif($part[0] == "PYL"):
 				$this->db->where("KODE_PENYELENGGARA", $kode);
-				$sender = $this->db->get("TB_PENYELENGGARA")->row()->NAMA;
+				$sender = $this->db->get("tb_penyelenggara")->row()->NAMA;
 			else:
 				$sender = "System";
 			endif;
@@ -183,22 +183,22 @@ class M_admin extends CI_Model {
 	// MAILER
 
 	function get_mailerSmpt(){
-		$query = $this->db->query("SELECT VALUE FROM TB_PENGATURAN a WHERE a.KEY = 'SMPT_GMAIL'");
+		$query = $this->db->query("SELECT VALUE FROM tb_pengaturan a WHERE a.KEY = 'SMPT_GMAIL'");
 		return $query->row()->VALUE;
 	}
 
 	function get_mailerHost(){
-		$query = $this->db->query("SELECT VALUE FROM TB_PENGATURAN a WHERE a.KEY = 'EM_HOST'");
+		$query = $this->db->query("SELECT VALUE FROM tb_pengaturan a WHERE a.KEY = 'EM_HOST'");
 		return $query->row()->VALUE;
 	}
 
 	function get_mailerUsername(){
-		$query = $this->db->query("SELECT VALUE FROM TB_PENGATURAN a WHERE a.KEY = 'EM_USERNAME'");
+		$query = $this->db->query("SELECT VALUE FROM tb_pengaturan a WHERE a.KEY = 'EM_USERNAME'");
 		return $query->row()->VALUE;
 	}
 
 	function get_mailerPassword(){
-		$query = $this->db->query("SELECT VALUE FROM TB_PENGATURAN a WHERE a.KEY = 'EM_PASSWORD'");
+		$query = $this->db->query("SELECT VALUE FROM tb_pengaturan a WHERE a.KEY = 'EM_PASSWORD'");
 		return $query->row()->VALUE;
 	}
 
@@ -208,7 +208,7 @@ class M_admin extends CI_Model {
 
 	public function get_kegiatanAllD(){
 		$this->db->select('*');
-		$this->db->from('TB_KEGIATAN');
+		$this->db->from('tb_kegiatan');
 		$this->db->limit(5);
 		$query = $this->db->get();
 		if ($query->num_rows() > 0) {
@@ -221,7 +221,7 @@ class M_admin extends CI_Model {
 
 	public function get_kegiatanAll(){
 		$this->db->select('*');
-		$this->db->from('TB_KEGIATAN');
+		$this->db->from('tb_kegiatan');
 		$query = $this->db->get();
 		if ($query->num_rows() > 0) {
 			return $query->result();
@@ -235,7 +235,7 @@ class M_admin extends CI_Model {
 
 	public function get_kompetisiAllD(){
 		$this->db->select('*');
-		$this->db->from('TB_KEGIATAN');
+		$this->db->from('tb_kegiatan');
 		$this->db->limit(5);
 		$query = $this->db->get();
 		if ($query->num_rows() > 0) {
@@ -248,7 +248,7 @@ class M_admin extends CI_Model {
 
 	public function get_kompetisiAll(){
 		$this->db->select('*');
-		$this->db->from('TB_KEGIATAN');
+		$this->db->from('tb_kegiatan');
 		$query = $this->db->get();
 		if ($query->num_rows() > 0) {
 			return $query->result();
@@ -272,7 +272,7 @@ class M_admin extends CI_Model {
 		$pass 		= password_hash($pass, PASSWORD_DEFAULT);
 
 		$this->db->where('KODE_USER', $this->session->userdata("kode_user"));
-		$this->db->update('TB_AUTH', array('PASSWORD' => $pass));
+		$this->db->update('tb_auth', array('PASSWORD' => $pass));
 
 		return ($this->db->affected_rows() != 1) ? false : true;
 	}
@@ -285,16 +285,16 @@ class M_admin extends CI_Model {
 
 
 		$this->db->where('KEY', "SMPT_GMAIL");
-		$this->db->update('TB_PENGATURAN', array('VALUE' => ($SMPT_GMAIL == true ? 1 : 0)));
+		$this->db->update('tb_pengaturan', array('VALUE' => ($SMPT_GMAIL == true ? 1 : 0)));
 
 		$this->db->where('KEY', "EM_HOST");
-		$this->db->update('TB_PENGATURAN', array('VALUE' => $EM_HOST));
+		$this->db->update('tb_pengaturan', array('VALUE' => $EM_HOST));
 
 		$this->db->where('KEY', "EM_USERNAME");
-		$this->db->update('TB_PENGATURAN', array('VALUE' => $EM_USERNAME));
+		$this->db->update('tb_pengaturan', array('VALUE' => $EM_USERNAME));
 
 		$this->db->where('KEY', "EM_PASSWORD");
-		$this->db->update('TB_PENGATURAN', array('VALUE' => $EM_PASSWORD));
+		$this->db->update('tb_pengaturan', array('VALUE' => $EM_PASSWORD));
 
 
 		return true;
@@ -308,16 +308,16 @@ class M_admin extends CI_Model {
 
 
 		$this->db->where('KEY', "LN_FACEBOOK");
-		$this->db->update('TB_PENGATURAN', array('VALUE' => $LN_FACEBOOK));
+		$this->db->update('tb_pengaturan', array('VALUE' => $LN_FACEBOOK));
 
 		$this->db->where('KEY', "LN_INSTAGRAM");
-		$this->db->update('TB_PENGATURAN', array('VALUE' => $LN_INSTAGRAM));
+		$this->db->update('tb_pengaturan', array('VALUE' => $LN_INSTAGRAM));
 
 		$this->db->where('KEY', "LN_TWITTER");
-		$this->db->update('TB_PENGATURAN', array('VALUE' => $LN_TWITTER));
+		$this->db->update('tb_pengaturan', array('VALUE' => $LN_TWITTER));
 
 		$this->db->where('KEY', "LN_GITHUB");
-		$this->db->update('TB_PENGATURAN', array('VALUE' => $LN_GITHUB));
+		$this->db->update('tb_pengaturan', array('VALUE' => $LN_GITHUB));
 
 
 		return true;
@@ -332,19 +332,19 @@ class M_admin extends CI_Model {
 
 
 		$this->db->where('KEY', "WEB_JUDUL");
-		$this->db->update('TB_PENGATURAN', array('VALUE' => $WEB_JUDUL));
+		$this->db->update('tb_pengaturan', array('VALUE' => $WEB_JUDUL));
 
 		$this->db->where('KEY', "WEB_DESKRIPSI");
-		$this->db->update('TB_PENGATURAN', array('VALUE' => $WEB_DESKRIPSI));
+		$this->db->update('tb_pengaturan', array('VALUE' => $WEB_DESKRIPSI));
 
 		$this->db->where('KEY', "WEB_WA");
-		$this->db->update('TB_PENGATURAN', array('VALUE' => $WEB_WA));
+		$this->db->update('tb_pengaturan', array('VALUE' => $WEB_WA));
 
 		$this->db->where('KEY', "WEB_HERO_BUTTON");
-		$this->db->update('TB_PENGATURAN', array('VALUE' => ($WEB_HERO_BUTTON == true ? 1 : 0)));
+		$this->db->update('tb_pengaturan', array('VALUE' => ($WEB_HERO_BUTTON == true ? 1 : 0)));
 
 		$this->db->where('KEY', "OPEN_CAREER");
-		$this->db->update('TB_PENGATURAN', array('VALUE' => ($OPEN_CAREER == true ? 1 : 0)));
+		$this->db->update('tb_pengaturan', array('VALUE' => ($OPEN_CAREER == true ? 1 : 0)));
 
 
 		return true;
@@ -352,7 +352,7 @@ class M_admin extends CI_Model {
 
 	// KEGIATAN
 	function cek_kodeKegiatan($kode){
-		$query 		= $this->db->query("SELECT * FROM TB_KEGIATAN WHERE KODE_KEGIATAN = '$kode'");
+		$query 		= $this->db->query("SELECT * FROM tb_kegiatan WHERE KODE_KEGIATAN = '$kode'");
 		return $query->num_rows();
 	}
 
@@ -397,7 +397,7 @@ class M_admin extends CI_Model {
 			'DESKRIPSI' 			=> $DESKRIPSI,
 		);
 
-		$this->db->insert('TB_KEGIATAN', $kegiatan);
+		$this->db->insert('tb_kegiatan', $kegiatan);
 
 		$cek = ($this->db->affected_rows() != 1) ? false : true;
 
@@ -411,7 +411,7 @@ class M_admin extends CI_Model {
 						'NAMA_TIKET' 		=> isset($NAMA_TIKET[$i]) ? $NAMA_TIKET[$i] : '',
 						'HARGA_TIKET'		=> isset($HARGA_TIKET[$i]) ? $HARGA_TIKET[$i] : '',
 					);
-					$this->db->insert('TB_TIKET', $tiket);
+					$this->db->insert('tb_tiket', $tiket);
 				}
 			}
 
@@ -425,7 +425,7 @@ class M_admin extends CI_Model {
 						'LINK_SOSMED'		=> isset($LINK_SOSMED[$j]) ? $LINK_SOSMED[$j] : '',
 						'SOSMED'			=> isset($SOSMED[$j]) ? $SOSMED[$j] : '',
 					);
-					$this->db->insert('TB_SOSMED', $sosmed);
+					$this->db->insert('tb_sosmed', $sosmed);
 				}
 			}
 
@@ -439,12 +439,12 @@ class M_admin extends CI_Model {
 						'CONTACT'			=> isset($CONTACT[$k]) ? $CONTACT[$k] : '',
 						'CONTACT_MEDIA'		=> isset($CONTACT_MEDIA[$k]) ? $CONTACT_MEDIA[$k] : '',
 					);
-					$this->db->insert('TB_CONTACT_PERSON', $contact);
+					$this->db->insert('tb_contact_person', $contact);
 				}
 			}
 			return true;
 		}else{
-			$this->db->delete('TB_KEGIATAN', array('KODE_KEGIATAN', $KODE_KEGIATAN));
+			$this->db->delete('tb_kegiatan', array('KODE_KEGIATAN', $KODE_KEGIATAN));
 			return false;
 		}
 	}

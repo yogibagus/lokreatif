@@ -7,7 +7,7 @@ class M_pendaftaran extends CI_Model {
 	}
 
 	function cek_pendaftaranStatus(){
-		$query 	= $this->db->get_where("TB_PENGATURAN", array('KEY' => 'STATUS_PENDAFTARAN'));
+		$query 	= $this->db->get_where("tb_pengaturan", array('KEY' => 'STATUS_PENDAFTARAN'));
 		if ($query->row()->VALUE == 1) {
 			return true;
 		}else{
@@ -17,7 +17,7 @@ class M_pendaftaran extends CI_Model {
 
 	function get_kegiatan($kode){
 		$kode 	= $this->db->escape($kode);
-		$query 	= $this->db->query("SELECT JUDUL, TANGGAL FROM TB_KEGIATAN a WHERE KODE_KEGIATAN = $kode ");
+		$query 	= $this->db->query("SELECT JUDUL, TANGGAL FROM tb_kegiatan a WHERE KODE_KEGIATAN = $kode ");
 		if ($query->num_rows() > 0) {
 			return $query->row();
 		}else{
@@ -49,7 +49,7 @@ class M_pendaftaran extends CI_Model {
 	
 	function get_formMeta($kode){
 		$this->db->where('KODE', $kode);
-		$query = $this->db->get("FORM_META");
+		$query = $this->db->get("form_meta");
 		if ($query->num_rows() > 0) {
 			return $query->result();
 		}else{
@@ -58,7 +58,7 @@ class M_pendaftaran extends CI_Model {
 	}
 
 	function get_formItem($kode){
-		$query = $this->db->get_where("FORM_ITEM", array('ID_FORM' => $kode));
+		$query = $this->db->get_where("form_item", array('ID_FORM' => $kode));
 		if ($query->num_rows() > 0) {
 			return $query->result();
 		}else{
@@ -67,7 +67,7 @@ class M_pendaftaran extends CI_Model {
 	}
 
 	function cek_kodeDaftar($kode){
-		$query = $this->db->query("SELECT * FROM (SELECT KODE_PENDAFTARAN FROM PENDAFTARAN_KEGIATAN UNION SELECT KODE_PENDAFTARAN FROM PENDAFTARAN_KOMPETISI) U WHERE U.KODE_PENDAFTARAN = '$kode'");
+		$query = $this->db->query("SELECT * FROM (SELECT KODE_PENDAFTARAN FROM pendaftaran_kegiatan UNION SELECT KODE_PENDAFTARAN FROM PENDAFTARAN_KOMPETISI) U WHERE U.KODE_PENDAFTARAN = '$kode'");
 
 		return $query->num_rows();
 	}
@@ -78,7 +78,7 @@ class M_pendaftaran extends CI_Model {
 	}
 
 	function insert_jawaban($data){
-		$this->db->insert('PENDAFTARAN_DATA', $data);
+		$this->db->insert('pendaftaran_data', $data);
 		return ($this->db->affected_rows() != 1) ? false : true;
 	}
 
