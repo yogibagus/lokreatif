@@ -9,7 +9,7 @@ class Pendaftaran extends MX_Controller {
 	}
 
 	public function daftar($kode){
-		$tabel	= 'PENDAFTARAN_KEGIATAN';
+		$tabel	= 'pendaftaran_kegiatan';
 
 		if ($this->M_daftar->get_kegiatan($kode) != false) {
 			if ($this->M_daftar->get_formMeta($kode) != false) {
@@ -39,7 +39,7 @@ class Pendaftaran extends MX_Controller {
 
 	public function daftar_kompetisi(){
 		$kode 	= 'lokreatif';
-		$tabel	= 'PENDAFTARAN_KOMPETISi';
+		$tabel	= 'pendaftaran_kompetisi';
 		if ($this->M_daftar->cek_pendaftaranStatus() != false) {
 			if ($this->M_daftar->get_formMeta($kode) != false) {
 				if ($this->M_daftar->cek_dataPesertaKompetisi($this->session->userdata('kode_user'), $tabel) == false) {
@@ -69,9 +69,9 @@ class Pendaftaran extends MX_Controller {
 	function prosesPendaftaran($kegiatan){
 
 		if ($kegiatan == "kegiatan") {
-			$tabel = "PENDAFTARAN_KEGIATAN";
+			$tabel = "pendaftaran_kegiatan";
 		}else{
-			$tabel = "PENDAFTARAN_KOMPETISi";
+			$tabel = "pendaftaran_kompetisi";
 		}
 
 		$uniqid		= strtolower($this->session->userdata('kode_user'));
