@@ -7,7 +7,7 @@ class M_peserta extends CI_Model {
 	}
 
 	public function cek_aktivasi($kode_user){
-		$query = $this->db->query("SELECT * FROM TB_TOKEN WHERE KODE = '$kode_user' AND TYPE = 1");
+		$query = $this->db->query("SELECT * FROM tb_token WHERE KODE = '$kode_user' AND TYPE = 1");
 		if ($query->num_rows() > 0) {
 			return $query->row();
 		}else {
@@ -16,24 +16,24 @@ class M_peserta extends CI_Model {
 	}
 
 	public function count_pesertaKegiatan($kode_user){
-		$query = $this->db->get_where("PENDAFTARAN_KEGIATAN", array('KODE_USER' => $kode_user));
+		$query = $this->db->get_where("pendaftaran_kegiatan", array('KODE_USER' => $kode_user));
 		return $query->num_rows();
 	}
 
 	public function cek_daftarKompetisi($kode_user){
-		$query = $this->db->get_where("PENDAFTARAN_KOMPETISI", array('KODE_USER' => $kode_user));
+		$query = $this->db->get_where("pendaftaran_kompetisi", array('KODE_USER' => $kode_user));
 		return $query->num_rows();
 	}
 
 	// NOTIFIKASI
 
 	public function countAllNotifikasi($kode_user){
-		$query = $this->db->query("SELECT * FROM LOG_AKTIVITAS a JOIN LOG_TYPE b ON a.TYPE = b.ID_TYPE WHERE a.RECEIVER = '$kode_user' AND b.TYPE = 1");
+		$query = $this->db->query("SELECT * FROM log_aktivitas a JOIN log_type b ON a.TYPE = b.ID_TYPE WHERE a.RECEIVER = '$kode_user' AND b.TYPE = 1");
 		return $query->num_rows();
 	}
 
 	public function get_AllNotifikasi($kode_user, $limit, $start){
-		$query = $this->db->query("SELECT a.*, b.* FROM LOG_AKTIVITAS a JOIN LOG_TYPE b ON a.TYPE = b.ID_TYPE WHERE a.RECEIVER = '$kode_user' AND b.TYPE = 1 ORDER BY a.CREATED_AT DESC LIMIT $start, $limit");
+		$query = $this->db->query("SELECT a.*, b.* FROM log_aktivitas a JOIN log_type b ON a.TYPE = b.ID_TYPE WHERE a.RECEIVER = '$kode_user' AND b.TYPE = 1 ORDER BY a.CREATED_AT DESC LIMIT $start, $limit");
 		if ($query->num_rows() > 0) {
 			return $query->result();
 		}else {
@@ -42,7 +42,7 @@ class M_peserta extends CI_Model {
 	}
 
 	public function get_notifikasi($kode_user){
-		$query = $this->db->query("SELECT a.*, b.* FROM LOG_AKTIVITAS a JOIN LOG_TYPE b ON a.TYPE = b.ID_TYPE WHERE a.RECEIVER = '$kode_user' AND b.TYPE = 1 ORDER BY a.CREATED_AT DESC LIMIT 5");
+		$query = $this->db->query("SELECT a.*, b.* FROM log_aktivitas a JOIN log_type b ON a.TYPE = b.ID_TYPE WHERE a.RECEIVER = '$kode_user' AND b.TYPE = 1 ORDER BY a.CREATED_AT DESC LIMIT 5");
 		if ($query->num_rows() > 0) {
 			return $query->result();
 		}else {
@@ -60,13 +60,13 @@ class M_peserta extends CI_Model {
 			$this->db->select("NAMA");
 			if($part[0] == "USR"):
 				$this->db->where("KODE_USER", $kode);
-				$sender = $this->db->get("TB_PESERTA")->row()->NAMA;
+				$sender = $this->db->get("tb_peserta")->row()->NAMA;
 			elseif($part[0] == "PYL"):
 				$this->db->where("KODE_PENYELENGGARA", $kode);
-				$sender = $this->db->get("TB_PENYELENGGARA")->row()->NAMA;
+				$sender = $this->db->get("tb_penyelenggara")->row()->NAMA;
 			elseif($part[0] == "JRI"):
 				$this->db->where("KODE_USER", $kode);
-				$sender = $this->db->get("TB_PESERTA")->row()->NAMA;
+				$sender = $this->db->get("tb_peserta")->row()->NAMA;
 			else:
 				$sender = "System";
 			endif;
@@ -76,7 +76,7 @@ class M_peserta extends CI_Model {
 	}
 
 	public function get_detailDaftarKompetisi($id){
-		$query = $this->db->get_where("PENDAFTARAN_KOMPETISI", array('KODE_USER' => $id));
+		$query = $this->db->get_where("pendaftaran_kompetisi", array('KODE_USER' => $id));
 
 		if ($query->num_rows() > 0) {
 			return $query->row();
@@ -86,7 +86,7 @@ class M_peserta extends CI_Model {
 	}
 
 	public function get_detailDaftar($id){
-		$query = $this->db->get_where("PENDAFTARAN_KEGIATAN", array('KODE_PENDAFTARAN' => $id));
+		$query = $this->db->get_where("pendaftaran_kegiatan", array('KODE_PENDAFTARAN' => $id));
 
 		if ($query->num_rows() > 0) {
 			return $query->row();
@@ -98,15 +98,15 @@ class M_peserta extends CI_Model {
 	//KEGIATAN DIIKUTI
 
 	public function count_kegiatanDiikuti($kode_user){
-		$query = $this->db->get_where("PENDAFTARAN_KEGIATAN", array('KODE_USER' => $kode_user));
+		$query = $this->db->get_where("pendaftaran_kegiatan", array('KODE_USER' => $kode_user));
 		return $query->num_rows();
 	}
 
 	public function kegiatanDiikuti($kode_user, $limit, $start){
 
 		$this->db->select("*");
-		$this->db->from("PENDAFTARAN_KEGIATAN a");
-		$this->db->join("TB_KEGIATAN b", "a.KODE_KEGIATAN = b.KODE_KEGIATAN");
+		$this->db->from("pendaftaran_kegiatan a");
+		$this->db->join("tb_kegiatan b", "a.KODE_KEGIATAN = b.KODE_KEGIATAN");
 		$this->db->where("a.KODE_USER", $kode_user);
 		$this->db->limit($limit, $start);
 		$query = $this->db->get();
@@ -122,7 +122,7 @@ class M_peserta extends CI_Model {
 	public function get_userDetail($kode_user){
 		$kode_user	= $this->db->escape($kode_user);
 
-		$query			= $this->db->query("SELECT a.*, b.EMAIL, b.NONAKTIF, b.DEADLINE FROM TB_PESERTA a LEFT JOIN TB_AUTH b ON a.KODE_USER = b.KODE_USER WHERE a.KODE_USER = $kode_user");
+		$query			= $this->db->query("SELECT a.*, b.EMAIL, b.NONAKTIF, b.DEADLINE FROM tb_peserta a LEFT JOIN tb_auth b ON a.KODE_USER = b.KODE_USER WHERE a.KODE_USER = $kode_user");
 		if ($query->num_rows() > 0) {
 			return $query->row();
 		}else {
@@ -133,7 +133,7 @@ class M_peserta extends CI_Model {
 	// KEGIATAN
 
 	public function get_kegiatanAll(){
-		$query = $this->db->query("SELECT KODE_KEGIATAN as KODE, STATUS_KEGIATAN, JUDUL, TANGGAL FROM TB_KEGIATAN ORDER BY TANGGAL DESC LIMIT 5");
+		$query = $this->db->query("SELECT KODE_KEGIATAN as KODE, STATUS_KEGIATAN, JUDUL, TANGGAL FROM tb_kegiatan ORDER BY TANGGAL DESC LIMIT 5");
 		if ($query->num_rows() > 0) {
 			return $query->result();
 		}else{
@@ -171,13 +171,13 @@ class M_peserta extends CI_Model {
 		);
 
 		$this->db->where('KODE_USER', $kode_user);
-		$this->db->update('TB_PESERTA', $data);
+		$this->db->update('tb_peserta', $data);
 		return ($this->db->affected_rows() != 1) ? false : true;
 	}
 
 	function hapus_akun($kode_user, $deadline){
 		$this->db->where('KODE_USER', $kode_user);
-		$this->db->update('TB_AUTH', array('NONAKTIF' => 1, 'DEADLINE' => $deadline));
+		$this->db->update('tb_auth', array('NONAKTIF' => 1, 'DEADLINE' => $deadline));
 		$cek = ($this->db->affected_rows() != 1) ? false : true;
 
 		$nama = $this->session->userdata('nama');
@@ -189,7 +189,7 @@ class M_peserta extends CI_Model {
 				'SENDER' 		=> "System",
 				'TYPE'		  => 6,
 			);
-			$this->db->insert('LOG_AKTIVITAS', $data);
+			$this->db->insert('log_aktivitas', $data);
 			return ($this->db->affected_rows() != 1) ? false : true;
 		}else {
 			return false;
@@ -202,7 +202,7 @@ class M_peserta extends CI_Model {
 		$nama 			= $this->session->userdata('nama');
 
 		$this->db->where('KODE_USER', $kode_user);
-		$this->db->update('TB_AUTH', array('NONAKTIF' => 0, 'DEADLINE' => NULL));
+		$this->db->update('tb_auth', array('NONAKTIF' => 0, 'DEADLINE' => NULL));
 		$cek 	= ($this->db->affected_rows() != 1) ? false : true;
 
 		if ($cek == true) {
@@ -211,7 +211,7 @@ class M_peserta extends CI_Model {
 				'SENDER' 		=> "System",
 				'TYPE'		  => 7,
 			);
-			$this->db->insert('LOG_AKTIVITAS', $data);
+			$this->db->insert('log_aktivitas', $data);
 			return ($this->db->affected_rows() != 1) ? false : true;
 		}else {
 			return false;
@@ -221,14 +221,14 @@ class M_peserta extends CI_Model {
 	function read_notifikasi($kode_notifikasi){
 
 		$this->db->where('ID_LOG', $kode_notifikasi);
-		$this->db->update('LOG_AKTIVITAS', array('READ' => 1));
+		$this->db->update('log_aktivitas', array('READ' => 1));
 		return ($this->db->affected_rows() != 1) ? false : true;
 
 	}
 
 	function read_notifikasiAll(){
 		$kode = $this->session->userdata('kode_user');
-		$this->db->query("UPDATE LOG_AKTIVITAS a SET a.READ = 1 WHERE a.RECEIVER = '$kode' AND a.TYPE IN (SELECT ID_TYPE FROM LOG_TYPE b WHERE b.TYPE = 1)");
+		$this->db->query("UPDATE log_aktivitas a SET a.READ = 1 WHERE a.RECEIVER = '$kode' AND a.TYPE IN (SELECT ID_TYPE FROM log_type b WHERE b.TYPE = 1)");
 		return true;
 
 	}

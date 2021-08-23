@@ -7,7 +7,7 @@ class M_home extends CI_Model {
 	}
 
 	public function get_kegiatanAll(){
-		$query = $this->db->query("SELECT KODE_KEGIATAN as KODE, JUDUL, BAYAR, TANGGAL FROM TB_KEGIATAN ORDER BY TANGGAL DESC LIMIT 6");
+		$query = $this->db->query("SELECT KODE_KEGIATAN as KODE, JUDUL, BAYAR, TANGGAL FROM tb_kegiatan ORDER BY TANGGAL DESC LIMIT 6");
 		if ($query->num_rows() > 0) {
 			return $query->result();
 		}else{
@@ -18,7 +18,7 @@ class M_home extends CI_Model {
 
 	public function get_bidangLomba(){
 		$this->db->select('*');
-		$query = $this->db->get('BIDANG_LOMBA');
+		$query = $this->db->get('bidang_lomba');
 
 		if ($query->num_rows() > 0) {
 			return $query->result();
@@ -30,7 +30,7 @@ class M_home extends CI_Model {
 
 	public function get_tahapPenilaian(){
 		$this->db->select('*');
-		$query = $this->db->get('TAHAP_PENILAIAN');
+		$query = $this->db->get('tahap_penilaian');
 
 		if ($query->num_rows() > 0) {
 			return $query->result();
@@ -43,7 +43,7 @@ class M_home extends CI_Model {
 	public function get_kriteriaPenilaian($id_tahap, $id_bidang){
 		$this->db->select('*');
 		$this->db->where(array('ID_TAHAP' => $id_tahap, 'ID_BIDANG' => $id_bidang));
-		$query = $this->db->get('KRITERIA_PENILAIAN');
+		$query = $this->db->get('kriteria_penilaian');
 
 		if ($query->num_rows() > 0) {
 			return $query->result();

@@ -13,11 +13,11 @@ class M_handlers extends CI_Model {
 			'TYPE'	 		=> $TYPE,
 			'RECEIVER_GROUP'=> $GROUP,
 		);
-		$this->db->insert('LOG_AKTIVITAS', $data);
+		$this->db->insert('log_aktivitas', $data);
 	}
 
 	public function get_kegiatanData($kode){
-		$query = $this->db->get_where('TB_KEGIATAN', array('KODE_KEGIATAN' => $kode));
+		$query = $this->db->get_where('tb_kegiatan', array('KODE_KEGIATAN' => $kode));
 		if ($query->num_rows() > 0) {
 			return $query->row();
 		} else {
