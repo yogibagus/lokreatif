@@ -233,7 +233,7 @@ class Peserta extends MX_Controller {
 			}else {
 
 				$this->db->where('KODE_USER', $kode_user);
-				$this->db->update('TB_PESERTA', array('PROFIL' => $filename));
+				$this->db->update('tb_peserta', array('PROFIL' => $filename));
 				$cek = ($this->db->affected_rows() != 1) ? false : true;
 				if ($cek == TRUE) {
 					$this->session->set_flashdata('success', 'Berhasil mengubah foto profil akun anda!!');
@@ -252,7 +252,7 @@ class Peserta extends MX_Controller {
 	function hapus_foto(){
 
 		$this->db->where('KODE_USER', $this->session->userdata("kode_user"));
-		$this->db->update('TB_PESERTA', array('PROFIL' => null));
+		$this->db->update('tb_peserta', array('PROFIL' => null));
 
 		$cek = ($this->db->affected_rows() != 1) ? false : true;
 		if ($cek == TRUE) {
