@@ -49,7 +49,7 @@
                 <td></td>
                 <td><?= $data->NAMA;?></td>
                 <?php foreach ($get_form as $key) :?>
-                  <td><?= $CI->get_formDataBerkas($data->KODE_PENDAFTARAN, $key->ID_FORM);?></td>
+                  <td><?= $CI->M_manage->get_formData($data->KODE_PENDAFTARAN, $key->ID_FORM);?></td>
                 <?php endforeach;?>
               </tr>
             <?php endforeach;?>

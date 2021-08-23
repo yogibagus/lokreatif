@@ -67,11 +67,6 @@ class M_template extends CI_Model {
 		return $query->row()->VALUE;
 	}
 
-	function get_openCareer(){
-		$query 	= $this->db->query("SELECT VALUE FROM TB_PENGATURAN a WHERE a.KEY = 'OPEN_CAREER'");
-		return $query->row()->VALUE;
-	}
-
 	// NOTIFIKASI & AKTIVITAS ADMIN
 
 	public function count_notifikasi($kode){

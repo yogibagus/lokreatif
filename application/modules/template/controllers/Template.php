@@ -85,7 +85,6 @@ class Template extends MX_Controller {
 		$data['WEB_DESKRIPSI']		= $this->M_template->get_webDeskripsi();
 		$data['WEB_WA']				= $this->M_template->get_webWa();
 		$data['WEB_HERO_BUTTON']	= $this->M_template->get_webHeroButton();
-		$data['OPEN_CAREER']		= $this->M_template->get_openCareer();
 
 		// ETC
 		$data['pFoto']				= $this->M_template->get_foto($this->session->userdata('kode_user'));
@@ -200,7 +199,6 @@ class Template extends MX_Controller {
 		$data['WEB_DESKRIPSI']		= $this->M_template->get_webDeskripsi();
 		$data['WEB_WA']				= $this->M_template->get_webWa();
 		$data['WEB_HERO_BUTTON']	= $this->M_template->get_webHeroButton();
-		$data['OPEN_CAREER']		= $this->M_template->get_openCareer();
 		
 		// ETC
 

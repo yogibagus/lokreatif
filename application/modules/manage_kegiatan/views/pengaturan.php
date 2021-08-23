@@ -40,7 +40,7 @@
                 <div class="col-sm mb-2 mb-sm-0">
                   <!-- Badges -->
                   <ul class="list-inline list-inline-m-1 mb-0">
-                    <li class="list-inline-item"><a class="badge badge-soft-secondary p-2" href="#">info event</a></li>
+                    <li class="list-inline-item"><a class="badge badge-soft-secondary p-2" href="#">info kegiatan</a></li>
                     <li class="list-inline-item"><a class="badge badge-soft-secondary p-2" href="#">contact person</a></li>
                     <li class="list-inline-item"><a class="badge badge-soft-secondary p-2" href="#">tiket</a></li>
                     <li class="list-inline-item"><a class="badge badge-soft-secondary p-2" href="#">social media</a></li>
@@ -49,7 +49,7 @@
                 </div>
 
                 <div class="col-sm-auto">
-                  <a href="<?= site_url('manage-event/pengaturan-umum') ?>" class="btn btn-sm btn-light">manage</a>
+                  <a href="<?= site_url('manage-kegiatan/pengaturan-umum') ?>" class="btn btn-sm btn-light">manage</a>
                 </div>
               </div>
               <!-- End Row -->

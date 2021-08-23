@@ -411,14 +411,14 @@ class M_manageKompetisi extends CI_Model {
 	function get_formData($kode, $id){
 		$query = $this->db->get_where("PENDAFTARAN_DATA", array('KODE_PENDAFTARAN' => $kode, 'ID_FORM' => $id));
 		if ($query->num_rows() > 0) {
-			return $query->result();
+			return $query->row()->JAWABAN;
 		}else{
 			return false;
 		}
 	}
 
-	function get_formBerkas($kode){
-		$query = $this->db->get_where("FORM_META", array('KODE' => $kode, 'TYPE' => 'FILE'));
+	function get_formBerkas(){
+		$query = $this->db->get_where("FORM_META", array('KODE' => 'lokreatif', 'TYPE' => 'FILE'));
 		if ($query->num_rows() > 0) {
 			return $query->result();
 		}else{
@@ -426,14 +426,14 @@ class M_manageKompetisi extends CI_Model {
 		}
 	}
 
-	function get_formDataBerkas($kode, $id){
-		$query = $this->db->get_where("PENDAFTARAN_DATA", array('KODE_PENDAFTARAN' => $kode, 'ID_FORM' => $id));
-		if ($query->num_rows() > 0) {
-			return $query->result();
-		}else{
-			return false;
-		}
-	}
+	// function get_formDataBerkas($kode, $id){
+	// 	$query = $this->db->get_where("PENDAFTARAN_DATA", array('KODE_PENDAFTARAN' => $kode, 'ID_FORM' => $id));
+	// 	if ($query->num_rows() > 0) {
+	// 		return $query->row()->JAWABAN;
+	// 	}else{
+	// 		return false;
+	// 	}
+	// }
 
 	// PROSES
 
@@ -496,7 +496,7 @@ class M_manageKompetisi extends CI_Model {
 	function proses_deletePendaftaran(){
 		$this->db->where('KODE', 'lokreatif');
 		$this->db->delete('FORM_META');
-		return ($this->db->affected_rows() != 1) ? false : true;
+		return true;
 	}
 
 }

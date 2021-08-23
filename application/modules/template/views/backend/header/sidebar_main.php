@@ -63,51 +63,9 @@
           <!-- End Dashboards -->
 
           <li class="nav-item">
-            <small class="nav-subtitle" title="Pages">Kegiatan</small>
-            <small class="tio-more-horizontal nav-subtitle-replacer"></small>
-          </li>
-
-          <!-- Pengguna -->
-          <li class="navbar-vertical-aside-has-menu <?= ($this->uri->segment(2) == 'kegiatanku' || $this->uri->segment(2) == 'buat-kegiatan' ? 'show' : '') ?>">
-            <a class="js-navbar-vertical-aside-menu-link nav-link nav-link-toggle " href="javascript:;" title="Pages">
-              <i class="tio-browser-windows nav-icon"></i>
-              <span class="navbar-vertical-aside-mini-mode-hidden-elements text-truncate">Kegiatan</span>
-            </a>
-
-            <ul class="js-navbar-vertical-aside-submenu nav nav-sub">
-
-              <li class="nav-item ">
-                <a class="nav-link <?= ($this->uri->segment(2) == 'kegiatanku' ? 'active' : '') ?>" href="<?= site_url('kegiatanku') ?>" title="Kegiatanku">
-                  <span class="tio-circle nav-indicator-icon"></span>
-                  <span class="text-truncate">Kegiatanku</span>
-                </a>
-              </li>
-
-              <?php if($this->session->userdata("role_akses") == 0): ?>
-                <li class="nav-item">
-                  <a class="nav-link <?= ($this->uri->segment(2) == 'buat-kegiatan' ? 'active' : '') ?>" href="<?= site_url('buat-kegiatan') ?>" title="Buat Kegiatan">
-                    <span class="tio-circle nav-indicator-icon"></span>
-                    <span class="text-truncate">Buat kegiatan</span>
-                  </a>
-                </li>
-              <?php endif;?>
-            </ul>
-          </li>
-          <!-- End Pengguna -->
-
-          <li class="nav-item">
             <small class="nav-subtitle" title="Pages">Data Pengguna</small>
             <small class="tio-more-horizontal nav-subtitle-replacer"></small>
           </li>
-
-          <!-- Pengguna -->
-          <li class="nav-item">
-            <a class="nav-link <?= ($this->uri->segment(1) == 'data-peserta' ? 'active' : '') ?>" href="<?= site_url('data-peserta') ?>" title="Data Peserta">
-              <span class="tio-group-junior nav-icon"></span>
-              <span class="text-truncate">Data Peserta</span>
-            </a>
-          </li>
-          <!-- End Pengguna -->
 
           <!-- Pengguna -->
           <li class="nav-item ">
@@ -117,6 +75,15 @@
             </a>
           </li>
           <!-- End Dashboards -->
+
+          <!-- Pengguna -->
+          <li class="nav-item">
+            <a class="nav-link <?= ($this->uri->segment(1) == 'data-peserta' ? 'active' : '') ?>" href="<?= site_url('data-peserta') ?>" title="Data Peserta">
+              <span class="tio-group-junior nav-icon"></span>
+              <span class="text-truncate">Data Akun Peserta</span>
+            </a>
+          </li>
+          <!-- End Pengguna -->
 
           <li class="nav-item">
             <small class="nav-subtitle" title="Pages">Data Master</small>
@@ -156,9 +123,51 @@
           <!-- End Dashboards -->
 
           <li class="nav-item">
+            <small class="nav-subtitle" title="Pages">Kegiatan</small>
+            <small class="tio-more-horizontal nav-subtitle-replacer"></small>
+          </li>
+
+          <!-- Pengguna -->
+          <li class="navbar-vertical-aside-has-menu <?= ($this->uri->segment(2) == 'kegiatanku' || $this->uri->segment(2) == 'buat-kegiatan' ? 'show' : '') ?>">
+            <a class="js-navbar-vertical-aside-menu-link nav-link nav-link-toggle " href="javascript:;" title="Pages">
+              <i class="tio-browser-windows nav-icon"></i>
+              <span class="navbar-vertical-aside-mini-mode-hidden-elements text-truncate">Kegiatan</span>
+            </a>
+
+            <ul class="js-navbar-vertical-aside-submenu nav nav-sub">
+
+              <li class="nav-item ">
+                <a class="nav-link <?= ($this->uri->segment(2) == 'kegiatanku' ? 'active' : '') ?>" href="<?= site_url('kegiatanku') ?>" title="Kegiatanku">
+                  <span class="tio-circle nav-indicator-icon"></span>
+                  <span class="text-truncate">Kegiatanku</span>
+                </a>
+              </li>
+
+              <?php if($this->session->userdata("role_akses") == 0): ?>
+                <li class="nav-item">
+                  <a class="nav-link <?= ($this->uri->segment(2) == 'buat-kegiatan' ? 'active' : '') ?>" href="<?= site_url('buat-kegiatan') ?>" title="Buat Kegiatan">
+                    <span class="tio-circle nav-indicator-icon"></span>
+                    <span class="text-truncate">Buat kegiatan</span>
+                  </a>
+                </li>
+              <?php endif;?>
+            </ul>
+          </li>
+          <!-- End Pengguna -->
+
+          <li class="nav-item">
             <small class="nav-subtitle" title="Pages">Kompetisi</small>
             <small class="tio-more-horizontal nav-subtitle-replacer"></small>
           </li>
+
+          <!-- Pengguna -->
+          <li class="nav-item">
+            <a class="nav-link <?= ($this->uri->segment(2) == 'data-peserta' ? 'active' : '') ?>" href="<?= site_url('kompetisi/data-peserta') ?>" title="Data Peserta">
+              <span class="tio-group-junior nav-icon"></span>
+              <span class="text-truncate">Data Peserta</span>
+            </a>
+          </li>
+          <!-- End Pengguna -->
 
           <li class="nav-item ">
             <a class="js-nav-tooltip-link nav-link <?= ($this->uri->segment(2) == 'verifikasi-berkas' ? 'active' : '') ?>" href="<?= site_url('kompetisi/verifikasi-berkas') ?>" title="Verifikasi Berkas" data-placement="left">

@@ -25,10 +25,21 @@ class M_pendaftaran extends CI_Model {
 		}
 	}
 
-	function cek_dataPeserta($id, $kode){
+	function cek_dataPeserta($id, $kode, $tabel){
 		$kode 	= $this->db->escape($kode);
 		$id 	= $this->db->escape($id);
-		$query 	= $this->db->query("SELECT KODE_PENDAFTARAN, KODE_KEGIATAN as KODE, STATUS FROM PENDAFTARAN_KEGIATAN WHERE KODE_USER = $kode AND KODE_KEGIATAN = $id ");
+		$query 	= $this->db->query("SELECT KODE_PENDAFTARAN, KODE_KEGIATAN as KODE, STATUS FROM {$tabel} WHERE KODE_USER = $kode AND KODE_KEGIATAN = $id");
+		if ($query->num_rows() > 0) {
+			return $query->row();
+		}else{
+			return false;
+		}
+	}
+
+	function cek_dataPesertaKompetisi($kode, $tabel){
+		$kode 	= $this->db->escape($kode);
+		$id 	= $this->db->escape($id);
+		$query 	= $this->db->query("SELECT KODE_PENDAFTARAN as KODE, STATUS FROM {$tabel} WHERE KODE_USER = $kode");
 		if ($query->num_rows() > 0) {
 			return $query->row();
 		}else{

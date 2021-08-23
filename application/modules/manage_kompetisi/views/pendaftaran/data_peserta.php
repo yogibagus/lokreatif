@@ -4,7 +4,7 @@
     <div class="col-sm mb-2 mb-sm-0">
       <nav aria-label="breadcrumb">
         <ol class="breadcrumb breadcrumb-no-gutter">
-          <li class="breadcrumb-item"><a class="breadcrumb-link" href="<?= site_url('manage-kompetisi') ?>">Dashboard</a></li>
+          <li class="breadcrumb-item"><a class="breadcrumb-link" href="<?= site_url('admin') ?>">Dashboard</a></li>
           <li class="breadcrumb-item">Pendaftaran</li>
           <li class="breadcrumb-item active" aria-current="page">Data peserta</li>
         </ol>
@@ -23,7 +23,7 @@
 <!-- Card -->
 <?php if ($cek_form == false):?>
 <div class="alert alert-info shadow">
-  <p class="mb-0"><b>PERINGATAN!!</b>Anda belum mengatur formulir pendaftaran!!, harap atur terlebih dahulu agar peserta dapat mulai mendaftarkan diri pada event anda.</p>
+  <p class="mb-0"><b>PERINGATAN!!</b>Anda belum mengatur formulir pendaftaran!!, harap atur terlebih dahulu agar peserta dapat mulai mendaftarkan diri pada kompetisi anda.</p>
 </div>
 <?php else:?>
   <div class="card">
@@ -49,7 +49,7 @@
                 <td></td>
                 <td><?= $data->NAMA;?></td>
                 <?php foreach ($get_form as $key) :?>
-                  <td><?= $CI->get_formData($data->KODE_PENDAFTARAN, $key->ID_FORM);?></td>
+                  <td><?= $CI->M_manage->get_formData($data->KODE_PENDAFTARAN, $key->ID_FORM);?></td>
                 <?php endforeach;?>
               </tr>
             <?php endforeach;?>

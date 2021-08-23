@@ -71,7 +71,7 @@ class M_manageKegiatan extends CI_Model {
 	function get_dataPendaftaran($kode){
 		$this->db->select("a.*, b.NAMA");
 		$this->db->from("PENDAFTARAN_KEGIATAN a");
-		$this->db->join("TB_PENGGUNA b", "a.KODE_USER = b.KODE_USER");
+		$this->db->join("TB_PESERTA b", "a.KODE_USER = b.KODE_USER");
 		$this->db->where("a.KODE_KEGIATAN", $kode);
 		$query = $this->db->get();
 		if ($query->num_rows() > 0) {
@@ -111,20 +111,20 @@ class M_manageKegiatan extends CI_Model {
 	function get_formData($kode, $id){
 		$query = $this->db->get_where("PENDAFTARAN_DATA", array('KODE_PENDAFTARAN' => $kode, 'ID_FORM' => $id));
 		if ($query->num_rows() > 0) {
-			return $query->result();
+			return $query->row()->JAWABAN;
 		}else{
 			return false;
 		}
 	}
 
-	function get_formDataBerkas($kode, $id){
-		$query = $this->db->get_where("PENDAFTARAN_DATA", array('KODE_PENDAFTARAN' => $kode, 'ID_FORM' => $id));
-		if ($query->num_rows() > 0) {
-			return $query->result();
-		}else{
-			return false;
-		}
-	}
+	// function get_formDataBerkas($kode, $id){
+	// 	$query = $this->db->get_where("PENDAFTARAN_DATA", array('KODE_PENDAFTARAN' => $kode, 'ID_FORM' => $id));
+	// 	if ($query->num_rows() > 0) {
+	// 		return $query->result();
+	// 	}else{
+	// 		return false;
+	// 	}
+	// }
 
 	// PROSES
 

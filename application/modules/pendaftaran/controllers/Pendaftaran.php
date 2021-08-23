@@ -9,10 +9,11 @@ class Pendaftaran extends MX_Controller {
 	}
 
 	public function daftar($kode){
+		$tabel	= 'PENDAFTARAN_KEGIATAN';
 
 		if ($this->M_daftar->get_kegiatan($kode) != false) {
 			if ($this->M_daftar->get_formMeta($kode) != false) {
-				if ($this->M_daftar->cek_dataPeserta($kode, $this->session->userdata('kode_user')) == false) {
+				if ($this->M_daftar->cek_dataPeserta($kode, $this->session->userdata('kode_user'), $tabel) == false) {
 					$data['kegiatan']		= $this->M_daftar->get_kegiatan($kode);
 					$data['formulir']		= $this->M_daftar->get_formMeta($kode);
 					$data['KODE_KEGIATAN']	= $kode;
@@ -37,10 +38,11 @@ class Pendaftaran extends MX_Controller {
 	}
 
 	public function daftar_kompetisi(){
-		$kode = 'lokreatif';
+		$kode 	= 'lokreatif';
+		$tabel	= 'PENDAFTARAN_KOMPETISi';
 		if ($this->M_daftar->cek_pendaftaranStatus() != false) {
 			if ($this->M_daftar->get_formMeta($kode) != false) {
-				if ($this->M_daftar->cek_dataPeserta($kode, $this->session->userdata('kode_user')) == false) {
+				if ($this->M_daftar->cek_dataPesertaKompetisi($this->session->userdata('kode_user'), $tabel) == false) {
 					$data['kegiatan']		= $this->M_daftar->get_kegiatan($kode);
 					$data['formulir']		= $this->M_daftar->get_formMeta($kode);
 					$data['KODE_KEGIATAN']	= $kode;
@@ -51,7 +53,7 @@ class Pendaftaran extends MX_Controller {
 					$data['fileview'] 	= "pendaftaran_kompetisi";
 					echo Modules::run('template/frontend_main', $data);
 				}else{
-					$this->session->set_flashdata('warning', "Anda telah mendaftarkan diri pada kegiatan ini !!");
+					$this->session->set_flashdata('warning', "Anda telah mendaftarkan diri pada kompetisi ini !!");
 					redirect(base_url());
 				}
 			}else{
@@ -99,7 +101,6 @@ class Pendaftaran extends MX_Controller {
 		}else{
 			$daftar = array(
 				'KODE_PENDAFTARAN' 	=> $KODE_PENDAFTARAN, 
-				'KODE_KOMPETISI'	=> $KODE_KEGIATAN, 
 				'KODE_USER' 		=> $this->session->userdata('kode_user'), 
 				'ID_TIKET' 			=> $ID_TIKET
 			);

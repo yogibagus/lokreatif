@@ -237,7 +237,7 @@ class Manage_kompetisi extends MX_Controller {
 
   public function data_peserta(){
     $data['cek_form']         = $this->M_manage->cek_form();
-    $data['get_form']         = $this->M_manage->get_formBerkas();
+    $data['get_form']         = $this->M_manage->get_form();
 
     $data['get_pendaftaran']  = $this->M_manage->get_dataPendaftaran();
 
