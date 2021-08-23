@@ -186,6 +186,16 @@ class Authentication extends MX_Controller {
 							$this->session->set_flashdata('success', "Selamat Datang, {$peserta->NAMA}");
 							redirect(base_url());
 						}
+// 					ADMIN UNIV
+					}elseif ($peserta->ROLE == 3) {
+
+						if ($this->session->userdata('redirect')) {
+							$this->session->set_flashdata('success', 'Hai, anda telah login. Silahkan melanjutkan aktivitas anda !!');
+							redirect($this->session->userdata('redirect'));
+						} else {
+							$this->session->set_flashdata('success', "Selamat Datang, {$peserta->NAMA}");
+							redirect(site_url('admin-univ'));
+						}
 
 					}else{
 						$this->session->set_flashdata('error', 'Hak akses bermasalah !!');
