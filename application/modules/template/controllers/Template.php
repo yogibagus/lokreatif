@@ -56,7 +56,7 @@ class Template extends MX_Controller {
 		$data['WEB_HERO_BUTTON']	= $this->M_template->get_webHeroButton();
 
 		// ETC
-		$data['pFoto']				= $this->M_template->get_foto($this->session->userdata('kode_user'));
+		$data['pFoto']				= $this->M_template->get_foto($this->session->userdata('kode_user'), $this->session->userdata('role'));
 		$data['notifikasi']			= $this->M_template->get_notifikasiAdmin();
 		$data['aktivitas']			= $this->M_template->get_aktivitasAdmin();
 		$data['c_notifikasi']		= $this->M_template->count_notifikasiAdmin();
@@ -87,7 +87,7 @@ class Template extends MX_Controller {
 		$data['WEB_HERO_BUTTON']	= $this->M_template->get_webHeroButton();
 
 		// ETC
-		$data['pFoto']				= $this->M_template->get_foto($this->session->userdata('kode_user'));
+		$data['pFoto']				= $this->M_template->get_foto($this->session->userdata('kode_user'), $this->session->userdata('role'));
 		$data['notifikasi']			= $this->M_template->get_notifikasiKegiatan($this->session->userdata('manage_kegiatan'));
 		$data['aktivitas']			= $this->M_template->get_aktivitasKegiatan($this->session->userdata('manage_kegiatan'));
 		$data['c_notifikasi']		= $this->M_template->count_notifikasiKegiatan($this->session->userdata('manage_kegiatan'));
@@ -172,7 +172,7 @@ class Template extends MX_Controller {
 		$data['WEB_HERO_BUTTON']	= $this->M_template->get_webHeroButton();
 
 		// ETC
-		$data['pFoto']				= $this->M_template->get_foto($this->session->userdata('kode_user'));
+		$data['pFoto']				= $this->M_template->get_foto($this->session->userdata('kode_user'), $this->session->userdata('role'));
 		$data['aktivasi']			= $this->M_template->cek_aktivasi($this->session->userdata('kode_user'));
 		$data['c_notifikasi']	= $this->M_template->count_notifikasi($this->session->userdata('kode_user'));
 
@@ -202,7 +202,7 @@ class Template extends MX_Controller {
 		
 		// ETC
 
-		$data['pFoto']				= $this->M_template->get_foto($this->session->userdata('kode_user'));
+		$data['pFoto']				= $this->M_template->get_foto($this->session->userdata('kode_user'), $this->session->userdata('role'));
 		$data['aktivasi']			= $this->M_template->cek_aktivasi($this->session->userdata('kode_user'));
 		$data['c_notifikasi']		= $this->M_template->count_notifikasi($this->session->userdata('kode_user'));
 

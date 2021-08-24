@@ -20,6 +20,7 @@ class Home extends MX_Controller{
 		$data['module'] 	= "home";
 		$data['fileview'] 	= "home";
 		echo Modules::run('template/frontend_main', $data);
+		// print_r($this->session->userdata());
 	}
 
 	public function bidang_lomba(){
