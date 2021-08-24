@@ -38,7 +38,7 @@ class M_pendaftaran extends CI_Model {
 
 	function cek_dataPesertaKompetisi($kode, $tabel){
 		$kode 	= $this->db->escape($kode);
-		$id 	= $this->db->escape($id);
+		// $id 	= $this->db->escape($id);
 		$query 	= $this->db->query("SELECT KODE_PENDAFTARAN as KODE, STATUS FROM {$tabel} WHERE KODE_USER = $kode");
 		if ($query->num_rows() > 0) {
 			return $query->row();
@@ -67,7 +67,7 @@ class M_pendaftaran extends CI_Model {
 	}
 
 	function cek_kodeDaftar($kode){
-		$query = $this->db->query("SELECT * FROM (SELECT KODE_PENDAFTARAN FROM pendaftaran_kegiatan UNION SELECT KODE_PENDAFTARAN FROM PENDAFTARAN_KOMPETISI) U WHERE U.KODE_PENDAFTARAN = '$kode'");
+		$query = $this->db->query("SELECT * FROM (SELECT KODE_PENDAFTARAN FROM pendaftaran_kegiatan UNION SELECT KODE_PENDAFTARAN FROM pendaftaran_kompetisi) U WHERE U.KODE_PENDAFTARAN = '$kode'");
 
 		return $query->num_rows();
 	}

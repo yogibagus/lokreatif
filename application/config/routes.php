@@ -56,6 +56,7 @@ $route['login']         				= 'authentication';
 $route['logout']        				= 'authentication/logout';
 
 $route['pendaftaran']        			= 'authentication/daftar';
+$route['pendaftaran-univ']              = 'authentication/daftar_univ';
 
 
 $route['pendaftaran']       			= 'authentication/daftar/1';

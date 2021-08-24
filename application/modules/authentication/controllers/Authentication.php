@@ -87,6 +87,19 @@ class Authentication extends MX_Controller {
 		echo Modules::run('template/frontend_auth', $data);
 	}
 
+	public function daftar_univ(){
+		if ($this->input->get('email')) {
+			$this->session->set_flashdata('success', 'Untuk melanjutkan harap daftarkan diri, sesuai email invitation anda!!');
+			$data['email']	= $this->input->get('email');
+		}else{
+			$data['email']	= null;
+		}
+
+		$data['module'] 	= "authentication";
+		$data['fileview'] 	= "univ";
+		echo Modules::run('template/frontend_auth', $data);
+	}
+
 	public function recovery(){
 
 		$data['module'] 	= "authentication";
