@@ -1,6 +1,6 @@
 <!-- Login Form -->
 <div class="container space-2 space-lg-3">
-  <form class="js-validate w-md-75 w-lg-50 mx-md-auto" action="<?= site_url('authentication/daftar_pengguna') ?>" method="post">
+  <form class="js-validate w-md-75 w-lg-50 mx-md-auto" action="<?= site_url('authentication/daftar_peserta') ?>" method="post">
     <?php if ($email != null) :?>
       <input type="hidden" name="KOLABOLATOR" value="true">
     <?php else:?>
