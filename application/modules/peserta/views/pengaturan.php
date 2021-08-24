@@ -52,58 +52,6 @@
 
       <!-- Form Group -->
       <div class="row form-group">
-        <label class="col-sm-3 col-form-label input-label" for="signinSrInstansi">Asal Instansi <span class="text-danger">*</span></label>
-        <div class="col-sm-9">
-          <input type="text" class="form-control" name="instansi" id="signinSrInstansi" value="<?= $user->INSTANSI ?>" aria-label="Asal Instansi anda" required data-msg="Harap masukkan asal Instansi.">
-        </div>
-      </div>
-      <!-- End Form Group -->
-      <?php $jabatan = explode("|", $user->JABATAN); ?>
-      <!-- Form Group -->
-      <div class="row form-group">
-        <label for="listingBathrooms" class="col-sm-3 col-form-label input-label">Jabatan <span class="text-danger">*</span></label>
-        <div class="col-sm-9">
-          <div class="input-group input-group-down-break">
-            <!-- Custom Radio -->
-            <div class="form-control">
-              <div class="custom-control custom-radio">
-                <input type="radio" class="custom-control-input" name="jabatan" id="jabatan1" value="1|Pelajar / Mahasiswa" <?= ($jabatan[0] == "1" ? "checked" : "") ?>>
-                <label class="custom-control-label" for="jabatan1">Pelajar / Mahasiswa</label>
-              </div>
-            </div>
-            <!-- End Custom Radio -->
-
-            <!-- Custom Radio -->
-            <div class="form-control">
-              <div class="custom-control custom-radio">
-                <input type="radio" class="custom-control-input" name="jabatan" id="jabatan2" value="2|Dosen / Guru" <?= ($jabatan[0] == "2" ? "checked" : "") ?>>
-                <label class="custom-control-label" for="jabatan2">Dosen / Guru</label>
-              </div>
-            </div>
-            <!-- End Custom Radio -->
-
-            <!-- Custom Radio -->
-            <div class="form-control">
-              <div class="custom-control custom-radio">
-                <input type="radio" class="custom-control-input" name="jabatan" id="jabatan3" value="3" <?= ($jabatan[0] == "3" ? "checked" : "") ?>>
-                <label class="custom-control-label" for="jabatan3">Lainnya</label>
-              </div>
-            </div>
-            <!-- End Custom Radio -->
-          </div>
-
-          <!-- Form Group -->
-          <div class="form-group <?= ($jabatan[0] == "3" ? "" : "hidden") ?>" id="lainnya">
-            <input type="text" class="form-control" name="lainnya" id="signinSrLainnya" value="<?= ($jabatan[0] == "3" ? $jabatan[1] : '') ?>" aria-label="Masukkan jabatan anda" data-msg="Harap masukkan jabatan anda.">
-          </div>
-          <!-- End Form Group -->
-        </div>
-        <small class="text-muted">Masukkan jabatan / peran anda dalam instansi</small>
-      </div>
-      <!-- End Form Group -->
-
-      <!-- Form Group -->
-      <div class="row form-group">
         <label class="col-sm-3 col-form-label input-label" for="signinSrTelepon">Nomor telepon anda <span class="text-danger">*</span></label>
         <div class="col-sm-9">
           <!-- Input Group -->
@@ -117,33 +65,6 @@
           </div>
           <!-- End Input Group -->
           <small class="text-muted">Ex: 81987123465</small>
-        </div>
-      </div>
-      <!-- End Form Group -->
-
-      <!-- Form Group -->
-      <div class="row form-group">
-        <label class="col-sm-3 col-form-label input-label" for="signinSrAlamat">Alamat anda <span class="text-danger">*</span></label>
-        <div class="col-sm-9">
-          <textarea  type="text" class="form-control" name="alamat" id="signinSrAlamat" value="<?= $user->ALAMAT ?>" aria-label="Alamat lengkap anda" required rows="3"><?= $user->ALAMAT ?></textarea>
-        </div>
-      </div>
-      <!-- End Form Group -->
-
-      <!-- Form Group -->
-      <div class="row form-group">
-        <label class="col-sm-3 col-form-label input-label" for="signinSrInstagram">ID Instagram anda <span class="text-danger">*</span></label>
-        <div class="col-sm-9">
-          <!-- Input Group -->
-          <div class="input-group input-group-merge">
-            <div class="input-group-prepend">
-              <span class="input-group-text p-2">
-                @
-              </span>
-            </div>
-            <input type="text" class="form-control" name="instagram" id="signinSrInstagram" value="<?= $user->INSTAGRAM ?>" aria-label="ID Instagram anda" required data-msg="Harap masukkan ID Instagram anda.">
-          </div>
-          <!-- End Input Group -->
         </div>
       </div>
       <!-- End Form Group -->

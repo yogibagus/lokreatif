@@ -181,7 +181,7 @@
         <th class="table-column-pl-0">Nama</th>
         <th>Jenis Kelamin</th>
         <th>Telepon</th>
-        <th>Instansi/Role</th>
+        <!-- <th>Instansi/Role</th> -->
         <th></th>
       </tr>
     </thead>
@@ -204,10 +204,10 @@
             </td>
             <td><?= ($key->JK == "L" ? "Laki-laki" : "Perempuan") ?></td>
             <td><a href="tel:+62<?= $key->HP ?>">+62<?= $key->HP ?></a></td>
-            <td>
+            <!-- <td>
               <span class="d-block h5 mb-0"><?= $key->INSTANSI ?></span>
               <span class="d-block font-size-sm"><?php $jabatan = explode("|", $key->JABATAN); echo $jabatan[1] ?></span>
-            </td>
+            </td> -->
             <td>
               <a class="btn btn-sm btn-white" data-toggle="modal" data-target="#detailUser<?= $key->KODE_USER;?>">
                 <i class="tio-eye"></i> View
@@ -304,7 +304,7 @@
                   <!-- End Form Group -->
 
                   <!-- Form Group -->
-                  <div class="row form-group">
+                  <!-- <div class="row form-group">
                     <label for="detailOrganizationModalLabel" class="col-sm-3 col-form-label input-label">Instansi</label>
 
                     <div class="col-sm-9">
@@ -312,48 +312,48 @@
                         <input type="text" class="form-control" name="detailOrganizationModal" id="detailOrganizationModalLabel" value="<?= $key->INSTANSI;?>" readonly>
                       </div>
                     </div>
-                  </div>
+                  </div> -->
                   <!-- End Form Group -->
 
                   <!-- Form Group -->
-                  <div class="row form-group">
+                  <!-- <div class="row form-group">
                     <label for="detailDepartmentModalLabel" class="col-sm-3 col-form-label input-label">Jabatan</label>
 
                     <div class="col-sm-9">
                       <input type="text" class="form-control" name="detailDepartmentModal" id="detailDepartmentModalLabel" value="<?php $jabatan = explode("|", $key->JABATAN); echo $jabatan[1]?>">
                     </div>
-                  </div>
+                  </div> -->
                   <!-- End Form Group -->
 
                   <!-- Form Group -->
-                  <div class="row form-group">
+                  <!-- <div class="row form-group">
                     <label for="detailDepartmentModalLabel" class="col-sm-3 col-form-label input-label">Instagram</label>
 
-                    <div class="col-sm-9">
+                    <div class="col-sm-9"> -->
                       <!-- Input Group -->
-                      <div class="input-group input-group-merge">
+                      <!-- <div class="input-group input-group-merge">
                         <div class="input-group-prepend">
                           <span class="input-group-text p-2">
                             @
                           </span>
                         </div>
                         <input type="text" class="form-control" name="detailInstagramModalLabel" id="detailInstagramModalLabel" value="<?= $key->INSTAGRAM;?>" readonly>
-                      </div>
+                      </div> -->
                       <!-- End Input Group -->
-                    </div>
-                  </div>
+                    <!-- </div>
+                  </div> -->
                   <!-- End Form Group -->
 
                   <!-- Form Group -->
-                  <div class="row form-group">
+                  <!-- <div class="row form-group">
                     <label for="detailDepartmentModalLabel" class="col-sm-3 col-form-label input-label">Alamat</label>
 
-                    <div class="col-sm-9">
+                    <div class="col-sm-9"> -->
                       <!-- Input Group -->
-                      <textarea class="form-control" name="detailAlamatModalLabel" id="detailAlamatModalLabel" rows="3"><?= $key->ALAMAT;?></textarea>
-                    </div>
+                      <!-- <textarea class="form-control" name="detailAlamatModalLabel" id="detailAlamatModalLabel" rows="3"><?= $key->ALAMAT;?></textarea>
+                    </div> -->
                     <!-- End Input Group -->
-                  </div>
+                  <!-- </div> -->
                 </div>
                 <!-- End Form Group -->
               </div>
