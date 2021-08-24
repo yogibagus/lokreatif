@@ -9,7 +9,7 @@ class Pendaftaran extends MX_Controller {
 	}
 
 	public function daftar($kode){
-		$tabel	= 'PENDAFTARAN_KEGIATAN';
+		$tabel	= 'pendaftaran_kegiatan';
 
 		if ($this->M_daftar->get_kegiatan($kode) != false) {
 			if ($this->M_daftar->get_formMeta($kode) != false) {
@@ -69,7 +69,7 @@ class Pendaftaran extends MX_Controller {
 	function prosesPendaftaran($kegiatan){
 
 		if ($kegiatan == "kegiatan") {
-			$tabel = "PENDAFTARAN_KEGIATAN";
+			$tabel = "pendaftaran_kegiatan";
 		}else{
 			$tabel = "pendaftaran_kompetisi";
 		}

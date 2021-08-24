@@ -142,10 +142,10 @@ class M_authentication extends CI_Model {
 
 		if ($this->db->affected_rows() == true) {
 
-			// if ($kolabolator == true) {
-			// 	$this->db->where('email', $email);
-			// 	$this->db->update('tb_kolabolator', array('STATUS' => 1));
-			// }
+// 			if ($kolabolator == true) {
+// 				$this->db->where('email', $email);
+// 				$this->db->update('tb_kolabolator', array('STATUS' => 1));
+// 			}
 
 			$peserta = array(
 				'KODE_USER' 		=> $KODE_USER,
