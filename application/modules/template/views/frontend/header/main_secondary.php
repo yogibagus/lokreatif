@@ -127,6 +127,19 @@
                     <i class="fas fa-power-off"></i>
                   </span> Log out
                 </a>
+              <?php elseif ($this->session->userdata('role') == 2) : ?>
+                <a class="dropdown-item px-0" href="<?= site_url('universitas') ?>">
+                  <span class="dropdown-item-icon">
+                    <i class="fas fa-user"></i>
+                  </span> Dashboard Univ
+                </a>
+
+                <div class="dropdown-divider"></div>
+                <a class="dropdown-item px-0" href="<?= site_url('logout') ?>">
+                  <span class="dropdown-item-icon">
+                    <i class="fas fa-power-off"></i>
+                  </span> Log out
+                </a>
                 <?php else: ?>
                   <a class="dropdown-item px-0" href="<?= site_url('juri') ?>">
                     <span class="dropdown-item-icon">

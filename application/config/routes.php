@@ -49,17 +49,22 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 | Examples:	my-controller/index	-> my_controller/index
 |		my-controller/my-method	-> my_controller/my_method
 */
+// UNIVERSITAS
+
+$route['universitas']         		= 'univ';
+$route['pengaturan-universitas']        = 'univ/pengaturan';
+// END UNIVERSITAS
 
 // LOGIN
 
-$route['login']         				= 'authentication';
-$route['logout']        				= 'authentication/logout';
+$route['login']         		= 'authentication';
+$route['logout']        		= 'authentication/logout';
 
-$route['pendaftaran']        			= 'authentication/daftar';
+$route['pendaftaran']        		= 'authentication/daftar';
 $route['pendaftaran-univ']              = 'authentication/daftar_univ';
 
 
-$route['pendaftaran']       			= 'authentication/daftar/1';
+$route['pendaftaran']       		= 'authentication/daftar/1';
 $route['pengajuan-penyelenggara']     	= 'authentication/daftar/2';
 
 $route['aktivasi/(:any)']             	= 'authentication/aktivasi/$1';
