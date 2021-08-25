@@ -4,7 +4,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 class Univ extends MX_Controller {
 	public function __construct(){
 		parent::__construct();
-		$this->load->model('M_peserta');
+		$this->load->model('M_univ');
 		if ($this->session->userdata('logged_in') == FALSE || !$this->session->userdata('logged_in')){
 			if (!empty($_SERVER['QUERY_STRING'])) {
 				$uri = uri_string() . '?' . $_SERVER['QUERY_STRING'];
@@ -21,8 +21,8 @@ class Univ extends MX_Controller {
 			redirect($this->agent->referrer());
 		}
 
-		$univ 	= $this->M_peserta->cek_aktivasi($this->session->userdata('kode_user'));
-		$profil		= ($this->uri->segment(1) == "peserta" && empty($this->uri->segment(2)) ? TRUE : FALSE);
+		$univ 	= $this->M_univ->cek_aktivasi($this->session->userdata('kode_user'));
+		$profil		= ($this->uri->segment(1) == "univ" && empty($this->uri->segment(2)) ? TRUE : FALSE);
 
 		if ($univ->STATUS == 0 AND $profil == FALSE) {
 			$this->session->set_flashdata('error', "Harap lakukan aktivasi akun anda, untuk melanjutkan");
@@ -60,14 +60,15 @@ class Univ extends MX_Controller {
 	}
 
 	public function index(){
-		$data['notifikasi']			= $this->M_peserta->get_notifikasi($this->session->userdata("kode_user"));
-		$data['kegiatan']			= $this->M_peserta->get_kegiatanAll();
-		$data['daftarKompetisi']	= $this->M_peserta->cek_daftarKompetisi($this->session->userdata("kode_user"));
-		$data['daftarKegiatan']		= $this->M_peserta->count_pesertaKegiatan($this->session->userdata("kode_user"));
+		$data['notifikasi']			= $this->M_univ->get_notifikasi($this->session->userdata("kode_user"));
+		$data['kegiatan']			= $this->M_univ->get_kegiatanAll();
+		$data['daftarKompetisi']	= $this->M_univ->cek_daftarKompetisi($this->session->userdata("kode_user"));
+		$data['daftarKegiatan']		= $this->M_univ->count_pesertaKegiatan($this->session->userdata("kode_user"));
+		$data['transaksi']			= $this->M_univ->get_transaksi();
 
 		$data['CI']					= $this;
 
-		$data['module'] 			= "peserta";
+		$data['module'] 			= "univ";
 		$data['fileview'] 			= "profil";
 		echo Modules::run('template/frontend_user', $data);
 	}
@@ -75,8 +76,8 @@ class Univ extends MX_Controller {
 	public function notifikasi(){
 		$this->load->library('pagination');
 
-		$config['base_url'] 				= base_url().'peserta/notifikasi';
-		$config['total_rows'] 				= $this->M_peserta->countAllNotifikasi($this->session->userdata("kode_user"));
+		$config['base_url'] 				= base_url().'univ/notifikasi';
+		$config['total_rows'] 				= $this->M_univ->countAllNotifikasi($this->session->userdata("kode_user"));
 		$config['per_page'] 				= 10;
 
 		$config['full_tag_open'] 			= '<nav class="d-flex justify-content-between align-items-center" aria-label="Page navigation example"><ul class="pagination pagination-sm">';
@@ -100,10 +101,10 @@ class Univ extends MX_Controller {
 
 		$this->pagination->initialize($config);
 
-		$data['notifikasi']	= $this->M_peserta->get_AllNotifikasi($this->session->userdata("kode_user"), $config['per_page'], (!$this->uri->segment(3) ? 0 : $this->uri->segment(3)));
+		$data['notifikasi']	= $this->M_univ->get_AllNotifikasi($this->session->userdata("kode_user"), $config['per_page'], (!$this->uri->segment(3) ? 0 : $this->uri->segment(3)));
 		$data['CI']					= $this;
 
-		$data['module'] 		= "peserta";
+		$data['module'] 		= "univ";
 		$data['fileview'] 		= "notifikasi";
 		echo Modules::run('template/frontend_user', $data);
 	}
@@ -111,8 +112,8 @@ class Univ extends MX_Controller {
 	public function kegiatan(){
 		$this->load->library('pagination');
 
-		$config['base_url'] 				= base_url().'peserta/kegiatan';
-		$config['total_rows'] 				= $this->M_peserta->count_kegiatanDiikuti($this->session->userdata("kode_user"));
+		$config['base_url'] 				= base_url().'univ/kegiatan';
+		$config['total_rows'] 				= $this->M_univ->count_kegiatanDiikuti($this->session->userdata("kode_user"));
 		$config['per_page'] 				= 10;
 
 		$config['full_tag_open'] 			= '<nav class="d-flex justify-content-between align-items-center" aria-label="Page navigation example"><ul class="pagination pagination-sm">';
@@ -136,53 +137,53 @@ class Univ extends MX_Controller {
 
 		$this->pagination->initialize($config);
 
-		$data['kegiatanDiikuti']			= $this->M_peserta->kegiatanDiikuti($this->session->userdata('kode_user'), $config['per_page'], (!$this->uri->segment(3) ? 0 : $this->uri->segment(3)));
+		$data['kegiatanDiikuti']			= $this->M_univ->kegiatanDiikuti($this->session->userdata('kode_user'), $config['per_page'], (!$this->uri->segment(3) ? 0 : $this->uri->segment(3)));
 
-		$data['module'] 		= "peserta";
+		$data['module'] 		= "univ";
 		$data['fileview'] 		= "kegiatan";
 		echo Modules::run('template/frontend_user', $data);
 	}
 
 	public function data_pendaftaran(){
-		if ($this->M_peserta->cek_daftarKompetisi($this->session->userdata("kode_user")) == false) {
+		if ($this->M_univ->cek_daftarKompetisi($this->session->userdata("kode_user")) == false) {
 			$this->session->set_flashdata('error', "Anda belum melakukan pendaftaran kompetisi !!");
 			redirect($this->agent->referrer());
 		}else{
-			$data['dataPendaftaran']= $this->M_peserta->get_detailDaftarKompetisi($this->session->userdata("kode_user"));
+			$data['dataPendaftaran']= $this->M_univ->get_detailDaftarKompetisi($this->session->userdata("kode_user"));
 
 			$data['CI']				= $this;
 
-			$data['module'] 		= "peserta";
+			$data['module'] 		= "univ";
 			$data['fileview'] 		= "pendaftaran_detail";
 			echo Modules::run('template/frontend_user', $data);
 		}
 	}
 
 	public function detail_daftar($id){
-		if ($this->M_peserta->get_detailDaftar($id) == false) {
+		if ($this->M_univ->get_detailDaftar($id) == false) {
 			$this->session->set_flashdata('error', "Terjadi kesalahan saat menampilkan data pendaftaran anda!");
 			redirect($this->agent->referrer());
 		}else{
-			$data['data-pendaftaran']	= $this->M_peserta->get_detailDaftar($id);
+			$data['data-pendaftaran']	= $this->M_univ->get_detailDaftar($id);
 
 			$data['CI']				= $this;
 
-			$data['module'] 		= "peserta";
+			$data['module'] 		= "univ";
 			$data['fileview'] 		= "pendaftaran_detail";
 			echo Modules::run('template/frontend_user', $data);
 		}
 	}
 
 	public function pengaturan(){
-		if ($this->M_peserta->get_userDetail($this->session->userdata("kode_user")) == false) {
+		if ($this->M_univ->get_userDetail($this->session->userdata("kode_user")) == false) {
 			$this->session->set_flashdata('error', "Terjadi kesalahan saat menampilkan data diri anda!");
 			redirect(base_url());
 		}else{
-			$data['user']			= $this->M_peserta->get_userDetail($this->session->userdata("kode_user"));
+			$data['user']			= $this->M_univ->get_userDetail($this->session->userdata("kode_user"));
 
 			$data['CI']				= $this;
 
-			$data['module'] 		= "peserta";
+			$data['module'] 		= "univ";
 			$data['fileview'] 		= "pengaturan";
 			echo Modules::run('template/frontend_user', $data);
 		}
@@ -190,9 +191,9 @@ class Univ extends MX_Controller {
 
 	// PROSES
 	function ubah_profil(){
-		if ($this->M_peserta->ubah_profil($this->session->userdata("kode_user")) == TRUE) {
+		if ($this->M_univ->ubah_profil($this->session->userdata("kode_user")) == TRUE) {
 			$this->session->set_flashdata('success', "Berhasil mengubah data diri anda!");
-			redirect(site_url('peserta/pengaturan'));
+			redirect(site_url('univ/pengaturan'));
 		}else {
 			$this->session->set_flashdata('error', "Terjadi kesalahan saat mengubah data diri anda!");
 			redirect($this->agent->referrer());
@@ -212,7 +213,7 @@ class Univ extends MX_Controller {
 			$time		= time();
 			$filename	= "FOTO_-{$time}.{$ext}";
 
-			$folder		= "berkas/peserta/{$kode_user}/foto";
+			$folder		= "berkas/univ/{$kode_user}/foto";
 
 			if (!is_dir($folder)) {
 				mkdir($folder, 0755, true);
@@ -233,7 +234,7 @@ class Univ extends MX_Controller {
 			}else {
 
 				$this->db->where('KODE_USER', $kode_user);
-				$this->db->update('tb_peserta', array('PROFIL' => $filename));
+				$this->db->update('tb_univ', array('PROFIL' => $filename));
 				$cek = ($this->db->affected_rows() != 1) ? false : true;
 				if ($cek == TRUE) {
 					$this->session->set_flashdata('success', 'Berhasil mengubah foto profil akun anda!!');
@@ -252,7 +253,7 @@ class Univ extends MX_Controller {
 	function hapus_foto(){
 
 		$this->db->where('KODE_USER', $this->session->userdata("kode_user"));
-		$this->db->update('tb_peserta', array('PROFIL' => null));
+		$this->db->update('tb_univ', array('PROFIL' => null));
 
 		$cek = ($this->db->affected_rows() != 1) ? false : true;
 		if ($cek == TRUE) {
@@ -266,7 +267,7 @@ class Univ extends MX_Controller {
 
 	function read_notifikasi($kode_notifikasi){
 
-		if ($this->M_peserta->read_notifikasi($kode_notifikasi) == TRUE) {
+		if ($this->M_univ->read_notifikasi($kode_notifikasi) == TRUE) {
 			$this->session->set_flashdata('success', "Berhasil mengubah status notifikasi !!");
 			redirect($this->agent->referrer());
 		}else {
@@ -277,7 +278,7 @@ class Univ extends MX_Controller {
 
 	function read_notifikasiAll(){
 
-		if ($this->M_peserta->read_notifikasiAll() == TRUE) {
+		if ($this->M_univ->read_notifikasiAll() == TRUE) {
 			$this->session->set_flashdata('success', "Berhasil mengubah status semua notifikasi !!");
 			redirect($this->agent->referrer());
 		}else {
