@@ -5,6 +5,7 @@ class Univ extends MX_Controller {
 	public function __construct(){
 		parent::__construct();
 		$this->load->model('M_univ');
+		$this->load->library('transaksi');
 		if ($this->session->userdata('logged_in') == FALSE || !$this->session->userdata('logged_in')){
 			if (!empty($_SERVER['QUERY_STRING'])) {
 				$uri = uri_string() . '?' . $_SERVER['QUERY_STRING'];
@@ -73,6 +74,24 @@ class Univ extends MX_Controller {
 		$data['module'] 			= "univ";
 		$data['fileview'] 			= "profil";
 		echo Modules::run('template/backend_main', $data);
+	}
+
+	public function transaksi(){
+		$kodePendaftaran	= explode(',', $_POST['KODE_PENDAFTARAN']);
+		$kodeTrans			= $this->transaksi->gen_kodeTrans();
+		$dataStoreOrd		= array();
+
+		foreach ($kodePendaftaran as $item) {
+			$temp['KODE_TRANS'] 		= $kodeTrans;
+			$temp['KODE_PENDAFTARAN']	= $item;
+			$temp['BIAYA_TIM']			= 0;
+			array_push($dataStoreOrd, $temp);
+		}
+
+		$this->M_univ->insert_trans($kodeTrans);
+		$this->M_univ->insert_order($dataStoreOrd);
+
+		redirect('universitas');
 	}
 
 	public function notifikasi(){

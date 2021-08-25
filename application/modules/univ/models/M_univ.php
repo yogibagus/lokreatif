@@ -67,6 +67,13 @@ class M_univ extends CI_Model {
 		return $query->result();
 	}
 
+	public function insert_trans($kodeTrans){
+		$this->db->insert('tes_trans', ['KODE_TRANS' => $kodeTrans]);
+	}
+	public function insert_order($param){
+		$this->db->insert_batch('tes_order', $param);
+	}
+
 	// public function count_alltim
 
 	public function get_kodept($kode_user){
