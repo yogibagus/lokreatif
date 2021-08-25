@@ -4,7 +4,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 class Pendaftaran extends MX_Controller {
 	public function __construct(){
 		parent::__construct();
-		$this->load->model('M_pendaftaran', 'M_daftar', 'General');
+		$this->load->model('M_pendaftaran', 'M_daftar');
 
 	}
 
