@@ -4,7 +4,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 class Peserta extends MX_Controller {
 	public function __construct(){
 		parent::__construct();
-		$this->load->model(['M_peserta', 'General']);
+		$this->load->model('M_peserta');
 		$this->load->library(['Transaksi']);
 
 		if ($this->session->userdata('logged_in') == FALSE || !$this->session->userdata('logged_in')){
