@@ -6,6 +6,63 @@ class M_peserta extends CI_Model {
 		parent::__construct();
 	}
 
+	// DATA PENDAFTARAN KOMPETISI & get biaya daftar
+
+	function get_biayaDaftar($jml_pts){
+		$this->db->select('a.DESKRIPSI');
+		$this->db->from('tb_pengaturan a');
+		$this->db->where(array('a.VALUE <=' => $jml_pts, 'a.KEY' => 'BIAYA_DAFTAR'));
+		$this->db->order_by('a.DESKRIPSI', 'ASC');
+		$this->db->limit(1);
+		return $this->db->get()->row()->DESKRIPSI;
+	}
+
+	function get_detailDaftarKompetisi($id){
+		$this->db->select('a.*, b.*, c.namapt, (SELECT COUNT(*) FROM pendaftaran_kompetisi WHERE ASAL_PTS = a.ASAL_PTS) as JML_TIM');
+		$this->db->from('pendaftaran_kompetisi a');
+		$this->db->join('bidang_lomba b', 'a.BIDANG_LOMBA = b.ID_BIDANG');
+		$this->db->join('pt c', 'a.ASAL_PTS = c.kodept');
+		$this->db->where('a.KODE_USER', $id);
+		$query = $this->db->get();
+		if ($query->num_rows() > 0) {
+			return $query->row();
+		}else {
+			return false;
+		}
+	}
+
+	function get_dataAnggota($kode){
+		$query = $this->db->get_where('tb_anggota', array('KODE_PENDAFTARAN' => $kode));
+		if ($query->num_rows() > 0) {
+			return $query->result();
+		}else{
+			return false;
+		}
+	}
+
+	function get_detailDaftar($id){
+		$query = $this->db->get_where("pendaftaran_kegiatan", array('KODE_PENDAFTARAN' => $id));
+
+		if ($query->num_rows() > 0) {
+			return $query->row();
+		}else {
+			return false;
+		}
+	}
+
+	// PESERTA
+
+	function get_pts(){
+		$this->db->select('kodept,namapt');
+		$query  = $this->db->get('pt');
+		$result = $query->result();
+
+		foreach ($result as $row){
+			$pt[$row->kodept] = $row->kodept . '-'. $row->namapt;
+		}
+		return $pt;
+	}
+
 	public function cek_aktivasi($kode_user){
 		$query = $this->db->query("SELECT * FROM tb_token WHERE KODE = '$kode_user' AND TYPE = 1");
 		if ($query->num_rows() > 0) {
@@ -72,26 +129,6 @@ class M_peserta extends CI_Model {
 			endif;
 
 			return $sender;
-		}
-	}
-
-	public function get_detailDaftarKompetisi($id){
-		$query = $this->db->get_where("pendaftaran_kompetisi", array('KODE_USER' => $id));
-
-		if ($query->num_rows() > 0) {
-			return $query->row();
-		}else {
-			return false;
-		}
-	}
-
-	public function get_detailDaftar($id){
-		$query = $this->db->get_where("pendaftaran_kegiatan", array('KODE_PENDAFTARAN' => $id));
-
-		if ($query->num_rows() > 0) {
-			return $query->row();
-		}else {
-			return false;
 		}
 	}
 
@@ -231,5 +268,42 @@ class M_peserta extends CI_Model {
 		$this->db->query("UPDATE log_aktivitas a SET a.READ = 1 WHERE a.RECEIVER = '$kode' AND a.TYPE IN (SELECT ID_TYPE FROM log_type b WHERE b.TYPE = 1)");
 		return true;
 
+	}
+
+	function update_pts(){
+
+		$KODE_PENDAFTARAN	= $this->input->post('KODE_PENDAFTARAN');
+		$PT					= $this->input->post('ASAL_PTS');
+		$PT 	    		= explode("-", $PT);
+		$ASAL_PTS			= $PT[0];
+		$ALAMAT_PTS			= $this->input->post('ALAMAT_PTS');
+
+		$data = array(
+			'ASAL_PTS'  		=> $ASAL_PTS,
+			'ALAMAT_PTS'  		=> $ALAMAT_PTS
+		);
+
+		$this->db->where('KODE_PENDAFTARAN', $KODE_PENDAFTARAN);
+		$this->db->update('pendaftaran_kompetisi', $data);
+		return ($this->db->affected_rows() != 1) ? false : true;
+	}
+
+	function bayar_pendaftaran($KODE_TRANS){
+		$KODE_PENDAFTARAN	= $this->input->post('KODE_PENDAFTARAN');
+		$BIAYA_TIM 			= $this->input->post('BIAYA_TIM');
+		$this->db->insert('tb_transaksi', array('KODE_TRANS' => $KODE_TRANS));
+
+		if ((($this->db->affected_rows() != 1) ? false : true) == true) {
+			$order = array(
+				'KODE_TRANS' 		=> $KODE_TRANS,
+				'KODE_PENDAFTARAN' 	=> $KODE_PENDAFTARAN,
+				'BIAYA_TIM' 		=> $BIAYA_TIM
+			);
+
+			$this->db->insert('tb_order', $order);
+			return ($this->db->affected_rows() != 1) ? false : true;
+		}else{
+			return false;
+		}
 	}
 }
