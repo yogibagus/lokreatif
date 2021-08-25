@@ -20,7 +20,7 @@
       <div class="navbar-vertical-content">
         <ul class="navbar-nav navbar-nav-lg nav-tabs">
            
-          <?php if($this->session->userdata('role') == 2):?>
+          <?php if($this->session->userdata('role') == 3):?>
           <!-- Dashboards -->
 
           <li class="nav-item ">

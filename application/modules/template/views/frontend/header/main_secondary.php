@@ -127,7 +127,7 @@
                     <i class="fas fa-power-off"></i>
                   </span> Log out
                 </a>
-              <?php elseif ($this->session->userdata('role') == 2) : ?>
+              <?php elseif ($this->session->userdata('role') == 3) : ?>
                 <a class="dropdown-item px-0" href="<?= site_url('universitas') ?>">
                   <span class="dropdown-item-icon">
                     <i class="fas fa-user"></i>

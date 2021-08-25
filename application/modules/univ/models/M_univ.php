@@ -41,9 +41,36 @@ class M_univ extends CI_Model {
 		}
 	}
 
-	public function get_transaksi(){
-		$query = $this->db->query("SELECT * FROM tb_transaksi t JOIN pendaftaran_kompetisi pk ON t.KODE_PENDAFTARAN = pk.KODE_PENDAFTARAN JOIN bidang_lomba bl ON bl.ID_LOMBA = pk.BIDANG_LOMBA JOIN tb_peserta p ON p.KODE_USER = pk.KODE_USER");
+	public function get_transaksi($kodept){
+		$query = $this->db->query("
+		SELECT 
+			pk.KODE_PENDAFTARAN ,
+			pk.KODE_USER ,
+			tp.NAMA ,
+			pk.NAMA_TIM ,
+			pt.kodept ,
+			pt.namapt ,
+			bl.BIDANG_LOMBA ,
+			to2.KODE_TRANS ,
+			to2.BIAYA_TIM ,
+			tt.ORDER_ID ,
+			tt.TOT_BAYAR ,
+			tt.STAT_BAYAR 
+		FROM pendaftaran_kompetisi pk 
+			JOIN tb_peserta tp ON tp.KODE_USER = pk.KODE_USER 
+			JOIN pt ON pt.kodept = pk.ASAL_PTS
+			JOIN bidang_lomba bl ON bl.ID_BIDANG = pk.BIDANG_LOMBA 
+			LEFT JOIN tes_order to2 ON to2.KODE_PENDAFTARAN = pk.KODE_PENDAFTARAN 
+			LEFT JOIN tes_trans tt ON tt.KODE_TRANS = to2.KODE_TRANS
+		WHERE pk.ASAL_PTS = $kodept
+			");
 		return $query->result();
+	}
+
+	// public function count_alltim
+
+	public function get_kodept($kode_user){
+		return $this->db->query("SELECT pt.kodept FROM tb_univ u, pt WHERE u.KODE_PT = pt.kodept AND u.KODE_UNIV = '$kode_user'")->row();
 	}
 
 	public function get_notifikasi($kode_user){
