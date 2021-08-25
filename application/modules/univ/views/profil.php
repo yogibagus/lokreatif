@@ -1,21 +1,3 @@
-<!-- Card -->
-<div class="card card-frame card-frame-highlighted">
-  <div class="card-header">
-    <h5 class="card-header-title">Overview Akun</h5>
-  </div>
-  <?php if ($aktivasi->STATUS == 0) : ?>
-    <!-- Alert -->
-    <div class="alert alert-soft-danger text-center rounded-0 mb-0" role="alert">
-      Harap melakukan aktivasi akun terlebih dahulu untuk dapat mengakses fitur NESTIVENT. <a class="alert-link" href="<?= site_url('hold-verification') ?>">AKTIVASI SEKARANG</a>
-    </div>
-    <!-- End Alert -->
-    <?php else: ?>
-      <div class="card-footer">
-      </div>
-    <?php endif; ?>
-  </div>
-  <!-- End Card -->
-
   <div class="row mt-4 mb-4">
     <div class="col-md-6 col-sm-12">
       <div class="card card-frame h-100">
@@ -63,6 +45,15 @@
         <div class="card">
           <div class="card-header">
             <h5 class="card-header-title">Daftar Tim</h5>
+            <div>
+                <button class="btn btn-sm btn-success shadow-sm" id="bayarMultiple" data-toggle="modal" data-target="#mdlBayarMulti" disabled>
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-cash" viewBox="0 0 16 16">
+                    <path d="M8 10a2 2 0 1 0 0-4 2 2 0 0 0 0 4z"/>
+                    <path d="M0 4a1 1 0 0 1 1-1h14a1 1 0 0 1 1 1v8a1 1 0 0 1-1 1H1a1 1 0 0 1-1-1V4zm3 0a2 2 0 0 1-2 2v4a2 2 0 0 1 2 2h10a2 2 0 0 1 2-2V6a2 2 0 0 1-2-2H3z"/>
+                  </svg>
+                    Bayar
+                </button>
+            </div>
           </div>
           <!-- Table -->
           <div class="card-body px-0 pb-0">
@@ -100,7 +91,27 @@
               </thead>
 
               <tbody>
-                
+                <?php
+                  $no = 1;
+                  foreach ($transaksi as $item) {
+                    $status = $item->STAT_BAYAR == 1 ? '<span style="color: #fff;" class="badge bg-success">Lunas</span>' : '<span style="color: #fff;" class="badge bg-secondary">Belum Lunas</span>';
+                    echo '
+                      <tr>
+                        <td>
+                          <div class="custom-control custom-checkbox" style="text-align:center;">
+                              <input type="checkbox" class="custom-control-input checkItem" id="chck_' . $no . '" value="' . $item->KODE_USER . '" checked>
+                              <label class="custom-control-label" for="chck_' . $no . '"></label>
+                          </div>
+                        </td>
+                        <td>'.$item->NAMA_TIM.'</td>
+                        <td>'.$item->NAMA.'</td>
+                        <td>'.$item->BIDANG_LOMBA.'</td>
+                        <td>'.$status.'</td>
+                      </tr>
+                    ';
+                    $no++;
+                  }
+                ?>
               </tbody>
               </table>
             </div>
@@ -109,119 +120,50 @@
         </div>
       </div>
     </div>
-  <div class="row mb-4">
-    <div class="col-md-7">
-      <div class="card">
-        <div class="card-header">
-          <h5 class="card-header-title">Kegiatan terbaru</h5>
-        </div>
-        <!-- Table -->
-        <div class="card-body px-0 pb-0">
-          <table class="table table-borderless table-thead-bordered table-align-middle">
-            <thead class="thead-light">
-              <tr>
-                <th>Kegiatan</th>
-                <th>Status</th>
-              </tr>
-            </thead>
-            <tbody>
-              <?php if($kegiatan != false): ?>
-                <?php foreach ($kegiatan as $key) :?>
-                  <tr>
-                    <td>
-                      <div class="media align-items-center">
-                        <div class="avatar avatar-sm avatar-soft-dark avatar-circle mr-3">
-                          <span class="avatar-initials"><?= substr($key->JUDUL, 0, 1);?></span>
-                        </div>
-
-                        <div class="media-body">
-                          <a class="d-inline-block text-dark" href="<?= site_url('kegiatan/'.$key->KODE);?>">
-                            <h6 class="text-hover-primary mb-0"><?= $key->JUDUL;?> <?= $CI->agent->is_mobile() ? '' : '<img class="avatar avatar-xss ml-1" src="'.base_url().'assets/frontend/svg/illustrations/top-vendor.svg" alt="Image Description" data-toggle="tooltip" data-placement="top" title="Verified">';?></h6>
-                          </a>
-                          <small class="d-block"><?= date("d F Y", strtotime($key->TANGGAL));?></small>
-                        </div>
-                      </div>
-                    </td>
-                    <td>
-                      <span class="badge badge-soft-<?= ($key->STATUS_KEGIATAN == 0 ? 'secondary' : ($key->STATUS_KEGIATAN == 1 ? 'success' : 'warning'));?> badge-pill"><?= ($key->STATUS_KEGIATAN == 0 ? 'belum dibuka' : ($key->STATUS_KEGIATAN == 1 ? 'berlangsung' : 'telah berakhir'));?></span>
-                    </td>
-                  </tr>
-                <?php endforeach;?>
-              <?php endif;?>
-            </tbody>
-          </table>
-        </div>
-        <!-- End Table -->
-
-        <!-- Footer -->
-        <div class="card-footer d-flex justify-content-end">
-        </div>
-        <!-- End Footer -->
-      </div>
-    </div>
-    <div class="col-md-5">
-      <div class="card">
-        <div class="card-header">
-          <h5 class="card-header-title">Notifikasi terbaru</h5>
-          <a href="<?= site_url('peserta/notifikasi') ?>" class="btn btn-primary btn-xs pull-right">more</a>
-        </div>
-        <!-- Table -->
-        <div class="card-body scroll-y-400">
-          <?php if ($notifikasi == false): ?>
-            <div class="row">
-              <div class="col-12">
-                <div class="media align-items-center">
-                  <div class="media-body">
-                    <a class="d-inline-block text-dark">
-                      <h6 class="text-hover-primary mb-0"><center>Tidak ada notifikasi terbaru</center></h6>
-                    </a>
-                  </div>
+    <!-- Modal Bayar -->
+    <div class="modal fade" id="mdlBayarMulti" tabindex="-1" aria-labelledby="mdlBayarMulti" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="mdlBayarMulti">Bayar Transaksi</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
                 </div>
-              </div>
+                <div class="modal-body">
+                    <p>
+                        Apakah anda yakin untuk membayar transaksi tim ini <span id="mdlBayarMulti_item"></span> ?
+                    </p>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
+                    <form action="<?= site_url('debitnote/downloadPdf') ?>" id="formDownload" method="post">
+                        <input type="hidden" id="mdlBayarMulti_id" name="PATH_DEBITNOTE" />
+                        <button type="submit" class="btn btn-success" onclick="submit_form();", data-dismiss="modal">Bayar</button>
+                    </form>
+                </div>
             </div>
-            <?php else: ?>
-              <?php foreach ($notifikasi as $key): ?>
-                <div class="row mb-4 cursor" data-target="#detail_notif<?= $key->ID_LOG?>" data-toggle="modal">
-                  <div class="col-12">
-                    <div class="media align-items-center">
-                      <div class="media-body">
-                        <a class="d-inline-block text-dark">
-                          <h6 class="text-hover-primary mb-0"><?= $key->REFERENCES ?></h6>
-                        </a>
-                        <small class="d-block text-muted"><span class="text-dark"><?= $CI->M_univ->get_sender($key->SENDER) ?></span> <?= $key->MESSAGE ?></small>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="col-12 text-right">
-                    <small class="text-muted pull-right"><?= $CI->time_elapsed($key->CREATED_AT) ?></small>
-                  </div>
-                </div>
-
-                <!-- DELETE ACCOUNT -->
-
-                <div id="detail_notif<?= $key->ID_LOG; ?>" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="ubah_profil" aria-hidden="true">
-                  <div class="modal-dialog modal-dialog-centered" role="document">
-                    <div class="modal-content">
-                      <div class="modal-body">
-                        <!-- Form Group -->
-                        <p class="h4"><b><?= $key->REFERENCES ?></b></p>
-                        <p class="h6 text-muted"><span class="text-dark"><?= $CI->M_univ->get_sender($key->SENDER) ?></span> <?= $key->MESSAGE ?><br> <small class="text-muted float-right pull-right mt-2"><?= $CI->time_elapsed($key->CREATED_AT) ?></small> </p>
-                        <hr class="mt-5">
-                        <button type="button" class="btn btn-xs btn-white btn-block" data-dismiss="modal">Tutup</button>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <!-- END DELETE ACCOUNT -->
-              <?php endforeach; ?>
-            <?php endif; ?>
-          </div>
-          <!-- End Table -->
-
-          <!-- Footer -->
-          <div class="card-footer d-flex justify-content-end">
-          </div>
-          <!-- End Footer -->
         </div>
-      </div>
     </div>
+    <script>
+      $('#checkAll').change(function() {
+        const isChecked = $(this).prop('checked')
+          if (isChecked) {
+              $('.checkItem').prop('checked', true)
+          } else {
+              $('.checkItem').prop('checked', false)
+          }
+          buttonMultipleAvailable()
+      })
+      $('.checkItem').change(function() {
+          buttonMultipleAvailable()
+      })
+      const buttonMultipleAvailable = () => {
+          const isChecked = $('.checkItem:checkbox:checked').prop('checked')
+          if (isChecked)
+              $('#bayarMultiple').attr('disabled', false)
+          else
+              $('#bayarMultiple').attr('disabled', true)
+      }
+    </script>

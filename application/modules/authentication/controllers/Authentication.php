@@ -215,7 +215,7 @@ class Authentication extends MX_Controller {
 							redirect($this->session->userdata('redirect'));
 						} else {
 							$this->session->set_flashdata('success', "Selamat Datang, {$nama}");
-							redirect(site_url('univ'));
+							redirect(site_url('universitas'));
 						}
 
 					}else{

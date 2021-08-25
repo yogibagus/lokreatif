@@ -64,13 +64,15 @@ class Univ extends MX_Controller {
 		$data['kegiatan']			= $this->M_univ->get_kegiatanAll();
 		$data['daftarKompetisi']	= $this->M_univ->cek_daftarKompetisi($this->session->userdata("kode_user"));
 		$data['daftarKegiatan']		= $this->M_univ->count_pesertaKegiatan($this->session->userdata("kode_user"));
-		$data['transaksi']			= $this->M_univ->get_transaksi();
+
+		$kodept						= $this->M_univ->get_kodept($this->session->userdata("kode_user"))->kodept;
+		$data['transaksi']			= $this->M_univ->get_transaksi($kodept);
 
 		$data['CI']					= $this;
 
 		$data['module'] 			= "univ";
 		$data['fileview'] 			= "profil";
-		echo Modules::run('template/frontend_user', $data);
+		echo Modules::run('template/backend_main', $data);
 	}
 
 	public function notifikasi(){
@@ -109,71 +111,6 @@ class Univ extends MX_Controller {
 		echo Modules::run('template/frontend_user', $data);
 	}
 
-	public function kegiatan(){
-		$this->load->library('pagination');
-
-		$config['base_url'] 				= base_url().'univ/kegiatan';
-		$config['total_rows'] 				= $this->M_univ->count_kegiatanDiikuti($this->session->userdata("kode_user"));
-		$config['per_page'] 				= 10;
-
-		$config['full_tag_open'] 			= '<nav class="d-flex justify-content-between align-items-center" aria-label="Page navigation example"><ul class="pagination pagination-sm">';
-		$config['full_tag_close'] 			= '</ul></nav>';
-
-		$config['next_link'] 				= '&raquo';
-		$config['next_tag_open'] 			= '<li class="page-item">';
-		$config['next_tag_close'] 			= '</li>';
-
-		$config['prev_link'] 				= '&laquo';
-		$config['prev_tag_open'] 			= '<li class="page-item">';
-		$config['prev_tag_close'] 			= '</li>';
-
-		$config['cur_tag_open'] 			= '<li class="page-item active"><a class="page-link" href="#">';
-		$config['cur_tag_close'] 			= '<span class="sr-only">(current)</span></a></li>';
-
-		$config['num_tag_open'] 			= '<li class="page-item">';
-		$config['num_tag_close'] 			= '</li>';
-
-		$config['attributes']				= array('class' => 'page-link');
-
-		$this->pagination->initialize($config);
-
-		$data['kegiatanDiikuti']			= $this->M_univ->kegiatanDiikuti($this->session->userdata('kode_user'), $config['per_page'], (!$this->uri->segment(3) ? 0 : $this->uri->segment(3)));
-
-		$data['module'] 		= "univ";
-		$data['fileview'] 		= "kegiatan";
-		echo Modules::run('template/frontend_user', $data);
-	}
-
-	public function data_pendaftaran(){
-		if ($this->M_univ->cek_daftarKompetisi($this->session->userdata("kode_user")) == false) {
-			$this->session->set_flashdata('error', "Anda belum melakukan pendaftaran kompetisi !!");
-			redirect($this->agent->referrer());
-		}else{
-			$data['dataPendaftaran']= $this->M_univ->get_detailDaftarKompetisi($this->session->userdata("kode_user"));
-
-			$data['CI']				= $this;
-
-			$data['module'] 		= "univ";
-			$data['fileview'] 		= "pendaftaran_detail";
-			echo Modules::run('template/frontend_user', $data);
-		}
-	}
-
-	public function detail_daftar($id){
-		if ($this->M_univ->get_detailDaftar($id) == false) {
-			$this->session->set_flashdata('error', "Terjadi kesalahan saat menampilkan data pendaftaran anda!");
-			redirect($this->agent->referrer());
-		}else{
-			$data['data-pendaftaran']	= $this->M_univ->get_detailDaftar($id);
-
-			$data['CI']				= $this;
-
-			$data['module'] 		= "univ";
-			$data['fileview'] 		= "pendaftaran_detail";
-			echo Modules::run('template/frontend_user', $data);
-		}
-	}
-
 	public function pengaturan(){
 		if ($this->M_univ->get_userDetail($this->session->userdata("kode_user")) == false) {
 			$this->session->set_flashdata('error', "Terjadi kesalahan saat menampilkan data diri anda!");
@@ -185,7 +122,7 @@ class Univ extends MX_Controller {
 
 			$data['module'] 		= "univ";
 			$data['fileview'] 		= "pengaturan";
-			echo Modules::run('template/frontend_user', $data);
+			echo Modules::run('template/backend_main', $data);
 		}
 	}
 
