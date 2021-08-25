@@ -145,15 +145,12 @@ class Authentication extends MX_Controller {
 				redirect('login');
 			}else{
 
-				$peserta = $this->General->get_auth($email);
-				$nama = $peserta->ROLE == 3 ? $this->M_auth->get_auth_univ($email)->namapt : $peserta->NAMA;
-
-// 				$peserta 	= $this->M_auth->get_auth($email);
-// 				$nama 		= $peserta->NAMA;
-// 				if($peserta->ROLE == 3){
-// 					$peserta 	= $this->M_auth->get_auth_univ($email);					
-// 					$nama 		= $peserta->namapt;
-// 				}
+				$peserta 	= $this->M_auth->get_auth($email);
+				$nama 		= $peserta->NAMA;
+				if($peserta->ROLE == 3){
+					$peserta 	= $this->M_auth->get_auth_univ($email);					
+					$nama 		= $peserta->namapt;
+				}
 
 				if(password_verify($pass, $peserta->PASSWORD)){
 					
