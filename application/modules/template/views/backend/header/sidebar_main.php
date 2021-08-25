@@ -19,6 +19,24 @@
       <!-- Content -->
       <div class="navbar-vertical-content">
         <ul class="navbar-nav navbar-nav-lg nav-tabs">
+           
+          <?php if($this->session->userdata('role') == 3):?>
+          <!-- Dashboards -->
+
+          <li class="nav-item ">
+            <a class="js-nav-tooltip-link nav-link <?= ($this->uri->segment(1) == 'universitas' ? 'active' : '') ?>" href="<?= site_url('universitas') ?>" title="Dashboard" data-placement="left">
+              <i class="tio-dashboard-vs-outlined nav-icon"></i>
+              <span class="navbar-vertical-aside-mini-mode-hidden-elements text-truncate">Dashboard</span>
+            </a>
+          </li>
+
+          <li class="nav-item ">
+            <a class="js-nav-tooltip-link nav-link <?= ($this->uri->segment(1) == 'pengaturan-universitas' ? 'active' : '') ?>" href="<?= site_url('pengaturan-universitas') ?>" title="Pengaturan Universitas" data-placement="left">
+              <i class="tio-dashboard-vs-outlined nav-icon"></i>
+              <span class="navbar-vertical-aside-mini-mode-hidden-elements text-truncate">Pengaturan Universitas</span>
+            </a>
+          </li>
+          <?php elseif($this->session->userdata('role') == 0):?>
           <!-- Dashboards -->
 
           <li class="nav-item ">
@@ -184,7 +202,7 @@
             </a>
           </li>
           <!-- End Dashboards -->
-
+          <?php endif;?>
           <li class="nav-item">
             <small class="tio-more-horizontal nav-subtitle-replacer"></small>
           </li>

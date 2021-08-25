@@ -16,32 +16,10 @@ class M_authentication extends CI_Model {
 	}
 
 	// AUTHENTICATION
-
-	public function get_auth($email){
-		$email = $this->db->escape($email);
-		$query = $this->db->query("SELECT * FROM tb_auth a LEFT JOIN tb_peserta b ON a.KODE_USER = b.KODE_USER WHERE a.EMAIL = $email");
-
-		if ($query->num_rows() > 0) {
-			return $query->row();
-		}else{
-			return false;
-		}
-	}
 	
 	public function get_auth_univ($email){
 		$email = $this->db->escape($email);
 		$query = $this->db->query("SELECT * FROM tb_auth a LEFT JOIN tb_univ b ON a.KODE_USER = b.KODE_UNIV LEFT JOIN pt p ON b.KODE_PT = p.kodept WHERE a.EMAIL = $email");
-
-		if ($query->num_rows() > 0) {
-			return $query->row();
-		}else{
-			return false;
-		}
-	}
-
-	public function get_akun($kode){
-		$kode 	= $this->db->escape($kode);
-		$query 	= $this->db->query("SELECT * FROM tb_auth a LEFT JOIN tb_peserta b ON a.KODE_USER = b.KODE_USER WHERE a.KODE_USER = $kode");
 
 		if ($query->num_rows() > 0) {
 			return $query->row();

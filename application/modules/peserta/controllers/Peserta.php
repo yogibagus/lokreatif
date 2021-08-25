@@ -4,7 +4,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 class Peserta extends MX_Controller {
 	public function __construct(){
 		parent::__construct();
-		$this->load->model('M_peserta');
+		$this->load->model(['M_peserta', 'General']);
+		$this->load->library(['Transaksi']);
+
 		if ($this->session->userdata('logged_in') == FALSE || !$this->session->userdata('logged_in')){
 			if (!empty($_SERVER['QUERY_STRING'])) {
 				$uri = uri_string() . '?' . $_SERVER['QUERY_STRING'];
@@ -148,8 +150,14 @@ class Peserta extends MX_Controller {
 			$this->session->set_flashdata('error', "Anda belum melakukan pendaftaran kompetisi !!");
 			redirect($this->agent->referrer());
 		}else{
-			$data['dataPendaftaran']= $this->M_peserta->get_detailDaftarKompetisi($this->session->userdata("kode_user"));
+			$dataPeserta 			= $this->M_peserta->get_detailDaftarKompetisi($this->session->userdata("kode_user"));
 
+			$data['dataPendaftaran']= $dataPeserta;
+			$data['statBayar']		= $this->General->cek_statBayar($dataPeserta->KODE_PENDAFTARAN);
+			$data['totBayar']		= $this->General->get_biayaDaftar($dataPeserta->JML_TIM);
+			$data['dataAnggota']	= $this->M_peserta->get_dataAnggota($dataPeserta->KODE_PENDAFTARAN);
+			$data['pts']			= $this->M_peserta->get_pts();
+			
 			$data['CI']				= $this;
 
 			$data['module'] 		= "peserta";
@@ -285,5 +293,48 @@ class Peserta extends MX_Controller {
 			redirect($this->agent->referrer());
 		}
 	}
+
+	// DATA PENDAFTARAN KOMPETISI
+
+	function update_pts(){
+
+		if ($this->M_peserta->update_pts() == TRUE) {
+			$this->session->set_flashdata('success', "Berhasil mengubah data PTS anda !!");
+			redirect($this->agent->referrer());
+		}else {
+			$this->session->set_flashdata('error', "Terjadi kesalahan saat mengubah  data PTS anda !!");
+			redirect($this->agent->referrer());
+		}
+	}
+
+	function bayar_pendaftaran(){
+
+		$KODE_PENDAFTARAN	= $this->input->post('KODE_PENDAFTARAN');
+
+		// CHECK IF HAVE PENDING TRANSACTION
+		if ($this->General->cek_sudahBayar($KODE_PENDAFTARAN) == true) {
+
+			// GET KODE_TRANS FROM DB WHEN HAVE PENDING TRANSACTION
+			$KODE_TRANS			= $this->General->get_kodeTrans($KODE_PENDAFTARAN);
+
+			// REDIRECT WHEN HAVE PENDING TRANSACTION
+			$this->session->set_flashdata('success', "Anda memiliki pembayaran yang belum diselesaikan !!");
+			redirect(site_url('payment/checkout/'.$KODE_TRANS));
+		}else{
+
+			// GENERATE KODE_TRANS
+			$KODE_TRANS			= $this->transaksi->gen_kodeTrans();
+
+			// INSERT INTO DB WHEN DONT HAVE ANY PENDING TRANSACTION
+			if ($this->M_peserta->bayar_pendaftaran($KODE_TRANS) == TRUE) {
+				$this->session->set_flashdata('success', "Harap lanjutkan proses pembayaran !!");
+				redirect(site_url('payment/checkout/'.$KODE_TRANS));
+			}else {
+				$this->session->set_flashdata('error', "Terjadi kesalahan saat melakukan proses pembayaran!!");
+				redirect($this->agent->referrer());
+			}
+		}
+	}
+
 
 }?>
