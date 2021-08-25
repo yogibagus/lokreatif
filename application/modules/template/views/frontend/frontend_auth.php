@@ -26,6 +26,7 @@
   <link rel="stylesheet" href="<?= base_url();?>assets/frontend/css/theme.minc619.css?v=1.0">
 
   <link rel="stylesheet" href="<?= base_url();?>assets/frontend/plugin/toast/toast.style.css?<?= time() ?>">
+  <link rel="stylesheet" href="<?= base_url();?>assets/frontend/plugin/tom-select/tom-select.bootstrap5.min.css">
 
 
   <!-- JS Implementing Plugins -->
@@ -162,6 +163,14 @@ $(document).on('ready', function () {
 <!-- IE Support -->
 <script>
   if (/MSIE \d|Trident.*rv:/.test(navigator.userAgent)) document.write('<script src="<?= base_url();?>assets/frontend/vendor/babel-polyfill/dist/polyfill.js"><\/script>');
+</script>
+<script src="<?= base_url();?>assets/frontend/plugin/tom-select/tom-select.complete.js"></script>
+<script>
+  (function() {
+    // INITIALIZATION OF SELECT
+    // =======================================================
+    HSCore.components.HSTomSelect.init('.js-select')
+  });
 </script>
 </body>
 </html>

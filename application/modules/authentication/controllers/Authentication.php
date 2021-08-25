@@ -87,6 +87,20 @@ class Authentication extends MX_Controller {
 		echo Modules::run('template/frontend_auth', $data);
 	}
 
+	public function daftar_univ(){
+		if ($this->input->get('email')) {
+			$this->session->set_flashdata('success', 'Untuk melanjutkan harap daftarkan diri, sesuai email invitation anda!!');
+			$data['email']	= $this->input->get('email');
+		}else{
+			$data['email']	= null;
+		}
+
+		$data['module'] 	= "authentication";
+		$data['fileview'] 	= "univ";
+		$data['pts']		= $this->M_auth->get_pts();
+		echo Modules::run('template/frontend_auth', $data);
+	}
+
 	public function recovery(){
 
 		$data['module'] 	= "authentication";
@@ -119,7 +133,7 @@ class Authentication extends MX_Controller {
 		$pass        	= htmlspecialchars($this->input->post('password'), true);
 
 		if ($this->M_auth->get_auth($email) == FALSE) {
-			$this->session->set_flashdata('error', 'Peserta tidak terdaftar !!');
+			$this->session->set_flashdata('error', 'Pengguna tidak terdaftar !!');
 			redirect('login');
 		}else{
 
@@ -130,13 +144,14 @@ class Authentication extends MX_Controller {
 				redirect('login');
 			}else{
 				$peserta = $this->M_auth->get_auth($email);
+				$nama = $peserta->ROLE == 3 ? $this->M_auth->get_auth_univ($email)->namapt : $peserta->NAMA;
 
 				if(password_verify($pass, $peserta->PASSWORD)){
-
+					
 					$sessiondata = array(
 						'kode_user'     => $peserta->KODE_USER,
 						'email'         => $peserta->EMAIL,
-						'nama'       	=> $peserta->NAMA,
+						'nama'       	=> $nama,
 						'role'       	=> $peserta->ROLE,
 						'logged_in' 	=> TRUE
 					);
@@ -254,6 +269,55 @@ class Authentication extends MX_Controller {
 
 						// SAVE LOG
     					$this->M_auth->log_aktivitas($peserta->KODE_USER, $peserta->KODE_USER, 2);
+
+    					redirect(site_url('email-verification'));
+
+    				}else {
+    					$this->session->set_flashdata('error', 'Terjadi kesalahan saat mendaftarkan diri anda !!');
+    					redirect($this->agent->referrer());
+    				}
+
+    			}else{
+    				$this->session->set_flashdata('error', 'Email telah digunakan, harap gunakan email lain !!');
+    				redirect($this->agent->referrer());
+    			}
+    		}else{
+    			$this->session->set_flashdata('error', 'Kombinasi password anda tidak cocok !!');
+    			redirect($this->agent->referrer());
+    		}
+    	}else{
+    		$this->session->set_flashdata('error', 'Email tidak valid, harap masukkan email dengan benar !!');
+    		redirect($this->agent->referrer());
+    	}
+    }
+    public function proses_daftar_univ(){
+
+    	$email        = htmlspecialchars($this->input->post('email'), true);
+    	$password     = htmlspecialchars($this->input->post('password'), true);
+    	$password_ver = htmlspecialchars($this->input->post('confirmPassword'), true);
+
+    	if (filter_var($email, FILTER_VALIDATE_EMAIL)) {
+
+    		if ($password == $password_ver) {
+
+    			if ($this->M_auth->get_auth($email) == FALSE) {
+
+    				if ($this->M_auth->register_univ() == TRUE) {
+
+    					$univ 			= $this->M_auth->get_auth_univ($email);
+
+    					$sessiondata = array(
+    						'kode_user'     => $univ->KODE_USER,
+    						'email'         => $univ->EMAIL,
+    						'nama'       	=> $univ->namapt,
+    						'role'       	=> $univ->ROLE,
+    						'logged_in' 	=> TRUE
+    					);
+
+    					$this->session->set_userdata($sessiondata);
+
+						// SAVE LOG
+    					$this->M_auth->log_aktivitas($univ->KODE_USER, $univ->KODE_USER, 2);
 
     					redirect(site_url('email-verification'));
 

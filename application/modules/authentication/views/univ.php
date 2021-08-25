@@ -1,6 +1,6 @@
 <!-- Login Form -->
 <div class="container space-2 space-lg-3">
-  <form class="js-validate w-md-75 w-lg-50 mx-md-auto" action="<?= site_url('authentication/daftar_peserta') ?>" method="post">
+  <form class="js-validate w-md-75 w-lg-50 mx-md-auto" action="<?= site_url('authentication/proses_daftar_univ') ?>" method="post">
     <?php if ($email != null) :?>
       <input type="hidden" name="KOLABOLATOR" value="true">
     <?php else:?>
@@ -15,45 +15,35 @@
 
     <!-- Form Group -->
     <div class="js-form-message form-group">
-      <label class="input-label" for="signinSrNama">Nama lengkap anda <span class="text-danger">*</span></label>
-      <input type="text" class="form-control" name="nama" id="signinSrNama" placeholder="Nama lengkap anda" aria-label="Nama lengkap anda" required data-msg="Harap masukkan nama lengkap anda.">
+      <label class="input-label" for="signinSrNama">Nama Instansi <span class="text-danger">*</span></label>
+      <div class="tom-select-custom">
+        <select name="kodept" class="js-select form-select" autocomplete="off"
+                data-hs-tom-select-options='{
+                  "placeholder": "Select user..."
+                }'>
+          <?php
+            foreach ($pts as $item) {
+              echo '
+                <option value="'.$item->kodept.'">'.$item->namapt.'</option>
+              ';
+            }
+          ?>
+        </select>
+      </div>
+      <!-- <input type="text" class="form-control" name="nama" id="signinSrNama" placeholder="Nama lengkap anda" aria-label="Nama lengkap anda" required data-msg="Harap masukkan nama lengkap anda."> -->
     </div>
     <!-- End Form Group -->
 
     <!-- Form Group -->
     <div class="js-form-message form-group">
-      <label for="listingBathrooms" class="input-label">Jenis Kelamin <span class="text-danger">*</span></label>
-      <div class="input-group input-group-up-break">
-        <!-- Custom Radio -->
-        <div class="form-control">
-          <div class="custom-control custom-radio">
-            <input type="radio" class="custom-control-input" name="jk" id="jk1" value="L" checked>
-            <label class="custom-control-label" for="jk1">Laki-laki</label>
-          </div>
-        </div>
-        <!-- End Custom Radio -->
-
-        <!-- Custom Radio -->
-        <div class="form-control">
-          <div class="custom-control custom-radio">
-            <input type="radio" class="custom-control-input" name="jk" id="jk2" value="P">
-            <label class="custom-control-label" for="jk2">Perempuan</label>
-          </div>
-        </div>
-        <!-- End Custom Radio -->
-      </div>
-    </div>
-
-    <!-- Form Group -->
-    <div class="js-form-message form-group">
-      <label class="input-label" for="signinSrEmail">Email anda <span class="text-danger">*</span></label>
+      <label class="input-label" for="signinSrEmail">Email <span class="text-danger">*</span></label>
       <input type="text" class="form-control" name="email" id="signinSrEmail" <?= ($email == null ? 'placeholder="Email anda"' : 'value="'.$email.'"');?> aria-label="Email anda" required data-msg="Harap masukkan email anda.">
     </div>
     <!-- End Form Group -->
 
     <!-- Form Group -->
     <div class="js-form-message form-group">
-      <label class="input-label" for="signinSrTelepon">Nomor telepon anda <span class="text-danger">*</span></label>
+      <label class="input-label" for="signinSrTelepon">Nomor telepon <span class="text-danger">*</span></label>
       <!-- Input Group -->
       <div class="input-group input-group-merge">
         <div class="input-group-prepend">

@@ -255,10 +255,14 @@ class M_template extends CI_Model {
 
 	}
 
-	function get_foto($kode_user){
+	function get_foto($kode_user, $role){
 		$kode_user 	= $this->db->escape($kode_user);
 
-		$query	= $this->db->query("SELECT * FROM tb_peserta WHERE KODE_USER = $kode_user");
+		if($role == "3"){
+			$query	= $this->db->query("SELECT * FROM tb_univ WHERE KODE_UNIV = $kode_user");
+		}else{
+			$query	= $this->db->query("SELECT * FROM tb_peserta WHERE KODE_USER = $kode_user");
+		}
 		return $query->row();
 
 	}

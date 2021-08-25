@@ -19,8 +19,8 @@
     <!-- Button -->
     <div class="row align-items-center mb-5">
       <div class="col-sm-6 mb-3 mb-sm-0">
-        <a class="font-size-1 font-weight-bold" href="<?= site_url('pengguna/pengaturan') ?>">
-          <i class="fas fa-angle-left fa-sm mr-1"></i> Kembali ke laman pengguna
+        <a class="font-size-1 font-weight-bold" href="<?= site_url('peserta/pengaturan') ?>">
+          <i class="fas fa-angle-left fa-sm mr-1"></i> Kembali ke laman peserta
         </a>
       </div>
 
