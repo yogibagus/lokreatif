@@ -52,7 +52,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 // UNIVERSITAS
 
 $route['universitas']         		= 'univ';
-$route['pengaturan-universitas']        = 'univ/pengaturan';
+$route['universitas/transaksi']     = 'univ/transaksi';
+$route['pengaturan-universitas']    = 'univ/pengaturan';
 // END UNIVERSITAS
 
 // LOGIN

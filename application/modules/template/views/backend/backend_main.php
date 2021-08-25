@@ -17,6 +17,7 @@
 
   <!-- Font -->
   <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600&amp;display=swap" rel="stylesheet">
+  <script src="https://code.iconify.design/2/2.0.3/iconify.min.js"></script>
 
   <!-- CSS Implementing Plugins -->
   <link rel="stylesheet" href="<?= base_url();?>assets/backend/css/vendor.min.css">
