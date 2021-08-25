@@ -23,6 +23,7 @@ class Authentication extends MX_Controller {
 	public function __construct(){
 		parent::__construct();
 		$this->load->model('M_authentication', 'M_auth');
+        $this->load->model('General');
 
 	}
 
@@ -132,7 +133,7 @@ class Authentication extends MX_Controller {
 		$email   		= htmlspecialchars($this->input->post('email', true));
 		$pass        	= htmlspecialchars($this->input->post('password'), true);
 
-		if ($this->M_auth->get_auth($email) == FALSE) {
+		if ($this->General->get_auth($email) == FALSE) {
 			$this->session->set_flashdata('error', 'Pengguna tidak terdaftar !!');
 			redirect('login');
 		}else{
@@ -143,12 +144,16 @@ class Authentication extends MX_Controller {
 				$this->session->set_flashdata('error', 'Terlalu banyak permintaan login, harap coba lagi dalam '.$time_left.'!!');
 				redirect('login');
 			}else{
-				$peserta 	= $this->M_auth->get_auth($email);
-				$nama 		= $peserta->NAMA;
-				if($peserta->ROLE == 3){
-					$peserta 	= $this->M_auth->get_auth_univ($email);					
-					$nama 		= $peserta->namapt;
-				}
+
+				$peserta = $this->General->get_auth($email);
+				$nama = $peserta->ROLE == 3 ? $this->M_auth->get_auth_univ($email)->namapt : $peserta->NAMA;
+
+// 				$peserta 	= $this->M_auth->get_auth($email);
+// 				$nama 		= $peserta->NAMA;
+// 				if($peserta->ROLE == 3){
+// 					$peserta 	= $this->M_auth->get_auth_univ($email);					
+// 					$nama 		= $peserta->namapt;
+// 				}
 
 				if(password_verify($pass, $peserta->PASSWORD)){
 					
@@ -255,11 +260,11 @@ class Authentication extends MX_Controller {
 
     		if ($password == $password_ver) {
 
-    			if ($this->M_auth->get_auth($email) == FALSE) {
+    			if ($this->General->get_auth($email) == FALSE) {
 
     				if ($this->M_auth->register_peserta() == TRUE) {
 
-    					$peserta 			= $this->M_auth->get_auth($email);
+    					$peserta 			= $this->General->get_auth($email);
 
     					$sessiondata = array(
     						'kode_user'     => $peserta->KODE_USER,
@@ -304,7 +309,7 @@ class Authentication extends MX_Controller {
 
     		if ($password == $password_ver) {
 
-    			if ($this->M_auth->get_auth($email) == FALSE) {
+    			if ($this->General->get_auth($email) == FALSE) {
 
     				if ($this->M_auth->register_univ() == TRUE) {
 
@@ -494,7 +499,7 @@ class Authentication extends MX_Controller {
     public function proses_lupa(){
     	if ($this->M_auth->cek_akun(htmlspecialchars($this->input->post("email"), TRUE)) == TRUE) {
 
-    		$user 		= $this->M_auth->get_auth(htmlspecialchars($this->input->post("email"), TRUE));
+    		$user 		= $this->General->get_auth(htmlspecialchars($this->input->post("email"), TRUE));
     		$kode_user 	= $this->db->escape($user->KODE_USER);
     		$this->db->delete("tb_token", array('KODE' => $kode_user, 'TYPE' => 2));
 
@@ -541,7 +546,7 @@ class Authentication extends MX_Controller {
 
     		if (time() - $find->DATE_CREATED < (60*60*24)) {
 
-    			$user = $this->M_auth->get_akun($find->KODE);
+    			$user = $this->General->get_akun($find->KODE);
 
     			$data['email']	= $user->EMAIL;
     			$data['token']	= $token;
@@ -565,7 +570,7 @@ class Authentication extends MX_Controller {
     public function reset_pass(){
 
     	if ($this->M_auth->cek_akun(htmlspecialchars($this->input->post("email"), TRUE)) == TRUE) {
-    		$user = $this->M_auth->get_auth(htmlspecialchars($this->input->post("email"), TRUE));
+    		$user = $this->General->get_auth(htmlspecialchars($this->input->post("email"), TRUE));
 
     		$data = array('PASSWORD' => password_hash(htmlspecialchars($this->input->post("password"), TRUE), PASSWORD_DEFAULT));
     		$this->db->where("EMAIL", htmlspecialchars($this->input->post("email"), TRUE));
