@@ -8,9 +8,9 @@
 
       <!-- Form Group -->
       <div class="row form-group">
-        <label class="col-sm-3 col-form-label input-label" for="signinSrNama">Nama lengkap anda <span class="text-danger">*</span></label>
+        <label class="col-sm-3 col-form-label input-label" for="signinSrNama">Nama instansi <span class="text-danger">*</span></label>
         <div class="col-sm-9">
-          <input type="text" class="form-control" name="nama" id="signinSrNama" value="<?= $user->NAMA ?>" aria-label="Nama lengkap anda" required data-msg="Harap masukkan nama lengkap anda.">
+          <input type="text" class="form-control" name="nama" id="signinSrNama" value="<?= $user->NAMA ?>" aria-label="Nama lengkap anda" required data-msg="Harap masukkan nama lengkap anda." disabled>
         </div>
       </div>
       <!-- End Form Group -->
@@ -23,32 +23,6 @@
         </div>
       </div>
       <!-- End Form Group -->
-
-      <!-- Form Group -->
-      <div class="row form-group">
-        <label for="listingBathrooms" class="col-sm-3 col-form-label input-label">Jenis Kelamin <span class="text-danger">*</span></label>
-        <div class="col-sm-9">
-          <div class="input-group input-group-down-break">
-            <!-- Custom Radio -->
-            <div class="form-control">
-              <div class="custom-control custom-radio">
-                <input type="radio" class="custom-control-input" name="jk" id="jk1" value="L" <?= ($user->JK == "L" ? "checked" : "") ?>>
-                <label class="custom-control-label" for="jk1">Laki-laki</label>
-              </div>
-            </div>
-            <!-- End Custom Radio -->
-
-            <!-- Custom Radio -->
-            <div class="form-control">
-              <div class="custom-control custom-radio">
-                <input type="radio" class="custom-control-input" name="jk" id="jk2" value="P" <?= ($user->JK == "P" ? "checked" : "") ?>>
-                <label class="custom-control-label" for="jk2">Perempuan</label>
-              </div>
-            </div>
-            <!-- End Custom Radio -->
-          </div>
-        </div>
-      </div>
 
       <!-- Form Group -->
       <div class="row form-group">

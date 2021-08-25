@@ -143,8 +143,12 @@ class Authentication extends MX_Controller {
 				$this->session->set_flashdata('error', 'Terlalu banyak permintaan login, harap coba lagi dalam '.$time_left.'!!');
 				redirect('login');
 			}else{
-				$peserta = $this->M_auth->get_auth($email);
-				$nama = $peserta->ROLE == 3 ? $this->M_auth->get_auth_univ($email)->namapt : $peserta->NAMA;
+				$peserta 	= $this->M_auth->get_auth($email);
+				$nama 		= $peserta->NAMA;
+				if($peserta->ROLE == 3){
+					$peserta 	= $this->M_auth->get_auth_univ($email);					
+					$nama 		= $peserta->namapt;
+				}
 
 				if(password_verify($pass, $peserta->PASSWORD)){
 					
@@ -208,8 +212,8 @@ class Authentication extends MX_Controller {
 							$this->session->set_flashdata('success', 'Hai, anda telah login. Silahkan melanjutkan aktivitas anda !!');
 							redirect($this->session->userdata('redirect'));
 						} else {
-							$this->session->set_flashdata('success', "Selamat Datang, {$peserta->NAMA}");
-							redirect(site_url('admin-univ'));
+							$this->session->set_flashdata('success', "Selamat Datang, {$nama}");
+							redirect(site_url('univ'));
 						}
 
 					}else{

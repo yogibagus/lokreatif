@@ -1,7 +1,7 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class M_peserta extends CI_Model {
+class M_univ extends CI_Model {
 	function __construct(){
 		parent::__construct();
 	}
@@ -41,6 +41,11 @@ class M_peserta extends CI_Model {
 		}
 	}
 
+	public function get_transaksi(){
+		$query = $this->db->query("SELECT * FROM tb_transaksi t JOIN pendaftaran_kompetisi pk ON t.KODE_PENDAFTARAN = pk.KODE_PENDAFTARAN JOIN bidang_lomba bl ON bl.ID_LOMBA = pk.BIDANG_LOMBA JOIN tb_peserta p ON p.KODE_USER = pk.KODE_USER");
+		return $query->result();
+	}
+
 	public function get_notifikasi($kode_user){
 		$query = $this->db->query("SELECT a.*, b.* FROM log_aktivitas a JOIN log_type b ON a.TYPE = b.ID_TYPE WHERE a.RECEIVER = '$kode_user' AND b.TYPE = 1 ORDER BY a.CREATED_AT DESC LIMIT 5");
 		if ($query->num_rows() > 0) {
@@ -60,13 +65,13 @@ class M_peserta extends CI_Model {
 			$this->db->select("NAMA");
 			if($part[0] == "USR"):
 				$this->db->where("KODE_USER", $kode);
-				$sender = $this->db->get("tb_peserta")->row()->NAMA;
+				$sender = $this->db->get("tb_univ")->row()->NAMA;
 			elseif($part[0] == "PYL"):
 				$this->db->where("KODE_PENYELENGGARA", $kode);
 				$sender = $this->db->get("tb_penyelenggara")->row()->NAMA;
 			elseif($part[0] == "JRI"):
 				$this->db->where("KODE_USER", $kode);
-				$sender = $this->db->get("tb_peserta")->row()->NAMA;
+				$sender = $this->db->get("tb_univ")->row()->NAMA;
 			else:
 				$sender = "System";
 			endif;
@@ -122,7 +127,7 @@ class M_peserta extends CI_Model {
 	public function get_userDetail($kode_user){
 		$kode_user	= $this->db->escape($kode_user);
 
-		$query			= $this->db->query("SELECT a.*, b.EMAIL, b.NONAKTIF, b.DEADLINE FROM tb_peserta a LEFT JOIN tb_auth b ON a.KODE_USER = b.KODE_USER WHERE a.KODE_USER = $kode_user");
+		$query			= $this->db->query("SELECT a.*, p.namapt AS NAMA, b.EMAIL, b.NONAKTIF, b.DEADLINE FROM tb_univ a LEFT JOIN tb_auth b ON a.KODE_UNIV = b.KODE_USER LEFT JOIN pt p ON a.KODE_PT = p.kodept WHERE a.KODE_UNIV = $kode_user");
 		if ($query->num_rows() > 0) {
 			return $query->row();
 		}else {
@@ -171,7 +176,7 @@ class M_peserta extends CI_Model {
 		);
 
 		$this->db->where('KODE_USER', $kode_user);
-		$this->db->update('tb_peserta', $data);
+		$this->db->update('tb_univ', $data);
 		return ($this->db->affected_rows() != 1) ? false : true;
 	}
 

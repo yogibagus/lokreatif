@@ -18,33 +18,37 @@
 
   <div class="row mt-4 mb-4">
     <div class="col-md-6 col-sm-12">
-      <a href="<?= site_url('daftar-kompetisi');?>" target="_blank" class="card card-frame h-100">
+      <div class="card card-frame h-100">
         <div class="card-body">
           <!-- Icon Block -->
           <div class="media d-block d-sm-flex">
-            <figure class="w-100 max-w-8rem mb-2 mb-sm-0 mr-sm-4">
-              <img class="img-fluid" src="<?= base_url();?>assets/frontend/svg/icons/icon-7.svg" alt="SVG">
-            </figure>
             <div class="media-body">
-              <h2 class="h4 <?= $daftarKompetisi > 0 ? 'text-success' : 'text-warning';?>"><?= $daftarKompetisi > 0 ? 'Telah mengikuti' : 'Belum mengikuti';?></h2>
-              <p class="font-size-1 text-body mb-0"><?= $daftarKompetisi > 0 ? 'Telah mengikuti' : 'Belum mengikuti';?> kompetisi <?= $WEB_JUDUL;?></p>
+              <h6 class="card-subtitle mb-2">Total Tim</h6>
+
+              <div class="row align-items-center gx-2">
+                <div class="col">
+                  <span class="js-counter display-4 text-dark"><?= number_format(5,0,",",".");?></span>
+                </div>
+              </div>
             </div>
           </div>
           <!-- End Icon Block -->
         </div>
-      </a>
+      </div>
     </div>
     <div class="col-md-6 col-sm-12">
       <div class="card card-frame h-100">
         <div class="card-body">
           <!-- Icon Block -->
           <div class="media d-block d-sm-flex">
-            <figure class="w-100 max-w-8rem mb-2 mb-sm-0 mr-sm-4">
-              <img class="img-fluid" src="<?= base_url();?>assets/frontend/svg/icons/icon-18.svg" alt="SVG">
-            </figure>
             <div class="media-body">
-              <h2 class="h4">Kegiatan</h2>
-              <p class="font-size-1 text-body mb-0"><?= $daftarKegiatan;?> Kegiatan <?= $CI->agent->is_mobile() ? '' : 'diikuti';?></p>
+              <h6 class="card-subtitle mb-2">Tim Lunas</h6>
+
+              <div class="row align-items-center gx-2">
+                <div class="col">
+                  <span class="js-counter display-4 text-dark"><?= number_format(5,0,",",".");?></span>
+                </div>
+              </div>
             </div>
           </div>
           <!-- End Icon Block -->
@@ -54,6 +58,57 @@
   </div>
 
   <hr class="mb-4 mt-0">
+  <div class="row mb-4">
+      <div class="col-md-12">
+        <div class="card">
+          <div class="card-header">
+            <h5 class="card-header-title">Daftar Tim</h5>
+          </div>
+          <!-- Table -->
+          <div class="card-body px-0 pb-0">
+            <div class="table-responsive datatable-custom">
+              <table id="datatable" class="table table-lg table-borderless table-thead-bordered table-nowrap table-align-middle card-table"
+              data-hs-datatables-options='{
+                "columnDefs": [{
+                  "targets": [0, 5],
+                  "orderable": false
+                }],
+                "order": [],
+                "info": {
+                  "totalQty": "#datatableWithPaginationInfoTotalQty"
+                },
+                "search": "#datatableSearch",
+                "entries": "#datatableEntries",
+                "pageLength": 15,
+                "isResponsive": false,
+                "isShowPaging": false,
+                "pagination": "datatablePagination"
+              }'>
+              <thead class="thead-light">
+                <tr>
+                  <th>
+                    <div class="custom-control custom-checkbox" style="text-align:center;">
+                        <input type="checkbox" class="custom-control-input" id="checkAll">
+                        <label class="custom-control-label" for="checkAll"></label>
+                    </div>
+                  </th>
+                  <th>Tim</th>
+                  <th>Ketua</th>
+                  <th>Bidang Lomba</th>
+                  <th>Status</th>
+                </tr>
+              </thead>
+
+              <tbody>
+                
+              </tbody>
+              </table>
+            </div>
+          </div>
+          <!-- End Table -->
+        </div>
+      </div>
+    </div>
   <div class="row mb-4">
     <div class="col-md-7">
       <div class="card">
@@ -133,7 +188,7 @@
                         <a class="d-inline-block text-dark">
                           <h6 class="text-hover-primary mb-0"><?= $key->REFERENCES ?></h6>
                         </a>
-                        <small class="d-block text-muted"><span class="text-dark"><?= $CI->M_peserta->get_sender($key->SENDER) ?></span> <?= $key->MESSAGE ?></small>
+                        <small class="d-block text-muted"><span class="text-dark"><?= $CI->M_univ->get_sender($key->SENDER) ?></span> <?= $key->MESSAGE ?></small>
                       </div>
                     </div>
                   </div>
@@ -150,7 +205,7 @@
                       <div class="modal-body">
                         <!-- Form Group -->
                         <p class="h4"><b><?= $key->REFERENCES ?></b></p>
-                        <p class="h6 text-muted"><span class="text-dark"><?= $CI->M_peserta->get_sender($key->SENDER) ?></span> <?= $key->MESSAGE ?><br> <small class="text-muted float-right pull-right mt-2"><?= $CI->time_elapsed($key->CREATED_AT) ?></small> </p>
+                        <p class="h6 text-muted"><span class="text-dark"><?= $CI->M_univ->get_sender($key->SENDER) ?></span> <?= $key->MESSAGE ?><br> <small class="text-muted float-right pull-right mt-2"><?= $CI->time_elapsed($key->CREATED_AT) ?></small> </p>
                         <hr class="mt-5">
                         <button type="button" class="btn btn-xs btn-white btn-block" data-dismiss="modal">Tutup</button>
                       </div>
