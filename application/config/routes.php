@@ -102,6 +102,8 @@ $route['notifikasi-sistem/(:num)']    	= 'admin/notifikasi';
 // PESERTA
 
 $route['peserta/data-pendaftaran'] 		= 'peserta/data_pendaftaran';
+$route['peserta/data-anggota'] 			= 'peserta/data_anggota';
+$route['peserta/berkas-kompetisi'] 		= 'peserta/berkas_kompetisi';
 
 
 // END PESERTA

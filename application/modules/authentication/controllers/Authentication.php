@@ -164,7 +164,7 @@ class Authentication extends MX_Controller {
 					$this->session->set_userdata($sessiondata);
 
 				// SAVE LOG
-					$this->M_auth->log_aktivitas($peserta->KODE_USER, $peserta->KODE_USER, 1);
+					$this->General->log_aktivitas($peserta->KODE_USER, $peserta->KODE_USER, 1);
 
 				// CEK HAK AKSES
 				// ADMIN
@@ -273,7 +273,7 @@ class Authentication extends MX_Controller {
     					$this->session->set_userdata($sessiondata);
 
 						// SAVE LOG
-    					$this->M_auth->log_aktivitas($peserta->KODE_USER, $peserta->KODE_USER, 2);
+    					$this->General->log_aktivitas($peserta->KODE_USER, $peserta->KODE_USER, 2);
 
     					redirect(site_url('email-verification'));
 
@@ -322,7 +322,7 @@ class Authentication extends MX_Controller {
     					$this->session->set_userdata($sessiondata);
 
 						// SAVE LOG
-    					$this->M_auth->log_aktivitas($univ->KODE_USER, $univ->KODE_USER, 2);
+    					$this->General->log_aktivitas($univ->KODE_USER, $univ->KODE_USER, 2);
 
     					redirect(site_url('email-verification'));
 
@@ -452,7 +452,7 @@ class Authentication extends MX_Controller {
 
 						// SAVE LOG
 						// 2. AKTIVASI AKUN
-    					$this->M_auth->log_aktivitas($this->session->userdata('kode_user'), $this->session->userdata('kode_user'), 3);
+    					$this->General->log_aktivitas($this->session->userdata('kode_user'), $this->session->userdata('kode_user'), 3);
 
     					$this->session->set_flashdata('success', 'Berhasil aktivasi akun, Selamat datang di LO Kreatif !!');
     					redirect(base_url());
@@ -578,7 +578,7 @@ class Authentication extends MX_Controller {
 
 				// SAVE LOG
 				// 3. RECOVERY PASSWORD
-    			$this->M_auth->log_aktivitas($user->KODE_USER, $user->KODE_USER, 4);
+    			$this->General->log_aktivitas($user->KODE_USER, $user->KODE_USER, 4);
     			$kode_user 	= $this->db->escape($user->KODE_USER);
     			$this->db->delete("tb_token", array('KODE' => $kode_user, 'TYPE' => 2));
 
