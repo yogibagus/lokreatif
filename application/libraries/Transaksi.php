@@ -1,22 +1,26 @@
-<?php defined('BASEPATH') OR exit('No direct script access allowed');
+<?php defined('BASEPATH') or exit('No direct script access allowed');
 
-class Transaksi{
-  public function __construct(){
-    $this->_ci = &get_instance();
-    $this->_ci->load->database();
+class Transaksi
+{
+    public function __construct()
+    {
+        $this->_ci = &get_instance();
+        $this->_ci->load->database();
     }
 
     // GENERATE KODE TRANSAKSI
 
-    function cek_kodeTransaksi($KODE_TRANS){
+    function cek_kodeTransaksi($KODE_TRANS)
+    {
         $query  = $this->_ci->db->get_where("tb_transaksi", array('KODE_TRANS' => $KODE_TRANS));
         return $query->num_rows();
     }
 
-    public function gen_kodeTrans(){
+    public function gen_kodeTrans()
+    {
         do {
-         $time           = substr(md5(time()), 0, 6);
-         $KODE_TRANS     = "TRAN_{$time}";
+            $time           = substr(md5(time()), 0, 6);
+            $KODE_TRANS     = "TRAN_{$time}";
         } while ($this->cek_kodeTransaksi($KODE_TRANS) > 0);
 
         return $KODE_TRANS;
@@ -24,19 +28,21 @@ class Transaksi{
 
     // GENERATE KODE REFUND
 
-    function cek_kodeRefund($KODE_REFUND){
+    function cek_kodeRefund($KODE_REFUND)
+    {
         $query  = $this->_ci->db->get_where("tb_refund", array('KODE_REFUND' => $KODE_REFUND));
         return $query->num_rows();
     }
 
-    public function gen_kodeRefund(){
+    public function gen_kodeRefund()
+    {
         do {
-         $time           = substr(str_shuffle(substr('abcdefghijklmnopqrstuvwxyz1234567890', 1)).md5(time()), 0, 6);
-         $KODE_REFUND     = "REFD_{$time}";
+            $time           = substr(str_shuffle(substr('abcdefghijklmnopqrstuvwxyz1234567890', 1)) . md5(time()), 0, 6);
+            $KODE_REFUND     = "REFD_{$time}";
         } while ($this->cek_kodeRefund($KODE_REFUND) > 0);
 
         return $KODE_REFUND;
     }
 
     // MORE IN THE FUTURE
-}?>
+}

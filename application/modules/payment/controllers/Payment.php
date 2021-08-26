@@ -63,8 +63,17 @@ class Payment extends MX_Controller
                 // redirect payment ewallet
                 redirect($payment->CHECKOUT_URL);
             } else {
-
+                $transaksi = $this->M_payment->get_transaksi_by_id($payment->KODE_TRANS);
+                //get user and split
+                $kode_user = explode('_', trim($transaksi->KODE_USER_BILL));
+                if ($kode_user == "UNIV") {
+                    $data['user'] = $this->M_payment->get_univ_by_id($this->kode_user);
+                } else {
+                    $data['user'] = $this->General->get_akun($this->kode_user);
+                }
+                $data['bank_tut'] = $this->M_payment->get_tutorial_payment_by_bank_name($payment->METHOD);
                 $data['payment'] = $payment;
+                $data['status'] = $this->M_payment->get_status_payment_by_stat_pay($payment->STAT_PAY);
 
                 $data['CI']                = $this;
                 $data['module']         = "payment";
@@ -117,18 +126,8 @@ class Payment extends MX_Controller
         } else {
         }
 
-        //check if the transaction has order id
-        if ($transaksi->ORDER_ID == null) {
-            // create order_id
-            $order_id = $this->create_order_id($amount, $kode_trans);
-            $data['ORDER_ID'] = $order_id;
-            $data['TOT_BAYAR'] = $amount;
-            $data['STAT_BAYAR'] = 1; // order crated
-            $insert = $this->M_payment->update_transaksi($kode_trans, $data);
-        } else {
-            // get order_id
-            $order_id = $transaksi->ORDER_ID;
-        }
+        // create order_id
+        $order_id = $this->create_order_id($amount, $kode_trans);
 
         if ($order_id != "") {
             if ($type == "EWALLET") {
@@ -142,11 +141,13 @@ class Payment extends MX_Controller
 
             $kode_pay = $this->generatepay->gen_kodePay();
             // save payment_id
-            $this->update_pay($kode_pay, $kode_trans, $method[1], $amount, $pay);
-
-            echo $order_id . "<br>";
-            echo "</br></br></br></br></br>";
-            var_dump($pay);
+            $insert_data = $this->update_pay($kode_pay, $kode_trans, $method[1], $amount, $pay);
+            if ($insert_data != false) {
+                redirect('payment/details/' . $kode_pay);
+            } else {
+                $this->session->set_flashdata('error', "Failed creating payment");
+                redirect($this->agent->referrer());
+            }
         } else {
             $this->session->set_flashdata('error', "Order ID Not Found");
             redirect($this->agent->referrer());
@@ -156,32 +157,37 @@ class Payment extends MX_Controller
     public function update_pay($kode_pay, $kode_trans, $method, $amount, $pay)
     {
         $payment_id = $pay->data->response->payment_id;
-        $get_time = $pay->data->response->expiration_time;
-        $exp_time =  date('Y-m-d H:i:s', strtotime($get_time)); // convert time
+        $utc = explode('.', trim($pay->data->response->expiration_time));
+
+        //CONVERT UTC TO LOKAL 
+        $time1 = strtotime($utc[0] . 'UTC');
+        $exp_time = date("Y-m-d H:i:s", $time1);
 
         if ($pay->data->type == "EWALLET") {
             $data_pay = [
                 'KODE_PAY' => $kode_pay,
+                'ORDER_ID' => $pay->data->response->order_id,
                 'PAYMENT_ID' => $payment_id,
                 'KODE_TRANS' => $kode_trans,
                 'TYPE' => 1,
                 'METHOD' => $method,
-                'PAID_AMOUNT' => $amount,
+                'PAID_AMOUNT' => $pay->data->response->paid_amount,
                 'CHECKOUT_URL' => $pay->data->response->checkout_url,
                 'WEB_URL' => $pay->data->response->web_url,
-                'STAT_PAY' => 1,
+                'STAT_PAY' => 2,
                 'EXP_TIME' => $exp_time,
             ];
         } elseif ($pay->data->type == "VA") {
             $data_pay = [
                 'KODE_PAY' => $kode_pay,
+                'ORDER_ID' => $pay->data->response->order_id,
                 'PAYMENT_ID' => $payment_id,
                 'KODE_TRANS' => $kode_trans,
                 'TYPE' => 2,
                 'METHOD' => $method,
                 'ACC_NUMBER' => $pay->data->response->account_number,
-                'PAID_AMOUNT' => $amount,
-                'STAT_PAY' => 1,
+                'PAID_AMOUNT' =>  $pay->data->response->paid_amount,
+                'STAT_PAY' => 2,
                 'EXP_TIME' => $exp_time,
             ];
         } else {
@@ -246,6 +252,7 @@ class Payment extends MX_Controller
         );
 
         $payload = json_encode($payload);
-        return  $this->durianpay->createOrder($payload)['data']['id'];
+        $result =  $this->durianpay->createOrder($payload);
+        return $result->data->id;
     }
 }

@@ -121,4 +121,28 @@ class M_payment extends CI_Model
             return false;
         }
     }
+
+    // get data tutorial by bank name
+    function get_tutorial_payment_by_bank_name($bank_name)
+    {
+        $bank_name   = $this->db->escape($bank_name);
+        $query = $this->db->query("SELECT * FROM tb_tutorial WHERE BANK_TUT = $bank_name");
+        if ($query->num_rows() > 0) {
+            return $query->result();
+        } else {
+            return false;
+        }
+    }
+
+    // get status payment by stat_pay
+    function get_status_payment_by_stat_pay($stat_pay)
+    {
+        $stat_pay   = $this->db->escape($stat_pay);
+        $query = $this->db->query("SELECT * FROM tb_status_payment where ID_STAT_PAY = $stat_pay");
+        if ($query->num_rows() > 0) {
+            return $query->row();
+        } else {
+            return false;
+        }
+    }
 }
