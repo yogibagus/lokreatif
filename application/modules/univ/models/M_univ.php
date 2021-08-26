@@ -43,6 +43,19 @@ class M_univ extends CI_Model {
 
 	public function get_transaksi($kodept){
 		$query = $this->db->query("
+			SELECT
+				tt2.KODE_TRANS ,
+				tt2.STAT_BAYAR ,
+				tt2.LOG_TIME 
+			FROM tb_transaksi tt2, tb_order to2 , pendaftaran_kompetisi pk
+			WHERE tt2.KODE_TRANS = to2.KODE_TRANS AND to2.KODE_PENDAFTARAN = pk.KODE_PENDAFTARAN AND pk.ASAL_PTS = $kodept AND tt2.ROLE_USER_BILL = 3
+			GROUP BY KODE_TRANS 
+		");
+		return $query->result();
+	}
+
+	public function get_transaksiDetail($kodept){
+		$query = $this->db->query("
 		SELECT 
 			pk.KODE_PENDAFTARAN ,
 			pk.KODE_USER ,
@@ -55,23 +68,43 @@ class M_univ extends CI_Model {
 			to2.BIAYA_TIM ,
 			tt.ORDER_ID ,
 			tt.TOT_BAYAR ,
+			tt.ROLE_USER_BILL,
 			tt.STAT_BAYAR 
 		FROM pendaftaran_kompetisi pk 
 			JOIN tb_peserta tp ON tp.KODE_USER = pk.KODE_USER 
 			JOIN pt ON pt.kodept = pk.ASAL_PTS
 			JOIN bidang_lomba bl ON bl.ID_BIDANG = pk.BIDANG_LOMBA 
-			LEFT JOIN tes_order to2 ON to2.KODE_PENDAFTARAN = pk.KODE_PENDAFTARAN 
-			LEFT JOIN tes_trans tt ON tt.KODE_TRANS = to2.KODE_TRANS
+			LEFT JOIN tb_order to2 ON to2.KODE_PENDAFTARAN = pk.KODE_PENDAFTARAN 
+			LEFT JOIN tb_transaksi tt ON tt.KODE_TRANS = to2.KODE_TRANS
 		WHERE pk.ASAL_PTS = $kodept
 			");
 		return $query->result();
 	}
 
-	public function insert_trans($kodeTrans){
-		$this->db->insert('tes_trans', ['KODE_TRANS' => $kodeTrans]);
+	public function get_allTim($kodept){
+		$this->db->from('pendaftaran_kompetisi');
+		$this->db->where('ASAL_PTS', $kodept);
+		return $this->db->count_all_results();
+	}
+	public function get_allTimTerbayar($kodept){
+		$query = $this->db->query("
+		SELECT COUNT(*) AS TOTAL_TIM
+		FROM pendaftaran_kompetisi pk 
+			JOIN tb_peserta tp ON tp.KODE_USER = pk.KODE_USER 
+			JOIN pt ON pt.kodept = pk.ASAL_PTS
+			JOIN bidang_lomba bl ON bl.ID_BIDANG = pk.BIDANG_LOMBA 
+			LEFT JOIN tb_order to2 ON to2.KODE_PENDAFTARAN = pk.KODE_PENDAFTARAN 
+			LEFT JOIN tb_transaksi tt ON tt.KODE_TRANS = to2.KODE_TRANS
+		WHERE pk.ASAL_PTS = $kodept AND tt.STAT_BAYAR = 1
+		");
+		return $query->row();
+	}
+
+	public function insert_trans($param){
+		$this->db->insert('tb_transaksi', $param);
 	}
 	public function insert_order($param){
-		$this->db->insert_batch('tes_order', $param);
+		$this->db->insert_batch('tb_order', $param);
 	}
 
 	// public function count_alltim

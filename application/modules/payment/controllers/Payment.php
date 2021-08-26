@@ -34,10 +34,18 @@ class Payment extends MX_Controller
             $data['total_bayar'] = $this->M_payment->get_total_bayar($transaksi->KODE_TRANS);
             $data['total_team'] = $this->M_payment->get_total_team_and_biaya($transaksi->KODE_TRANS);
             $data['dataPendaftaran'] = $this->M_peserta->get_detailDaftarKompetisi($this->session->userdata("kode_user"));
+            $data['tim']        = $this->M_payment->get_tim($transaksi->KODE_TRANS);
             $data['CI']                = $this;
             $data['module']         = "payment";
             $data['fileview']         = "checkout_page";
-            echo Modules::run('template/frontend_user', $data);
+
+            if($this->session->userdata('role') == "1"){
+                echo Modules::run('template/frontend_user', $data);
+            }else if($this->session->userdata('role') == "3"){
+                echo Modules::run('template/backend_main', $data);
+            }
+            
+            
             $this->session->set_flashdata('success', "Selesaikan pembayaran anda!");
         } else {
             echo "wrong";
