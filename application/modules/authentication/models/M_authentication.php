@@ -144,11 +144,7 @@ class M_authentication extends CI_Model {
 				'KODE_USER' 		=> $KODE_USER,
 				'NAMA'  			=> $nama,
 				'JK'  				=> $jk,
-				'HP' 				=> $hp,
-				'ALAMAT'			=> $alamat,
-				'INSTAGRAM'			=> $instagram,
-				'INSTANSI'			=> $instansi,
-				'JABATAN'			=> $jabatan
+				'HP' 				=> $hp
 			);
 
 			$this->db->insert('tb_peserta', $peserta);
