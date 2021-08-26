@@ -68,4 +68,14 @@ class M_payment extends CI_Model
             return false;
         }
     }
+
+
+    // update tb_transaksi berdasarkan kode_trans
+    function update_transaksi($kode_trans, $data)
+    {
+        $kode_trans   = $this->db->escape($kode_trans);
+        $this->db->where('KODE_TRANS', $kode_trans);
+        $this->db->update('tb_transaksi', $data);
+        return ($this->db->affected_rows() != 1) ? false : true;
+    }
 }

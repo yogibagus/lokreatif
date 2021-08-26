@@ -40,7 +40,8 @@ class Payment extends MX_Controller
             echo Modules::run('template/frontend_user', $data);
             $this->session->set_flashdata('success', "Selesaikan pembayaran anda!");
         } else {
-            echo "wrong";
+            $this->session->set_flashdata('error', "Transaction ID Not Found");
+            redirect($this->agent->referrer());
         }
     }
 
@@ -102,7 +103,7 @@ class Payment extends MX_Controller
             echo "</br></br></br></br></br>";
             var_dump($paynow);
         } else {
-            $this->session->set_flashdata('error', "Unknown Order Id");
+            $this->session->set_flashdata('error', "Order ID Not Found");
             redirect($this->agent->referrer());
         }
     }
