@@ -118,7 +118,7 @@
 		<div class="card-footer text-right">
 			<a href="<?= site_url('peserta/data-pendaftaran');?>" class="btn btn-white btn-sm">Batal</a>
 			<button type="button" class="btn btn-soft-info btn-sm" id="add">Tambah</button>
-			<button type="submit" class="btn btn-soft-primary btn-sm">Simpan data</button>
+			<button type="submit" class="btn btn-soft-primary btn-sm" id="send-button">Simpan data</button>
 		</div>
 	</form>
 </div>
@@ -145,4 +145,15 @@
 			}
 		});
 	});
+</script>
+
+<script>
+    $('form').submit(function(event) {
+        $('#send-button').prop("disabled", true);
+        // add spinner to button
+        $('#send-button').html(
+            `<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Loading...`
+        );
+        return;
+    });
 </script>

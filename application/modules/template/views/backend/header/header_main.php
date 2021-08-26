@@ -27,6 +27,7 @@
       <!-- Navbar -->
       <ul class="navbar-nav align-items-center flex-row">
 
+      <?php if ($this->session->userdata('role') == 0) :?>
       <li class="nav-item d-none d-sm-inline-block">
         <!-- Notification -->
         <div class="hs-unfold">
@@ -109,7 +110,6 @@
         </div>
         <!-- End Notification -->
       </li>
-
       <li class="nav-item d-none d-sm-inline-block">
         <!-- Apps -->
         <div class="hs-unfold">
@@ -172,7 +172,7 @@
         </div>
         <!-- Activity -->
       </li>
-
+      <?php endif;?>
       <li class="nav-item">
         <!-- Account -->
         <div class="hs-unfold">
@@ -210,10 +210,15 @@
 
             <div class="dropdown-divider"></div>
 
-            <a class="dropdown-item" href="<?= site_url('pengaturan-admin'); ?>">
-              <span class="text-truncate pr-2" title="Pengaturan">Pengaturan</span>
-            </a>
-
+            <?php if ($this->session->userdata('role') == 0) :?>
+              <a class="dropdown-item" href="<?= site_url('pengaturan-admin'); ?>">
+                <span class="text-truncate pr-2" title="Pengaturan">Pengaturan</span>
+              </a>
+            <?php elseif ($this->session->userdata('role') == 3) :?>
+              <a class="dropdown-item" href="<?= site_url('pengaturan-universitas'); ?>">
+                <span class="text-truncate pr-2" title="Pengaturan">Pengaturan</span>
+              </a>
+            <?php endif;?>
             <div class="dropdown-divider"></div>
 
             <a class="dropdown-item" href="<?= site_url('logout'); ?>">
