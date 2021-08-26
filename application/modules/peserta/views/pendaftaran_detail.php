@@ -48,12 +48,6 @@
 				<div class="border-bottom mb-4">
 					<label class="input-label">Status berkas keperluan <i class="far fa-question-circle text-body ml-1" data-container="body" data-toggle="popover" data-placement="top" data-trigger="hover" title="Keterangan" data-content="Keterangan mengenai, status semua berkas keperluan anda"></i></label>
 					<div class="media align-items-center mb-3">
-						<span class="d-block font-size-1 mr-3">Pembayaran biaya pendaftaran</span>
-						<div class="media-body text-right">
-							<span class="badge badge-success">lengkap</span>
-						</div>
-					</div>
-					<div class="media align-items-center mb-3">
 						<span class="d-block font-size-1 mr-3">Data PTS</span>
 						<div class="media-body text-right">
 							<?php if ($dataPendaftaran->ASAL_PTS == null || $dataPendaftaran->ALAMAT_PTS == null || $dataPendaftaran->ALAMAT_PTS == null):?>
@@ -73,6 +67,16 @@
 							<span class="d-block font-size-1 mr-3">Berkas TIM</span>
 							<div class="media-body text-right">
 								<span class="badge badge-secondary">belum lengkap</span>
+							</div>
+						</div>
+						<div class="media align-items-center mb-3">
+							<span class="d-block font-size-1 mr-3">Pembayaran biaya pendaftaran</span>
+							<div class="media-body text-right">
+								<?php if ($statBayar == false) :?>
+									<span class="badge badge-secondary">belum lengkap</span>
+								<?php else:?>
+									<span class="badge badge-success">lengkap</span>
+								<?php endif;?>
 							</div>
 						</div>
 						<div class="media align-items-center mb-3">

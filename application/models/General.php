@@ -3,7 +3,7 @@
 class General extends CI_Model {
 
     // STATUS PENDAFTARAN KOMPETISI
-    function cek_pendaftaranStatus(){
+    public function cek_pendaftaranStatus(){
         $query  = $this->db->get_where("tb_pengaturan", array('KEY' => 'STATUS_PENDAFTARAN'));
         if ($query->row()->VALUE == 1) {
             return true;
@@ -41,13 +41,9 @@ class General extends CI_Model {
     // TRANSAKSI
 
     // - biaya daftar tim (KIRIM PARAM, jumlah tim dari pts X)
-    function get_biayaDaftar($jml_pts){
-        $this->db->select('a.DESKRIPSI');
-        $this->db->from('tb_pengaturan a');
-        $this->db->where(array('a.VALUE <=' => $jml_pts, 'a.KEY' => 'BIAYA_DAFTAR'));
-        $this->db->order_by('a.DESKRIPSI', 'ASC');
-        $this->db->limit(1);
-        return $this->db->get()->row()->DESKRIPSI;
+    public function get_biayaDaftar($jml_pts){
+        $query = $this->db->query("SELECT a.DESKRIPSI FROM tb_pengaturan a WHERE a.VALUE <= {$jml_pts} AND a.KEY = 'BIAYA_DAFTAR' ORDER BY a.DESKRIPSI ASC LIMIT 1");
+        return $query->row()->DESKRIPSI;
     }
 
     // - cek sudah melakukan proses PEMBAYARAN
