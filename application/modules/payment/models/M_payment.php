@@ -39,7 +39,8 @@ class M_payment extends CI_Model
         }
     }
 
-    function get_tim($param){
+    function get_tim($param)
+    {
         $query = $this->db->query("
             SELECT pk.NAMA_TIM 
             FROM tb_transaksi tt , tb_order to2 , pendaftaran_kompetisi pk 
@@ -82,9 +83,30 @@ class M_payment extends CI_Model
     // update tb_transaksi berdasarkan kode_trans
     function update_transaksi($kode_trans, $data)
     {
-        $kode_trans   = $this->db->escape($kode_trans);
         $this->db->where('KODE_TRANS', $kode_trans);
         $this->db->update('tb_transaksi', $data);
         return ($this->db->affected_rows() != 1) ? false : true;
+    }
+
+    // insert or update payment value
+    function update_pay($payment_id, $data)
+    {
+        $payment_id   = $this->db->escape($payment_id);
+        if ($payment_id == '') {
+            // new insert
+            $this->db->insert('tb_payment', $data);
+            return ($this->db->affected_rows()) ? true : false;
+        } else {
+            // update
+            $query = $this->db->query("SELECT * FROM tb_payment WHERE PAYMENT_ID = $payment_id");
+            if ($query->num_rows() == 0) {
+                $this->db->insert('tb_payment', $data);
+                return ($this->db->affected_rows()) ? true : false;
+            } else {
+                $this->db->where('PAYMENT_ID', $payment_id);
+                $this->db->update('tb_payment', $data);
+                return ($this->db->affected_rows()) ? true : false;
+            }
+        }
     }
 }

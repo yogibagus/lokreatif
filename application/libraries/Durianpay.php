@@ -7,7 +7,7 @@ class Durianpay
     public function __construct()
     {
         $this->endpoint = "https://api.durianpay.id/v1";
-        $this->apikey = base64_encode("dp_test_iBEK8Umf7x3zb91w:");
+        $this->apikey = base64_encode("dp_live_4SHCqxnY2Yn517EK:");
         // dp_live_4SHCqxnY2Yn517EK
         // dp_test_iBEK8Umf7x3zb91w
     }
@@ -35,7 +35,7 @@ class Durianpay
         $err = curl_error($curl);
 
         curl_close($curl);
-        $data = json_decode($response, true);
+        $data = json_decode($response, false);
         return $data;
     }
 
