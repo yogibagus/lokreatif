@@ -153,12 +153,14 @@ class Peserta extends MX_Controller {
 			$dataPeserta 			= $this->M_peserta->get_detailDaftarKompetisi($this->session->userdata("kode_user"));
 
 			$data['dataPendaftaran']= $dataPeserta;
+			$data['dibayarinUniv']	= $this->General->cek_dibayarinUniv($dataPeserta->KODE_PENDAFTARAN, $this->session->userdata("kode_user"));
 			$data['sudahBayar']		= $this->General->cek_sudahBayar($dataPeserta->KODE_PENDAFTARAN);
 			$data['statBayar']		= $this->General->cek_statBayar($dataPeserta->KODE_PENDAFTARAN);
 			$data['totBayar']		= $this->General->get_biayaDaftar($dataPeserta->JML_TIM);
 			$data['dataAnggota']	= $this->General->get_dataAnggota($dataPeserta->KODE_PENDAFTARAN);
 			$data['dataKetua']		= $this->General->get_dataKetua($dataPeserta->KODE_PENDAFTARAN);
 			$data['dataDospem']		= $this->General->get_dataDospem($dataPeserta->KODE_PENDAFTARAN);
+			$data['cekBerkas']		= $this->General->cek_kelengkapanBerkas($dataPeserta->KODE_PENDAFTARAN);
 			$data['pts']			= $this->M_peserta->get_pts();
 			
 			$data['CI']				= $this;
@@ -413,6 +415,101 @@ class Peserta extends MX_Controller {
 				redirect($this->agent->referrer());
 			}
 		}
+	}
+
+	function update_berkas(){
+
+		// STATIC FORM DEFAULT
+		$KODE_PENDAFTARAN	= $this->input->post('KODE_PENDAFTARAN');
+		$NAMA_TIM			= $this->input->post('NAMA_TIM');
+
+		// DYNAMIC FORM SECONDARY
+		$ID_FORM			= $this->input->post('ID_FORM', true);
+		$ID_FORM_FILE		= $this->input->post('ID_FORM_FILE', true);
+		$TYPE				= $this->input->post('TYPE', true);
+		$JAWABAN			= $this->input->post('JAWABAN');
+		$FILE_SIZE			= $this->input->post('FILE_SIZE', true);
+		$FILE_TYPE			= $this->input->post('FILE_TYPE', true);
+
+		$daftar = array(
+			// 'BIDANG_LOMBA' 		=> $BIDANG_LOMBA,
+			'NAMA_TIM' 			=> $NAMA_TIM,
+		);
+
+		$this->M_peserta->update_berkas($daftar, $KODE_PENDAFTARAN);
+
+		$prosesJawaban = false;
+
+		$cpt = count($_FILES['JAWABAN']['name']);
+		for($j=0; $j<$cpt; $j++) {
+			if (!empty($_FILES['JAWABAN']['name'])) {
+				      // CREATE FILENAME
+
+				$files = $_FILES['JAWABAN'];
+
+				echo var_dump($_FILES['JAWABAN']['name'][$j]);
+
+				$_FILES['BERKAS[]']['name']		= $files['name'][$j];
+				$_FILES['BERKAS[]']['type']		= $files['type'][$j];
+				$_FILES['BERKAS[]']['tmp_name']	= $files['tmp_name'][$j];
+				$_FILES['BERKAS[]']['error']	= $files['error'][$j];
+				$_FILES['BERKAS[]']['size']		= $files['size'][$j];
+
+				$time   	= time();
+				$KODE_USER  = $this->session->userdata('kode_user');
+
+				$folder   	= "berkas/pendaftaran/kompetisi/lokreatif/{$KODE_USER}/";
+
+				if (!is_dir($folder)) {
+					mkdir($folder, 0755, true);
+				}
+
+				$config['upload_path']          = $folder;
+				$config['allowed_types']        = '*';
+				$config['max_size']             = 1000000;
+				$config['overwrite']            = true;
+
+				$this->load->library('upload', $config);
+				if ($this->upload->do_upload('BERKAS[]')) {
+					$upload_data 	= $this->upload->data();
+
+					$data = array(
+						'JAWABAN' 			=> $upload_data['file_name']
+					);
+					if ($this->M_peserta->update_jawaban($KODE_PENDAFTARAN, $ID_FORM_FILE[$j], $data) == false) {
+						break;
+							// echo "a";
+						$this->session->set_flashdata('error', "Terjadi kesalahan saat mengubah jawaban anda !!");
+						redirect($this->agent->referrer());
+					}else{
+						$prosesJawaban = true;
+					}
+				}else{
+					break;
+						// echo "b";
+					$this->session->set_flashdata('error', "Terjadi kesalahan saat mengubah berkas anda !!");
+					redirect($this->agent->referrer());
+				}
+			}
+		}
+		foreach ($ID_FORM as $i => $a) {
+			if ($TYPE[$i] != "FILE") {
+				$data = array(
+					'JAWABAN' 			=> isset($JAWABAN[$i]) ? $JAWABAN[$i] : null
+				);
+				$this->M_peserta->update_jawaban($KODE_PENDAFTARAN, $ID_FORM[$i], $data);
+				$prosesJawaban = true;
+			}
+
+		}
+		if ($prosesJawaban == true) {
+			$this->session->set_flashdata('success', "Berhasil mengubah data berkas anda !!");
+			redirect(site_url('peserta/data-pendaftaran'));
+		}else{
+			$this->session->set_flashdata('error', "Terjadi kesalahan saat mengubah jawaban anda !!");
+			redirect($this->agent->referrer());
+		}
+
 	}
 
 

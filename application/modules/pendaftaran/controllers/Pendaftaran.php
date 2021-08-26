@@ -11,11 +11,11 @@ class Pendaftaran extends MX_Controller {
 	public function daftar($kode){
 		$tabel	= 'pendaftaran_kegiatan';
 
-		if ($this->M_daftar->get_kegiatan($kode) != false) {
-			if ($this->M_daftar->get_formMeta($kode) != false) {
+		if ($this->General->get_kegiatan($kode) != false) {
+			if ($this->General->get_formMeta($kode) != false) {
 				if ($this->M_daftar->cek_dataPeserta($kode, $this->session->userdata('kode_user'), $tabel) == false) {
-					$data['kegiatan']		= $this->M_daftar->get_kegiatan($kode);
-					$data['formulir']		= $this->M_daftar->get_formMeta($kode);
+					$data['kegiatan']		= $this->General->get_kegiatan($kode);
+					$data['formulir']		= $this->General->get_formMeta($kode);
 					$data['KODE_KEGIATAN']	= $kode;
 
 					$data['CI']			= $this;

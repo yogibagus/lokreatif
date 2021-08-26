@@ -371,4 +371,16 @@ class M_peserta extends CI_Model {
 			return false;
 		}
 	}
+
+	function update_berkas($data, $KODE_PENDAFTARAN){
+		$this->db->where('KODE_PENDAFTARAN', $KODE_PENDAFTARAN);
+		$this->db->update('pendaftaran_kompetisi', $data);
+		return ($this->db->affected_rows() != 1) ? false : true;
+	}
+
+	function update_jawaban($KODE_PENDAFTARAN, $ID_FORM, $data){
+		$this->db->where(array('KODE_PENDAFTARAN' => $KODE_PENDAFTARAN, 'ID_FORM' => $ID_FORM));
+		$this->db->update('pendaftaran_data', $data);
+		return ($this->db->affected_rows() != 1) ? false : true;
+	}
 }

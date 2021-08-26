@@ -78,6 +78,16 @@ class General extends CI_Model {
         }
     }
 
+    // get data pendaftara by kode_pendaftaran and id_form
+    public function get_formData($kode, $id){
+        $query = $this->db->get_where("pendaftaran_data", array('KODE_PENDAFTARAN' => $kode, 'ID_FORM' => $id));
+        if ($query->num_rows() > 0) {
+            return $query->row()->JAWABAN;
+        }else{
+            return false;
+        }
+    }
+
     // DATA PESERTA
 
     // - get data peserta by email
@@ -137,12 +147,35 @@ class General extends CI_Model {
         }
     }
 
+    // - cek kelengkapan data berkas peserta by kode_pendaftaran
+
+    public function cek_kelengkapanBerkas($kode){
+        $query = $this->db->query("SELECT ID_FORM FROM form_meta WHERE KODE = 'lokreatif' AND ID_FORM NOT IN (SELECT ID_FORM FROM pendaftaran_data WHERE KODE_PENDAFTARAN = '$kode' AND JAWABAN != '')");
+        if ($query->num_rows() > 0) {
+            return false;
+        }else{
+            return true;
+        }
+    }
+
     // TRANSAKSI
 
     // - biaya daftar tim (KIRIM PARAM, jumlah tim dari pts X)
     public function get_biayaDaftar($jml_pts){
         $query = $this->db->query("SELECT a.DESKRIPSI FROM tb_pengaturan a WHERE a.VALUE <= {$jml_pts} AND a.KEY = 'BIAYA_DAFTAR' ORDER BY a.DESKRIPSI ASC LIMIT 1");
         return $query->row()->DESKRIPSI;
+    }
+
+    // - cek status PEMBAYARAN sudah dibayar oleh univ?
+    public function cek_dibayarinUniv($kode, $payer){
+        $query = $this->db->query("SELECT * FROM tb_order WHERE KODE_PENDAFTARAN = '$kode' AND KODE_TRANS IN (SELECT KODE_TRANS FROM tb_transaksi WHERE KODE_USER_BILL != '$payer' AND ROLE_USER_BILL = 3)");
+        if ($query->num_rows() > 0) {
+            // sudah dibayari universitas
+            return true;
+        }else{
+            // belum dibayari universitas
+            return false;
+        }
     }
 
     // - cek sudah melakukan proses PEMBAYARAN
@@ -156,7 +189,6 @@ class General extends CI_Model {
             return false;
         }
     }
-
 
     // - cek status PEMBAYARAN
     public function cek_statBayar($kode){

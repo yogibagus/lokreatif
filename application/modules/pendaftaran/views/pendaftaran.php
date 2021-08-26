@@ -126,7 +126,7 @@
 				<div class="card card-frame card-body mb-4">
 					<label class="input-label"><?= $key->PERTANYAAN;?> <?php if($key->REQUIRED == true):?><span class="text-danger">*</span><?php endif;?></label>
 
-					<select class="js-select2-custom custom-select custom-select-sm custom-select-flush" size="1" name="JAWABAN[]"
+					<select class="js-select2-custom custom-select custom-select-sm custom-select-flush" name="JAWABAN[]" size="1" name="JAWABAN[]"
 							data-hs-select2-options='{
 							"minimumResultsForSearch": "Infinity"
 						}'>
@@ -147,8 +147,19 @@
 			<?php endif;?>
 			<?php $no++; endforeach;?>
 
-			<button class="btn btn-sm btn-primary float-right">Kirim formulir</button>
+			<button class="btn btn-sm btn-primary float-right" id="send-button">Kirim formulir</button>
 			<small class="text-muted">Jangan pernah mengirimkan sandi melalui Formulir.</small>
 		</form>
 	</div>
 </div>
+
+<script>
+    $('form').submit(function(event) {
+        $('#send-button').prop("disabled", true);
+        // add spinner to button
+        $('#send-button').html(
+            `<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Loading...`
+        );
+        return;
+    });
+</script>

@@ -18,7 +18,7 @@
 
   <div class="row mt-4 mb-4">
     <div class="col-md-6 col-sm-12">
-      <a href="<?= site_url(($daftarKompetisi > 0 ? 'peserta/data-pendaftaran' : 'daftar-kompetisi'));?>" <?= site_url(($daftarKompetisi > 0 ? '' : 'target="_blank"'));?> class="card card-frame h-100">
+      <a href="<?= site_url(($daftarKompetisi > 0 ? 'peserta/data-pendaftaran' : 'daftar-kompetisi'));?>" <?= ($daftarKompetisi > 0 ? '' : 'target="_blank"');?> class="card card-frame h-100">
         <div class="card-body">
           <!-- Icon Block -->
           <div class="media d-block d-sm-flex">
@@ -35,7 +35,7 @@
       </a>
     </div>
     <div class="col-md-6 col-sm-12">
-      <div class="card card-frame h-100">
+      <a href="<?= site_url('peserta/kegiatan');?>" class="card card-frame h-100">
         <div class="card-body">
           <!-- Icon Block -->
           <div class="media d-block d-sm-flex">
@@ -49,7 +49,7 @@
           </div>
           <!-- End Icon Block -->
         </div>
-      </div>
+      </a>
     </div>
   </div>
 
