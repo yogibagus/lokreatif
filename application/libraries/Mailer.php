@@ -30,7 +30,6 @@ class Mailer{
     
     $mail->SMTPDebug  = FALSE;
     $mail->SMTPAuth   = TRUE;
-    $mail->SMTPKeepAlive = TRUE;
     $mail->SMTPSecure = "ssl";
     $mail->Port       = 465;
     $mail->Host       = $this->get_data("EM_HOST");

@@ -68,13 +68,13 @@
 				<div class="card card-frame card-body mb-4">
 					<label class="input-label"><?= $key->PERTANYAAN;?> <?php if($key->REQUIRED == true):?><span class="text-danger">*</span><?php endif;?></label>
 
-					<?php if ($CI->M_daftar->get_formItem($key->ID_FORM) == false) :?>
+					<?php if ($CI->General->get_formItem($key->ID_FORM) == false) :?>
 						<p class="text-danger"><i>Belum ada item pilihan</i></p>
 					<?php else: ?>
 						<!-- Input Group -->
 						<div class="input-group input-group-down-break" style="max-width: 18rem;">
 
-							<?php $radio = 1; foreach ($CI->M_daftar->get_formItem($key->ID_FORM) as $item) :?>					<!-- Custom Radio -->
+							<?php $radio = 1; foreach ($CI->General->get_formItem($key->ID_FORM) as $item) :?>					<!-- Custom Radio -->
 							  	<div class="form-control form-control-sm">
 								    <div class="custom-control custom-radio">
 								      	<input type="radio" class="custom-control-input" name="JAWABAN[]" id="radioItem<?= $item->ID_FORM;?><?= $radio;?>" value="<?= $item->ITEM;?>" <?= $radio == 1 ? 'checked' : '';?>>
@@ -99,10 +99,10 @@
 				<div class="card card-frame card-body mb-4">
 					<label class="input-label"><?= $key->PERTANYAAN;?> <?php if($key->REQUIRED == true):?><span class="text-danger">*</span><?php endif;?></label>
 
-					<?php if ($CI->M_daftar->get_formItem($key->ID_FORM) == false) :?>
+					<?php if ($CI->General->get_formItem($key->ID_FORM) == false) :?>
 						<p class="text-danger"><i>Belum ada item pilihan</i></p>
 					<?php else: ?>
-						<?php $check = 1; foreach ($CI->M_daftar->get_formItem($key->ID_FORM) as $item) :?>
+						<?php $check = 1; foreach ($CI->General->get_formItem($key->ID_FORM) as $item) :?>
 							<div class="form-group">
 							  <!-- Checkbox -->
 							  <div class="custom-control custom-checkbox">
@@ -130,10 +130,10 @@
 							data-hs-select2-options='{
 							"minimumResultsForSearch": "Infinity"
 						}'>
-						<?php if ($CI->M_daftar->get_formItem($key->ID_FORM) == false) :?>
+						<?php if ($CI->General->get_formItem($key->ID_FORM) == false) :?>
 							<option value="null">Tidak ada pilihan</option>
 						<?php else: ?>
-							<?php foreach ($CI->M_daftar->get_formItem($key->ID_FORM) as $item) :?>
+							<?php foreach ($CI->General->get_formItem($key->ID_FORM) as $item) :?>
 								<option value="<?= $item->ITEM;?>"><?= $item->ITEM;?></option>
 							<?php endforeach;?>
 						<?php endif;?>

@@ -9,33 +9,24 @@ class M_peserta extends CI_Model {
 	// DATA PENDAFTARAN KOMPETISI & get biaya daftar
 
 	function get_biayaDaftar($jml_pts){
-		$this->db->select('a.DESKRIPSI');
-		$this->db->from('tb_pengaturan a');
-		$this->db->where(array('a.VALUE <=' => $jml_pts, 'a.KEY' => 'BIAYA_DAFTAR'));
-		$this->db->order_by('a.DESKRIPSI', 'ASC');
+		$this->db->select("a.DESKRIPSI");
+		$this->db->from("tb_pengaturan a");
+		$this->db->where(array("a.VALUE <=" => $jml_pts, "a.KEY" => "BIAYA_DAFTAR"));
+		$this->db->order_by("a.DESKRIPSI", "ASC");
 		$this->db->limit(1);
 		return $this->db->get()->row()->DESKRIPSI;
 	}
 
 	function get_detailDaftarKompetisi($id){
-		$this->db->select('a.*, b.*, c.namapt, (SELECT COUNT(*) FROM pendaftaran_kompetisi WHERE ASAL_PTS = a.ASAL_PTS) as JML_TIM');
-		$this->db->from('pendaftaran_kompetisi a');
-		$this->db->join('bidang_lomba b', 'a.BIDANG_LOMBA = b.ID_BIDANG');
-		$this->db->join('pt c', 'a.ASAL_PTS = c.kodept');
-		$this->db->where('a.KODE_USER', $id);
+		$this->db->select("a.*, b.*, c.namapt, (SELECT COUNT(*) FROM pendaftaran_kompetisi WHERE ASAL_PTS = a.ASAL_PTS AND KODE_PENDAFTARAN IN (SELECT KODE_PENDAFTARAN FROM tb_order)) as JML_TIM");
+		$this->db->from("pendaftaran_kompetisi a");
+		$this->db->join("bidang_lomba b", "a.BIDANG_LOMBA = b.ID_BIDANG");
+		$this->db->join("pt c", "a.ASAL_PTS = c.kodept");
+		$this->db->where("a.KODE_USER", $id);
 		$query = $this->db->get();
 		if ($query->num_rows() > 0) {
 			return $query->row();
 		}else {
-			return false;
-		}
-	}
-
-	function get_dataAnggota($kode){
-		$query = $this->db->get_where('tb_anggota', array('KODE_PENDAFTARAN' => $kode));
-		if ($query->num_rows() > 0) {
-			return $query->result();
-		}else{
 			return false;
 		}
 	}
@@ -270,6 +261,71 @@ class M_peserta extends CI_Model {
 
 	}
 
+	function set_anggota(){
+
+		$KODE_PENDAFTARAN	= $this->input->post('KODE_PENDAFTARAN');
+
+		$this->db->where('KODE_PENDAFTARAN', $KODE_PENDAFTARAN);
+		$this->db->delete('tb_anggota');
+
+		// KETUA
+		$NAMA_KETUA			= $this->input->post('NAMA_KETUA');
+		$NIM_KETUA			= $this->input->post('NIM_KETUA');
+		$EMAIL_KETUA		= $this->input->post('EMAIL_KETUA');
+
+		$ketua = array(
+			'KODE_PENDAFTARAN'  => $KODE_PENDAFTARAN,
+			'NAMA'  			=> $NAMA_KETUA,
+			'NIM'  				=> $NIM_KETUA,
+			'EMAIL'  			=> $EMAIL_KETUA,
+			'PERAN'				=> 1
+		);
+
+		$this->db->insert('tb_anggota', $ketua);
+
+		// ANGGOTA
+		$NAMA_ANGGOTA 		= $this->input->post('NAMA_ANGGOTA', true);
+		$NIM_ANGGOTA 		= $this->input->post('NIM_ANGGOTA', true);
+		$EMAIL_ANGGOTA 		= $this->input->post('EMAIL_ANGGOTA', true);
+
+		foreach ($NAMA_ANGGOTA as $i => $a) {
+			$anggota = array(
+				'KODE_PENDAFTARAN' 	=> $KODE_PENDAFTARAN,
+				'NAMA' 				=> isset($NAMA_ANGGOTA[$i]) ? $NAMA_ANGGOTA[$i] : '',
+				'NIM'				=> isset($NIM_ANGGOTA[$i]) ? $NIM_ANGGOTA[$i] : '',
+				'EMAIL'				=> isset($EMAIL_ANGGOTA[$i]) ? $EMAIL_ANGGOTA[$i] : '',
+				'PERAN'				=> 3
+			);
+			if ((($this->db->affected_rows() != 1) ? false : true) == false) {
+				break;
+				return false;
+			}
+			$this->db->insert('tb_anggota', $anggota);
+		}
+
+		// DOSPEM
+		$NAMA_DOSPEM		= $this->input->post('NAMA_DOSPEM');
+		$NIM_DOSPEM			= $this->input->post('NIM_DOSPEM');
+		$EMAIL_DOSPEM		= $this->input->post('EMAIL_DOSPEM');
+
+		$dospem = array(
+			'KODE_PENDAFTARAN'  => $KODE_PENDAFTARAN,
+			'NAMA'  			=> $NAMA_DOSPEM,
+			'NIM'  				=> $NIM_DOSPEM,
+			'EMAIL'  			=> $EMAIL_DOSPEM,
+			'PERAN'				=> 2
+		);
+		$this->db->insert('tb_anggota', $dospem);
+		return ($this->db->affected_rows() != 1) ? false : true;
+	}
+
+	function hapus_anggota($id){
+
+		$this->db->where('ID_ANGGOTA', $id);
+		$this->db->delete('tb_anggota');
+		return ($this->db->affected_rows() != 1) ? false : true;
+	}
+
 	function update_pts(){
 
 		$KODE_PENDAFTARAN	= $this->input->post('KODE_PENDAFTARAN');
@@ -291,7 +347,16 @@ class M_peserta extends CI_Model {
 	function bayar_pendaftaran($KODE_TRANS){
 		$KODE_PENDAFTARAN	= $this->input->post('KODE_PENDAFTARAN');
 		$BIAYA_TIM 			= $this->input->post('BIAYA_TIM');
-		$this->db->insert('tb_transaksi', array('KODE_TRANS' => $KODE_TRANS));
+		$KODE_USER_BILL 	= $this->session->userdata('kode_user');
+		$ROLE_USER_BILL 	= $this->session->userdata('role');
+
+		$transaksi = array(
+			'KODE_TRANS' 		=> $KODE_TRANS,
+			'KODE_USER_BILL' 	=> $KODE_USER_BILL,
+			'ROLE_USER_BILL' 	=> $ROLE_USER_BILL,
+		);
+
+		$this->db->insert('tb_transaksi', $transaksi);
 
 		if ((($this->db->affected_rows() != 1) ? false : true) == true) {
 			$order = array(
