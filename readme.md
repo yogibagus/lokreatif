@@ -43,7 +43,7 @@ This project repository has [a great wiki](https://github.com/bijancot/lokreatif
 
 Here's a brief high-level overview of the Codeigninter and APi Payment Gateway that in uses:
 
-- This project uses the [Codeigninter 3.x framework](https://codeginiter.com/) with HMVC modular library, along for payment gateway use [Durianpay framework](https://durianpay.id/).
+- This project uses the [Codeigninter 3.x framework](https://codeigniter.com/userguide3/index.html) with HMVC modular library, along for payment gateway use [Durianpay framework](https://durianpay.id/).
 
 # 🌟 Spread the word!
 
