@@ -91,22 +91,34 @@ class M_payment extends CI_Model
     // insert or update payment value
     function update_pay($payment_id, $data)
     {
-        $payment_id   = $this->db->escape($payment_id);
+        // $payment_id   = $this->db->escape($payment_id);
         if ($payment_id == '') {
             // new insert
             $this->db->insert('tb_payment', $data);
-            return ($this->db->affected_rows()) ? true : false;
+            return ($this->db->affected_rows() != 1) ? false : true;
         } else {
             // update
-            $query = $this->db->query("SELECT * FROM tb_payment WHERE PAYMENT_ID = $payment_id");
+            $query = $this->db->query("SELECT * FROM tb_payment WHERE PAYMENT_ID = '$payment_id'");
             if ($query->num_rows() == 0) {
                 $this->db->insert('tb_payment', $data);
-                return ($this->db->affected_rows()) ? true : false;
+                return ($this->db->affected_rows() != 1) ? false : true;
             } else {
                 $this->db->where('PAYMENT_ID', $payment_id);
                 $this->db->update('tb_payment', $data);
-                return ($this->db->affected_rows()) ? true : false;
+                return ($this->db->affected_rows() != 1) ? true : false;
             }
+        }
+    }
+
+    // get transaksi berdasarkan KODE_PAY
+    function get_payment_by_id($kode_pay)
+    {
+        $kode_pay   = $this->db->escape($kode_pay);
+        $query = $this->db->query("SELECT * FROM tb_payment WHERE KODE_PAY = $kode_pay");
+        if ($query->num_rows() > 0) {
+            return $query->row();
+        } else {
+            return false;
         }
     }
 }
