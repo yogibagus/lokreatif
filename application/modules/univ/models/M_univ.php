@@ -95,7 +95,7 @@ class M_univ extends CI_Model {
 			JOIN bidang_lomba bl ON bl.ID_BIDANG = pk.BIDANG_LOMBA 
 			LEFT JOIN tb_order to2 ON to2.KODE_PENDAFTARAN = pk.KODE_PENDAFTARAN 
 			LEFT JOIN tb_transaksi tt ON tt.KODE_TRANS = to2.KODE_TRANS
-		WHERE pk.ASAL_PTS = $kodept AND tt.STAT_BAYAR = 1
+		WHERE pk.ASAL_PTS = $kodept AND tt.STAT_BAYAR = 3
 		");
 		return $query->row();
 	}
