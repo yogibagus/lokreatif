@@ -41,15 +41,42 @@ class Payment extends MX_Controller
             $data['fileview']         = "checkout_page";
 
             if ($this->role == "1") {
-                echo Modules::run('template/frontend_user', $data);
+                echo Modules::run('template/frontend_auth', $data);
             } else if ($this->role == "3") {
-                echo Modules::run('template/backend_main', $data);
+                echo Modules::run('template/frontend_auth', $data);
             }
 
 
             $this->session->set_flashdata('success', "Selesaikan pembayaran anda!");
         } else {
             $this->session->set_flashdata('error', "Transaction ID Not Found");
+            redirect($this->agent->referrer());
+        }
+    }
+
+    //param kode_pay
+    public function details($param = "")
+    {
+        $payment = $this->M_payment->get_payment_by_id($param);
+        if ($payment != false) {
+            if ($payment->CHECKOUT_URL != null || $payment->CHECKOUT_URL != "") {
+                // redirect payment ewallet
+                redirect($payment->CHECKOUT_URL);
+            } else {
+
+                $data['payment'] = $payment;
+
+                $data['CI']                = $this;
+                $data['module']         = "payment";
+                $data['fileview']         = "payment_details";
+                if ($this->role == "1") {
+                    echo Modules::run('template/frontend_auth', $data);
+                } else if ($this->role == "3") {
+                    echo Modules::run('template/frontend_auth', $data);
+                }
+            }
+        } else {
+            $this->session->set_flashdata('error', "Payment not found");
             redirect($this->agent->referrer());
         }
     }
@@ -98,11 +125,6 @@ class Payment extends MX_Controller
             $data['TOT_BAYAR'] = $amount;
             $data['STAT_BAYAR'] = 1; // order crated
             $insert = $this->M_payment->update_transaksi($kode_trans, $data);
-            if ($insert == true) {
-                echo "true";
-            } else {
-                echo "false";
-            }
         } else {
             // get order_id
             $order_id = $transaksi->ORDER_ID;
@@ -120,7 +142,7 @@ class Payment extends MX_Controller
 
             $kode_pay = $this->generatepay->gen_kodePay();
             // save payment_id
-            $this->update_pay($kode_pay, $order_id, $pay);
+            $this->update_pay($kode_pay, $kode_trans, $method[1], $amount, $pay);
 
             echo $order_id . "<br>";
             echo "</br></br></br></br></br>";
@@ -131,31 +153,36 @@ class Payment extends MX_Controller
         }
     }
 
-    public function update_pay($kode_pay, $order_id, $pay)
+    public function update_pay($kode_pay, $kode_trans, $method, $amount, $pay)
     {
         $payment_id = $pay->data->response->payment_id;
-        $amount = (int)$pay->data->response->paid_amount;
+        $get_time = $pay->data->response->expiration_time;
+        $exp_time =  date('Y-m-d H:i:s', strtotime($get_time)); // convert time
+
         if ($pay->data->type == "EWALLET") {
             $data_pay = [
                 'KODE_PAY' => $kode_pay,
                 'PAYMENT_ID' => $payment_id,
-                'ORDER_ID' => $order_id,
+                'KODE_TRANS' => $kode_trans,
                 'TYPE' => 1,
+                'METHOD' => $method,
                 'PAID_AMOUNT' => $amount,
                 'CHECKOUT_URL' => $pay->data->response->checkout_url,
+                'WEB_URL' => $pay->data->response->web_url,
                 'STAT_PAY' => 1,
-                'EXP_TIME' => $pay->data->response->expiration_time,
+                'EXP_TIME' => $exp_time,
             ];
         } elseif ($pay->data->type == "VA") {
             $data_pay = [
                 'KODE_PAY' => $kode_pay,
                 'PAYMENT_ID' => $payment_id,
-                'ORDER_ID' => $order_id,
+                'KODE_TRANS' => $kode_trans,
                 'TYPE' => 2,
+                'METHOD' => $method,
                 'ACC_NUMBER' => $pay->data->response->account_number,
                 'PAID_AMOUNT' => $amount,
                 'STAT_PAY' => 1,
-                'EXP_TIME' => $pay->data->response->expiration_time,
+                'EXP_TIME' => $exp_time,
             ];
         } else {
             // type should 3
@@ -163,6 +190,7 @@ class Payment extends MX_Controller
         }
         return $this->M_payment->update_pay($payment_id, $data_pay);
     }
+
 
     public function create_order_id($amount, $kode_trans)
     {
