@@ -22,5 +22,21 @@ class Transaksi{
         return $KODE_TRANS;
     }
 
+    // GENERATE KODE REFUND
+
+    function cek_kodeRefund($KODE_REFUND){
+        $query  = $this->_ci->db->get_where("tb_refund", array('KODE_REFUND' => $KODE_REFUND));
+        return $query->num_rows();
+    }
+
+    public function gen_kodeTrans(){
+        do {
+         $time           = substr(md5(time()), 0, 6);
+         $KODE_REFUND     = "REFD_{$time}";
+        } while ($this->cek_kodeRefund($KODE_REFUND) > 0);
+
+        return $KODE_REFUND;
+    }
+
     // MORE IN THE FUTURE
 }?>
