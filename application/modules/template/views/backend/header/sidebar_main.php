@@ -32,14 +32,14 @@
           
           <li class="nav-item ">
             <a class="js-nav-tooltip-link nav-link <?= ($this->uri->segment(1) == 'transaksi-universitas' ? 'active' : '') ?>" href="<?= site_url('transaksi-universitas') ?>" title="Transaksi" data-placement="left">
-              <i class="tio-dashboard-vs-outlined nav-icon"></i>
+              <i class="tio-receipt_outlined nav-icon"></i>
               <span class="navbar-vertical-aside-mini-mode-hidden-elements text-truncate">Transaksi</span>
             </a>
           </li>
 
           <li class="nav-item ">
             <a class="js-nav-tooltip-link nav-link <?= ($this->uri->segment(1) == 'pengaturan-universitas' ? 'active' : '') ?>" href="<?= site_url('pengaturan-universitas') ?>" title="Pengaturan Universitas" data-placement="left">
-              <i class="tio-dashboard-vs-outlined nav-icon"></i>
+              <i class="tio-settings_outlined nav-icon"></i>
               <span class="navbar-vertical-aside-mini-mode-hidden-elements text-truncate">Pengaturan Universitas</span>
             </a>
           </li>

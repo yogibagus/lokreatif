@@ -188,6 +188,10 @@ $route['hire-us']       	= 'utilities/hireus';
 $route['privacy-policy']  	= 'utilities/privacy';
 $route['term-of-service'] 	= 'utilities/term';
 
+// CRON JOB
+$route['cronjob/cek-refund'] = 'Cronjob/cek_refund';
+// END CRON JOB
+
 // END UTIL
 
 // DEFAULT ROUTEs

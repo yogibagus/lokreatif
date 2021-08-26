@@ -1,6 +1,6 @@
-  <div class="row mt-4 mb-4">
-    <div class="col-md-6 col-sm-12">
-      <div class="card card-frame h-100">
+<div class="row gx-2 gx-lg-3">
+  <div class="col-sm-6 col-lg-3 mb-3 mb-lg-5">
+    <div class="card card-frame h-100">
         <div class="card-body">
           <!-- Icon Block -->
           <div class="media d-block d-sm-flex">
@@ -17,28 +17,27 @@
           <!-- End Icon Block -->
         </div>
       </div>
-    </div>
-    <div class="col-md-6 col-sm-12">
-      <div class="card card-frame h-100">
-        <div class="card-body">
-          <!-- Icon Block -->
-          <div class="media d-block d-sm-flex">
-            <div class="media-body">
-              <h6 class="card-subtitle mb-2">Tim Terbayar</h6>
+  </div>
+  <div class="col-sm-6 col-lg-3 mb-3 mb-lg-5">
+    <div class="card card-frame h-100">
+      <div class="card-body">
+        <!-- Icon Block -->
+        <div class="media d-block d-sm-flex">
+          <div class="media-body">
+            <h6 class="card-subtitle mb-2">Tim Terbayar</h6>
 
-              <div class="row align-items-center gx-2">
-                <div class="col">
-                  <span class="js-counter display-4 text-dark"><?= number_format($allTimTerbayar,0,",",".");?></span>
-                </div>
+            <div class="row align-items-center gx-2">
+              <div class="col">
+                <span class="js-counter display-4 text-dark"><?= number_format($allTimTerbayar,0,",",".");?></span>
               </div>
             </div>
           </div>
-          <!-- End Icon Block -->
         </div>
+        <!-- End Icon Block -->
       </div>
     </div>
   </div>
-
+</div>
   <hr class="mb-4 mt-0">
   <div class="row mb-4">
       <div class="col-md-12">
@@ -47,10 +46,10 @@
             <h5 class="card-header-title">Daftar Tim</h5>
             <div>
                 <button class="btn btn-sm btn-block btn-success mb-2" id="bayarMultiple" data-toggle="modal" data-target="#mdlBayarMulti" disabled>
-                  <i class="fas fa-credit-card fa-sm mr-2"></i> Bayar
+                  <i class="tio-credit_card_outlined "></i> Bayar
                 </button>
+              </div>
             </div>
-          </div>
           <!-- Table -->
           <div class="card-body px-0 pb-0">
             <div class="table-responsive datatable-custom">
@@ -94,10 +93,12 @@
                     
                     if($item->STAT_BAYAR == null){
                       $status   = '<span class="badge bg-success text-white">Baru</span>';
-                    }else if($item->STAT_BAYAR == "0"){
-                      $status = '<span class="badge bg-warning text-white">Tertunda</span>';
-                    }else if($item->STAT_BAYAR == "1"){
+                    }else if($item->STAT_BAYAR == "1" || $item->STAT_BAYAR == "2"){
+                      $status = '<span class="badge bg-warning text-white">Proses bayar</span>';
+                    }else if($item->STAT_BAYAR == "3"){
                       $status = '<span class="badge bg-primary text-white">Terbayar</span>';
+                    }else if($item->STAT_BAYAR == "4"){
+                      $status = '<span class="badge bg-danger text-white">Gagal</span>';
                     }
                     
                     if($item->ROLE_USER_BILL == null){
