@@ -29,7 +29,7 @@ class Transaksi{
         return $query->num_rows();
     }
 
-    public function gen_kodeTrans(){
+    public function gen_kodeRefund(){
         do {
          $time           = substr(md5(time()), 0, 6);
          $KODE_REFUND     = "REFD_{$time}";
