@@ -20,13 +20,13 @@
             <div class="card-body">
                 <h5>Nama Team</h5>
                 <div class="d-md-flex">
-                    <div class="overflow-auto p-3 mb-3 mb-md-0 bg-light" style="max-height: 130px; width:100%">
+                    <div class="overflow-auto p-3 mb-3 mb-md-0 bg-light rounded " style="max-height: 130px; width:100%">
                         <?php
-                            foreach ($tim as $item) {
-                                echo '
-                                    <h5>'.$item->NAMA_TIM.'</h5><br>
+                        foreach ($tim as $item) {
+                            echo '
+                                    <h5><li>' . $item->NAMA_TIM . '</li></h5><br>
                                 ';
-                            }
+                        }
                         ?>
                     </div>
                 </div>
@@ -41,18 +41,16 @@
             <div class="card-body">
                 <div class="mb-4">
                     <h5>Subtotal</h5>
-
                     <ul class="list-unstyled">
                         <div class="d-flex justify-content-between">
                             <li><?= $total_team->total_team ?> Team x Rp <?= number_format($total_team->biaya, 0, ',', '.') ?></li>
                             <li>Rp <?= number_format($total_bayar->total_bayar, 0, ',', '.') ?></li>
                         </div>
                         <div class="d-flex justify-content-between">
-                            <li>Fee <i class="fa fa-question-circle" aria-hidden="true"></i></li>
+                            <li>Fee <i class="fa fa-question-circle" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="Fee 1.5% E-Wallet dan +4000 Virtual Account"></i></li>
                             <li>Rp <span id="fee">0</span></li>
                         </div>
                     </ul>
-
                 </div>
                 <hr>
                 <div class="mb-4 list-unstyled">
@@ -152,7 +150,7 @@
                             </div>
                             <input type="number" class="form-control" oninput="requiredAlertMobile()" name="mobile" id="mobile" value="" required>
                         </div>
-                        <small class="text-muted" id="required-alert">*) Harap masukan Nomor E-Wallet anda pada form diatas.</small>
+                        <small class="text-muted" id="required-alert-wallet">*) Harap masukan Nomor E-Wallet anda pada form diatas.</small>
                         <!-- End Input Group -->
                     </div>
 
@@ -206,7 +204,7 @@
                         <div class="input-group">
                             <input type="text" class="form-control" oninput="requiredAlertName()" name="name" id="name-card-holder" placeholder="Nama yang tercantum pada ATM" value="">
                         </div>
-                        <small class="text-muted required-alert" id="">*) Harap masukan Nama yang tercantum pada ATM .</small>
+                        <small class="text-muted" id="required-alert-va">*) Harap masukan Nama yang tercantum pada ATM .</small>
                         <!-- End Input Group -->
                     </div>
 
@@ -225,28 +223,48 @@
 
 <script>
     function requiredAlertMobile() {
-        $(".required-alert").hide();
+        $("#required-alert-wallet").hide();
         if ($('#mobile').val() == "") {
-            $(".required-alert").show();
+            $("#required-alert-wallet").show();
         }
     }
 
     function requiredAlertName() {
-        $(".required-alert").hide();
+        $("#required-alert-va").hide();
         if ($('#name').val() == "") {
-            $(".required-alert").show();
+            $("#required-alert-va").show();
         }
     }
 </script>
 
 <script>
-    $('form').submit(function(event) {
-        $('#pay-button').prop("disabled", true);
-        // add spinner to button
-        $('#pay-button').html(
-            `<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Loading...`
-        );
-        return;
+    $(document).ready(function() {
+        $('form').submit(function(event) {
+            var method = $('input[name=method]:checked').val();
+            var arr = method.split("_");
+            if (arr[0] == "EWALLET") {
+                var mobile = $("#mobile").val();
+                // number format lenght
+                if (mobile.length >= 9 && mobile.length <= 14) {
+                    $('#pay-button').prop("disabled", true);
+                    // add spinner to button
+                    $('#pay-button').html(
+                        `<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Loading...`
+                    );
+                    return;
+                }
+                alert("Wrong format number.");
+            } else {
+                $('#pay-button').prop("disabled", true);
+                // add spinner to button
+                $('#pay-button').html(
+                    `<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Loading...`
+                );
+                return;
+            }
+
+            event.preventDefault();
+        });
     });
 </script>
 
@@ -278,7 +296,7 @@
             $('#mobile').prop('required', true);
             $('#name-card-holder').prop('required', false);
             // change method text
-            $('.text-method').text(arr[1] + "Number:");
+            $('.text-method').text(arr[1] + " Number:");
 
             // set fee
             var amount = Math.ceil(100 / 98.5 * parseInt(<?= $total_bayar->total_bayar ?>));
