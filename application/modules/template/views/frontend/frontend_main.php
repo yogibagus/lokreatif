@@ -117,6 +117,23 @@
   }).init();
 
 
+  // INITIALIZATION OF ADD INPUT FILED
+  // =======================================================
+  $('.js-add-field').each(function () {
+    new HSAddField($(this), {
+      addedField: function() {
+        $('.js-add-field .js-custom-select-dynamic').each(function () {
+          var select2Dynamic = $.HSCore.components.HSSelect2.init($(this));
+        });
+
+        $('.js-add-field .js-quill-dynamic').each(function () {
+          var quillDynamic = $.HSCore.components.HSQuill.init(this);
+        });
+      }
+    }).init();
+  });
+
+
   // INITIALIZATION OF UNFOLD
   // =======================================================
   var unfold = new HSUnfold('.js-hs-unfold-invoker').init();

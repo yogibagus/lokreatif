@@ -20,10 +20,14 @@
             <div class="card-body">
                 <h5>Nama Team</h5>
                 <div class="d-md-flex">
-                    <div class="overflow-auto p-3 mb-3 mb-md-0 mr-md-3 bg-light" style="max-height: 130px; width:100%">
-                        <h5>Namateam1</h5><br>
-                        <h5>Namateam2</h5><br>
-                        <h5>Namateam3</h5><br>
+                    <div class="overflow-auto p-3 mb-3 mb-md-0 bg-light" style="max-height: 130px; width:100%">
+                        <?php
+                            foreach ($tim as $item) {
+                                echo '
+                                    <h5>'.$item->NAMA_TIM.'</h5><br>
+                                ';
+                            }
+                        ?>
                     </div>
                 </div>
             </div>

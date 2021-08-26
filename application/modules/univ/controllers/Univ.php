@@ -62,12 +62,12 @@ class Univ extends MX_Controller {
 
 	public function index(){
 		$data['notifikasi']			= $this->M_univ->get_notifikasi($this->session->userdata("kode_user"));
-		$data['kegiatan']			= $this->M_univ->get_kegiatanAll();
-		$data['daftarKompetisi']	= $this->M_univ->cek_daftarKompetisi($this->session->userdata("kode_user"));
-		$data['daftarKegiatan']		= $this->M_univ->count_pesertaKegiatan($this->session->userdata("kode_user"));
 
 		$kodept						= $this->M_univ->get_kodept($this->session->userdata("kode_user"))->kodept;
 		$data['transaksi']			= $this->M_univ->get_transaksi($kodept);
+		$data['transaksiDetail']	= $this->M_univ->get_transaksiDetail($kodept);
+		$data['allTim']				= $this->M_univ->get_allTim($kodept);
+		$data['allTimTerbayar']		= $this->M_univ->get_allTimTerbayar($kodept)->TOTAL_TIM;
 
 		$data['CI']					= $this;
 
@@ -77,21 +77,39 @@ class Univ extends MX_Controller {
 	}
 
 	public function transaksi(){
+		$data['notifikasi']			= $this->M_univ->get_notifikasi($this->session->userdata("kode_user"));
+
+		$kodept						= $this->M_univ->get_kodept($this->session->userdata("kode_user"))->kodept;
+		$data['transaksi']			= $this->M_univ->get_transaksi($kodept);
+
+		$data['CI']					= $this;
+
+		$data['module'] 			= "univ";
+		$data['fileview'] 			= "transaksi";
+		echo Modules::run('template/backend_main', $data);
+	}
+
+	public function order(){
 		$kodePendaftaran	= explode(',', $_POST['KODE_PENDAFTARAN']);
+		$totTim				= $_POST['TOTAL_TIM'];
 		$kodeTrans			= $this->transaksi->gen_kodeTrans();
 		$dataStoreOrd		= array();
 
+		$dataStoreTrans['KODE_TRANS'] 		= $kodeTrans;
+		$dataStoreTrans['KODE_USER_BILL'] 	= $this->session->userdata('kode_user');
+		$dataStoreTrans['ROLE_USER_BILL'] 	= $this->session->userdata('role');
+		
 		foreach ($kodePendaftaran as $item) {
 			$temp['KODE_TRANS'] 		= $kodeTrans;
 			$temp['KODE_PENDAFTARAN']	= $item;
-			$temp['BIAYA_TIM']			= 0;
+			$temp['BIAYA_TIM']			= $this->General->get_biayaDaftar($totTim);
 			array_push($dataStoreOrd, $temp);
 		}
-
-		$this->M_univ->insert_trans($kodeTrans);
+		
+		$this->M_univ->insert_trans($dataStoreTrans);
 		$this->M_univ->insert_order($dataStoreOrd);
 
-		redirect('universitas');
+		redirect('payment/checkout/'.$kodeTrans);
 	}
 
 	public function notifikasi(){

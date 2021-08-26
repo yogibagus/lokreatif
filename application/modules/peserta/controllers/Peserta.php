@@ -153,9 +153,12 @@ class Peserta extends MX_Controller {
 			$dataPeserta 			= $this->M_peserta->get_detailDaftarKompetisi($this->session->userdata("kode_user"));
 
 			$data['dataPendaftaran']= $dataPeserta;
+			$data['sudahBayar']		= $this->General->cek_sudahBayar($dataPeserta->KODE_PENDAFTARAN);
 			$data['statBayar']		= $this->General->cek_statBayar($dataPeserta->KODE_PENDAFTARAN);
 			$data['totBayar']		= $this->General->get_biayaDaftar($dataPeserta->JML_TIM);
-			$data['dataAnggota']	= $this->M_peserta->get_dataAnggota($dataPeserta->KODE_PENDAFTARAN);
+			$data['dataAnggota']	= $this->General->get_dataAnggota($dataPeserta->KODE_PENDAFTARAN);
+			$data['dataKetua']		= $this->General->get_dataKetua($dataPeserta->KODE_PENDAFTARAN);
+			$data['dataDospem']		= $this->General->get_dataDospem($dataPeserta->KODE_PENDAFTARAN);
 			$data['pts']			= $this->M_peserta->get_pts();
 			
 			$data['CI']				= $this;
@@ -163,6 +166,59 @@ class Peserta extends MX_Controller {
 			$data['module'] 		= "peserta";
 			$data['fileview'] 		= "pendaftaran_detail";
 			echo Modules::run('template/frontend_user', $data);
+		}
+	}
+
+	public function data_anggota(){
+		if ($this->M_peserta->cek_daftarKompetisi($this->session->userdata("kode_user")) == false) {
+			$this->session->set_flashdata('error', "Anda belum melakukan pendaftaran kompetisi !!");
+			redirect($this->agent->referrer());
+		}else{
+			$dataPeserta 			= $this->M_peserta->get_detailDaftarKompetisi($this->session->userdata("kode_user"));
+			$data['dataPendaftaran']= $dataPeserta;
+			$data['dataAnggota']	= $this->General->get_dataAnggota($dataPeserta->KODE_PENDAFTARAN);
+			$data['dataKetua']		= $this->General->get_dataKetua($dataPeserta->KODE_PENDAFTARAN);
+			$data['dataDospem']		= $this->General->get_dataDospem($dataPeserta->KODE_PENDAFTARAN);
+			
+			$data['CI']				= $this;
+
+			$data['module'] 		= "peserta";
+			$data['fileview'] 		= "pendaftaran_anggota";
+			echo Modules::run('template/frontend_user', $data);
+		}
+	}
+
+	public function berkas_kompetisi(){
+		$kode 	= 'lokreatif';
+		$tabel	= 'pendaftaran_kompetisi';
+		if ($this->General->cek_pendaftaranStatus() != false) {
+			if ($this->General->get_bidangLomba() != false) {
+				if ($this->General->get_formMeta($kode) != false) {
+					$dataPeserta 			= $this->M_peserta->get_detailDaftarKompetisi($this->session->userdata("kode_user"));
+					$data['dataPendaftaran']= $dataPeserta;
+					$data['kegiatan']		= $this->General->get_kegiatan($kode);
+					$data['formulir']		= $this->General->get_formMeta($kode);
+					$data['bidang_lomba']	= $this->General->get_bidangLomba();
+					$data['pts']			= $this->General->get_pts();
+
+					$data['KODE_KEGIATAN']	= $kode;
+
+					$data['CI']			= $this;
+
+					$data['module'] 	= "peserta";
+					$data['fileview'] 	= "pendaftaran_berkas";
+					echo Modules::run('template/frontend_user', $data);
+				}else{
+					$this->session->set_flashdata('error', "Mohon maaf formulir pendaftaran sedang diatur, harap tunggu beberapa saat !!");
+					redirect($this->agent->referrer());
+				}
+			}else{
+				$this->session->set_flashdata('error', "Mohon maaf bekum ada bidang lomba yang dibuka, harap tunggu beberapa saat !!");
+				redirect($this->agent->referrer());
+			}
+		}else{
+			$this->session->set_flashdata('error', "Pendaftaran belum dibuka !!");
+			redirect($this->agent->referrer());
 		}
 	}
 
@@ -296,6 +352,28 @@ class Peserta extends MX_Controller {
 
 	// DATA PENDAFTARAN KOMPETISI
 
+	function set_anggota(){
+
+		if ($this->M_peserta->set_anggota() == TRUE) {
+			$this->session->set_flashdata('success', "Berhasil mengatur data anggota !!");
+			redirect($this->agent->referrer());
+		}else {
+			$this->session->set_flashdata('error', "Terjadi kesalahan saat mengatur data anggota !!");
+			redirect($this->agent->referrer());
+		}
+	}
+
+	function hapus_anggota($id){
+
+		if ($this->M_peserta->hapus_anggota($id) == TRUE) {
+			$this->session->set_flashdata('success', "Berhasil menghapus data anggota !!");
+			redirect($this->agent->referrer());
+		}else {
+			$this->session->set_flashdata('error', "Terjadi kesalahan saat menghapus data anggota !!");
+			redirect($this->agent->referrer());
+		}
+	}
+
 	function update_pts(){
 
 		if ($this->M_peserta->update_pts() == TRUE) {
@@ -327,6 +405,7 @@ class Peserta extends MX_Controller {
 
 			// INSERT INTO DB WHEN DONT HAVE ANY PENDING TRANSACTION
 			if ($this->M_peserta->bayar_pendaftaran($KODE_TRANS) == TRUE) {
+				$this->General->log_aktivitas($this->session->userdata('kode_user'), $this->session->userdata('kode_user'), 15);
 				$this->session->set_flashdata('success', "Harap lanjutkan proses pembayaran !!");
 				redirect(site_url('payment/checkout/'.$KODE_TRANS));
 			}else {

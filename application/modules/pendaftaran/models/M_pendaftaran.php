@@ -6,45 +6,12 @@ class M_pendaftaran extends CI_Model {
 		parent::__construct();
 	}
 
-	// PENDAFTARAN KOMPETISI
-	function get_bidangLomba(){
-		$query = $this->db->get('bidang_lomba');
-		if ($query->num_rows() > 0) {
-			return $query->result();
-		}else{
-			return false;
-		}
-	}
-
-	function get_pts(){
-		$this->db->select('kodept,namapt');
-		$query  = $this->db->get('pt');
-		$result = $query->result();
-
-		foreach ($result as $row){
-			$pt[$row->kodept] = $row->kodept . '-'. $row->namapt;
-		}
-		return $pt;
-	}
-
-	// PENDAFTARAN KOMPETISI - get biaya daftar
-
 
 	// PENDAFTARAN ALL
 	function cek_pendaftaranStatus(){
 		$query 	= $this->db->get_where("tb_pengaturan", array('KEY' => 'STATUS_PENDAFTARAN'));
 		if ($query->row()->VALUE == 1) {
 			return true;
-		}else{
-			return false;
-		}
-	}
-
-	function get_kegiatan($kode){
-		$kode 	= $this->db->escape($kode);
-		$query 	= $this->db->query("SELECT JUDUL, TANGGAL FROM tb_kegiatan a WHERE KODE_KEGIATAN = $kode ");
-		if ($query->num_rows() > 0) {
-			return $query->row();
 		}else{
 			return false;
 		}
@@ -67,25 +34,6 @@ class M_pendaftaran extends CI_Model {
 		$query 	= $this->db->query("SELECT KODE_PENDAFTARAN as KODE, STATUS FROM {$tabel} WHERE KODE_USER = $kode");
 		if ($query->num_rows() > 0) {
 			return $query->row();
-		}else{
-			return false;
-		}
-	}
-	
-	function get_formMeta($kode){
-		$this->db->where('KODE', $kode);
-		$query = $this->db->get("form_meta");
-		if ($query->num_rows() > 0) {
-			return $query->result();
-		}else{
-			return false;
-		}
-	}
-
-	function get_formItem($kode){
-		$query = $this->db->get_where("form_item", array('ID_FORM' => $kode));
-		if ($query->num_rows() > 0) {
-			return $query->result();
 		}else{
 			return false;
 		}

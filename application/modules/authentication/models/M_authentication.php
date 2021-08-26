@@ -6,15 +6,6 @@ class M_authentication extends CI_Model {
 		parent::__construct();
 	}
 
-	public function log_aktivitas($KODE_USER, $SENDER, $TYPE){
-		$data = array(
-			'RECEIVER' 	 	=> $KODE_USER,
-			'SENDER' 		=> $SENDER,
-			'TYPE'	 		=> $TYPE,
-		);
-		$this->db->insert('log_aktivitas', $data);
-	}
-
 	// AUTHENTICATION
 	
 	public function get_auth_univ($email){
@@ -144,11 +135,7 @@ class M_authentication extends CI_Model {
 				'KODE_USER' 		=> $KODE_USER,
 				'NAMA'  			=> $nama,
 				'JK'  				=> $jk,
-				'HP' 				=> $hp,
-				'ALAMAT'			=> $alamat,
-				'INSTAGRAM'			=> $instagram,
-				'INSTANSI'			=> $instansi,
-				'JABATAN'			=> $jabatan
+				'HP' 				=> $hp
 			);
 
 			$this->db->insert('tb_peserta', $peserta);

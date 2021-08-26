@@ -39,6 +39,15 @@ class M_payment extends CI_Model
         }
     }
 
+    function get_tim($param){
+        $query = $this->db->query("
+            SELECT pk.NAMA_TIM 
+            FROM tb_transaksi tt , tb_order to2 , pendaftaran_kompetisi pk 
+            WHERE tt.KODE_TRANS = to2.KODE_TRANS AND to2.KODE_PENDAFTARAN = pk.KODE_PENDAFTARAN AND tt.KODE_TRANS = '$param'
+        ");
+        return $query->result();
+    }
+
     // get jumlah total bayar untuk tim yang dibayarkan by kode_trans
     function get_total_bayar($kode_trans)
     {

@@ -41,13 +41,13 @@ class Pendaftaran extends MX_Controller {
 		$kode 	= 'lokreatif';
 		$tabel	= 'pendaftaran_kompetisi';
 		if ($this->General->cek_pendaftaranStatus() != false) {
-			if ($this->M_daftar->get_bidangLomba() != false) {
-				if ($this->M_daftar->get_formMeta($kode) != false) {
+			if ($this->General->get_bidangLomba() != false) {
+				if ($this->General->get_formMeta($kode) != false) {
 					if ($this->M_daftar->cek_dataPesertaKompetisi($this->session->userdata('kode_user'), $tabel) == false) {
-						$data['kegiatan']		= $this->M_daftar->get_kegiatan($kode);
-						$data['formulir']		= $this->M_daftar->get_formMeta($kode);
-						$data['bidang_lomba']	= $this->M_daftar->get_bidangLomba();
-						$data['pts']			= $this->M_daftar->get_pts();
+						$data['kegiatan']		= $this->General->get_kegiatan($kode);
+						$data['formulir']		= $this->General->get_formMeta($kode);
+						$data['bidang_lomba']	= $this->General->get_bidangLomba();
+						$data['pts']			= $this->General->get_pts();
 
 						$data['KODE_KEGIATAN']	= $kode;
 
@@ -216,7 +216,13 @@ class Pendaftaran extends MX_Controller {
 			}
 			if ($prosesJawaban == true) {
 				$this->session->set_flashdata('success', "Berhasil mengirim data pendaftaran anda !!");
-				redirect(site_url('peserta/data-pendaftaran'));
+				if ($kegiatan == "kegiatan") {
+					$this->General->log_aktivitas($this->session->userdata('kode_user'), $this->session->userdata('kode_user'), 13);
+					redirect(site_url('peserta/kegiatan'));
+				}else{
+					$this->General->log_aktivitas($this->session->userdata('kode_user'), $this->session->userdata('kode_user'), 14);
+					redirect(site_url('peserta/data-pendaftaran'));
+				}
 			}else{
 				$this->M_daftar->delete_pendaftaran($KODE_PENDAFTARAN, $tabel);
 				$this->session->set_flashdata('error', "Terjadi kesalahan saat mengirim jawaban anda !!");

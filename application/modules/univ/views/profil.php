@@ -9,7 +9,7 @@
 
               <div class="row align-items-center gx-2">
                 <div class="col">
-                  <span class="js-counter display-4 text-dark"><?= number_format(5,0,",",".");?></span>
+                  <span class="js-counter display-4 text-dark"><?= number_format($allTim,0,",",".");?></span>
                 </div>
               </div>
             </div>
@@ -24,11 +24,11 @@
           <!-- Icon Block -->
           <div class="media d-block d-sm-flex">
             <div class="media-body">
-              <h6 class="card-subtitle mb-2">Tim Lunas</h6>
+              <h6 class="card-subtitle mb-2">Tim Terbayar</h6>
 
               <div class="row align-items-center gx-2">
                 <div class="col">
-                  <span class="js-counter display-4 text-dark"><?= number_format(5,0,",",".");?></span>
+                  <span class="js-counter display-4 text-dark"><?= number_format($allTimTerbayar,0,",",".");?></span>
                 </div>
               </div>
             </div>
@@ -47,8 +47,7 @@
             <h5 class="card-header-title">Daftar Tim</h5>
             <div>
                 <button class="btn btn-sm btn-block btn-success mb-2" id="bayarMultiple" data-toggle="modal" data-target="#mdlBayarMulti" disabled>
-                  <i class="fas fa-credit-card fa-sm mr-2"></i>
-                    Bayar
+                  <i class="fas fa-credit-card fa-sm mr-2"></i> Bayar
                 </button>
             </div>
           </div>
@@ -84,29 +83,58 @@
                   <th>Ketua</th>
                   <th>Bidang Lomba</th>
                   <th>Status</th>
+                  <th>Pembayaran</th>
                 </tr>
               </thead>
 
               <tbody>
                 <?php
                   $no = 1;
-                  foreach ($transaksi as $item) {
-                    $status = $item->STAT_BAYAR == 1 ? '<span style="color: #fff;" class="badge bg-success">Lunas</span>' : '<span style="color: #fff;" class="badge bg-secondary">Belum Lunas</span>';
+                  foreach ($transaksiDetail as $item) {
+                    
+                    if($item->STAT_BAYAR == null){
+                      $status   = '<span class="badge bg-success text-white">Baru</span>';
+                    }else if($item->STAT_BAYAR == "0"){
+                      $status = '<span class="badge bg-warning text-white">Tertunda</span>';
+                    }else if($item->STAT_BAYAR == "1"){
+                      $status = '<span class="badge bg-primary text-white">Terbayar</span>';
+                    }
+                    
+                    if($item->ROLE_USER_BILL == null){
+                      $pembayaran   = '-';
+                    }else if($item->ROLE_USER_BILL == "1"){
+                      $pembayaran = '<span class="badge bg-soft-dark text-dark">Mandiri</span>';
+                    }else if($item->ROLE_USER_BILL == "3"){
+                      $pembayaran = '<span class="badge bg-soft-info text-info">Universitas</span>';
+                    }
+
+                    if($item->STAT_BAYAR == null){
+                      $checkbox = '
+                            <div class="custom-control custom-checkbox" style="text-align:center;">
+                                <input type="checkbox" class="custom-control-input checkItem" id="chck_' . $no . '" value="' . $item->KODE_PENDAFTARAN . '">
+                                <label class="custom-control-label" for="chck_' . $no . '"></label>
+                            </div>
+                      ';
+                      $no++;
+                    }else{
+                      $checkbox = '
+                            <div class="custom-control custom-checkbox" style="text-align:center;">
+                                <input type="checkbox" class="custom-control-input" checked disabled>
+                                <label class="custom-control-label"></label>
+                            </div>
+                      ';
+                    }
+                    
                     echo '
                       <tr>
-                        <td>
-                          <div class="custom-control custom-checkbox" style="text-align:center;">
-                              <input type="checkbox" class="custom-control-input checkItem" id="chck_' . $no . '" value="' . $item->KODE_PENDAFTARAN . '">
-                              <label class="custom-control-label" for="chck_' . $no . '"></label>
-                          </div>
-                        </td>
+                        <td>'.$checkbox.'</td>
                         <td>'.$item->NAMA_TIM.'</td>
                         <td>'.$item->NAMA.'</td>
                         <td>'.$item->BIDANG_LOMBA.'</td>
                         <td>'.$status.'</td>
+                        <td>'.$pembayaran.'</td>
                       </tr>
                     ';
-                    $no++;
                   }
                 ?>
               </tbody>
@@ -135,8 +163,9 @@
 
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
-                    <form action="<?= site_url('universitas/transaksi') ?>" method="post">
+                    <form action="<?= site_url('universitas/order') ?>" method="post">
                         <input type="hidden" id="mdlBayarMulti_itemId" name="KODE_PENDAFTARAN" />
+                        <input type="hidden" id="" name="TOTAL_TIM" value="<?= $allTim?>" />
                         <button type="submit" class="btn btn-success">Bayar</button>
                     </form>
                 </div>

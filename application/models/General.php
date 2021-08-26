@@ -2,11 +2,77 @@
 
 class General extends CI_Model {
 
-    // STATUS PENDAFTARAN KOMPETISI
-    function cek_pendaftaranStatus(){
+    // save log-aktivitas
+    public function log_aktivitas($KODE_USER, $SENDER, $TYPE){
+        $data = array(
+            'RECEIVER'      => $KODE_USER,
+            'SENDER'        => $SENDER,
+            'TYPE'          => $TYPE,
+        );
+        $this->db->insert('log_aktivitas', $data);
+    }
+
+    // get status pembukaan pendaftaran kompetisi
+    public function cek_pendaftaranStatus(){
         $query  = $this->db->get_where("tb_pengaturan", array('KEY' => 'STATUS_PENDAFTARAN'));
         if ($query->row()->VALUE == 1) {
             return true;
+        }else{
+            return false;
+        }
+    }
+
+    // get daftar bidang lomba
+    public function get_bidangLomba(){
+        $query = $this->db->get('bidang_lomba');
+        if ($query->num_rows() > 0) {
+            return $query->result();
+        }else{
+            return false;
+        }
+    }
+
+    // get pts
+    public function get_pts(){
+        $this->db->select('kodept,namapt');
+        $query  = $this->db->get('pt');
+        $result = $query->result();
+
+        foreach ($result as $row){
+            $pt[$row->kodept] = $row->kodept . '-'. $row->namapt;
+        }
+        return $pt;
+    }
+
+    // PROSES PENDAFTARAN
+
+    // - get kegiatan by kode_kegiatan
+    public function get_kegiatan($kode){
+        $kode   = $this->db->escape($kode);
+        $query  = $this->db->query("SELECT JUDUL, TANGGAL FROM tb_kegiatan a WHERE KODE_KEGIATAN = $kode ");
+        if ($query->num_rows() > 0) {
+            return $query->row();
+        }else{
+            return false;
+        }
+    }
+    
+    // get form meta by kode_kegiatan
+    public function get_formMeta($kode){
+        $this->db->where('KODE', $kode);
+        $query = $this->db->get("form_meta");
+        if ($query->num_rows() > 0) {
+            return $query->result();
+        }else{
+            return false;
+        }
+    }
+
+    // get form item by kode meta
+    public function get_formItem($kode){
+        $query = $this->db->get_where("form_item", array('ID_FORM' => $kode));
+        if ($query->num_rows() > 0) {
+            return $query->result();
         }else{
             return false;
         }
@@ -38,16 +104,45 @@ class General extends CI_Model {
         }
     }
 
+    // - get data ketua by kode_pendaftaran jabatan 1
+
+    public function get_dataKetua($kode){
+        $query = $this->db->get_where('tb_anggota', array('KODE_PENDAFTARAN' => $kode, 'PERAN' => 1));
+        if ($query->num_rows() > 0) {
+            return $query->row();
+        }else{
+            return false;
+        }
+    }
+
+    // - get data dospem by kode_pendaftaran jabatan 2
+
+    public function get_dataDospem($kode){
+        $query = $this->db->get_where('tb_anggota', array('KODE_PENDAFTARAN' => $kode, 'PERAN' => 2));
+        if ($query->num_rows() > 0) {
+            return $query->row();
+        }else{
+            return false;
+        }
+    }
+
+    // - get data anggota by kode_pendaftaran jabatan 3
+
+    public function get_dataAnggota($kode){
+        $query = $this->db->get_where('tb_anggota', array('KODE_PENDAFTARAN' => $kode, 'PERAN' => 3));
+        if ($query->num_rows() > 0) {
+            return $query->result();
+        }else{
+            return false;
+        }
+    }
+
     // TRANSAKSI
 
     // - biaya daftar tim (KIRIM PARAM, jumlah tim dari pts X)
-    function get_biayaDaftar($jml_pts){
-        $this->db->select('a.DESKRIPSI');
-        $this->db->from('tb_pengaturan a');
-        $this->db->where(array('a.VALUE <=' => $jml_pts, 'a.KEY' => 'BIAYA_DAFTAR'));
-        $this->db->order_by('a.DESKRIPSI', 'ASC');
-        $this->db->limit(1);
-        return $this->db->get()->row()->DESKRIPSI;
+    public function get_biayaDaftar($jml_pts){
+        $query = $this->db->query("SELECT a.DESKRIPSI FROM tb_pengaturan a WHERE a.VALUE <= {$jml_pts} AND a.KEY = 'BIAYA_DAFTAR' ORDER BY a.DESKRIPSI ASC LIMIT 1");
+        return $query->row()->DESKRIPSI;
     }
 
     // - cek sudah melakukan proses PEMBAYARAN
@@ -67,10 +162,10 @@ class General extends CI_Model {
     public function cek_statBayar($kode){
         $query = $this->db->query("SELECT * FROM tb_order WHERE KODE_PENDAFTARAN = '$kode' AND KODE_TRANS IN (SELECT KODE_TRANS FROM tb_transaksi WHERE STAT_BAYAR = 1)");
         if ($query->num_rows() > 0) {
-            // sudah melakukan proses pembayaran
+            // sudah membayar biaya pendaftaran
             return true;
         }else{
-            // belum melakukan proses pembayaran
+            // belum membayar biaya pendaftaran
             return false;
         }
     }
