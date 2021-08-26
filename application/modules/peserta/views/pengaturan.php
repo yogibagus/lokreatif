@@ -71,7 +71,7 @@
 
       <!-- Footer -->
       <div class="card-footer d-flex justify-content-end px-0">
-        <button type="submit" class="btn btn-primary btn-sm <?= $CI->agent->is_mobile() ? 'btn-block' : '';?>">Simpan perubahan</button>
+        <button type="submit" id="send-button" class="btn btn-primary btn-sm <?= $CI->agent->is_mobile() ? 'btn-block' : '';?>">Simpan perubahan</button>
       </div>
       <!-- End Footer -->
     </form>
@@ -202,3 +202,15 @@ $('input:radio[name="jabatan"]').change(
   // Install input filters Tambah Hp Pegawai.
   setInputFilter(document.getElementById("signinSrTelepon"), function(value) { return /^\d*$/.test(value); });
   </script>
+
+
+<script>
+    $('form').submit(function(event) {
+        $('#send-button').prop("disabled", true);
+        // add spinner to button
+        $('#send-button').html(
+            `<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Loading...`
+        );
+        return;
+    });
+</script>

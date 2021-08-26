@@ -28,8 +28,18 @@
 	</div>
 </div>
 <!-- End Title -->
-<form action="<?= site_url('pendaftaran/prosesPendaftaran/kompetisi');?>" method="POST" enctype="multipart/form-data">
+<form action="<?= site_url('peserta/update_berkas');?>" method="POST" enctype="multipart/form-data">
 	<input type="hidden" name="KODE_KEGIATAN" value="lokreatif">
+	<input type="hidden" name="KODE_PENDAFTARAN" value="<?= $dataPendaftaran->KODE_PENDAFTARAN;?>">
+
+	<div class="card card-frame card-body mb-4">
+		<div class="row">
+			<div class="col-12">
+				<label class="input-label">Nama TIM<span class="text-danger">*</span></label>
+				<input type="text" name="NAMA_TIM" class="form-control form-control-sm form-control-flush" value="<?= $dataPendaftaran->NAMA_TIM;?>" required>
+			</div>
+		</div>
+	</div>
 
 	<!-- Divider -->
 	<hr class="my-0 mb-4">
@@ -43,7 +53,7 @@
 
 		<div class="card card-frame card-body mb-4">
 			<label class="input-label"><?= $key->PERTANYAAN;?> <?php if($key->REQUIRED == true):?><span class="text-danger">*</span><?php endif;?></label>
-			<input class="form-control form-control-sm form-control-flush" type="text" name="JAWABAN[]" placeholder="Jawaban anda" <?= $key->REQUIRED == true ? 'required' : '';?>>
+			<input class="form-control form-control-sm form-control-flush" type="text" name="JAWABAN[]" value="<?= $CI->General->get_formData($dataPendaftaran->KODE_PENDAFTARAN, $key->ID_FORM);?>" <?= $key->REQUIRED == true ? 'required' : '';?>>
 			<?php if (isset($key->KETERANGAN) || $key->KETERANGAN != null):?>
 				<small class="text-muted mt-2"><?= $key->KETERANGAN;?></small>
 			<?php endif;?>
@@ -55,7 +65,7 @@
 
 			<div class="card card-frame card-body mb-4">
 				<label class="input-label"><?= $key->PERTANYAAN;?> <?php if($key->REQUIRED == true):?><span class="text-danger">*</span><?php endif;?></label>
-				<textarea class="form-control form-control-sm form-control-flush" type="text" name="JAWABAN[]" placeholder="Jawaban anda" <?= $key->REQUIRED == true ? 'required' : '';?>></textarea>
+				<textarea class="form-control form-control-sm form-control-flush" type="text" name="JAWABAN[]" <?= $key->REQUIRED == true ? 'required' : '';?>><?= $CI->General->get_formData($dataPendaftaran->KODE_PENDAFTARAN, $key->ID_FORM);?></textarea>
 				<?php if (isset($key->KETERANGAN) || $key->KETERANGAN != null):?>
 					<small class="text-muted mt-2"><?= $key->KETERANGAN;?></small>
 				<?php endif;?>
@@ -71,13 +81,15 @@
 					<div>
 
 						<label class="btn btn-sm btn-primary transition-3d-hover file-attachment-btn" for="fileAttachmentBtn">
-							<span id="customFileUpload<?= $no;?>">Tambahkan file</span>
+							<span id="customFileUpload<?= $no;?>">Ubah file</span>
 							<input id="fileAttachmentBtn" name="JAWABAN[]" type="file" class="js-file-attach file-attachment-btn-label"
 							data-hs-file-attach-options='{
 							"textTarget": "#customFileUpload<?= $no;?>"
-						}' <?= $key->REQUIRED == true ? 'required' : '';?>>
+						}'>
 					</label>
+					
 				</div>
+				<a href="<?= base_url();?>berkas/pendaftaran/kompetisi/lokreatif/<?= $this->session->userdata('kode_user');?>/<?= $CI->General->get_formData($dataPendaftaran->KODE_PENDAFTARAN, $key->ID_FORM);?>" target="_blank" class="text-muted mb-0 float-right"><?= $CI->General->get_formData($dataPendaftaran->KODE_PENDAFTARAN, $key->ID_FORM);?></a>
 				<?php if (isset($key->KETERANGAN) || $key->KETERANGAN != null):?>
 					<small class="text-muted mt-2">Ukuran file <?= $key->FILE_SIZE;?> MB. <?= $key->KETERANGAN;?></small>
 				<?php endif;?>
@@ -96,7 +108,7 @@
 							<!-- Input Group -->
 							<div class="input-group input-group-down-break" style="max-width: 18rem;">
 
-								<?php $radio = 1; foreach ($CI->General->get_formItem($key->ID_FORM) as $item) :?>					<!-- Custom Radio -->
+								<?php $radio = 1; foreach ($CI->General->get_formData($key->ID_FORM) as $item) :?>					<!-- Custom Radio -->
 								<div class="form-control form-control-sm">
 									<div class="custom-control custom-radio">
 										<input type="radio" class="custom-control-input" name="JAWABAN[]" id="radioItem<?= $item->ID_FORM;?><?= $radio;?>" value="<?= $item->ITEM;?>" <?= $radio == 1 ? 'checked' : '';?>>
@@ -148,30 +160,44 @@
 								<div class="card card-frame card-body mb-4">
 									<label class="input-label"><?= $key->PERTANYAAN;?> <?php if($key->REQUIRED == true):?><span class="text-danger">*</span><?php endif;?></label>
 
-									<select class="js-custom-select custom-select form-control-sm custom-select-flush" size="1"
+									<select class="js-custom-select custom-select" name="JAWABAN[]" size="1"
 									data-hs-select2-options='{
 									"minimumResultsForSearch": "Infinity",
 									"dropdownAutoWidth": true,
 									"width": "auto"
 
 								}'>
-								<?php if ($CI->General->get_formItem($key->ID_FORM) == false) :?>
-									<option value="null">Tidak ada pilihan</option>
-									<?php else: ?>
+								<optgroup label="Selected">
+									<option value="<?= $CI->General->get_formData($dataPendaftaran->KODE_PENDAFTARAN, $key->ID_FORM);?>"><?= $CI->General->get_formData($dataPendaftaran->KODE_PENDAFTARAN, $key->ID_FORM);?></option>
+								</optgroup>
+								<optgroup label="Change">
+									<?php if ($CI->General->get_formItem($key->ID_FORM) != false) :?>
 										<?php foreach ($CI->General->get_formItem($key->ID_FORM) as $item) :?>
 											<option value="<?= $item->ITEM;?>"><?= $item->ITEM;?></option>
 										<?php endforeach;?>
 									<?php endif;?>
-								</select>
+								</optgroup>
+							</select>
 
-								<?php if (isset($key->KETERANGAN) || $key->KETERANGAN != null):?>
-									<small class="text-muted mt-2"><?= $key->KETERANGAN;?></small>
-								<?php endif;?>
-							</div>
+							<?php if (isset($key->KETERANGAN) || $key->KETERANGAN != null):?>
+								<small class="text-muted mt-2"><?= $key->KETERANGAN;?></small>
+							<?php endif;?>
+						</div>
 
-						<?php endif;?>
-						<?php $no++; endforeach;?>
+					<?php endif;?>
+					<?php $no++; endforeach;?>
 
-						<button class="btn btn-sm btn-primary float-right">Simpan data berkas</button>
-						<small class="text-muted">Jangan pernah mengirimkan sandi melalui Formulir.</small>
-					</form>
+					<button class="btn btn-sm btn-primary float-right" id="send-button">Simpan data berkas</button>
+					<small class="text-muted">Jangan pernah mengirimkan sandi melalui Formulir.</small>
+				</form>
+
+				<script>
+					$('form').submit(function(event) {
+						$('#send-button').prop("disabled", true);
+        // add spinner to button
+        $('#send-button').html(
+        	`<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Loading...`
+        	);
+        return;
+    });
+</script>

@@ -17,7 +17,7 @@
                   <div class="input-group input-group-joined">
                     <input class="form-control form-control-solid py-2 text-lg" type="text" data-inputmask="'mask': '999-999'" id="paket" name="kode_aktivasi" placeholder-aria-label="kode_aktivasi" aria-describedby="kode_aktivasi" required/>
                     <div class="input-group-append">
-                      <button type="submit" class="input-group-text bg-primary text-white text-md pointer p-2" onclick="showProgressCursor();">Verifikasi</button>
+                      <button type="submit" class="input-group-text bg-primary text-white text-md pointer p-2" id="send-button">Verifikasi</button>
                     </div>
                   </div>
                 </form>
@@ -34,4 +34,15 @@
 $(document).ready(function () {
   $(":input").inputmask();
 });
+</script>
+
+<script>
+    $('form').submit(function(event) {
+        $('#send-button').prop("disabled", true);
+        // add spinner to button
+        $('#send-button').html(
+            `<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Loading...`
+        );
+        return;
+    });
 </script>

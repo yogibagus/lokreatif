@@ -28,10 +28,22 @@
       </div>
 
       <div class="col-sm-6 text-sm-right">
-        <button type="submit" class="btn btn-primary btn-sm transition-3d-hover">Reset password</button>
+        <button type="submit" class="btn btn-primary btn-sm transition-3d-hover" id="send-button">Reset password</button>
       </div>
     </div>
     <!-- End Button -->
   </form>
 </div>
 <!-- End Login Form -->
+
+
+<script>
+    $('form').submit(function(event) {
+        $('#send-button').prop("disabled", true);
+        // add spinner to button
+        $('#send-button').html(
+            `<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Loading...`
+        );
+        return;
+    });
+</script>

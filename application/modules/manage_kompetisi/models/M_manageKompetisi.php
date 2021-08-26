@@ -452,7 +452,7 @@ class M_manageKompetisi extends CI_Model {
 
 		foreach ($PERTANYAAN as $i => $a) {
 			$data = array(
-				'KEGIATAN'      => 1, //1. KEGIATAN, 2. KOMPETISI
+				'KEGIATAN'      => 2, //1. KEGIATAN, 2. KOMPETISI
 				'KODE'          => 'lokreatif',
 				'PERTANYAAN'    => isset($PERTANYAAN[$i]) ? $PERTANYAAN[$i] : null,
 				'TYPE'          => isset($TYPE[$i]) ? $TYPE[$i] : null,
