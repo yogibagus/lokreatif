@@ -35,7 +35,15 @@
           <tbody>
             <?php
               foreach ($transaksi as $item) {
-                $status = $item->STAT_BAYAR == "0" ? '<span style="color: #fff;" class="badge bg-warning">Tertunda</span>' : '<span style="color: #fff;" class="badge bg-primary">Terbayar</span>';
+                if($item->STAT_BAYAR == null){
+                  $status   = '<span class="badge bg-success text-white">Baru</span>';
+                }else if($item->STAT_BAYAR == "1" || $item->STAT_BAYAR == "2"){
+                  $status = '<span class="badge bg-warning text-white">Proses</span>';
+                }else if($item->STAT_BAYAR == "3"){
+                  $status = '<span class="badge bg-primary text-white">Sukses</span>';
+                }else if($item->STAT_BAYAR == "4"){
+                  $status = '<span class="badge bg-danger text-white">Gagal</span>';
+                }
                 $date = date_create($item->LOG_TIME);
                 echo '
                   <tr>

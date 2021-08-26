@@ -31,7 +31,7 @@ class Transaksi{
 
     public function gen_kodeRefund(){
         do {
-         $time           = substr(md5(time()), 0, 6);
+         $time           = substr(str_shuffle(substr('abcdefghijklmnopqrstuvwxyz1234567890', 1)).md5(time()), 0, 6);
          $KODE_REFUND     = "REFD_{$time}";
         } while ($this->cek_kodeRefund($KODE_REFUND) > 0);
 
