@@ -94,10 +94,10 @@ class Authentication extends MX_Controller {
 		}else{
 			$data['email']	= null;
 		}
+        $data['pts']        = $this->M_auth->get_pts();
 
 		$data['module'] 	= "authentication";
 		$data['fileview'] 	= "univ";
-		$data['pts']		= $this->M_auth->get_pts();
 		echo Modules::run('template/frontend_auth', $data);
 	}
 

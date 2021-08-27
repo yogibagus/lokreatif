@@ -147,6 +147,12 @@ $('.js-add-field').each(function () {
   }).init();
 });
 
+  // INITIALIZATION OF SELECT2
+  // =======================================================
+  $('.js-custom-select').each(function () {
+    var select2 = $.HSCore.components.HSSelect2.init($(this));
+  });
+
 // INITIALIZATION OF QUILLJS EDITOR
 // =======================================================
 var quill = $.HSCore.components.HSQuill.init('.js-quill');
