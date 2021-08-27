@@ -122,7 +122,7 @@
 														</div>
 														<div class="col-sm-12 col-md-4">
 															<button type="button" data-toggle="modal" data-target="#data-karya" class="btn btn-sm btn-block btn-primary mb-2" 
-																<?php elseif($statBayar == false && $sudahBayar == false):?>disabled<?php endif;?>>
+																<?php if($statBayar == false && $sudahBayar == false):?>disabled<?php endif;?>>
 																<i class="fas fa-file fa-sm mr-2"></i> Upload KARYA
 															</button>
 															<a href="<?= site_url('peserta/data-anggota');?>" class="btn btn-sm btn-block btn-white mb-2" >
