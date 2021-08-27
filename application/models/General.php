@@ -207,7 +207,7 @@ class General extends CI_Model {
 
     // - cek status PEMBAYARAN
     public function cek_statBayar($kode){
-        $query = $this->db->query("SELECT * FROM tb_order WHERE KODE_PENDAFTARAN = '$kode' AND KODE_TRANS IN (SELECT KODE_TRANS FROM tb_transaksi WHERE STAT_BAYAR = 1)");
+        $query = $this->db->query("SELECT * FROM tb_order WHERE KODE_PENDAFTARAN = '$kode' AND KODE_TRANS IN (SELECT KODE_TRANS FROM tb_transaksi WHERE STAT_BAYAR = 2)");
         if ($query->num_rows() > 0) {
             // sudah membayar biaya pendaftaran
             return true;
