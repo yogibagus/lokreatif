@@ -34,7 +34,7 @@ class Payment extends MX_Controller
             $data['kode_trans'] = $transaksi->KODE_TRANS;
             $data['total_bayar'] = $this->M_payment->get_total_bayar($transaksi->KODE_TRANS);
             $data['total_team'] = $this->M_payment->get_total_team_and_biaya($transaksi->KODE_TRANS);
-            $data['dataPendaftaran'] = $this->M_peserta->get_detailDaftarKompetisi($this->session->userdata("kode_user"));
+            $data['dataPendaftaran'] = $this->General->get_detailDaftarKompetisi($this->session->userdata("kode_user"));
             $data['tim']        = $this->M_payment->get_tim($transaksi->KODE_TRANS);
             $data['CI']                = $this;
             $data['module']         = "payment";
