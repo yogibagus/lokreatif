@@ -134,21 +134,14 @@
 															<a class="btn btn-sm btn-block btn-white mb-2" href="<?= site_url('peserta/berkas-kompetisi');?>">
 																<i class="fas fa-check fa-sm mr-2"></i> Berkas
 															</a>
-															<?php if ($sudahBayar == false && $statBayar == false) :?>
-																<?php if ($dibayarinUniv == true) :?>
-																	<button type="button" class="btn btn-sm btn-block btn-success mb-2" disabled>
-																		<i class="fas fa-credit-card fa-sm mr-2"></i> Sedang diproses
-																	</button>
-																	<?php else:?>
-																		<form action="<?= site_url('peserta/bayar_pendaftaran');?>" method="POST">
-																			<input type="hidden" name="KODE_PENDAFTARAN" value="<?= $dataPendaftaran->KODE_PENDAFTARAN;?>">
-																			<input type="hidden" name="BIAYA_TIM" value="<?= $totBayar;?>">
-																			<button type="submit" class="btn btn-sm btn-block btn-success mb-2">
-																				<i class="fas fa-credit-card fa-sm mr-2"></i> <?= $sudahBayar == true && $statBayar == false ? 'Selesaikan Pembayaran' : 'Bayar';?>
-																			</button>
-																		</form>
-																	<?php endif;?>
-																<?php endif;?>
+
+															<form action="<?= site_url('peserta/bayar_pendaftaran');?>" method="POST">
+																<input type="hidden" name="KODE_PENDAFTARAN" value="<?= $dataPendaftaran->KODE_PENDAFTARAN;?>">
+																<input type="hidden" name="BIAYA_TIM" value="<?= $totBayar;?>">
+																<button type="submit" class="btn btn-sm btn-block btn-success mb-2">
+																	<i class="fas fa-credit-card fa-sm mr-2"></i> <?= $sudahBayar == true && $statBayar == false ? 'Selesaikan Pembayaran' : 'Bayar';?>
+																</button>
+															</form>
 															</div>
 														</div>
 													</div>
