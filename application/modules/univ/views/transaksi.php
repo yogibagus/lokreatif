@@ -29,6 +29,7 @@
               <th>Kode Transaksi</th>
               <th>Tanggal</th>
               <th>Status</th>
+              <th>Refund</th>
             </tr>
           </thead>
 
@@ -50,6 +51,7 @@
                     <td><a href="'.site_url('payment/checkout/'.$item->KODE_TRANS).'">'.$item->KODE_TRANS.'</a></td>
                     <td>'.date_format($date, 'd M Y').'</td>
                     <td>'.$status.'</td>
+                    <td>'.($CI->General->cek_refeundUniv($item->KODE_TRANS) == true ? '<a href="'.site_url('refund').'" class="btn btn-xs btn-success">dapat melakukan refund</a>' : '<span class="btn btn-xs btn-secondary">tidak ada refund</span>').'</td>
                   </tr>
                 ';
               }
