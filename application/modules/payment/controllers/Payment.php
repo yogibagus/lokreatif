@@ -143,6 +143,8 @@ class Payment extends MX_Controller
             // save payment_id
             $insert_data = $this->update_pay($kode_pay, $kode_trans, $method[1], $amount, $pay);
             if ($insert_data != false) {
+                $data_payment['TOT_BAYAR'] = $amount;
+                $this->M_payment->update_transaksi($kode_trans, $data_payment);
                 redirect('payment/details/' . $kode_pay);
             } else {
                 $this->session->set_flashdata('error', "Failed creating payment");
