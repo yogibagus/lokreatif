@@ -46,7 +46,7 @@
             <h5 class="card-header-title">Daftar Tim</h5>
             <div>
                 <button class="btn btn-sm btn-block btn-success mb-2" id="bayarMultiple" data-toggle="modal" data-target="#mdlBayarMulti" disabled>
-                  <i class="tio-credit_card_outlined "></i> Bayar
+                  <i class="tio-credit-card-outlined "></i> Bayar
                 </button>
               </div>
             </div>
