@@ -150,7 +150,7 @@ class Peserta extends MX_Controller {
 			$this->session->set_flashdata('error', "Anda belum melakukan pendaftaran kompetisi !!");
 			redirect($this->agent->referrer());
 		}else{
-			$dataPeserta 			= $this->M_peserta->get_detailDaftarKompetisi($this->session->userdata("kode_user"));
+			$dataPeserta 			= $this->General->get_detailDaftarKompetisi($this->session->userdata("kode_user"));
 
 			$data['dataPendaftaran']= $dataPeserta;
 			$data['dibayarinUniv']	= $this->General->cek_dibayarinUniv($dataPeserta->KODE_PENDAFTARAN, $this->session->userdata("kode_user"));
@@ -161,7 +161,7 @@ class Peserta extends MX_Controller {
 			$data['dataKetua']		= $this->General->get_dataKetua($dataPeserta->KODE_PENDAFTARAN);
 			$data['dataDospem']		= $this->General->get_dataDospem($dataPeserta->KODE_PENDAFTARAN);
 			$data['cekBerkas']		= $this->General->cek_kelengkapanBerkas($dataPeserta->KODE_PENDAFTARAN);
-			$data['pts']			= $this->M_peserta->get_pts();
+			$data['pts']			= $this->General->get_pts();
 			
 			$data['CI']				= $this;
 
@@ -176,7 +176,7 @@ class Peserta extends MX_Controller {
 			$this->session->set_flashdata('error', "Anda belum melakukan pendaftaran kompetisi !!");
 			redirect($this->agent->referrer());
 		}else{
-			$dataPeserta 			= $this->M_peserta->get_detailDaftarKompetisi($this->session->userdata("kode_user"));
+			$dataPeserta 			= $this->General->get_detailDaftarKompetisi($this->session->userdata("kode_user"));
 			$data['dataPendaftaran']= $dataPeserta;
 			$data['dataAnggota']	= $this->General->get_dataAnggota($dataPeserta->KODE_PENDAFTARAN);
 			$data['dataKetua']		= $this->General->get_dataKetua($dataPeserta->KODE_PENDAFTARAN);
@@ -196,7 +196,7 @@ class Peserta extends MX_Controller {
 		if ($this->General->cek_pendaftaranStatus() != false) {
 			if ($this->General->get_bidangLomba() != false) {
 				if ($this->General->get_formMeta($kode) != false) {
-					$dataPeserta 			= $this->M_peserta->get_detailDaftarKompetisi($this->session->userdata("kode_user"));
+					$dataPeserta 			= $this->General->get_detailDaftarKompetisi($this->session->userdata("kode_user"));
 					$data['dataPendaftaran']= $dataPeserta;
 					$data['kegiatan']		= $this->General->get_kegiatan($kode);
 					$data['formulir']		= $this->General->get_formMeta($kode);

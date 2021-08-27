@@ -145,7 +145,7 @@
               </ul>
               <!-- End List -->
 
-              <h6 class="text-cap small">Kegiatan</h6>
+              <h6 class="text-cap small">Kompetisi <?= $WEB_JUDUL;?></h6>
 
               <!-- List -->
               <ul class="nav nav-sub nav-sm nav-tabs nav-list-y-2 mb-4">
@@ -154,6 +154,17 @@
                     <i class="fas fa-clipboard nav-icon"></i> Data pendaftaran
                   </a>
                 </li>
+                <li class="nav-item">
+                  <a class="nav-link <?= ($this->uri->segment(1) == "refund" ? "active" : "") ?>" href="<?= site_url('refund') ?>">
+                    <i class="fas fa-users nav-icon"></i> Refund
+                  </a>
+                </li>
+              </ul>
+
+              <h6 class="text-cap small">Kegiatan</h6>
+
+              <!-- List -->
+              <ul class="nav nav-sub nav-sm nav-tabs nav-list-y-2 mb-4">
                 <li class="nav-item">
                   <a class="nav-link <?= ($this->uri->segment(2) == "kegiatan" ? "active" : "") ?>" href="<?= site_url('peserta/kegiatan') ?>">
                     <i class="fas fa-users nav-icon"></i> Kegiatan

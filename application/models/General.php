@@ -158,6 +158,21 @@ class General extends CI_Model {
         }
     }
 
+    // - get data pendaftaran kompetisi by kode_user
+    public function get_detailDaftarKompetisi($id){
+        $this->db->select("a.*, b.*, c.namapt, (SELECT COUNT(*) FROM pendaftaran_kompetisi WHERE ASAL_PTS = a.ASAL_PTS AND KODE_PENDAFTARAN IN (SELECT KODE_PENDAFTARAN FROM tb_order)) as JML_TIM");
+        $this->db->from("pendaftaran_kompetisi a");
+        $this->db->join("bidang_lomba b", "a.BIDANG_LOMBA = b.ID_BIDANG");
+        $this->db->join("pt c", "a.ASAL_PTS = c.kodept");
+        $this->db->where("a.KODE_USER", $id);
+        $query = $this->db->get();
+        if ($query->num_rows() > 0) {
+            return $query->row();
+        }else {
+            return false;
+        }
+    }
+
     // TRANSAKSI
 
     // - biaya daftar tim (KIRIM PARAM, jumlah tim dari pts X)
@@ -213,5 +228,45 @@ class General extends CI_Model {
         }else{
             return false;
         }
+    }
+
+    // - get data refund by kode_user
+    public function get_dataRefund($KODE_USER){
+        $this->db->select('*');
+        $this->db->from('tb_transaksi a');
+        $this->db->join('tb_refund b', 'a.KODE_TRANS = b.KODE_TRANS');
+        $this->db->join('tb_order c', 'a.KODE_TRANS = c.KODE_TRANS');
+        $this->db->where(array('a.KODE_USER_BILL' => $KODE_USER));
+        $query = $this->db->get();
+        if ($query->num_rows() > 0) {
+            return $query->row();
+        }else{
+            return false;
+        }
+    }
+
+    public function cek_refeundUniv($KODE_TRANS){
+        $query = $this->db->get_where('tb_refund', array('KODE_TRANS' => $KODE_TRANS, 'STAT_REFUND' => 0));
+        if ($query->num_rows() > 0) {
+            return true;
+        }else{
+            return false;
+        }
+    }
+
+    public function count_jmlRefund($KODE_TRANS){
+        $query= $this->db->query("SELECT (TOT_BAYAR - (SELECT SUM(BIAYA_TIM) FROM tb_order WHERE KODE_TRANS = 'TRAN_90fb17')) AS JML_REFUND FROM tb_transaksi WHERE KODE_TRANS = '$KODE_TRANS'");
+        return $query->row();
+    }
+
+    // - get data tim refund by kode_trans
+    public function get_tim($param)
+    {
+        $query = $this->db->query("
+            SELECT pk.NAMA_TIM 
+            FROM tb_transaksi tt , tb_order to2 , pendaftaran_kompetisi pk 
+            WHERE tt.KODE_TRANS = to2.KODE_TRANS AND to2.KODE_PENDAFTARAN = pk.KODE_PENDAFTARAN AND tt.KODE_TRANS = '$param'
+        ");
+        return $query->result();
     }
 }

@@ -8,29 +8,6 @@ class M_peserta extends CI_Model {
 
 	// DATA PENDAFTARAN KOMPETISI & get biaya daftar
 
-	function get_biayaDaftar($jml_pts){
-		$this->db->select("a.DESKRIPSI");
-		$this->db->from("tb_pengaturan a");
-		$this->db->where(array("a.VALUE <=" => $jml_pts, "a.KEY" => "BIAYA_DAFTAR"));
-		$this->db->order_by("a.DESKRIPSI", "ASC");
-		$this->db->limit(1);
-		return $this->db->get()->row()->DESKRIPSI;
-	}
-
-	function get_detailDaftarKompetisi($id){
-		$this->db->select("a.*, b.*, c.namapt, (SELECT COUNT(*) FROM pendaftaran_kompetisi WHERE ASAL_PTS = a.ASAL_PTS AND KODE_PENDAFTARAN IN (SELECT KODE_PENDAFTARAN FROM tb_order)) as JML_TIM");
-		$this->db->from("pendaftaran_kompetisi a");
-		$this->db->join("bidang_lomba b", "a.BIDANG_LOMBA = b.ID_BIDANG");
-		$this->db->join("pt c", "a.ASAL_PTS = c.kodept");
-		$this->db->where("a.KODE_USER", $id);
-		$query = $this->db->get();
-		if ($query->num_rows() > 0) {
-			return $query->row();
-		}else {
-			return false;
-		}
-	}
-
 	function get_detailDaftar($id){
 		$query = $this->db->get_where("pendaftaran_kegiatan", array('KODE_PENDAFTARAN' => $id));
 
@@ -42,17 +19,6 @@ class M_peserta extends CI_Model {
 	}
 
 	// PESERTA
-
-	function get_pts(){
-		$this->db->select('kodept,namapt');
-		$query  = $this->db->get('pt');
-		$result = $query->result();
-
-		foreach ($result as $row){
-			$pt[$row->kodept] = $row->kodept . '-'. $row->namapt;
-		}
-		return $pt;
-	}
 
 	public function cek_aktivasi($kode_user){
 		$query = $this->db->query("SELECT * FROM tb_token WHERE KODE = '$kode_user' AND TYPE = 1");
