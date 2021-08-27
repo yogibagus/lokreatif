@@ -20,7 +20,13 @@ class M_authentication extends CI_Model {
 	}
 
 	public function get_pts(){
-		return $this->db->get('pt')->result();
+        $query  = $this->db->query("SELECT kodept,namapt FROM pt WHERE kodept NOT IN (SELECT KODE_PT FROM tb_univ)");
+        $result = $query->result();
+
+        foreach ($result as $row){
+            $pt[$row->kodept] = $row->kodept . '-'. $row->namapt;
+        }
+        return $pt;
 	}
 
 	public function cek_kodeUser($kode_user){

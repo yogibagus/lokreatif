@@ -17,17 +17,15 @@
     <div class="js-form-message form-group">
       <label class="input-label" for="signinSrNama">Nama Instansi <span class="text-danger">*</span></label>
       <div class="tom-select-custom">
-        <select name="kodept" class="js-select form-select" autocomplete="off"
-                data-hs-tom-select-options='{
-                  "placeholder": "Select user..."
-                }'>
-          <?php
-            foreach ($pts as $item) {
-              echo '
-                <option value="'.$item->kodept.'">'.$item->namapt.'</option>
-              ';
-            }
-          ?>
+
+            <select class="js-custom-select custom-select" name="kodept" size="1"
+            data-hs-select2-options='{
+            "placeholder": "Pilih pts"
+          }' required>
+          <option value="">Pilih pts</option>
+          <?php foreach ($pts as $item) :?>
+            <option value="<?= $item;?>"><?= $item;?></option>
+          <?php endforeach;?>
         </select>
       </div>
       <!-- <input type="text" class="form-control" name="nama" id="signinSrNama" placeholder="Nama lengkap anda" aria-label="Nama lengkap anda" required data-msg="Harap masukkan nama lengkap anda."> -->
