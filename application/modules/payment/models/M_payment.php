@@ -151,4 +151,42 @@ class M_payment extends CI_Model
         $this->db->insert('log_webhook', $data);
         return ($this->db->affected_rows() != 1) ? false : true;
     }
+
+    // get last payment by user
+    function get_last_payment($kode_trans)
+    {
+        $kode_trans   = $this->db->escape($kode_trans);
+        $query = $this->db->query("SELECT * FROM tb_payment AS a, tb_transaksi AS b 
+        WHERE a.`KODE_TRANS` = $kode_trans ORDER BY a.`CREATED_TIME` DESC LIMIT 1");
+        if ($query->num_rows() > 0) {
+            return $query->row();
+        } else {
+            return false;
+        }
+    }
+
+    // get payment berdasarkan KODE_TRANS
+    function get_payment_by_kode_trans($kode_trans)
+    {
+        $kode_trans   = $this->db->escape($kode_trans);
+        $query = $this->db->query("SELECT * FROM tb_payment WHERE KODE_TRANS = $kode_trans");
+        if ($query->num_rows() > 0) {
+            return $query->row();
+        } else {
+            return false;
+        }
+    }
+
+    // get payment history that hasn't paid
+    function count_payment_by_kode_trans($kode_trans)
+    {
+        $kode_trans   = $this->db->escape($kode_trans);
+        $query = $this->db->query("SELECT COUNT(KODE_TRANS) AS belum_selesai FROM tb_payment 
+        WHERE KODE_TRANS = $kode_trans AND STAT_PAY = '2'");
+        if ($query->num_rows() > 0) {
+            return $query->row();
+        } else {
+            return false;
+        }
+    }
 }
