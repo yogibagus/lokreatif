@@ -8,10 +8,17 @@
                     <a name="" id="" class="btn btn-primary btn-xs" href="#" role="button"><i class="fa fa-info-circle" aria-hidden="true"></i> Pelajari</a>
                 </div>
                 <div class="card-body">
-                    <div class="alert alert-secondary" role="alert">
-                        <strong><i class="fa fa-info-circle" aria-hidden="true"></i></strong>
-                        Segera lakukan pembayaran sesuai jumlah yang sudah ditentukan dibawah menggunakan metode pembayaran yang telah tersedia.
-                    </div>
+                    <?php if ($payment_history->belum_selesai >= 0) { ?>
+                        <div class="alert alert-soft-info text-dark" role="alert">
+                            <strong><i class="fa fa-info-circle" aria-hidden="true"></i> Hei! </strong>
+                            Anda memiliki <strong><?= $payment_history->belum_selesai ?></strong> history pembayaran yang belum anda selesaikan. <a href="#">Lanjutkan pembayaran sebelumnya.</a>
+                        </div>
+                    <?php } else { ?>
+                        <div class="alert alert-secondary" role="alert">
+                            <strong><i class="fa fa-info-circle" aria-hidden="true"></i></strong>
+                            Segera lakukan pembayaran menggunakan metode pembayaran yang telah tersedia.
+                        </div>
+                    <?php } ?>
                 </div>
             </div>
 
@@ -19,7 +26,7 @@
                 <div class="col-lg-6">
                     <div class="card">
                         <div class="card-header">
-                            <h4 class="card-title">Informasi Akun</h4>
+                            <h4 class="card-title">Tim Yang Akan Dibayar</h4>
                         </div>
                         <div class="card-body">
                             <h5>Nama Team</h5>
@@ -71,6 +78,7 @@
             <div class="card mt-3">
                 <div class="card-header">
                     <h4 class="card-title">Payment Methods</h4>
+                    <a name="" id="" class="btn btn-primary btn-xs" href="#" role="button"><i class="fa fa-info-circle" aria-hidden="true"></i> Pelajari</a>
                 </div>
                 <div class="card-body">
                     <!-- Type of Listing -->
@@ -104,6 +112,10 @@
                                             /* only if you want fixed height */
                                         }
                                     </style>
+                                    <div class="alert alert-soft-primary" role="alert">
+                                        <strong><i class="fa fa-info-circle" aria-hidden="true"></i> </strong>
+                                        Siapkan Aplikasi E-Wallet Anda agar proses pembayaran lebih cepat.
+                                    </div>
                                     <!-- Radio Checkbox Group -->
                                     <div class="row mx-n2">
                                         <div class="col-6 col-md-3 px-2 mb-3 mb-md-0">

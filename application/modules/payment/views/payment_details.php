@@ -96,7 +96,7 @@ if ($payment->TYPE == 1) {
                                     </div>
                                     <hr>
                                     <h3>PAYMENT METHOD</h3>
-                                    <span class="badge badge-info"><?= $type ?></span><br>
+                                    <span class="badge badge-info"><?= $type ?></span>
                                     <span class="badge badge-primary"><?= $payment->METHOD ?></span>
                                 </center>
                             <?php } else if ($payment->METHOD == "SHOPEEPAY") { ?>
@@ -232,7 +232,7 @@ if ($payment->TYPE == 1) {
 
             clearInterval(timer);
             $("#countdown").html("<strong>EXPIRED!!</strong>");
-            $("#payment-info").html("<center><strong>Batas waktu telah habis</strong></center>");
+            $("#payment-info").html("<center><strong>Batas waktu telah habis.</strong></center>");
             $("#alert").addClass("alert-soft-danger");
             $("#alert").html("<strong>Batas waktu telah habis</strong>");
             $("#checkout-button").html('<a class="btn btn-xs btn-primary" href="<?= base_url('payment/checkout/' . $payment->KODE_TRANS) ?>" role="button"><i class="fa fa-arrow-circle-left" aria-hidden="true"></i> Halaman Checkout</a>');
