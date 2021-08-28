@@ -43,7 +43,7 @@ if ($payment->TYPE == 1) {
                     </div>
                 </div>
                 <div class="card-body">
-                    <div class="alert alert-soft-info text-dark" role="alert">
+                    <div class="alert alert-soft-info text-dark" id="alert" role="alert">
                         <strong><i class="fa fa-info-circle" aria-hidden="true"></i></strong>
                         Lakukan pembayaran sebelum batas waktu pembayaran habis.
                     </div>
@@ -64,7 +64,7 @@ if ($payment->TYPE == 1) {
                         <div class="col-lg-6 col-6 mb-2">
                             <span class="font-weight-bold d-block">Waktu order:</span>
                             <?php
-                            $time = strtotime($payment->LOG_TIME);
+                            $time = strtotime($payment->CREATED_TIME);
 
                             $pay_created_time = date('d M Y H:i:s', $time);
                             ?>
@@ -78,53 +78,113 @@ if ($payment->TYPE == 1) {
                         <span class=" h1 text-primary">Rp <?= number_format($payment->PAID_AMOUNT, 0, ',', '.') ?></span>
                         <hr>
                     </div>
-                    <?php if ($payment->TYPE == 1) { ?>
-                        <div class="alert alert-primary" role="alert">
-                            <strong><i class="fa fa-info-circle" aria-hidden="true"></i> </strong> Segera buka aplikasi OVO anda. Kami telah mengirimkan Notification pada OVO anda. <a href="#" class="text-dark">Pelajari lebih lanjut.</a>
-                        </div>
-                        <center>
-                            <h3>BATAS WAKTU PEMBAYARAN</h3>
-                            <div class="alert alert-soft-primary" role="alert">
-                                <center><strong id="countdown" class="h4">
-                                        <div class="spinner-border text-primary" role="status">
-                                            <span class="sr-only">Loading...</span>
-                                        </div>
-                                    </strong>
-                                </center>
-                            </div>
-                        </center>
-                    <?php } ?>
-
-                    <?php if ($payment->TYPE == 2) { ?>
-                        <center>
-                            <h3>BATAS WAKTU PEMBAYARAN</h3>
-                            <div class="alert alert-soft-primary" role="alert">
-                                <center><strong id="countdown" class="h4">
-                                        <div class="spinner-border text-primary" role="status">
-                                            <span class="sr-only">Loading...</span>
-                                        </div>
-                                    </strong>
-                                </center>
-                            </div>
-                            <hr>
-                            <h3>PAYMENT METHOD</h3>
-                            <span class="badge badge-info"><?= $type ?></span><br>
-                            <span class="badge badge-primary">BANK <?= $payment->METHOD ?></span>
-                            <h4 class="mt-3">VA Number</h4>
-                            <div class=" input-group mb-3" style="max-width: 300px;">
-                                <input type="text" class="form-control bg-white text-center font-weight-bold" value="<?= $payment->ACC_NUMBER ?>" id="va_number" disabled>
-                                <div class="input-group-append">
-                                    <button class="btn btn-outline-secondary" onclick="copyInput()" type=" button"><i class="fas fa-copy    "></i></button>
+                    <div id="payment-info">
+                        <?php if ($payment->TYPE == 1) { ?>
+                            <?php if ($payment->METHOD == "OVO") { ?>
+                                <div class="alert alert-primary" role="alert">
+                                    <strong><i class="fa fa-info-circle" aria-hidden="true"></i> </strong> Segera buka aplikasi OVO anda. Kami telah mengirimkan Notification pada OVO anda. <a href="#" class="text-dark">Pelajari lebih lanjut.</a>
                                 </div>
-                            </div>
-                        </center>
-                    <?php } ?>
+                                <center>
+                                    <h3>BATAS WAKTU PEMBAYARAN</h3>
+                                    <div class="alert alert-soft-primary" role="alert">
+                                        <center><strong id="countdown" class="h4">
+                                                <div class="spinner-border text-primary" role="status">
+                                                    <span class="sr-only">Loading...</span>
+                                                </div>
+                                            </strong>
+                                        </center>
+                                    </div>
+                                    <hr>
+                                    <h3>PAYMENT METHOD</h3>
+                                    <span class="badge badge-info"><?= $type ?></span><br>
+                                    <span class="badge badge-primary"><?= $payment->METHOD ?></span>
+                                </center>
+                            <?php } else if ($payment->METHOD == "SHOPEEPAY") { ?>
+                                <center>
+                                    <h3>BATAS WAKTU PEMBAYARAN</h3>
+                                    <div class="alert alert-soft-primary" role="alert">
+                                        <center><strong id="countdown" class="h4">
+                                                <div class="spinner-border text-primary" role="status">
+                                                    <span class="sr-only">Loading...</span>
+                                                </div>
+                                            </strong>
+                                        </center>
+                                    </div>
+                                    <hr>
+                                    <div class="alert alert-soft-primary" role="alert">
+                                        <strong><i class="fa fa-info-circle" aria-hidden="true"></i> </strong> Scan QR Code dibawah menggunakan Aplikasi <strong>Shopee Pay</strong> / Aplikasi <strong>E-Wallet</strong> lainnya. <a href="#" class="text-dark">Pelajari lebih lanjut.</a>
+                                    </div>
+                                    <h3>PAYMENT METHOD</h3>
+                                    <span class="badge badge-info"><?= $type ?></span><br>
+                                    <span class="badge badge-primary"><?= $payment->METHOD ?></span>
+                                    <span class="badge badge-primary">QRIS</span>
+                                    <br>
+                                    <a href="#"><img src="<?= $payment->WEB_URL ?>" class="img-fluid img-thumbnail mt-3" style="max-width: 270px;" alt="QR Code ShoopePay" data-toggle="modal" data-target="#qrcodezoom"></a>
 
+                                    <!-- Zoom -->
+                                    <div class="modal fade" id="qrcodezoom" tabindex="-1" role="dialog" aria-labelledby="modelTitleId" aria-hidden="true">
+                                        <div class="modal-dialog" role="document">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title">Shopee Pay</h5>
+                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                        <span aria-hidden="true">&times;</span>
+                                                    </button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <div class="alert alert-soft-primary" role="alert">
+                                                        <strong><i class="fa fa-info-circle" aria-hidden="true"></i> </strong> Buka Aplikasi <strong>Shopee Pay</strong> / Aplikasi <strong>E-Wallet</strong> lainnya. Scan QR Code dibawah. <a href="#" class="text-dark">Pelajari lebih lanjut.</a>
+                                                    </div>
+                                                    <img src="<?= $payment->WEB_URL ?>" class="img-fluid img-thumbnail" alt="QR Code ShoopePay Zoom" data-toggle="modal" data-target="#qrcodezoom">
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <br>
+                                    <small class="mt-3">Scan this QR Code using ShopeePay / other e-wallet apps.</small>
+                                </center>
+                            <?php } ?>
+                        <?php } ?>
+
+                        <?php if ($payment->TYPE == 2) { ?>
+                            <center>
+                                <h3>BATAS WAKTU PEMBAYARAN</h3>
+                                <div class="alert alert-soft-primary" role="alert">
+                                    <center><strong id="countdown" class="h4">
+                                            <div class="spinner-border text-primary" role="status">
+                                                <span class="sr-only">Loading...</span>
+                                            </div>
+                                        </strong>
+                                    </center>
+                                </div>
+                                <hr>
+                                <h3>PAYMENT METHOD</h3>
+                                <span class="badge badge-info"><?= $type ?></span><br>
+                                <span class="badge badge-primary">BANK <?= $payment->METHOD ?></span>
+                                <h4 class="mt-3">VA Number</h4>
+                                <div class=" input-group mb-3" style="max-width: 300px;">
+                                    <input type="text" class="form-control bg-white text-center font-weight-bold" value="<?= $payment->ACC_NUMBER ?>" id="va_number" disabled>
+                                    <div class="input-group-append">
+                                        <button class="btn btn-outline-secondary" onclick="copyInput()" type=" button"><i class="fas fa-copy    "></i></button>
+                                    </div>
+                                </div>
+                            </center>
+                        <?php } ?>
+                    </div>
                 </div>
+            </div>
+            <div class="text-center">
+                <div id="checkout-button"></div>
             </div>
         </div>
     </div>
 </div>
+
+
+
 <script>
     function copyInput() {
         /* Get the text field */
@@ -144,7 +204,7 @@ if ($payment->TYPE == 1) {
 
 <script>
     <?php
-    $addminute = strtotime("$payment->LOG_TIME + 1 minute");
+    $addminute = strtotime("$payment->CREATED_TIME + 1 minute");
     $ovotimelimit = date('Y-m-d H:i:s', $addminute);
     // if e-wallet set limit
     if ($payment->TYPE == 1) {
@@ -171,10 +231,15 @@ if ($payment->TYPE == 1) {
         if (distance < 0) {
 
             clearInterval(timer);
-            document.getElementById('countdown').innerHTML = 'EXPIRED!';
-            document.getElementById('ket').innerHTML = '*Batas waktu telah habis, ulangi proses pembayaran dari awal.';
-            document.getElementById('status_message').innerHTML = 'Batas waktu telah habis, ulangi proses pembayaran dari awal.';
-            document.getElementById('va').innerHTML = 'EXPIRED!';
+            $("#countdown").html("<strong>EXPIRED!!</strong>");
+            $("#payment-info").html("<center><strong>Batas waktu telah habis</strong></center>");
+            $("#alert").addClass("alert-soft-danger");
+            $("#alert").html("<strong>Batas waktu telah habis</strong>");
+            $("#checkout-button").html('<a class="btn btn-xs btn-primary" href="<?= base_url('payment/checkout/' . $payment->KODE_TRANS) ?>" role="button"><i class="fa fa-arrow-circle-left" aria-hidden="true"></i> Halaman Checkout</a>');
+            document.getElementById('alert').innerHTML = 'Waktu pembayaran telah habis, ulangi proses pembayaran pada halaman <a href="<?= base_url('payment/checkout/' . $payment->KODE_TRANS) ?>">checkout.</a>';
+            // document.getElementById('ket').innerHTML = '*Batas waktu telah habis, ulangi proses pembayaran dari awal.';
+            // document.getElementById('status_message').innerHTML = 'Batas waktu telah habis, ulangi proses pembayaran dari awal.';
+            // document.getElementById('va').innerHTML = 'EXPIRED!';
             return;
         }
         var days = Math.floor(distance / _day);

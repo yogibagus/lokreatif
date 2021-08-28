@@ -145,4 +145,10 @@ class M_payment extends CI_Model
             return false;
         }
     }
+
+    function insert_log_webhook($data)
+    {
+        $this->db->insert('log_webhook', $data);
+        return ($this->db->affected_rows() != 1) ? false : true;
+    }
 }

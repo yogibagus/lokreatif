@@ -108,7 +108,7 @@
                                     <div class="row mx-n2">
                                         <div class="col-6 col-md-3 px-2 mb-3 mb-md-0">
                                             <div class="custom-control custom-radio custom-control-inline checkbox-outline checkbox-icon text-center w-100 h-100">
-                                                <input type="radio" id="typeOfListingRadio1" name="method" class="custom-control-input checkbox-outline-input checkbox-icon-input" value="EWALLET_OVO" checked>
+                                                <input type="radio" id="typeOfListingRadio1" name="method" class="custom-control-input checkbox-outline-input checkbox-icon-input" value="EWALLET_OVO" required>
                                                 <label class="checkbox-outline-label checkbox-icon-label w-100 rounded py-3 px-1 mb-0" for="typeOfListingRadio1">
                                                     <img class="img-fluid w-90 fit-image" src="https://image.cermati.com/c_fit,fl_progressive,h_240,q_80,w_360/pm2gnkl5edgago9h4lho.jpg" alt="OVO">
                                                 </label>
@@ -140,9 +140,11 @@
                                         </div>
                                     </div>
                                     <!-- Alert -->
-                                    <div id="shopeepay-alert" class="alert alert-soft-warning text-center rounded-0 mt-3" role="alert">
-                                        Pembayaran dengan Shopeepay <strong>hanya dapat</strong> dilakukan menggunakan perangkat Mobile.
-                                    </div>
+                                    <?php if ($is_mobile) { ?>
+                                        <div id="shopeepay-alert" class="alert alert-warning text-center rounded-0 mt-3" role="alert">
+                                            <strong><i class="fa fa-info-circle" aria-hidden="true"></i></strong> Anda terdeteksi menggunakan perangkat <strong>Mobile</strong>, pembayaran melalui <strong>ShoopePay</strong> akan diarahkan ke <strong>Aplikasi Shopeepay</strong> secara langsung. <a href="#">Pelajari selengkapnya.</a>
+                                        </div>
+                                    <?php } ?>
                                     <!-- End Alert -->
                                     <label for="basic-url" class="form-label mt-3 text-method" id="">OVO Number:</label>
                                     <!-- Input Group -->
