@@ -160,7 +160,7 @@ class General extends CI_Model {
 
     // - get data pendaftaran kompetisi by kode_user
     public function get_detailDaftarKompetisi($id){
-        $this->db->select("a.*, b.*, c.namapt, (SELECT COUNT(*) FROM pendaftaran_kompetisi WHERE ASAL_PTS = a.ASAL_PTS AND KODE_PENDAFTARAN IN (SELECT KODE_PENDAFTARAN FROM tb_order)) as JML_TIM");
+        $this->db->select("a.*, b.*, c.namapt, (SELECT COUNT(*) FROM pendaftaran_kompetisi WHERE ASAL_PTS = a.ASAL_PTS) as JML_TIM");
         $this->db->from("pendaftaran_kompetisi a");
         $this->db->join("bidang_lomba b", "a.BIDANG_LOMBA = b.ID_BIDANG");
         $this->db->join("pt c", "a.ASAL_PTS = c.kodept");
