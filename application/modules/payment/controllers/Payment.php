@@ -19,6 +19,9 @@ class Payment extends MX_Controller
         $this->nama = $this->session->userdata('nama');
         $this->role = $this->session->userdata('role');
         $this->logged_in = $this->session->userdata('logged_in');
+
+        // disabling CRSF
+        $this->config->set_item('csrf_protection', false);
     }
 
     public function index()
@@ -31,23 +34,32 @@ class Payment extends MX_Controller
     {
         $transaksi = $this->M_payment->get_transaksi_by_id($param);
         if ($transaksi != false) {
-            $data['kode_trans'] = $transaksi->KODE_TRANS;
-            $data['total_bayar'] = $this->M_payment->get_total_bayar($transaksi->KODE_TRANS);
-            $data['total_team'] = $this->M_payment->get_total_team_and_biaya($transaksi->KODE_TRANS);
-            $data['dataPendaftaran'] = $this->General->get_detailDaftarKompetisi($this->session->userdata("kode_user"));
-            $data['tim']        = $this->M_payment->get_tim($transaksi->KODE_TRANS);
-            $data['CI']                = $this;
-            $data['module']         = "payment";
-            $data['fileview']         = "checkout_page";
+            // get data pendaftaran
+            $dataPeserta = $this->General->get_detailDaftarKompetisi($this->kode_user);
+            $is_paid_by_univ = $this->General->cek_dibayarinUniv($dataPeserta->KODE_PENDAFTARAN, $this->kode_user);
+            // check already paid by univ
+            if ($is_paid_by_univ == false) {
+                $data['kode_trans'] = $transaksi->KODE_TRANS;
+                $data['total_bayar'] = $this->M_payment->get_total_bayar($transaksi->KODE_TRANS);
+                $data['total_team'] = $this->M_payment->get_total_team_and_biaya($transaksi->KODE_TRANS);
+                $data['dataPendaftaran'] = $dataPeserta;
+                $data['tim']        = $this->M_payment->get_tim($transaksi->KODE_TRANS);
 
-            if ($this->role == "1") {
-                echo Modules::run('template/frontend_auth', $data);
-            } else if ($this->role == "3") {
-                echo Modules::run('template/frontend_auth', $data);
+                $data['is_mobile'] = $this->agent->is_mobile();
+                $data['CI']                = $this;
+                $data['module']         = "payment";
+                $data['fileview']         = "checkout_page";
+
+                if ($this->role == "1") {
+                    echo Modules::run('template/frontend_auth', $data);
+                } else if ($this->role == "3") {
+                    echo Modules::run('template/frontend_auth', $data);
+                }
+            } else {
+                $this->session->set_flashdata('warning', "Biaya pendaftaran anda telah di urus oleh Universitas anda, harap tunggu hingga proses pembayaran selesai.");
+                redirect($this->agent->referrer());
             }
-
-
-            $this->session->set_flashdata('success', "Selesaikan pembayaran anda!");
+            $this->session->set_flashdata('success', "Pilih metode pembayaran yang tersedia.");
         } else {
             $this->session->set_flashdata('error', "Transaction ID Not Found");
             redirect($this->agent->referrer());
@@ -59,25 +71,40 @@ class Payment extends MX_Controller
     {
         $payment = $this->M_payment->get_payment_by_id($param);
         if ($payment != false) {
-            if ($payment->CHECKOUT_URL != null || $payment->CHECKOUT_URL != "") {
-                // redirect payment ewallet
-                redirect($payment->CHECKOUT_URL);
+            $transaksi = $this->M_payment->get_transaksi_by_id($payment->KODE_TRANS);
+            //get user and split
+            $kode_user = explode('_', trim($transaksi->KODE_USER_BILL));
+            if ($kode_user == "UNIV") {
+                $data['user'] = $this->M_payment->get_univ_by_id($this->kode_user);
             } else {
-                $transaksi = $this->M_payment->get_transaksi_by_id($payment->KODE_TRANS);
-                //get user and split
-                $kode_user = explode('_', trim($transaksi->KODE_USER_BILL));
-                if ($kode_user == "UNIV") {
-                    $data['user'] = $this->M_payment->get_univ_by_id($this->kode_user);
-                } else {
-                    $data['user'] = $this->General->get_akun($this->kode_user);
-                }
-                $data['bank_tut'] = $this->M_payment->get_tutorial_payment_by_bank_name($payment->METHOD);
-                $data['payment'] = $payment;
-                $data['status'] = $this->M_payment->get_status_payment_by_stat_pay($payment->STAT_PAY);
+                $data['user'] = $this->General->get_akun($this->kode_user);
+            }
+            $data['bank_tut'] = $this->M_payment->get_tutorial_payment_by_bank_name($payment->METHOD);
+            $data['payment'] = $payment;
+            $data['status'] = $this->M_payment->get_status_payment_by_stat_pay($payment->STAT_PAY);
 
-                $data['CI']                = $this;
-                $data['module']         = "payment";
-                $data['fileview']         = "payment_details";
+            $data['CI']                = $this;
+            $data['module']         = "payment";
+            $data['fileview']         = "payment_details";
+
+            // if have checkout link
+            if ($payment->CHECKOUT_URL != null || $payment->CHECKOUT_URL != "") {
+                // if shoopee
+                if ($payment->METHOD == "SHOPEEPAY") {
+                    if ($this->agent->is_mobile()) {
+                        redirect($payment->CHECKOUT_URL);
+                    } else {
+                        if ($this->role == "1") {
+                            echo Modules::run('template/frontend_auth', $data);
+                        } else if ($this->role == "3") {
+                            echo Modules::run('template/frontend_auth', $data);
+                        }
+                    }
+                } else {
+                    // redirect payment ewallet
+                    redirect($payment->CHECKOUT_URL);
+                }
+            } else {
                 if ($this->role == "1") {
                     echo Modules::run('template/frontend_auth', $data);
                 } else if ($this->role == "3") {
@@ -142,16 +169,16 @@ class Payment extends MX_Controller
             $kode_pay = $this->generatepay->gen_kodePay();
             // save payment_id
             $insert_data = $this->update_pay($kode_pay, $kode_trans, $method[1], $amount, $pay);
-            if ($insert_data != false) {
+            if ($insert_data != false) { // if fail insert data
                 $data_payment['TOT_BAYAR'] = $amount;
                 $this->M_payment->update_transaksi($kode_trans, $data_payment);
                 redirect('payment/details/' . $kode_pay);
             } else {
-                $this->session->set_flashdata('error', "Failed creating payment");
+                $this->session->set_flashdata('error', "Failed to create payment charge");
                 redirect($this->agent->referrer());
             }
         } else {
-            $this->session->set_flashdata('error', "Order ID Not Found");
+            $this->session->set_flashdata('error', "Failed to create transaction");
             redirect($this->agent->referrer());
         }
     }
@@ -160,7 +187,6 @@ class Payment extends MX_Controller
     {
         $payment_id = $pay->data->response->payment_id;
         $utc = explode('.', trim($pay->data->response->expiration_time));
-
         //CONVERT UTC TO LOKAL 
         $time1 = strtotime($utc[0] . 'UTC');
         $exp_time = date("Y-m-d H:i:s", $time1);
@@ -171,7 +197,7 @@ class Payment extends MX_Controller
                 'ORDER_ID' => $pay->data->response->order_id,
                 'PAYMENT_ID' => $payment_id,
                 'KODE_TRANS' => $kode_trans,
-                'TYPE' => 1,
+                'TYPE' => 1, // E-WALLET
                 'METHOD' => $method,
                 'PAID_AMOUNT' => $pay->data->response->paid_amount,
                 'CHECKOUT_URL' => $pay->data->response->checkout_url,
@@ -185,7 +211,7 @@ class Payment extends MX_Controller
                 'ORDER_ID' => $pay->data->response->order_id,
                 'PAYMENT_ID' => $payment_id,
                 'KODE_TRANS' => $kode_trans,
-                'TYPE' => 2,
+                'TYPE' => 2, // Virtual Account
                 'METHOD' => $method,
                 'ACC_NUMBER' => $pay->data->response->account_number,
                 'PAID_AMOUNT' =>  $pay->data->response->paid_amount,
@@ -210,7 +236,6 @@ class Payment extends MX_Controller
             $user = $this->General->get_akun($this->kode_user);
             $nama = $user->NAMA;
         }
-
         $payload = array(
             'amount' => "$amount",
             'payment_option' => 'full_payment',
@@ -218,7 +243,7 @@ class Payment extends MX_Controller
             'order_ref_id' => $kode_trans,
             'customer' =>
             array(
-                'customer_ref_id' => $user->KODE_USER,
+                'customer_ref_id' => "$user->KODE_USER",
                 'given_name' => $nama,
                 'email' => $user->EMAIL,
                 'mobile' => $user->HP,
@@ -240,7 +265,7 @@ class Payment extends MX_Controller
             array(
                 0 =>
                 array(
-                    'name' => "Pembayaran Lo-Kreatif - $kode_trans",
+                    'name' => "Pembayaran Lo-Kreatif",
                     'qty' => 1,
                     'price' => "$amount",
                     'logo' => 'https://i.ibb.co/XtvzJBX/icon-ts.png',
@@ -252,9 +277,20 @@ class Payment extends MX_Controller
                 'SettlementGroup' => 'LO-KREATIF',
             ),
         );
-
         $payload = json_encode($payload);
         $result =  $this->durianpay->createOrder($payload);
-        return $result->data->id;
+        return $result->data->id; // return id_order
+    }
+
+
+    public function webhook()
+    {
+        $data = file_get_contents('php://input');
+
+        // $action = json_decode($data, true);
+        $data_log['CONTENT_LOG'] = $data;
+        $this->M_payment->insert_log_webhook($data_log);
+
+        echo $data;
     }
 }
