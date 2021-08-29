@@ -158,7 +158,7 @@ class Pendaftaran extends MX_Controller {
 
 					$config['upload_path']          = $folder;
 					$config['allowed_types']        = '*';
-					$config['max_size']             = 1000000;
+					$config['max_size']             = 10*1024;
 					$config['overwrite']            = true;
 
 					$this->load->library('upload', $config);

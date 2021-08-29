@@ -52,8 +52,8 @@
 		<input type="hidden" name="TYPE[]" value="<?= $key->TYPE;?>">
 
 		<div class="card card-frame card-body mb-4">
-			<label class="input-label"><?= $key->PERTANYAAN;?> <?php if($key->REQUIRED == true):?><span class="text-danger">*</span><?php endif;?></label>
-			<input class="form-control form-control-sm form-control-flush" type="text" name="JAWABAN[]" value="<?= $CI->General->get_formData($dataPendaftaran->KODE_PENDAFTARAN, $key->ID_FORM);?>" <?= $key->REQUIRED == true ? 'required' : '';?>>
+			<label class="input-label"><?= $key->PERTANYAAN;?> <span class="text-danger">*</span></label>
+			<input class="form-control form-control-sm form-control-flush" type="text" name="JAWABAN[]" value="<?= $CI->General->get_formData($dataPendaftaran->KODE_PENDAFTARAN, $key->ID_FORM);?>" required>
 			<?php if (isset($key->KETERANGAN) || $key->KETERANGAN != null):?>
 				<small class="text-muted mt-2"><?= $key->KETERANGAN;?></small>
 			<?php endif;?>
@@ -64,8 +64,8 @@
 			<input type="hidden" name="TYPE[]" value="<?= $key->TYPE;?>">
 
 			<div class="card card-frame card-body mb-4">
-				<label class="input-label"><?= $key->PERTANYAAN;?> <?php if($key->REQUIRED == true):?><span class="text-danger">*</span><?php endif;?></label>
-				<textarea class="form-control form-control-sm form-control-flush" type="text" name="JAWABAN[]" <?= $key->REQUIRED == true ? 'required' : '';?>><?= $CI->General->get_formData($dataPendaftaran->KODE_PENDAFTARAN, $key->ID_FORM);?></textarea>
+				<label class="input-label"><?= $key->PERTANYAAN;?> <span class="text-danger">*</span></label>
+				<textarea class="form-control form-control-sm form-control-flush" type="text" name="JAWABAN[]" required><?= $CI->General->get_formData($dataPendaftaran->KODE_PENDAFTARAN, $key->ID_FORM);?></textarea>
 				<?php if (isset($key->KETERANGAN) || $key->KETERANGAN != null):?>
 					<small class="text-muted mt-2"><?= $key->KETERANGAN;?></small>
 				<?php endif;?>
@@ -77,7 +77,7 @@
 				<input type="hidden" name="FILE_SIZE[]" value="<?= $key->FILE_SIZE;?>">
 
 				<div class="card card-frame card-body mb-4">
-					<label class="input-label"><?= $key->PERTANYAAN;?> <?php if($key->REQUIRED == true):?><span class="text-danger">*</span><?php endif;?></label>
+					<label class="input-label"><?= $key->PERTANYAAN;?> <span class="text-danger">*</span></label>
 					<div>
 
 						<label class="btn btn-sm btn-primary transition-3d-hover file-attachment-btn" for="fileAttachmentBtn">
@@ -100,7 +100,7 @@
 				<input type="hidden" name="TYPE[]" value="<?= $key->TYPE;?>">
 
 				<div class="card card-frame card-body mb-4">
-					<label class="input-label"><?= $key->PERTANYAAN;?> <?php if($key->REQUIRED == true):?><span class="text-danger">*</span><?php endif;?></label>
+					<label class="input-label"><?= $key->PERTANYAAN;?> <span class="text-danger">*</span></label>
 
 					<?php if ($CI->General->get_formItem($key->ID_FORM) == false) :?>
 						<p class="text-danger"><i>Belum ada item pilihan</i></p>
@@ -131,7 +131,7 @@
 						<input type="hidden" name="TYPE[]" value="<?= $key->TYPE;?>">
 
 						<div class="card card-frame card-body mb-4">
-							<label class="input-label"><?= $key->PERTANYAAN;?> <?php if($key->REQUIRED == true):?><span class="text-danger">*</span><?php endif;?></label>
+							<label class="input-label"><?= $key->PERTANYAAN;?> <span class="text-danger">*</span></label>
 
 							<?php if ($CI->General->get_formItem($key->ID_FORM) == false) :?>
 								<p class="text-danger"><i>Belum ada item pilihan</i></p>
@@ -158,7 +158,7 @@
 								<input type="hidden" name="TYPE[]" value="<?= $key->TYPE;?>">
 
 								<div class="card card-frame card-body mb-4">
-									<label class="input-label"><?= $key->PERTANYAAN;?> <?php if($key->REQUIRED == true):?><span class="text-danger">*</span><?php endif;?></label>
+									<label class="input-label"><?= $key->PERTANYAAN;?> <span class="text-danger">*</span></label>
 
 									<select class="js-custom-select custom-select" name="JAWABAN[]" size="1"
 									data-hs-select2-options='{
