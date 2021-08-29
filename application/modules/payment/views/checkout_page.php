@@ -12,7 +12,7 @@
                         <?php if ($payment_history->belum_selesai > 0) { ?>
                             <div class="alert alert-soft-info text-dark" role="alert">
                                 <strong><i class="fa fa-info-circle" aria-hidden="true"></i> Hei! </strong>
-                                Anda memiliki <strong><?= $payment_history->belum_selesai ?></strong> history pembayaran yang belum anda selesaikan. <a href="#">Lanjutkan pembayaran sebelumnya.</a>
+                                Anda memiliki <strong><?= $payment_history->belum_selesai ?></strong> riwayat pembayaran yang belum anda selesaikan. <a href="<?= base_url('peserta/riwayat-pembayaran') ?>">Lanjutkan pembayaran sebelumnya.</a>
                             </div>
                         <?php } else { ?>
                             <div class="alert alert-secondary" role="alert">
