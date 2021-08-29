@@ -2,7 +2,7 @@
   
 ### Quick Links
   
-<a href=''>
+<a href='https://lokreatif.org/'>
   
 <img src='https://img.shields.io/badge/HOMEPAGE-gray?style=for-the-badge'>
   
