@@ -115,7 +115,7 @@ class Univ extends MX_Controller {
 	public function notifikasi(){
 		$this->load->library('pagination');
 
-		$config['base_url'] 				= base_url().'univ/notifikasi';
+		$config['base_url'] 				= base_url().'pts/notifikasi';
 		$config['total_rows'] 				= $this->M_univ->countAllNotifikasi($this->session->userdata("kode_user"));
 		$config['per_page'] 				= 10;
 
@@ -167,7 +167,7 @@ class Univ extends MX_Controller {
 	function ubah_profil(){
 		if ($this->M_univ->ubah_profil($this->session->userdata("kode_user")) == TRUE) {
 			$this->session->set_flashdata('success', "Berhasil mengubah data diri anda!");
-			redirect(site_url('univ/pengaturan'));
+			redirect(site_url('pts/pengaturan'));
 		}else {
 			$this->session->set_flashdata('error', "Terjadi kesalahan saat mengubah data diri anda!");
 			redirect($this->agent->referrer());

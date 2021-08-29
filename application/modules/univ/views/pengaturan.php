@@ -19,7 +19,7 @@
       <div class="row form-group">
         <label class="col-sm-3 col-form-label input-label" for="signinSrEmail">Email anda <span class="text-danger">*</span></label>
         <div class="col-sm-9">
-          <input type="text" class="form-control" name="email" id="signinSrEmail" value="<?= $user->EMAIL ?>" aria-label="Email anda" readonly>
+          <input type="text" class="form-control" name="email" id="signinSrEmail" value="<?= $user->EMAIL ?>" aria-label="Email anda" disabled>
         </div>
       </div>
       <!-- End Form Group -->

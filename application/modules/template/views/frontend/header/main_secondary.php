@@ -58,12 +58,12 @@
               </div>
             </a>
             <?php elseif ($this->session->userdata('role') == 3) : ?>
-              <a class="media align-items-center" href="<?= site_url('univ') ?>">
+              <a class="media align-items-center" href="<?= site_url('pts') ?>">
                 <div class="avatar mr-3" style="border-radius: 50%; overflow: hidden;">
                   <?php if ($pFoto->PROFIL == null) {?>
                     <img class="avatar-img" src="<?= base_url();?>assets/frontend/img/100x100/img12.jpg" alt="<?= $this->session->userdata('nama') ?>">
                   <?php }else { ?>
-                    <img class="avatar-img" src="<?= base_url();?>berkas/univ/<?= $this->session->userdata('kode_user') ?>/foto/<?= $pFoto->PROFIL ?>" alt="<?= $this->session->userdata('nama') ?>">
+                    <img class="avatar-img" src="<?= base_url();?>berkas/pts/<?= $this->session->userdata('kode_user') ?>/foto/<?= $pFoto->PROFIL ?>" alt="<?= $this->session->userdata('nama') ?>">
                   <?php } ?>
                 </div>
                 <div class="media-body">
@@ -128,7 +128,7 @@
                   </span> Log out
                 </a>
               <?php elseif ($this->session->userdata('role') == 3) : ?>
-                <a class="dropdown-item px-0" href="<?= site_url('universitas') ?>">
+                <a class="dropdown-item px-0" href="<?= site_url('pts') ?>">
                   <span class="dropdown-item-icon">
                     <i class="fas fa-user"></i>
                   </span> Dashboard Univ

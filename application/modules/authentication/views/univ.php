@@ -15,20 +15,24 @@
 
     <!-- Form Group -->
     <div class="js-form-message form-group">
-      <label class="input-label" for="signinSrNama">Nama Instansi <span class="text-danger">*</span></label>
+      <label class="input-label" for="signinSrNama">Nama PTS <span class="text-danger">*</span></label>
       <div class="tom-select-custom">
 
             <select class="js-custom-select custom-select" name="kodept" size="1"
             data-hs-select2-options='{
-            "placeholder": "Pilih pts"
+            "placeholder": "Pilih PTS"
           }' required>
           <option value="">Pilih pts</option>
           <?php foreach ($pts as $item) :?>
-            <option value="<?= $item;?>"><?= $item;?></option>
+            <option value="<?= $item['kodept'];?>"><?= $item['nama'];?></option>
           <?php endforeach;?>
         </select>
       </div>
       <!-- <input type="text" class="form-control" name="nama" id="signinSrNama" placeholder="Nama lengkap anda" aria-label="Nama lengkap anda" required data-msg="Harap masukkan nama lengkap anda."> -->
+      <small>
+        <span class="font-size-1 text-muted">PTS anda tidak tersedia?</span>
+        <a class="font-size-1 font-weight-bold" href="<?= site_url('tambah-pts') ?>">Daftarkan PTS</a>
+      </small>
     </div>
     <!-- End Form Group -->
 

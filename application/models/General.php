@@ -185,10 +185,10 @@ class General extends CI_Model {
     public function cek_dibayarinUniv($kode, $payer){
         $query = $this->db->query("SELECT * FROM tb_order WHERE KODE_PENDAFTARAN = '$kode' AND KODE_TRANS IN (SELECT KODE_TRANS FROM tb_transaksi WHERE KODE_USER_BILL != '$payer' AND ROLE_USER_BILL = 3)");
         if ($query->num_rows() > 0) {
-            // sudah dibayari universitas
+            // sudah dibayari PTS
             return true;
         }else{
-            // belum dibayari universitas
+            // belum dibayari PTS
             return false;
         }
     }

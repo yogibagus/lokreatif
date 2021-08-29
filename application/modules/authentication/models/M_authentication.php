@@ -24,7 +24,8 @@ class M_authentication extends CI_Model {
         $result = $query->result();
 
         foreach ($result as $row){
-            $pt[$row->kodept] = $row->kodept . '-'. $row->namapt;
+            $pt[$row->kodept]['nama'] 	= $row->kodept . '-'. $row->namapt;
+            $pt[$row->kodept]['kodept'] = $row->kodept;
         }
         return $pt;
 	}
@@ -177,13 +178,14 @@ class M_authentication extends CI_Model {
 		$kolabolator    = $this->input->post('KOLABOLATOR');
 
 		$kodept        	= htmlspecialchars($this->input->post('kodept'), true);
+		$namapt			= $this->db->get_where('pt', ['kodept' => $this->input->post('kodept')])->row()->namapt;
 		$hp   			= htmlspecialchars($this->input->post('hp'), true);
 		$email        	= htmlspecialchars($this->input->post('email'), true);
 		$password   	= htmlspecialchars($this->input->post('password'), true);
 
 		// CREATE UNIQ NAME KODE USER
 
-		$string = preg_replace('/[^a-z]/i', '', $kodept);
+		$string = preg_replace('/[^a-z]/i', '', $namapt);
 
 		$vocal  = array("a", "e", "i", "o", "u", "A", "E", "I", "O", "U", " ");
 		$scrap  = str_replace($vocal, "", $string);
@@ -299,5 +301,18 @@ class M_authentication extends CI_Model {
 		}
 	}
 
-
+	public function get_prov(){
+		return $this->db->get('md_provinsi')->result();
+	}
+	
+	public function cek_pt($kodept){
+		return $this->db->get_where('pt', ['kodept' => $kodept])->result();
+	}
+	
+	public function cek_pt_raw($kodept){
+		return $this->db->get_where('pt_raw', ['kodept' => $kodept, 'status' => '0'])->result();
+	}
+	public function insert_pt_raw($param){
+		$this->db->insert('pt_raw', $param);		
+	}
 }
