@@ -166,8 +166,8 @@ data-hs-header-options='{
 
             <div class="card bg-secondary text-white h-100 overflow-hidden p-5">
               <div class="w-65 pr-2">
-                <h4 class="text-white">Universitas</h4>
-                <a class="btn btn-sm btn-light transition-3d-hover" href="<?= site_url('pendaftaran-univ') ?>">Daftar <i class="fas fa-angle-right ml-1"></i></a>
+                <h4 class="text-white">Kolektif PTS</h4>
+                <a class="btn btn-sm btn-light transition-3d-hover" href="<?= site_url('pendaftaran-pts') ?>">Daftar <i class="fas fa-angle-right ml-1"></i></a>
               </div>
               <div class="position-absolute right-0 bottom-0 w-50 mb-n3 mr-n4">
                 <img class="img-fluid lazysizes" src="<?= base_url();?>assets/frontend/svg/icons/icon-18.svg" alt="Daftar sebagai peserta">

@@ -215,7 +215,7 @@
                 <span class="text-truncate pr-2" title="Pengaturan">Pengaturan</span>
               </a>
             <?php elseif ($this->session->userdata('role') == 3) :?>
-              <a class="dropdown-item" href="<?= site_url('pengaturan-universitas'); ?>">
+              <a class="dropdown-item" href="<?= site_url('pengaturan-pts'); ?>">
                 <span class="text-truncate pr-2" title="Pengaturan">Pengaturan</span>
               </a>
             <?php endif;?>

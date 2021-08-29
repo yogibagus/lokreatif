@@ -6,7 +6,7 @@
 	<div class="card-body">
 		<?php if ($dibayarinUniv == true) :?>
 			<div class="alert alert-info font-size-1 mb-3">
-				<p class="mb-0"><b>PERHATIAN !!</b> Biaya pendaftaran anda telah di urus oleh Universitas anda, harap tunggu hingga proses pembayaran selesai !!</p>
+				<p class="mb-0"><b>PERHATIAN !!</b> Biaya pendaftaran anda telah di urus oleh PTS anda, harap tunggu hingga proses pembayaran selesai !!</p>
 			</div>
 			<?php else:?>
 				<?php if ($sudahBayar == false) :?>

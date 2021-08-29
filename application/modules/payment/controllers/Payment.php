@@ -57,7 +57,7 @@ class Payment extends MX_Controller
                     echo Modules::run('template/frontend_auth', $data);
                 }
             } else {
-                $this->session->set_flashdata('warning', "Biaya pendaftaran anda telah di urus oleh Universitas anda, harap tunggu hingga proses pembayaran selesai.");
+                $this->session->set_flashdata('warning', "Biaya pendaftaran anda telah di urus oleh PTS anda, harap tunggu hingga proses pembayaran selesai.");
                 redirect($this->agent->referrer());
             }
             $this->session->set_flashdata('success', "Pilih metode pembayaran yang tersedia.");
