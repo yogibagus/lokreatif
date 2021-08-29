@@ -63,8 +63,9 @@ $route['pengaturan-pts']    = 'univ/pengaturan';
 $route['login']         		= 'authentication';
 $route['logout']        		= 'authentication/logout';
 
-$route['pendaftaran']        		= 'authentication/daftar';
-$route['pendaftaran-pts']              = 'authentication/daftar_univ';
+$route['pendaftaran']        	  = 'authentication/daftar';
+$route['pendaftaran-pts']         = 'authentication/daftar_univ';
+$route['tambah-pts']              = 'authentication/tambah_univ';
 
 
 $route['pendaftaran']       		= 'authentication/daftar/1';

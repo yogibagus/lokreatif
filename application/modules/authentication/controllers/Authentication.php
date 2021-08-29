@@ -100,6 +100,13 @@ class Authentication extends MX_Controller {
 		$data['fileview'] 	= "univ";
 		echo Modules::run('template/frontend_auth', $data);
 	}
+	public function tambah_univ(){
+		$data['provinsi']	= $this->M_auth->get_prov();
+
+		$data['module'] 	= "authentication";
+		$data['fileview'] 	= "tambah_univ";
+		echo Modules::run('template/frontend_auth', $data);
+	}
 
 	public function recovery(){
 
@@ -296,7 +303,6 @@ class Authentication extends MX_Controller {
     	}
     }
     public function proses_daftar_univ(){
-
     	$email        = htmlspecialchars($this->input->post('email'), true);
     	$password     = htmlspecialchars($this->input->post('password'), true);
     	$password_ver = htmlspecialchars($this->input->post('confirmPassword'), true);
@@ -344,6 +350,26 @@ class Authentication extends MX_Controller {
     		redirect($this->agent->referrer());
     	}
     }
+	public function proses_tambah_univ(){
+		$kodept = $this->input->post('kodept');
+		$pt = $this->M_auth->cek_pt($kodept);
+		if($pt == null){
+			$pt_raw = $this->M_auth->cek_pt_raw($kodept);
+			if($pt_raw != null && $pt_raw[0]->status == "0"){
+				$this->session->set_flashdata('warning', 'Pendaftaran PTS masih dalam tahap verifikasi');
+			}else{
+				$dataStore['kodept'] 	= $kodept;
+				$dataStore['namapt']	= $this->input->post('namapt');
+				$dataStore['jenis']		= $this->input->post('jenis');
+				$dataStore['provinsi']	= $this->input->post('prov');
+				$this->M_auth->insert_pt_raw($dataStore);
+				$this->session->set_flashdata('success', 'Berhasil mendaftarkan PTS, Tunggu admin untuk verifikasi');
+			}
+		}else{
+			$this->session->set_flashdata('error', 'Kode PTS atau akun PTS telah terdaftar !');
+		}
+		redirect('');
+	}
 
 	// AKTIVASI AKUN
     public function aktivasi_email(){
