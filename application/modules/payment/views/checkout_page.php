@@ -9,7 +9,7 @@
                 </div>
                 <div class="card-body">
                     <?php if ($this->session->userdata('role') == 1) { ?>
-                        <?php if ($payment_history->belum_selesai >= 0) { ?>
+                        <?php if ($payment_history->belum_selesai > 0) { ?>
                             <div class="alert alert-soft-info text-dark" role="alert">
                                 <strong><i class="fa fa-info-circle" aria-hidden="true"></i> Hei! </strong>
                                 Anda memiliki <strong><?= $payment_history->belum_selesai ?></strong> history pembayaran yang belum anda selesaikan. <a href="#">Lanjutkan pembayaran sebelumnya.</a>

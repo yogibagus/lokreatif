@@ -1,13 +1,16 @@
 <?php
-defined('BASEPATH') OR exit('No direct script access allowed');
+defined('BASEPATH') or exit('No direct script access allowed');
 
-class Template extends MX_Controller {
-	public function __construct(){
+class Template extends MX_Controller
+{
+	public function __construct()
+	{
 		parent::__construct();
 		$this->load->model(['M_template']);
 	}
 
-	function time_elapsed($datetime, $full = false) {
+	function time_elapsed($datetime, $full = false)
+	{
 		$now = new DateTime;
 		$ago = new DateTime($datetime);
 		$diff = $now->diff($ago);
@@ -36,7 +39,8 @@ class Template extends MX_Controller {
 		return $string ? implode(', ', $string) . ' ago' : 'just now';
 	}
 
-	public function backend_main($data){
+	public function backend_main($data)
+	{
 
 		// SOSMED
 		$data['LN_FACEBOOK']		= $this->M_template->get_facebookLink();
@@ -61,13 +65,14 @@ class Template extends MX_Controller {
 		$data['aktivitas']			= $this->M_template->get_aktivitasAdmin();
 		$data['c_notifikasi']		= $this->M_template->count_notifikasiAdmin();
 		$data['c_aktivitas']		= $this->M_template->count_aktivitasAdmin();
-		
+
 		$data['CI']					= $this;
 
 		$this->load->view('backend/backend_main', $data);
 	}
 
-	public function manage_kegiatan_main($data){
+	public function manage_kegiatan_main($data)
+	{
 
 		// SOSMED
 		$data['LN_FACEBOOK']		= $this->M_template->get_facebookLink();
@@ -93,14 +98,15 @@ class Template extends MX_Controller {
 		$data['c_notifikasi']		= $this->M_template->count_notifikasiKegiatan($this->session->userdata('manage_kegiatan'));
 		$data['c_aktivitas']		= $this->M_template->count_aktivitasKegiatan($this->session->userdata('manage_kegiatan'));
 
-	    $data['cek_form']   		= $this->M_template->cek_form($this->session->userdata('manage_kegiatan'));
+		$data['cek_form']   		= $this->M_template->cek_form($this->session->userdata('manage_kegiatan'));
 
 		$data['CI']					= $this;
 
 		$this->load->view('manage_kegiatan/manage_main', $data);
 	}
 
-	public function frontend_util($data){
+	public function frontend_util($data)
+	{
 
 		// SOSMED
 		$data['LN_FACEBOOK']		= $this->M_template->get_facebookLink();
@@ -126,7 +132,8 @@ class Template extends MX_Controller {
 		$this->load->view('frontend/frontend_util', $data);
 	}
 
-	public function frontend_auth($data){
+	public function frontend_auth($data)
+	{
 
 		// SOSMED
 		$data['LN_FACEBOOK']		= $this->M_template->get_facebookLink();
@@ -152,7 +159,8 @@ class Template extends MX_Controller {
 		$this->load->view('frontend/frontend_auth', $data);
 	}
 
-	public function frontend_main($data){
+	public function frontend_main($data)
+	{
 
 		// SOSMED
 		$data['LN_FACEBOOK']		= $this->M_template->get_facebookLink();
@@ -181,7 +189,8 @@ class Template extends MX_Controller {
 		$this->load->view('frontend/frontend_main', $data);
 	}
 
-	public function frontend_user($data){
+	public function frontend_user($data)
+	{
 
 		// SOSMED
 		$data['LN_FACEBOOK']		= $this->M_template->get_facebookLink();
@@ -199,7 +208,7 @@ class Template extends MX_Controller {
 		$data['WEB_DESKRIPSI']		= $this->M_template->get_webDeskripsi();
 		$data['WEB_WA']				= $this->M_template->get_webWa();
 		$data['WEB_HERO_BUTTON']	= $this->M_template->get_webHeroButton();
-		
+
 		// ETC
 
 		$data['pFoto']				= $this->M_template->get_foto($this->session->userdata('kode_user'), $this->session->userdata('role'));
@@ -211,5 +220,9 @@ class Template extends MX_Controller {
 		$this->load->view('frontend/frontend_user', $data);
 	}
 
-
+	public function mail_template($data)
+	{
+		$data['CI']					= $this;
+		$this->load->view('mail/mail_template', $data);
+	}
 }

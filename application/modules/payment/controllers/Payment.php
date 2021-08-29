@@ -13,6 +13,7 @@ class Payment extends MX_Controller
         date_default_timezone_set("Asia/Bangkok");
         $this->load->library('Durianpay');
         $this->load->library('Generatepay');
+        $this->load->library('Mailer');
         // get session
         $this->kode_user = $this->session->userdata('kode_user');
         $this->email = $this->session->userdata('email');
@@ -183,6 +184,8 @@ class Payment extends MX_Controller
                     $data_payment['TOT_BAYAR'] = $amount;
                     //save to db
                     $this->M_payment->update_transaksi($kode_trans, $data_payment);
+                    // send email reminder
+                    $this->send_email(1, $kode_pay);
                     redirect('payment/details/' . $kode_pay);
                 } else {
                     $this->session->set_flashdata('error', "Failed to create payment charge");
@@ -258,7 +261,7 @@ class Payment extends MX_Controller
             'order_ref_id' => $kode_trans,
             'customer' =>
             array(
-                'customer_ref_id' => "$user->KODE_USER",
+                'customer_ref_id' => $user->KODE_USER,
                 'given_name' => $nama,
                 'email' => $user->EMAIL,
                 'mobile' => $user->HP,
@@ -301,11 +304,51 @@ class Payment extends MX_Controller
     public function webhook()
     {
         $data = file_get_contents('php://input');
-
         // $action = json_decode($data, true);
         $data_log['CONTENT_LOG'] = $data;
         $this->M_payment->insert_log_webhook($data_log);
 
         echo $data;
+    }
+
+    //param = //kode_pay //kode_trans , kode_user, user_role
+    public function mail_payment_created($param = "", $kode_user, $user_role)
+    {
+        $payment = $this->M_payment->get_payment_by_id($param); // get_payment
+        if ($payment == false) {
+            $this->session->set_flashdata('error', "Unknown Transaction ID or Payment ID.");
+            redirect($this->agent->referrer());
+        } else {
+            if ($user_role == 3) {
+                $user = $this->M_payment->get_univ_by_id($kode_user);
+                $nama = $user->namapt;
+            } else {
+                $user = $this->General->get_akun($kode_user);
+                $nama = $user->NAMA;
+            }
+            $data['nama'] = $nama;
+            $data['payment']              = $payment;
+            $data['CI']               = $this;
+            $data['module']           = "payment";
+            $data['fileview']         = "mail_payment_created";
+            echo Modules::run('template/mail_template', $data);
+        }
+    }
+
+    public function send_email($kode, $param) //kode_pay //kode_trans
+    {
+        // kode 1 = payment details
+        // kode 2 = invoice
+        if ($this->role == "3") {
+            $user = $this->M_payment->get_univ_by_id($this->kode_user);
+        } else {
+            $user = $this->General->get_akun($this->kode_user);
+        }
+        if ($kode == 1) {
+            $data['to'] = $user->EMAIL;
+            $data['subject'] = "Selesaikan Pembayaran - Pendaftaran LO-KREATIF";
+            $data['message'] = file_get_contents(base_url() . "payment/mail_payment_created/" . $param . "/" . $user->KODE_USER . "/" . $this->role);
+            $this->mailer->send($data);
+        }
     }
 }
