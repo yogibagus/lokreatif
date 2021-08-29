@@ -155,6 +155,11 @@
                   </a>
                 </li>
                 <li class="nav-item">
+                  <a class="nav-link <?= ($this->uri->segment(2) == "riwayat-pembayaran" ? "active" : "") ?>" href="<?= site_url('peserta/riwayat-pembayaran') ?>">
+                    <i class="fas fa-credit-card nav-icon"></i> Riwayat pembayaran
+                  </a>
+                </li>
+                <li class="nav-item">
                   <a class="nav-link <?= ($this->uri->segment(1) == "refund" ? "active" : "") ?>" href="<?= site_url('refund') ?>">
                     <i class="fas fa-users nav-icon"></i> Refund
                   </a>

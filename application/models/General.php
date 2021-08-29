@@ -185,17 +185,17 @@ class General extends CI_Model {
     public function cek_dibayarinUniv($kode, $payer){
         $query = $this->db->query("SELECT * FROM tb_order WHERE KODE_PENDAFTARAN = '$kode' AND KODE_TRANS IN (SELECT KODE_TRANS FROM tb_transaksi WHERE KODE_USER_BILL != '$payer' AND ROLE_USER_BILL = 3)");
         if ($query->num_rows() > 0) {
-            // sudah dibayari universitas
+            // sudah dibayari PTS
             return true;
         }else{
-            // belum dibayari universitas
+            // belum dibayari PTS
             return false;
         }
     }
 
-    // - cek sudah melakukan proses PEMBAYARAN
+    // - cek sudah melakukan proses PEMBAYARAN [REDUNDANT]
     public function cek_sudahBayar($kode){
-        $query = $this->db->query("SELECT * FROM tb_order WHERE KODE_PENDAFTARAN = '$kode' AND KODE_TRANS IN (SELECT KODE_TRANS FROM tb_transaksi)");
+        $query = $this->db->query("SELECT * FROM tb_order WHERE KODE_PENDAFTARAN = '$kode' AND KODE_TRANS IN (SELECT KODE_TRANS FROM tb_transaksi WHERE STAT_BAYAR > 0)");
         if ($query->num_rows() > 0) {
             // sudah melakukan proses pembayaran
             return true;
@@ -207,12 +207,24 @@ class General extends CI_Model {
 
     // - cek status PEMBAYARAN
     public function cek_statBayar($kode){
-        $query = $this->db->query("SELECT * FROM tb_order WHERE KODE_PENDAFTARAN = '$kode' AND KODE_TRANS IN (SELECT KODE_TRANS FROM tb_transaksi WHERE STAT_BAYAR = 2)");
+        $query = $this->db->query("SELECT * FROM tb_order WHERE KODE_PENDAFTARAN = '$kode' AND KODE_TRANS IN (SELECT KODE_TRANS FROM tb_transaksi WHERE STAT_BAYAR = 3)");
         if ($query->num_rows() > 0) {
             // sudah membayar biaya pendaftaran
             return true;
         }else{
             // belum membayar biaya pendaftaran
+            return false;
+        }
+    }
+
+    // - cek PEMBAYARAN FAILED
+    public function cek_statBayarFailed($kode){
+        $query = $this->db->query("SELECT * FROM tb_order WHERE KODE_PENDAFTARAN = '$kode' AND KODE_TRANS IN (SELECT KODE_TRANS FROM tb_transaksi WHERE STAT_BAYAR = 4)");
+        if ($query->num_rows() > 0) {
+            // Pembayaran gagal
+            return true;
+        }else{
+            // ?
             return false;
         }
     }
@@ -255,7 +267,7 @@ class General extends CI_Model {
     }
 
     public function count_jmlRefund($KODE_TRANS){
-        $query= $this->db->query("SELECT (TOT_BAYAR - (SELECT SUM(BIAYA_TIM) FROM tb_order WHERE KODE_TRANS = 'TRAN_90fb17')) AS JML_REFUND FROM tb_transaksi WHERE KODE_TRANS = '$KODE_TRANS'");
+        $query= $this->db->query("SELECT (TOT_BAYAR - (SELECT SUM(BIAYA_TIM) FROM tb_order WHERE KODE_TRANS = '$KODE_TRANS')) AS JML_REFUND FROM tb_transaksi WHERE KODE_TRANS = '$KODE_TRANS'");
         return $query->row();
     }
 

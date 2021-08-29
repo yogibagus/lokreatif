@@ -24,23 +24,23 @@
           <!-- Dashboards -->
 
           <li class="nav-item ">
-            <a class="js-nav-tooltip-link nav-link <?= ($this->uri->segment(1) == 'universitas' ? 'active' : '') ?>" href="<?= site_url('universitas') ?>" title="Dashboard" data-placement="left">
+            <a class="js-nav-tooltip-link nav-link <?= ($this->uri->segment(1) == 'pts' ? 'active' : '') ?>" href="<?= site_url('pts') ?>" title="Dashboard" data-placement="left">
               <i class="tio-dashboard-vs-outlined nav-icon"></i>
               <span class="navbar-vertical-aside-mini-mode-hidden-elements text-truncate">Dashboard</span>
             </a>
           </li>
           
           <li class="nav-item ">
-            <a class="js-nav-tooltip-link nav-link <?= ($this->uri->segment(1) == 'transaksi-universitas' ? 'active' : '') ?>" href="<?= site_url('transaksi-universitas') ?>" title="Transaksi" data-placement="left">
+            <a class="js-nav-tooltip-link nav-link <?= ($this->uri->segment(1) == 'transaksi-pts' ? 'active' : '') ?>" href="<?= site_url('transaksi-pts') ?>" title="Transaksi" data-placement="left">
               <i class="tio-receipt-outlined nav-icon"></i>
               <span class="navbar-vertical-aside-mini-mode-hidden-elements text-truncate">Transaksi</span>
             </a>
           </li>
 
           <li class="nav-item ">
-            <a class="js-nav-tooltip-link nav-link <?= ($this->uri->segment(1) == 'pengaturan-universitas' ? 'active' : '') ?>" href="<?= site_url('pengaturan-universitas') ?>" title="Pengaturan Universitas" data-placement="left">
+            <a class="js-nav-tooltip-link nav-link <?= ($this->uri->segment(1) == 'pengaturan-pts' ? 'active' : '') ?>" href="<?= site_url('pengaturan-pts') ?>" title="Pengaturan" data-placement="left">
               <i class="tio-settings-outlined nav-icon"></i>
-              <span class="navbar-vertical-aside-mini-mode-hidden-elements text-truncate">Pengaturan Universitas</span>
+              <span class="navbar-vertical-aside-mini-mode-hidden-elements text-truncate">Pengaturan</span>
             </a>
           </li>
           <?php elseif($this->session->userdata('role') == 0):?>

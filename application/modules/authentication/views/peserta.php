@@ -1,11 +1,6 @@
 <!-- Login Form -->
 <div class="container space-2 space-lg-3">
   <form class="js-validate w-md-75 w-lg-50 mx-md-auto" action="<?= site_url('authentication/daftar_peserta') ?>" method="post">
-    <?php if ($email != null) :?>
-      <input type="hidden" name="KOLABOLATOR" value="true">
-    <?php else:?>
-      <input type="hidden" name="KOLABOLATOR" value="false">
-    <?php endif;?>
     <!-- Title -->
     <div class="mb-5 mb-md-7">
       <h1 class="h2 mb-0">Gabung sekarang!</h1>

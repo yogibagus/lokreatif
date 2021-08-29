@@ -136,6 +136,21 @@ class M_peserta extends CI_Model {
 
 	}
 
+	// PAYMENT
+
+	function get_paymentList($KODE_TRANS){
+		$this->db->select('*');
+		$this->db->from('tb_payment');
+		$this->db->where('KODE_TRANS', $KODE_TRANS);
+		$this->db->order_by('STAT_PAY', 'ASC');
+		$query = $this->db->get();
+		if ($query->num_rows() > 0) {
+			return $query->result();
+		}else{
+			return false;
+		}
+	}
+
 
 	// PROSES
 

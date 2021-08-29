@@ -81,8 +81,8 @@
                   <th>Tim</th>
                   <th>Ketua</th>
                   <th>Bidang Lomba</th>
-                  <th>Status</th>
                   <th>Pembayaran</th>
+                  <th>Status</th>
                 </tr>
               </thead>
 
@@ -106,7 +106,7 @@
                     }else if($item->ROLE_USER_BILL == "1"){
                       $pembayaran = '<span class="badge bg-soft-dark text-dark">Mandiri</span>';
                     }else if($item->ROLE_USER_BILL == "3"){
-                      $pembayaran = '<span class="badge bg-soft-info text-info">Universitas</span>';
+                      $pembayaran = '<span class="badge bg-soft-info text-info">Kolektif PTS</span>';
                     }
 
                     if($item->STAT_BAYAR == null){
@@ -132,8 +132,8 @@
                         <td>'.$item->NAMA_TIM.'</td>
                         <td>'.$item->NAMA.'</td>
                         <td>'.$item->BIDANG_LOMBA.'</td>
-                        <td>'.$status.'</td>
                         <td>'.$pembayaran.'</td>
+                        <td>'.$status.'</td>
                       </tr>
                     ';
                   }
@@ -164,7 +164,7 @@
 
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
-                    <form action="<?= site_url('universitas/order') ?>" method="post">
+                    <form action="<?= site_url('pts/order') ?>" method="post">
                         <input type="hidden" id="mdlBayarMulti_itemId" name="KODE_PENDAFTARAN" />
                         <input type="hidden" id="" name="TOTAL_TIM" value="<?= $allTim?>" />
                         <button type="submit" class="btn btn-success">Bayar</button>
