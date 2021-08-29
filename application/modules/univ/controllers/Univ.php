@@ -82,6 +82,11 @@ class Univ extends MX_Controller {
 		$kodept						= $this->M_univ->get_kodept($this->session->userdata("kode_user"))->kodept;
 		$data['transaksi']			= $this->M_univ->get_transaksi($kodept);
 
+		foreach ($data['transaksi'] as $item) {
+			$data['payment'][$item->KODE_TRANS] = $this->M_univ->get_payment($item->KODE_TRANS);
+		}
+
+
 		$data['CI']					= $this;
 
 		$data['module'] 			= "univ";
