@@ -6,15 +6,7 @@
       </div>
       <!-- Table -->
       <div class="card-body px-0 pb-0">
-      <a class="btn btn-primary" data-bs-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">
-        Link with href
-      </a>
-      <div class="collapse" id="collapseExample">
-        <div class="card card-body">
-          Some placeholder content for the collapse component. This panel is hidden by default but revealed when the user activates the relevant trigger.
-        </div>
-      </div>
-        <div class="table-responsive datatable-custom">
+        <div class="table-responsive datatable-custom" style="padding-bottom: 25px;">
           <table id="datatable" class="table table-lg table-borderless table-thead-bordered table-nowrap table-align-middle card-table"
           data-hs-datatables-options='{
             "columnDefs": [{
@@ -32,7 +24,7 @@
             "isShowPaging": false,
             "pagination": "datatablePagination"
           }'>
-          <thead class="thead-light">
+          <thead class="thead-light" style="padding-top: 15px;">
             <tr>
               <th>Kode Transaksi</th>
               <th>Tanggal</th>
@@ -64,7 +56,7 @@
                   ';
                 }else{
                   $btnRefund = '
-                    <a href="'.site_url('refund').'" class="btn btn-xs btn-secondary disabled">
+                    <a href="#" class="btn btn-xs btn-secondary disabled">
                       <i class="tio-credit-card-add"></i>
                       Tidak Ada Refund
                     </a>
@@ -73,43 +65,64 @@
 
                 echo '
                   <tr>
-                    <td><a href="'.site_url('payment/checkout/'.$item->KODE_TRANS).'">'.$item->KODE_TRANS.'</a></td>
+                    <td><a href="'.site_url('payment/checkout/'.$item->KODE_TRANS).'" target="_blank">'.$item->KODE_TRANS.'</a></td>
                     <td>'.date_format($date, 'd M Y').'</td>
                     <td>'.$status.'</td>
                     <td>
-                      <a href="#" data-toggle="collapse" data-target="#demo1" class="accordion-toggle btn btn-xs btn-info">
+                      <a href="#" data-toggle="collapse" data-target="#'.$item->KODE_TRANS.'" class="accordion-toggle btn btn-xs btn-info">
                         <i class="tio-info-outined"></i>
-                        History Pembayaran
+                        Riwayat Pembayaran
                       </a>
                       '.$btnRefund.'
                     </td>
                   </tr>
-                  <tr class="hiddenRow">
-                    <td colspan="12">
-                      <div class="accordian-body collapse" id="demo1">
-                          <!-- List Group -->
-                          <ul class="list-group">
-                            <li class="list-group-item">
-                              <div class="row">
-                                <div class="col-4">Tokek</div>
-                                <div class="col-4">Kii</div>
-                                <div class="col-4">Okee</div>
-                              </div>
-                            </li>
-                            <li class="list-group-item">
-                              <i class="bi-person list-group-icon"></i> Profile
-                            </li>
-                            <li class="list-group-item">
-                              <i class="bi-list-task list-group-icon"></i> Tasks
-                            </li>
-                            <li class="list-group-item">
-                              <i class="bi-layers list-group-icon"></i> Projects
-                            </li>
-                            <li class="list-group-item">
-                              <i class="bi-people list-group-icon"></i> Members
-                            </li>
-                          </ul>
-                          <!-- End List Group -->
+                  <tr>
+                    <td colspan="12" style="padding-top: 0 !important;padding-bottom: 0 !important;">
+                      <div class="accordian-body collapse" id="'.$item->KODE_TRANS.'">
+                        <div class="card card-body">
+                          <h4 style="text-align: center;margin-top: 25px;margin-bottom: 25px;">Riwayat Pembayaran '.$item->KODE_TRANS.'</h4>
+                          <div class="table-responsive datatable-custom">
+                            <table id="datatable" class="table table-lg table-borderless table-thead-bordered table-nowrap table-align-middle card-table">
+                              <thead class="thead-light">
+                                <th>Tanggal Transaksi</th>
+                                <th>Tanggal Expired</th>
+                                <th>Metode</th>
+                                <th>Status</th>
+                                <th>Aksi</th>
+                              </thead>
+                              <tbody>
+                              ';
+                              foreach ($payment[$item->KODE_TRANS] as $item2) {
+                                $dateTrans = date_create($item2->CREATED_TIME);
+                                $dateExp   = date_create($item2->EXP_TIME);
+
+                                if($item2->STAT_PAY == "2"){
+                                  $status = '<span class="badge bg-warning text-white">Proses</span>';
+                                }else if($item2->STAT_PAY == "3"){
+                                  $status = '<span class="badge bg-primary text-white">Terbayar</span>';
+                                }else if($item2->STAT_PAY == "4"){
+                                  $status = '<span class="badge bg-danger text-white">Gagal</span>';
+                                }else if($item2->STAT_PAY == "5"){
+                                  $status   = '<span class="badge bg-success text-white">Refund</span>';
+                                }
+                                echo '
+                                  <tr>
+                                    <td>'.date_format($dateTrans, 'd M Y H:i:s').'</td>
+                                    <td>'.date_format($dateExp, 'd M Y H:i:s').'</td>
+                                    <td><img style="max-width: 50px;" class="img-fluid w-90 fit-image" src="'.$this->transaksi->get_imageMethodPayment($item2->METHOD).'"></td>
+                                    <td>'.$status.'</td>
+                                    <td>
+                                      <a href="'.site_url('payment/details/'.$item2->KODE_PAY).'" class="btn btn-xs btn-info" target="_blank">
+                                        <i class="tio-shopping-basket-outlined"></i>
+                                        Checkout
+                                      </a>
+                                    </td>
+                                  </tr>
+                                ';
+                              }
+                              echo '
+                              </tbody>
+                            </table>
                         </div>
                     </td>
                   </tr>

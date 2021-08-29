@@ -66,7 +66,6 @@ class M_univ extends CI_Model {
 			bl.BIDANG_LOMBA ,
 			to2.KODE_TRANS ,
 			to2.BIAYA_TIM ,
-			tt.ORDER_ID ,
 			tt.TOT_BAYAR ,
 			tt.ROLE_USER_BILL,
 			tt.STAT_BAYAR 
@@ -79,6 +78,10 @@ class M_univ extends CI_Model {
 		WHERE pk.ASAL_PTS = $kodept
 			");
 		return $query->result();
+	}
+
+	public function get_payment($kodeTrans){
+		return $this->db->order_by('CREATED_TIME', 'desc')->get_where('tb_payment', ['KODE_TRANS' => $kodeTrans])->result();
 	}
 
 	public function get_allTim($kodept){
@@ -106,6 +109,8 @@ class M_univ extends CI_Model {
 	public function insert_order($param){
 		$this->db->insert_batch('tb_order', $param);
 	}
+
+	
 
 	// public function count_alltim
 
