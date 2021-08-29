@@ -15,11 +15,13 @@ class M_refund extends CI_Model {
 		$KODE_REFUND 	= $this->input->post('KODE_REFUND');
 		$JML_REFUND 	= $this->input->post('JML_REFUND');
 		$VIA 			= $this->input->post('VIA');
+		$AN_VIA 		= $this->input->post('AN_VIA');
 		$NO_VIA			= $this->input->post('NO_VIA');
 
 		$data = array(
 			'JML_REFUND' 	=> $JML_REFUND,
 			'VIA' 			=> $VIA,
+			'AN_VIA' 		=> $AN_VIA,
 			'NO_VIA' 		=> $NO_VIA,
 			'STAT_REFUND'	=> 1
 		);

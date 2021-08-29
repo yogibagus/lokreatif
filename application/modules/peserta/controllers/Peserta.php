@@ -5,6 +5,7 @@ class Peserta extends MX_Controller {
 	public function __construct(){
 		parent::__construct();
 		$this->load->model('M_peserta');
+        $this->load->model('payment/M_payment');
 		$this->load->library(['Transaksi']);
 
 		if ($this->session->userdata('logged_in') == FALSE || !$this->session->userdata('logged_in')){
@@ -153,9 +154,12 @@ class Peserta extends MX_Controller {
 			$dataPeserta 			= $this->General->get_detailDaftarKompetisi($this->session->userdata("kode_user"));
 
 			$data['dataPendaftaran']= $dataPeserta;
+
 			$data['dibayarinUniv']	= $this->General->cek_dibayarinUniv($dataPeserta->KODE_PENDAFTARAN, $this->session->userdata("kode_user"));
+			$data['refund']			= $this->General->get_dataRefund($this->session->userdata("kode_user"));
 			$data['sudahBayar']		= $this->General->cek_sudahBayar($dataPeserta->KODE_PENDAFTARAN);
 			$data['statBayar']		= $this->General->cek_statBayar($dataPeserta->KODE_PENDAFTARAN);
+			$data['bayarGagal']		= $this->General->cek_statBayarFailed($dataPeserta->KODE_PENDAFTARAN);
 			$data['totBayar']		= $this->General->get_biayaDaftar($dataPeserta->JML_TIM);
 			$data['dataAnggota']	= $this->General->get_dataAnggota($dataPeserta->KODE_PENDAFTARAN);
 			$data['dataKetua']		= $this->General->get_dataKetua($dataPeserta->KODE_PENDAFTARAN);
@@ -190,37 +194,66 @@ class Peserta extends MX_Controller {
 		}
 	}
 
+	public function daftar_payment(){
+		if ($this->M_peserta->cek_daftarKompetisi($this->session->userdata("kode_user")) == false) {
+			$this->session->set_flashdata('error', "Anda belum melakukan pendaftaran kompetisi !!");
+			redirect($this->agent->referrer());
+		}else{
+			$dataPeserta 			= $this->General->get_detailDaftarKompetisi($this->session->userdata("kode_user"));
+			$KODE_TRANS				= $this->General->get_kodeTrans($dataPeserta->KODE_PENDAFTARAN);
+			if ($this->M_peserta->get_paymentList($KODE_TRANS) == false) {
+				$this->session->set_flashdata('error', "Anda tidak memiliki riwayat payment/pembayaran !!");
+				redirect($this->agent->referrer());
+			}else{
+				$data['dataPendaftaran']= $dataPeserta;
+				$data['sudahBayar']		= $this->General->cek_sudahBayar($dataPeserta->KODE_PENDAFTARAN);
+				$data['payments']		= $this->M_peserta->get_paymentList($KODE_TRANS);
+				
+				$data['CI']				= $this;
+
+				$data['module'] 		= "peserta";
+				$data['fileview'] 		= "payment_list";
+				echo Modules::run('template/frontend_user', $data);
+			}
+		}
+	}
+
 	public function berkas_kompetisi(){
-		$kode 	= 'lokreatif';
-		$tabel	= 'pendaftaran_kompetisi';
-		if ($this->General->cek_pendaftaranStatus() != false) {
-			if ($this->General->get_bidangLomba() != false) {
-				if ($this->General->get_formMeta($kode) != false) {
-					$dataPeserta 			= $this->General->get_detailDaftarKompetisi($this->session->userdata("kode_user"));
-					$data['dataPendaftaran']= $dataPeserta;
-					$data['kegiatan']		= $this->General->get_kegiatan($kode);
-					$data['formulir']		= $this->General->get_formMeta($kode);
-					$data['bidang_lomba']	= $this->General->get_bidangLomba();
-					$data['pts']			= $this->General->get_pts();
+		if ($this->M_peserta->cek_daftarKompetisi($this->session->userdata("kode_user")) == false) {
+			$this->session->set_flashdata('error', "Anda belum melakukan pendaftaran kompetisi !!");
+			redirect($this->agent->referrer());
+		}else{
+			$kode 	= 'lokreatif';
+			$tabel	= 'pendaftaran_kompetisi';
+			if ($this->General->cek_pendaftaranStatus() != false) {
+				if ($this->General->get_bidangLomba() != false) {
+					if ($this->General->get_formMeta($kode) != false) {
+						$dataPeserta 			= $this->General->get_detailDaftarKompetisi($this->session->userdata("kode_user"));
+						$data['dataPendaftaran']= $dataPeserta;
+						$data['kegiatan']		= $this->General->get_kegiatan($kode);
+						$data['formulir']		= $this->General->get_formMeta($kode);
+						$data['bidang_lomba']	= $this->General->get_bidangLomba();
+						$data['pts']			= $this->General->get_pts();
 
-					$data['KODE_KEGIATAN']	= $kode;
+						$data['KODE_KEGIATAN']	= $kode;
 
-					$data['CI']			= $this;
+						$data['CI']			= $this;
 
-					$data['module'] 	= "peserta";
-					$data['fileview'] 	= "pendaftaran_berkas";
-					echo Modules::run('template/frontend_user', $data);
+						$data['module'] 	= "peserta";
+						$data['fileview'] 	= "pendaftaran_berkas";
+						echo Modules::run('template/frontend_user', $data);
+					}else{
+						$this->session->set_flashdata('error', "Mohon maaf formulir pendaftaran sedang diatur, harap tunggu beberapa saat !!");
+						redirect($this->agent->referrer());
+					}
 				}else{
-					$this->session->set_flashdata('error', "Mohon maaf formulir pendaftaran sedang diatur, harap tunggu beberapa saat !!");
+					$this->session->set_flashdata('error', "Mohon maaf bekum ada bidang lomba yang dibuka, harap tunggu beberapa saat !!");
 					redirect($this->agent->referrer());
 				}
 			}else{
-				$this->session->set_flashdata('error', "Mohon maaf bekum ada bidang lomba yang dibuka, harap tunggu beberapa saat !!");
+				$this->session->set_flashdata('error', "Pendaftaran belum dibuka !!");
 				redirect($this->agent->referrer());
 			}
-		}else{
-			$this->session->set_flashdata('error', "Pendaftaran belum dibuka !!");
-			redirect($this->agent->referrer());
 		}
 	}
 
@@ -387,36 +420,6 @@ class Peserta extends MX_Controller {
 		}
 	}
 
-	function bayar_pendaftaran(){
-
-		$KODE_PENDAFTARAN	= $this->input->post('KODE_PENDAFTARAN');
-
-		// CHECK IF HAVE PENDING TRANSACTION
-		if ($this->General->cek_sudahBayar($KODE_PENDAFTARAN) == true) {
-
-			// GET KODE_TRANS FROM DB WHEN HAVE PENDING TRANSACTION
-			$KODE_TRANS			= $this->General->get_kodeTrans($KODE_PENDAFTARAN);
-
-			// REDIRECT WHEN HAVE PENDING TRANSACTION
-			$this->session->set_flashdata('success', "Anda memiliki pembayaran yang belum diselesaikan !!");
-			redirect(site_url('payment/checkout/'.$KODE_TRANS));
-		}else{
-
-			// GENERATE KODE_TRANS
-			$KODE_TRANS			= $this->transaksi->gen_kodeTrans();
-
-			// INSERT INTO DB WHEN DONT HAVE ANY PENDING TRANSACTION
-			if ($this->M_peserta->bayar_pendaftaran($KODE_TRANS) == TRUE) {
-				$this->General->log_aktivitas($this->session->userdata('kode_user'), $this->session->userdata('kode_user'), 15);
-				$this->session->set_flashdata('success', "Harap lanjutkan proses pembayaran !!");
-				redirect(site_url('payment/checkout/'.$KODE_TRANS));
-			}else {
-				$this->session->set_flashdata('error', "Terjadi kesalahan saat melakukan proses pembayaran!!");
-				redirect($this->agent->referrer());
-			}
-		}
-	}
-
 	function update_berkas(){
 
 		// STATIC FORM DEFAULT
@@ -466,7 +469,7 @@ class Peserta extends MX_Controller {
 
 				$config['upload_path']          = $folder;
 				$config['allowed_types']        = '*';
-				$config['max_size']             = 1000000;
+				$config['max_size']             = 10*1024;
 				$config['overwrite']            = true;
 
 				$this->load->library('upload', $config);
@@ -510,6 +513,36 @@ class Peserta extends MX_Controller {
 			redirect($this->agent->referrer());
 		}
 
+	}
+
+	function bayar_pendaftaran(){
+
+		$KODE_PENDAFTARAN	= $this->input->post('KODE_PENDAFTARAN');
+
+		// CHECK IF HAVE PENDING TRANSACTION
+		if ($this->General->cek_sudahBayar($KODE_PENDAFTARAN) == true) {
+
+			// GET KODE_TRANS FROM DB WHEN HAVE PENDING TRANSACTION
+			$KODE_TRANS			= $this->General->get_kodeTrans($KODE_PENDAFTARAN);
+
+			// REDIRECT WHEN HAVE PENDING TRANSACTION
+			$this->session->set_flashdata('success', "Anda memiliki pembayaran yang belum diselesaikan !!");
+			redirect(site_url('payment/checkout/'.$KODE_TRANS));
+		}else{
+
+			// GENERATE KODE_TRANS
+			$KODE_TRANS			= $this->transaksi->gen_kodeTrans();
+
+			// INSERT INTO DB WHEN DONT HAVE ANY PENDING TRANSACTION
+			if ($this->M_peserta->bayar_pendaftaran($KODE_TRANS) == TRUE) {
+				$this->General->log_aktivitas($this->session->userdata('kode_user'), $this->session->userdata('kode_user'), 15);
+				$this->session->set_flashdata('success', "Harap lanjutkan proses pembayaran !!");
+				redirect(site_url('payment/checkout/'.$KODE_TRANS));
+			}else {
+				$this->session->set_flashdata('error', "Terjadi kesalahan saat melakukan proses pembayaran!!");
+				redirect($this->agent->referrer());
+			}
+		}
 	}
 
 

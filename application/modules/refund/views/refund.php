@@ -54,7 +54,7 @@
           </div>
         </div>
         <div class="media align-items-center mb-3">
-          <span class="d-block font-size-1 mr-3">Total Bayar sebelumnya</span>
+          <span class="d-block font-size-1 mr-3">Total Bayar sebelumnya <span class="font-size-1 text-danger text-highlight-danger">- Fee <i class="fa fa-question-circle" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="Dikurangi biaya Fee 1.5% E-Wallet dan -4000 Virtual Account"></i></span></span>
           <div class="media-body text-right">
             <span class="text-dark font-weight-bold">Rp.<?= number_format($dataRefund->TOT_BAYAR,0,",",".");?></span>
           </div>
@@ -62,7 +62,7 @@
         <div class="media align-items-center bg-soft-secondary mb-3">
           <span class="d-block font-size-1 mr-3">Jumlah Refund</span>
           <div class="media-body text-right">
-            <span class="text-dark font-weight-bold">Rp.<?= number_format($biayaRefund->JML_REFUND,0,",",".");?></span>
+            <span class="text-dark font-weight-bold">Rp.<?= number_format(round($biayaRefund->JML_REFUND, -4),0,",",".");?></span>
           </div>
         </div>
         <div class="media align-items-center">
@@ -97,13 +97,13 @@
             </div>
             <form action="<?= site_url('refund/atur_via');?>" method="POST">
               <input type="hidden" name="KODE_REFUND" value="<?= $dataRefund->KODE_REFUND;?>">
-              <input type="hidden" name="JML_REFUND" value="<?= $biayaRefund->JML_REFUND;?>">
+              <input type="hidden" name="JML_REFUND" value="<?= round($biayaRefund->JML_REFUND, -4);?>">
               <div class="modal-body">
                 <div class="alert alert-soft-info">
                   <p class="mb-0"><b>VIA</b>: merupakan melalui media apa anda ingin kami mengirimkan dana refund anda, sedangkan <br><b>NO VIA</b>: merupakan Nomor sesuai pilihan VIA anda.</p>
                 </div>
                 <div class="form-group">
-                  <label class="input-label">Pilih VIA</label>
+                  <label class="input-label">Pilih VIA <small class="text-danger">*</small></label>
                   <select class="js-custom-select custom-select" size="1" name="VIA" 
                   data-hs-select2-options='{
                   "minimumResultsForSearch": "Infinity"
@@ -125,7 +125,11 @@
                 </select>
               </div>
               <div class="form-group">
-                <label class="input-label">Masukkan NO VIA</label>
+                <label class="input-label">Masukkan Atas Nama <small class="text-muted">(jika diperlukan)</small></label>
+                <input type="text" name="NO_VIA" class="form-control form-control-sm" value="<?= $dataRefund->NO_VIA;?>">
+              </div>
+              <div class="form-group">
+                <label class="input-label">Masukkan NO VIA <small class="text-danger">*</small></label>
                 <input type="text" name="NO_VIA" class="form-control form-control-sm" value="<?= $dataRefund->NO_VIA;?>" required>
               </div>
             </div>
