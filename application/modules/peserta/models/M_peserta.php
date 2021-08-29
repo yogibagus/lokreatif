@@ -142,7 +142,7 @@ class M_peserta extends CI_Model {
 		$this->db->select('*');
 		$this->db->from('tb_payment');
 		$this->db->where('KODE_TRANS', $KODE_TRANS);
-		$this->db->order_by('STAT_PAY', 'ASC');
+		$this->db->order_by('CREATED_TIME', 'DESC');
 		$query = $this->db->get();
 		if ($query->num_rows() > 0) {
 			return $query->result();
