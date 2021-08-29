@@ -8,12 +8,19 @@
                     <a name="" id="" class="btn btn-primary btn-xs" href="#" role="button"><i class="fa fa-info-circle" aria-hidden="true"></i> Pelajari</a>
                 </div>
                 <div class="card-body">
-                    <?php if ($payment_history->belum_selesai >= 0) { ?>
-                        <div class="alert alert-soft-info text-dark" role="alert">
-                            <strong><i class="fa fa-info-circle" aria-hidden="true"></i> Hei! </strong>
-                            Anda memiliki <strong><?= $payment_history->belum_selesai ?></strong> history pembayaran yang belum anda selesaikan. <a href="#">Lanjutkan pembayaran sebelumnya.</a>
-                        </div>
-                    <?php } else { ?>
+                    <?php if ($this->session->userdata('role') == 1) { ?>
+                        <?php if ($payment_history->belum_selesai >= 0) { ?>
+                            <div class="alert alert-soft-info text-dark" role="alert">
+                                <strong><i class="fa fa-info-circle" aria-hidden="true"></i> Hei! </strong>
+                                Anda memiliki <strong><?= $payment_history->belum_selesai ?></strong> history pembayaran yang belum anda selesaikan. <a href="#">Lanjutkan pembayaran sebelumnya.</a>
+                            </div>
+                        <?php } else { ?>
+                            <div class="alert alert-secondary" role="alert">
+                                <strong><i class="fa fa-info-circle" aria-hidden="true"></i></strong>
+                                Segera lakukan pembayaran menggunakan metode pembayaran yang telah tersedia.
+                            </div>
+                        <?php } ?>
+                    <?php } else if ($this->session->userdata('role') == 3) { ?>
                         <div class="alert alert-secondary" role="alert">
                             <strong><i class="fa fa-info-circle" aria-hidden="true"></i></strong>
                             Segera lakukan pembayaran menggunakan metode pembayaran yang telah tersedia.
@@ -154,7 +161,7 @@
                                     <!-- Alert -->
                                     <?php if ($is_mobile) { ?>
                                         <div id="shopeepay-alert" class="alert alert-warning text-center rounded-0 mt-3" role="alert">
-                                            <strong><i class="fa fa-info-circle" aria-hidden="true"></i></strong> Anda terdeteksi menggunakan perangkat <strong>Mobile</strong>, pembayaran melalui <strong>ShoopePay</strong> akan diarahkan ke <strong>Aplikasi Shopeepay</strong> secara langsung. <a href="#">Pelajari selengkapnya.</a>
+                                            <strong><i class="fa fa-info-circle" aria-hidden="true"></i></strong> Anda terdeteksi menggunakan perangkat <strong>Mobile</strong>, pembayaran melalui <strong>ShoopePay</strong> akan diarahkan ke <strong>Aplikasi Shopee</strong> secara langsung. <a href="#">Pelajari selengkapnya.</a>
                                         </div>
                                     <?php } ?>
                                     <!-- End Alert -->
