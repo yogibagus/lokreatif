@@ -217,6 +217,7 @@ class Peserta extends MX_Controller
 				$data['dataPendaftaran'] = $dataPeserta;
 				$data['sudahBayar']		= $this->General->cek_statBayar($dataPeserta->KODE_PENDAFTARAN);
 				$data['payments']		= $this->M_peserta->get_paymentList($KODE_TRANS);
+				$data['KODE_TRANS']		= $KODE_TRANS;
 
 				$data['CI']				= $this;
 
