@@ -81,8 +81,8 @@
                   <th>Tim</th>
                   <th>Ketua</th>
                   <th>Bidang Lomba</th>
-                  <th>Status</th>
                   <th>Pembayaran</th>
+                  <th>Status</th>
                 </tr>
               </thead>
 
@@ -132,8 +132,8 @@
                         <td>'.$item->NAMA_TIM.'</td>
                         <td>'.$item->NAMA.'</td>
                         <td>'.$item->BIDANG_LOMBA.'</td>
-                        <td>'.$status.'</td>
                         <td>'.$pembayaran.'</td>
+                        <td>'.$status.'</td>
                       </tr>
                     ';
                   }
