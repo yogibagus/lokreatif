@@ -36,13 +36,16 @@ class Payment extends MX_Controller
         if ($transaksi != false) {
             // get data pendaftaran
             $dataPeserta = $this->General->get_detailDaftarKompetisi($this->kode_user);
-            $is_paid_by_univ = $this->General->cek_dibayarinUniv($dataPeserta->KODE_PENDAFTARAN, $this->kode_user);
+            if ($this->role == 1) {
+                $is_paid_by_univ = $this->General->cek_dibayarinUniv($dataPeserta->KODE_PENDAFTARAN, $this->kode_user);
+            } else {
+                $is_paid_by_univ = false;
+            }
             // check already paid by univ
             if ($is_paid_by_univ == false) {
                 $data['kode_trans'] = $transaksi->KODE_TRANS;
                 $data['total_bayar'] = $this->M_payment->get_total_bayar($transaksi->KODE_TRANS);
                 $data['total_team'] = $this->M_payment->get_total_team_and_biaya($transaksi->KODE_TRANS);
-                $data['dataPendaftaran'] = $dataPeserta;
                 $data['tim']        = $this->M_payment->get_tim($transaksi->KODE_TRANS);
                 $data['payment_history'] = $this->M_payment->count_payment_by_kode_trans($transaksi->KODE_TRANS);
 
@@ -127,73 +130,71 @@ class Payment extends MX_Controller
         $kode_trans = htmlspecialchars($this->input->post('kode_trans'));
         // get last payment
         $last_payment = $this->M_payment->get_last_payment($kode_trans);
-        if ($last_payment != false) {
+        // create delay time
+        if ($last_payment->CREATED_TIME == null) {
+            $time_limit = strtotime("01-01-90 00:00:00");
+        } else {
             $created_time = $last_payment->CREATED_TIME;
-            $time_limit = strtotime("$created_time + 1 minute"); // can create payment before reach the limit time
-            $time_limit = date('Y-m-d H:i:s', $time_limit);
-            // check if now is more than time limit
-            if (date("Y-m-d H:i:s") > $time_limit) {
-                $name = ($this->input->post("name") != "") ? $this->input->post("name") : "";
-                $mobile = ($this->input->post("mobile") != "") ? $this->input->post("mobile") : "";
-                $mobile = preg_replace('/^(?:\+?62|0)?/', '0', $mobile);
-                $method = ($this->input->post("method") != "") ? $this->input->post("method") : "";
-                //get amount
-                $total_bayar = $this->M_payment->get_total_bayar($kode_trans);
-                $amount = (float)$total_bayar->total_bayar;
-                // get transaksi
-                $transaksi = $this->M_payment->get_transaksi_by_id($kode_trans);
-                // get total bayar
+            $time_limit = strtotime("$created_time + 1 minute");
+        }
+        $time_limit = date('Y-m-d H:i:s', $time_limit);
+        // check if now is more than time limit
+        if (date("Y-m-d H:i:s") > $time_limit) {
+            $name = ($this->input->post("name") != "") ? $this->input->post("name") : "";
+            $mobile = ($this->input->post("mobile") != "") ? $this->input->post("mobile") : "";
+            $mobile = preg_replace('/^(?:\+?62|0)?/', '0', $mobile);
+            $method = ($this->input->post("method") != "") ? $this->input->post("method") : "";
+            //get amount
+            $total_bayar = $this->M_payment->get_total_bayar($kode_trans);
+            $amount = (float)$total_bayar->total_bayar;
 
-                //split : ex VA_MANDIRI
-                $method = explode('_', trim($method));
-                if ($method[0] == "EWALLET") {
-                    $type = $method[0];
-                    $walletType = $method[1];
+            //split : ex VA_MANDIRI
+            $method = explode('_', trim($method));
+            if ($method[0] == "EWALLET") {
+                $type = $method[0];
+                $walletType = $method[1];
 
-                    // set fee EW | 1.8 %
-                    $result = (100 / 98.5) * $amount;
-                    $amount = ceil($result);
-                } else if ($method[0] == "VA") {
-                    $type = $method[0];
-                    $bankCode = $method[1];
+                // set fee EW | 1.8 %
+                $result = (100 / 98.5) * $amount;
+                $amount = ceil($result);
+            } else if ($method[0] == "VA") {
+                $type = $method[0];
+                $bankCode = $method[1];
 
-                    // set fee VA | +4000
-                    $amount = (4000 + $amount);
-                } else {
+                // set fee VA | +4000
+                $amount = (4000 + $amount);
+            } else {
+            }
+            // create order_id
+            $order_id = $this->create_order_id($amount, $kode_trans);
+
+            if ($order_id != "") {
+                if ($type == "EWALLET") {
+                    //param : orderid,$amount,$mobile,$walletType
+                    $pay = $this->durianpay->createEwalletPayment($order_id, $amount, $mobile, $walletType);
+                } elseif ($type == "VA") {
+                    //param : $orderid,$amount,$bankCode,$name
+                    $pay = $this->durianpay->createVAPayment($order_id, $amount, $bankCode, $name);
                 }
-
-                // create order_id
-                $order_id = $this->create_order_id($amount, $kode_trans);
-
-                if ($order_id != "") {
-                    if ($type == "EWALLET") {
-                        //param : orderid,$amount,$mobile,$walletType
-                        $pay = $this->durianpay->createEwalletPayment($order_id, $amount, $mobile, $walletType);
-                    } elseif ($type == "VA") {
-                        //VA
-                        //param : $orderid,$amount,$bankCode,$name
-                        $pay = $this->durianpay->createVAPayment($order_id, $amount, $bankCode, $name);
-                    }
-
-                    $kode_pay = $this->generatepay->gen_kodePay();
-                    // save payment_id
-                    $insert_data = $this->update_pay($kode_pay, $kode_trans, $method[1], $amount, $pay);
-                    if ($insert_data != false) { // if fail insert data
-                        $data_payment['TOT_BAYAR'] = $amount;
-                        $this->M_payment->update_transaksi($kode_trans, $data_payment);
-                        redirect('payment/details/' . $kode_pay);
-                    } else {
-                        $this->session->set_flashdata('error', "Failed to create payment charge");
-                        redirect($this->agent->referrer());
-                    }
+                $kode_pay = $this->generatepay->gen_kodePay();
+                // save payment_id
+                $insert_data = $this->update_pay($kode_pay, $kode_trans, $method[1], $amount, $pay);
+                if ($insert_data != false) { // if fail insert data
+                    $data_payment['TOT_BAYAR'] = $amount;
+                    //save to db
+                    $this->M_payment->update_transaksi($kode_trans, $data_payment);
+                    redirect('payment/details/' . $kode_pay);
                 } else {
-                    $this->session->set_flashdata('error', "Failed to create transaction");
+                    $this->session->set_flashdata('error', "Failed to create payment charge");
                     redirect($this->agent->referrer());
                 }
             } else {
-                $this->session->set_flashdata('error', "Anda terlalu cepat, tunggu beberapa saat.");
+                $this->session->set_flashdata('error', "Failed to create transaction");
                 redirect($this->agent->referrer());
             }
+        } else {
+            $this->session->set_flashdata('error', "Anda terlalu cepat, tunggu beberapa saat.");
+            redirect($this->agent->referrer());
         }
     }
 

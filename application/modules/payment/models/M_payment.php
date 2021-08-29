@@ -186,7 +186,7 @@ class M_payment extends CI_Model
         if ($query->num_rows() > 0) {
             return $query->row();
         } else {
-            return false;
+            return $query->row();
         }
     }
 }

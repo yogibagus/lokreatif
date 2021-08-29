@@ -112,7 +112,7 @@ if ($payment->TYPE == 1) {
                                     </div>
                                     <hr>
                                     <div class="alert alert-soft-primary" role="alert">
-                                        <strong><i class="fa fa-info-circle" aria-hidden="true"></i> </strong> Scan QR Code dibawah menggunakan Aplikasi <strong>Shopee Pay</strong> / Aplikasi <strong>E-Wallet</strong> lainnya. <a href="#" class="text-dark">Pelajari lebih lanjut.</a>
+                                        <strong><i class="fa fa-info-circle" aria-hidden="true"></i> </strong> Scan QR Code dibawah menggunakan Aplikasi <strong>Shopee</strong> / Aplikasi <strong>E-Wallet</strong> lainnya. <a href="#" class="text-dark">Pelajari lebih lanjut.</a>
                                     </div>
                                     <h3>PAYMENT METHOD</h3>
                                     <span class="badge badge-info"><?= $type ?></span><br>
@@ -133,7 +133,7 @@ if ($payment->TYPE == 1) {
                                                 </div>
                                                 <div class="modal-body">
                                                     <div class="alert alert-soft-primary" role="alert">
-                                                        <strong><i class="fa fa-info-circle" aria-hidden="true"></i> </strong> Buka Aplikasi <strong>Shopee Pay</strong> / Aplikasi <strong>E-Wallet</strong> lainnya. Scan QR Code dibawah. <a href="#" class="text-dark">Pelajari lebih lanjut.</a>
+                                                        <strong><i class="fa fa-info-circle" aria-hidden="true"></i> </strong> Buka Aplikasi <strong>Shopee</strong> / Aplikasi <strong>E-Wallet</strong> lainnya. Scan QR Code dibawah. <a href="#" class="text-dark">Pelajari lebih lanjut.</a>
                                                     </div>
                                                     <img src="<?= $payment->WEB_URL ?>" class="img-fluid img-thumbnail" alt="QR Code ShoopePay Zoom" data-toggle="modal" data-target="#qrcodezoom">
                                                 </div>
