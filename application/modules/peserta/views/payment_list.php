@@ -5,8 +5,8 @@
 	</div>
 	<div class="card-body">
 		<?php if ($sudahBayar == false) : ?>
-			<div class="alert alert-info">
-				<p class="mb-0">Anda memiliki proses pembayaran yang belum selesai, harap lanjutkan proses pembayaran anda dengan memilih salah satu riwayat pembayaran anda !!</p>
+			<div class="alert alert-light">
+				<p class="mb-0">Anda memiliki pembayaran yang belum selesai, harap lanjutkan pembayaran dengan memilih salah satu riwayat dibawah ini !! atau anda dapat memilih <i>metode pembayaran lainnya</i>. <br><a href="<?= site_url('payment/checkout/'.$KODE_TRANS);?>" class="text-primary text-highlight-primary">Pilih metode pembayaran baru</a>?</p>
 			</div>
 		<?php else : ?>
 			<div class="alert alert-success">
