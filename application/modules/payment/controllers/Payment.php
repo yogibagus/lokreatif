@@ -23,6 +23,18 @@ class Payment extends MX_Controller
 
         // disabling CRSF
         $this->config->set_item('csrf_protection', false);
+
+        // auth
+        if ($this->logged_in == FALSE || !$this->logged_in) {
+            if (!empty($_SERVER['QUERY_STRING'])) {
+                $uri = uri_string() . '?' . $_SERVER['QUERY_STRING'];
+            } else {
+                $uri = uri_string();
+            }
+            $this->session->set_userdata('redirect', $uri);
+            $this->session->set_flashdata('error', "Harap login ke akun anda, untuk melanjutkan");
+            redirect('login');
+        }
     }
 
     public function index()
