@@ -67,6 +67,11 @@ class M_template extends CI_Model {
 		return $query->row()->VALUE;
 	}
 
+	function get_termAndCondition(){
+		$query 	= $this->db->query("SELECT VALUE FROM tb_pengaturan a WHERE a.KEY = 'TERM_CONDITION'");
+		return $query->row()->VALUE;
+	}
+
 	// NOTIFIKASI & AKTIVITAS ADMIN
 
 	public function count_notifikasi($kode){

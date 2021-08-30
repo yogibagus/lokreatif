@@ -23,12 +23,6 @@
         </h1>
         <p class=""><?= $WEB_DESKRIPSI;?></p>
       </div>
-
-      <?php if($WEB_HERO_BUTTON == 1):?>
-        <div class="d-sm-flex align-items-sm-center flex-sm-wrap">
-          <a class="btn btn-primary btn-wide transition-3d-hover mb-sm-0" style="margin-top: 10px" href="<?= site_url('pendaftaran') ?>">Daftar sekarang</a>
-        </div>
-      <?php endif;?>
     </div>
   </div>
 </div>
