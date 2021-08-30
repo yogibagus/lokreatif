@@ -14,138 +14,20 @@
 </div>
 <!-- End CTA Section -->
 
-<?php if ($bidangLomba != false) : ?>
-  <?php foreach ($bidangLomba as $value) :?>
-
-    <!-- Description Section -->
-    <div class="container w-lg-80 space-2">
-      <div class="row">
-
-        <div class="col-lg-4">
-          <!-- Card -->
-          <div class="card card-bordered">
-            <div class="card-body p-5">
-              <img class="card-img-bottom" src="<?= base_url();?><?= $value->POSTER == null ? 'assets/frontend/svg/illustrations/discussion-scene.svg' : 'berkas/kompetisi/bidang-lomba/'.$value->POSTER;?>" alt="<?= $value->BIDANG_LOMBA;?>">
-            </div>
-          </div>
-          <!-- End Card -->
-        </div>
-        <div class="col-lg-8">
-          <div class="mb-8">
-            <div class="mb-3">
-              <h2><?= $value->BIDANG_LOMBA;?></h2>
-            </div>
-
-            <!-- Accordion -->
-            <div id="bidangLombaContainer<?= $value->ID_BIDANG;?>" class="accordion mb-5">
-              <!-- Card -->
-              <div class="card card-bordered shadow-none">
-                <div class="card-body card-collapse" id="keteranganLomba<?= $value->ID_BIDANG;?>">
-                  <a class="btn btn-link btn-block card-btn collapsed" href="javascript:;" role="button"
-                    data-toggle="collapse"
-                    data-target="#detailKeteranganLomba<?= $value->ID_BIDANG;?>"
-                    aria-expanded="false"
-                    aria-controls="detailKeteranganLomba<?= $value->ID_BIDANG;?>">
-                    <span class="row align-items-center">
-                      <span class="col-9">
-                        <span class="media align-items-center">
-                          <span class="w-100 max-w-6rem mr-3">
-                            <img class="img-fluid" src="<?= base_url();?>assets/frontend/svg/icons/icon-21.svg" alt="SVG">
-                          </span>
-                          <span class="media-body">
-                            <span class="d-block font-size-1 font-weight-bold">Keterangan bidang lomba</span>
-                          </span>
-                        </span>
-                      </span>
-                      <span class="col-3 text-right">
-                        <span class="card-btn-toggle">
-                          <span class="card-btn-toggle-default">+</span>
-                          <span class="card-btn-toggle-active">−</span>
-                        </span>
-                      </span>
-                    </span>
-                  </a>
-                </div>
-                <div id="detailKeteranganLomba<?= $value->ID_BIDANG;?>" class="collapse" aria-labelledby="keteranganLomba<?= $value->ID_BIDANG;?>" data-parent="#bidangLombaContainer<?= $value->ID_BIDANG;?>">
-                  <div class="card-body">
-                    <p class="small mb-0"><?= $value->KETERANGAN;?></p>
-                  </div>
-                </div>
-              </div>
-              <!-- End Card -->
-
-              <?php if($tahapPenilaian != false): foreach($tahapPenilaian as $tahap):?>
-
-              <!-- Kriteria -->
-              <div class="card card-bordered shadow-none">
-                <div class="card-body card-collapse" id="kriteriaPenilaian<?= $tahap->ID_TAHAP;?><?= $value->ID_BIDANG;?>">
-                  <a class="btn btn-link btn-block card-btn collapsed" href="javascript:;" role="button"
-                    data-toggle="collapse"
-                    data-target="#detailKriteriaPenilaian<?= $tahap->ID_TAHAP;?><?= $value->ID_BIDANG;?>"
-                    aria-expanded="false"
-                    aria-controls="detailKriteriaPenilaian<?= $tahap->ID_TAHAP;?>"<?= $value->ID_BIDANG;?>>
-                    <span class="row align-items-center">
-                      <span class="col-9">
-                        <span class="media align-items-center">
-                          <span class="w-100 max-w-6rem mr-3">
-                            <img class="img-fluid" src="<?= base_url();?>assets/frontend/svg/icons/icon-2.svg" alt="SVG">
-                          </span>
-                          <span class="media-body">
-                            <span class="d-block font-size-1 font-weight-bold">Kriteria penilaian - <?= $tahap->NAMA_TAHAP;?></span>
-                          </span>
-                        </span>
-                      </span>
-                      <span class="col-3 text-right">
-                        <span class="card-btn-toggle">
-                          <span class="card-btn-toggle-default">+</span>
-                          <span class="card-btn-toggle-active">−</span>
-                        </span>
-                      </span>
-                    </span>
-                  </a>
-                </div>
-                <div id="detailKriteriaPenilaian<?= $tahap->ID_TAHAP;?><?= $value->ID_BIDANG;?>" class="collapse" aria-labelledby="kriteriaPenilaian<?= $tahap->ID_TAHAP;?><?= $value->ID_BIDANG;?>" data-parent="#bidangLombaContainer<?= $value->ID_BIDANG;?>">
-                  <div class="card-body">
-                    <table class="table table-bordered">
-                      <thead class="thead-light">
-                        <th width="2%">No</th>
-                        <th width="95%">Kriteria Penilaian</th>
-                        <th width="3%">Bobot</th>
-                      </thead>
-                      <tbody>
-                        <?php $no = 1; $dataKriteria = $CI->M_home->get_kriteriaPenilaian($tahap->ID_TAHAP, $value->ID_BIDANG); if($dataKriteria != false): foreach($dataKriteria as $kriteria):?>
-                        <tr>
-                          <td rowspan="2"><?= $no++;?></td>
-                          <td><?= $kriteria->KRITERIA;?></td>
-                          <td rowspan="2"><?= $kriteria->BOBOT;?>%</td>
-                        </tr>
-                        <tr>
-                          <td><?= $kriteria->KETERANGAN;?></td>
-                        </tr>
-                        <?php endforeach; endif;?>
-                      </tbody>
-                    </table>
-                  </div>
-                </div>
-              </div>
-              <!-- End Kriteria -->
-
-              <?php endforeach; endif;?>
-
-            </div>
-            <!-- End Accordion -->
-          </div>
-        </div>
+<!-- Description Section -->
+<div class="container w-lg-80 space-2">
+  <div class="row">
+    <?php if ($bidangLomba != false) : ?>
+      <?php $no=1; foreach ($bidangLomba as $value) :?>
+      <div class="col-6 col-md-3 px-2 mb-3">
+        <a href="<?= site_url('detail-lomba/'.$value->ID_BIDANG);?>" class="custom-control custom-radio custom-control-inline checkbox-outline checkbox-icon text-center w-100 h-100">
+          <label class="checkbox-outline-label w-100 rounded py-3 px-1 mb-0">
+            <img class="img-fluid w-50 mb-3" src="<?= base_url();?><?= $value->POSTER == null ? 'assets/frontend/svg/illustrations/discussion-scene.svg' : 'berkas/kompetisi/bidang-lomba/'.$value->POSTER;?>" alt="SVG">
+            <span class="d-block text-muted"><?= $value->BIDANG_LOMBA;?></span>
+          </label>
+        </a>
       </div>
-    </div>
-    <!-- Description Section -->
-
-    <!-- Divider -->
-    <div class="container">
-      <div class="w-lg-100 mx-lg-auto">
-        <hr class="my-0">
-      </div>
-    </div>
-    <!-- End Divider -->
-  <?php endforeach;?>
-<?php endif;?>
+      <?php $no++; endforeach;?>
+    <?php endif;?>
+  </div>
+</div>

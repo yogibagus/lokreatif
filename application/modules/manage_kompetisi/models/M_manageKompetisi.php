@@ -96,7 +96,7 @@ class M_manageKompetisi extends CI_Model {
 		}
 	}
 	function get_bidangJuri($kode_user){
-		$this->db->select('a.ID, a.ID_BIDANG, b.bidang_lomba');
+		$this->db->select('a.ID, a.ID_BIDANG, b.BIDANG_LOMBA');
 		$this->db->from('bidang_juri a');
 		$this->db->join('bidang_lomba b', 'a.ID_BIDANG = b.ID_BIDANG');
 		$query = $this->db->get_where('bidang_juri', array('a.KODE_USER' => $kode_user));
