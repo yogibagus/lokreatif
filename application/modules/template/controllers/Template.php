@@ -221,6 +221,34 @@ class Template extends MX_Controller
 		$this->load->view('frontend/frontend_user', $data);
 	}
 
+	public function frontend_payment($data)
+	{
+
+		// SOSMED
+		$data['LN_FACEBOOK']		= $this->M_template->get_facebookLink();
+		$data['LN_INSTAGRAM']		= $this->M_template->get_instagramLink();
+		$data['LN_TWITTER']			= $this->M_template->get_twitterLink();
+		$data['LN_GITHUB']			= $this->M_template->get_githubLink();
+
+		// LOGO
+		$data['LOGO_FAV']			= $this->M_template->get_logoFav();
+		$data['LOGO_WHITE']			= $this->M_template->get_logoWhite();
+		$data['LOGO_BLACK']			= $this->M_template->get_logoBlack();
+
+		// META
+		$data['WEB_JUDUL']			= $this->M_template->get_webJudul();
+		$data['WEB_DESKRIPSI']		= $this->M_template->get_webDeskripsi();
+		$data['WEB_WA']				= $this->M_template->get_webWa();
+		$data['WEB_HERO_BUTTON']	= $this->M_template->get_webHeroButton();
+		$data['TERM_CONDITION']		= $this->M_template->get_termAndCondition();
+
+		// ETC
+
+		$data['CI']					= $this;
+
+		$this->load->view('frontend/frontend_payment', $data);
+	}
+
 	public function mail_template($data)
 	{
 		$data['CI']					= $this;

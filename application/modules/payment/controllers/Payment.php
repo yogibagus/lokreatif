@@ -47,36 +47,41 @@ class Payment extends MX_Controller
     {
         $transaksi = $this->M_payment->get_transaksi_by_id($param);
         if ($transaksi != false) {
-            // get data pendaftaran
-            $dataPeserta = $this->General->get_detailDaftarKompetisi($this->kode_user);
-            if ($this->role == 1) {
-                $is_paid_by_univ = $this->General->cek_dibayarinUniv($dataPeserta->KODE_PENDAFTARAN, $this->kode_user);
-            } else {
-                $is_paid_by_univ = false;
-            }
-            // check already paid by univ
-            if ($is_paid_by_univ == false) {
-                $data['kode_trans'] = $transaksi->KODE_TRANS;
-                $data['total_bayar'] = $this->M_payment->get_total_bayar($transaksi->KODE_TRANS);
-                $data['total_team'] = $this->M_payment->get_total_team_and_biaya($transaksi->KODE_TRANS);
-                $data['tim']        = $this->M_payment->get_tim($transaksi->KODE_TRANS);
-                $data['payment_history'] = $this->M_payment->count_payment_by_kode_trans($transaksi->KODE_TRANS);
-
-                $data['is_mobile'] = $this->agent->is_mobile();
-                $data['CI']                = $this;
-                $data['module']         = "payment";
-                $data['fileview']         = "checkout_page";
-
-                if ($this->role == "1") {
-                    echo Modules::run('template/frontend_auth', $data);
-                } else if ($this->role == "3") {
-                    echo Modules::run('template/frontend_auth', $data);
+            if ($transaksi->KODE_USER_BILL == $this->kode_user) {
+                // get data pendaftaran
+                $dataPeserta = $this->General->get_detailDaftarKompetisi($this->kode_user);
+                if ($this->role == 1) {
+                    $is_paid_by_univ = $this->General->cek_dibayarinUniv($dataPeserta->KODE_PENDAFTARAN, $this->kode_user);
+                } else {
+                    $is_paid_by_univ = false;
                 }
+                // check already paid by univ
+                if ($is_paid_by_univ == false) {
+                    $data['kode_trans'] = $transaksi->KODE_TRANS;
+                    $data['total_bayar'] = $this->M_payment->get_total_bayar($transaksi->KODE_TRANS);
+                    $data['total_team'] = $this->M_payment->get_total_team_and_biaya($transaksi->KODE_TRANS);
+                    $data['tim']        = $this->M_payment->get_tim($transaksi->KODE_TRANS);
+                    $data['payment_history'] = $this->M_payment->count_payment_by_kode_trans($transaksi->KODE_TRANS);
+
+                    $data['is_mobile'] = $this->agent->is_mobile();
+                    $data['CI']                = $this;
+                    $data['module']         = "payment";
+                    $data['fileview']         = "checkout_page";
+
+                    if ($this->role == "1") {
+                        echo Modules::run('template/frontend_payment', $data);
+                    } else if ($this->role == "3") {
+                        echo Modules::run('template/frontend_payment', $data);
+                    }
+                } else {
+                    $this->session->set_flashdata('warning', "Biaya pendaftaran anda telah di urus oleh PTS anda, harap tunggu hingga proses pembayaran selesai.");
+                    redirect($this->agent->referrer());
+                }
+                $this->session->set_flashdata('success', "Pilih metode pembayaran yang tersedia.");
             } else {
-                $this->session->set_flashdata('warning', "Biaya pendaftaran anda telah di urus oleh PTS anda, harap tunggu hingga proses pembayaran selesai.");
+                $this->session->set_flashdata('error', "You're not allowed to view checkout page using another account!");
                 redirect($this->agent->referrer());
             }
-            $this->session->set_flashdata('success', "Pilih metode pembayaran yang tersedia.");
         } else {
             $this->session->set_flashdata('error', "Transaction ID Not Found");
             redirect($this->agent->referrer());
@@ -89,48 +94,50 @@ class Payment extends MX_Controller
         $payment = $this->M_payment->get_payment_by_id($param);
         if ($payment != false) {
             $transaksi = $this->M_payment->get_transaksi_by_id($payment->KODE_TRANS);
-            //get user and split
-            $kode_user = explode('_', trim($transaksi->KODE_USER_BILL));
-            if ($kode_user == "UNIV") {
-                $data['user'] = $this->M_payment->get_univ_by_id($this->kode_user);
-            } else {
-                $data['user'] = $this->General->get_akun($this->kode_user);
-            }
-            $data['bank_tut'] = $this->M_payment->get_tutorial_payment_by_bank_name($payment->METHOD);
-            $data['payment'] = $payment;
-            $data['status'] = $this->M_payment->get_status_payment_by_stat_pay($payment->STAT_PAY);
+            if ($transaksi->KODE_USER_BILL == $this->kode_user) {
+                //get user and split
+                $kode_user = explode('_', trim($transaksi->KODE_USER_BILL));
+                if ($kode_user == "UNIV") {
+                    $data['user'] = $this->M_payment->get_univ_by_id($this->kode_user);
+                } else {
+                    $data['user'] = $this->General->get_akun($this->kode_user);
+                }
+                $data['bank_tut'] = $this->M_payment->get_tutorial_payment_by_bank_name($payment->METHOD);
+                $data['payment'] = $payment;
+                $data['status'] = $this->M_payment->get_status_payment_by_stat_pay($payment->STAT_PAY);
 
-            $data['CI']                = $this;
-            $data['module']         = "payment";
-            $data['fileview']         = "payment_details";
+                $data['CI']                = $this;
+                $data['module']         = "payment";
+                $data['fileview']         = "payment_details";
 
-            // if have checkout link
-            if ($payment->CHECKOUT_URL != null || $payment->CHECKOUT_URL != "") {
-                // if shoopee
-                if ($payment->METHOD == "SHOPEEPAY") {
-                    if ($this->agent->is_mobile()) {
+                // ewallet
+                if ($payment->TYPE == 1) {
+                    if ($payment->METHOD == "OVO") {
+                        echo Modules::run('template/frontend_payment', $data);
+                    } else if ($payment->METHOD == "DANA") {
+                        redirect($payment->CHECKOUT_URL);
+                    } else if ($payment->METHOD == "LINKAJA") {
                         redirect($payment->CHECKOUT_URL);
                     } else {
-                        if ($this->role == "1") {
-                            echo Modules::run('template/frontend_auth', $data);
-                        } else if ($this->role == "3") {
-                            echo Modules::run('template/frontend_auth', $data);
-                        }
+                        $this->session->set_flashdata('error', "Unknown payment method.");
+                        redirect($this->agent->referrer());
                     }
-                } else {
-                    // redirect payment ewallet
-                    redirect($payment->CHECKOUT_URL);
+                } else if ($payment->TYPE == 2) { // VA
+                    echo Modules::run('template/frontend_payment', $data);
                 }
             } else {
-                if ($this->role == "1") {
-                    echo Modules::run('template/frontend_auth', $data);
-                } else if ($this->role == "3") {
-                    echo Modules::run('template/frontend_auth', $data);
-                }
+                $this->session->set_flashdata('error', "You're not allowed to view payment detail using another account!");
+                redirect($this->agent->referrer());
             }
         } else {
-            $this->session->set_flashdata('error', "Payment not found");
-            redirect($this->agent->referrer());
+            $this->session->set_flashdata('error', "Kode pembayaran tidak ditemukan");
+            if ($this->role == 1) {
+                redirect('peserta/riwayat-pembayaran');
+            } elseif ($this->role = 3) {
+                redirect('transaksi-pts');
+            } else {
+                redirect();
+            }
         }
     }
 
@@ -141,74 +148,90 @@ class Payment extends MX_Controller
     {
         // initial
         $kode_trans = htmlspecialchars($this->input->post('kode_trans'));
+        $transaksi = $this->M_payment->get_transaksi_by_id($kode_trans);
         // get last payment
         $last_payment = $this->M_payment->get_last_payment($kode_trans);
-        // create delay time
-        if ($last_payment->CREATED_TIME == null) {
-            $time_limit = strtotime("01-01-90 00:00:00");
-        } else {
-            $created_time = $last_payment->CREATED_TIME;
-            $time_limit = strtotime("$created_time + 1 minute");
-        }
-        $time_limit = date('Y-m-d H:i:s', $time_limit);
-        // check if now is more than time limit
-        if (date("Y-m-d H:i:s") > $time_limit) {
-            $name = ($this->input->post("name") != "") ? $this->input->post("name") : "";
-            $mobile = ($this->input->post("mobile") != "") ? $this->input->post("mobile") : "";
-            $mobile = preg_replace('/^(?:\+?62|0)?/', '0', $mobile);
-            $method = ($this->input->post("method") != "") ? $this->input->post("method") : "";
-            //get amount
-            $total_bayar = $this->M_payment->get_total_bayar($kode_trans);
-            $amount = (float)$total_bayar->total_bayar;
-
-            //split : ex VA_MANDIRI
-            $method = explode('_', trim($method));
-            if ($method[0] == "EWALLET") {
-                $type = $method[0];
-                $walletType = $method[1];
-
-                // set fee EW | 1.8 %
-                $result = (100 / 98.5) * $amount;
-                $amount = ceil($result);
-            } else if ($method[0] == "VA") {
-                $type = $method[0];
-                $bankCode = $method[1];
-
-                // set fee VA | +4000
-                $amount = (4000 + $amount);
+        if ($transaksi != false) {
+            // create delay time
+            if ($last_payment->CREATED_TIME == null) {
+                $last_payment_id = null; // set last_payment_id
+                $time_limit = strtotime("01-01-90 00:00:00");
             } else {
+                $last_payment_id = $last_payment->KODE_PAY; // get last_payment_id
+                $created_time = $last_payment->CREATED_TIME;
+                $time_limit = strtotime("$created_time + 1 minute");
             }
-            // create order_id
-            $order_id = $this->create_order_id($amount, $kode_trans);
+            $time_limit = date('Y-m-d H:i:s', $time_limit);
+            // check if now is more than time limit
+            if (date("Y-m-d H:i:s") > $time_limit) {
+                $name = ($this->input->post("name") != "") ? $this->input->post("name") : "";
+                $mobile = ($this->input->post("mobile") != "") ? $this->input->post("mobile") : "";
+                $mobile = preg_replace('/^(?:\+?62|0)?/', '0', $mobile);
+                $method = ($this->input->post("method") != "") ? $this->input->post("method") : "";
+                //get amount
+                $total_bayar = $this->M_payment->get_total_bayar($kode_trans);
+                $amount = (float)$total_bayar->total_bayar;
 
-            if ($order_id != "") {
-                if ($type == "EWALLET") {
-                    //param : orderid,$amount,$mobile,$walletType
-                    $pay = $this->durianpay->createEwalletPayment($order_id, $amount, $mobile, $walletType);
-                } elseif ($type == "VA") {
-                    //param : $orderid,$amount,$bankCode,$name
-                    $pay = $this->durianpay->createVAPayment($order_id, $amount, $bankCode, $name);
+                //split : ex VA_MANDIRI
+                $method = explode('_', trim($method));
+                if ($method[0] == "EWALLET") {
+                    $type = $method[0];
+                    $walletType = $method[1];
+
+                    // set fee EW | 1.8 %
+                    $result = (100 / 98.5) * $amount;
+                    $new_amount = ceil($result);
+                    $amount = (int)ceil($new_amount / 1000) * 1000;
+                } else if ($method[0] == "VA") {
+                    $type = $method[0];
+                    $bankCode = $method[1];
+
+                    // set fee VA | +4000
+                    $amount = (4000 + $amount);
                 }
-                $kode_pay = $this->generatepay->gen_kodePay();
-                // save payment_id
-                $insert_data = $this->update_pay($kode_pay, $kode_trans, $method[1], $amount, $pay);
-                if ($insert_data != false) { // if fail insert data
-                    $data_payment['TOT_BAYAR'] = $amount;
-                    //save to db
-                    $this->M_payment->update_transaksi($kode_trans, $data_payment);
-                    // send email reminder
-                    $this->send_email(1, $kode_pay);
-                    redirect('payment/details/' . $kode_pay);
+
+                // create order_id
+                $order_id = $this->create_order_id($amount, $kode_trans);
+
+                if ($order_id != "") {
+                    if ($type == "EWALLET") {
+                        //param : orderid,$amount,$mobile,$walletType
+                        $pay = $this->durianpay->createEwalletPayment($order_id, $amount, $mobile, $walletType);
+                    } elseif ($type == "VA") {
+                        //param : $orderid,$amount,$bankCode,$name
+                        $pay = $this->durianpay->createVAPayment($order_id, $amount, $bankCode, $name);
+                    }
+                    $kode_pay = $this->generatepay->gen_kodePay();
+                    // save payment_id
+                    $insert_data = $this->update_pay($kode_pay, $kode_trans, $method[1], $amount, $pay);
+                    if ($insert_data != false) { // if fail insert data
+                        $data_pay['TOT_BAYAR'] = $amount;
+                        //save to db
+                        $update_transaksi = $this->M_payment->update_transaksi($kode_trans, $data_pay);
+                        if ($update_transaksi != false) {
+                            // delete last payment
+                            $this->M_payment->delete_last_payment($last_payment_id);
+                            // send email reminder
+                            // $this->send_email(1, $kode_pay);
+                            redirect('payment/details/' . $kode_pay);
+                        } else {
+                            $this->session->set_flashdata('error', "Failed to update transaction");
+                            redirect($this->agent->referrer());
+                        }
+                    } else {
+                        $this->session->set_flashdata('error', "Failed to create payment charge");
+                        redirect($this->agent->referrer());
+                    }
                 } else {
-                    $this->session->set_flashdata('error', "Failed to create payment charge");
+                    $this->session->set_flashdata('error', "Failed to create transaction");
                     redirect($this->agent->referrer());
                 }
             } else {
-                $this->session->set_flashdata('error', "Failed to create transaction");
+                $this->session->set_flashdata('error', "Anda terlalu cepat, tunggu beberapa saat.");
                 redirect($this->agent->referrer());
             }
         } else {
-            $this->session->set_flashdata('error', "Anda terlalu cepat, tunggu beberapa saat.");
+            $this->session->set_flashdata('error', "Transaction ID Not Found.");
             redirect($this->agent->referrer());
         }
     }
@@ -310,17 +333,6 @@ class Payment extends MX_Controller
         $payload = json_encode($payload);
         $result =  $this->durianpay->createOrder($payload);
         return $result->data->id; // return id_order
-    }
-
-
-    public function webhook()
-    {
-        $data = file_get_contents('php://input');
-        // $action = json_decode($data, true);
-        $data_log['CONTENT_LOG'] = $data;
-        $this->M_payment->insert_log_webhook($data_log);
-
-        echo $data;
     }
 
     //param = //kode_pay //kode_trans , kode_user, user_role

@@ -85,7 +85,11 @@ class M_payment extends CI_Model
     {
         $this->db->where('KODE_TRANS', $kode_trans);
         $this->db->update('tb_transaksi', $data);
-        return ($this->db->affected_rows() != 1) ? false : true;
+        if ($this->db->affected_rows() >= 0) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
     // insert or update payment value
@@ -105,7 +109,11 @@ class M_payment extends CI_Model
             } else {
                 $this->db->where('PAYMENT_ID', $payment_id);
                 $this->db->update('tb_payment', $data);
-                return ($this->db->affected_rows() != 1) ? true : false;
+                if ($this->db->affected_rows() >= 0) {
+                    return true;
+                } else {
+                    return false;
+                }
             }
         }
     }
@@ -188,5 +196,12 @@ class M_payment extends CI_Model
         } else {
             return $query->row();
         }
+    }
+
+    // delete payment sebelumnya
+    function delete_last_payment($kode_pay)
+    {
+        $kode_pay   = $this->db->escape($kode_pay);
+        $this->db->query("DELETE FROM tb_payment WHERE KODE_PAY = $kode_pay");
     }
 }
