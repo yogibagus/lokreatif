@@ -104,29 +104,20 @@ class Payment extends MX_Controller
             $data['module']         = "payment";
             $data['fileview']         = "payment_details";
 
-            // if have checkout link
-            if ($payment->CHECKOUT_URL != null || $payment->CHECKOUT_URL != "") {
-                // if shoopee
-                if ($payment->METHOD == "SHOPEEPAY") {
-                    if ($this->agent->is_mobile()) {
-                        redirect($payment->CHECKOUT_URL);
-                    } else {
-                        if ($this->role == "1") {
-                            echo Modules::run('template/frontend_auth', $data);
-                        } else if ($this->role == "3") {
-                            echo Modules::run('template/frontend_auth', $data);
-                        }
-                    }
-                } else {
-                    // redirect payment ewallet
+            // ewallet
+            if ($payment->TYPE == 1) {
+                if ($payment->METHOD == "OVO") {
+                    echo Modules::run('template/frontend_auth', $data);
+                } else if ($payment->METHOD == "DANA") {
                     redirect($payment->CHECKOUT_URL);
+                } else if ($payment->METHOD == "LINKAJA") {
+                    redirect($payment->CHECKOUT_URL);
+                } else {
+                    $this->session->set_flashdata('error', "Unknown payment method.");
+                    redirect($this->agent->referrer());
                 }
-            } else {
-                if ($this->role == "1") {
-                    echo Modules::run('template/frontend_auth', $data);
-                } else if ($this->role == "3") {
-                    echo Modules::run('template/frontend_auth', $data);
-                }
+            } else if ($payment->TYPE == 2) { // VA
+                echo Modules::run('template/frontend_auth', $data);
             }
         } else {
             $this->session->set_flashdata('error', "Payment not found");
@@ -169,7 +160,8 @@ class Payment extends MX_Controller
 
                 // set fee EW | 1.8 %
                 $result = (100 / 98.5) * $amount;
-                $amount = ceil($result);
+                $new_amount = ceil($result);
+                $amount = (int)ceil($new_amount / 1000) * 1000;
             } else if ($method[0] == "VA") {
                 $type = $method[0];
                 $bankCode = $method[1];
@@ -197,7 +189,7 @@ class Payment extends MX_Controller
                     //save to db
                     $this->M_payment->update_transaksi($kode_trans, $data_payment);
                     // send email reminder
-                    $this->send_email(1, $kode_pay);
+                    // $this->send_email(1, $kode_pay);
                     redirect('payment/details/' . $kode_pay);
                 } else {
                     $this->session->set_flashdata('error', "Failed to create payment charge");
@@ -310,17 +302,6 @@ class Payment extends MX_Controller
         $payload = json_encode($payload);
         $result =  $this->durianpay->createOrder($payload);
         return $result->data->id; // return id_order
-    }
-
-
-    public function webhook()
-    {
-        $data = file_get_contents('php://input');
-        // $action = json_decode($data, true);
-        $data_log['CONTENT_LOG'] = $data;
-        $this->M_payment->insert_log_webhook($data_log);
-
-        echo $data;
     }
 
     //param = //kode_pay //kode_trans , kode_user, user_role

@@ -5,7 +5,6 @@
             <div class="card mb-3">
                 <div class="card-header">
                     <h4 class="card-title">Checkout <?= $kode_trans ?></h4>
-                    <a name="" id="" class="btn btn-primary btn-xs" href="#" role="button"><i class="fa fa-info-circle" aria-hidden="true"></i> Pelajari</a>
                 </div>
                 <div class="card-body">
                     <?php if ($this->session->userdata('role') == 1) { ?>
@@ -33,12 +32,11 @@
                 <div class="col-lg-6">
                     <div class="card">
                         <div class="card-header">
-                            <h4 class="card-title">Tim Yang Akan Dibayar</h4>
+                            <h4 class="card-title">Nama Team</h4>
                         </div>
                         <div class="card-body">
-                            <h5>Nama Team</h5>
                             <div class="d-md-flex">
-                                <div class="overflow-auto p-3 mb-3 mb-md-0 bg-light rounded " style="max-height: 130px; width:100%">
+                                <div class="overflow-auto p-3 mb-3 mb-md-0 bg-light rounded " style="max-height: 180px; width:100%">
                                     <?php
                                     foreach ($tim as $item) {
                                         echo '
@@ -84,8 +82,7 @@
 
             <div class="card mt-3">
                 <div class="card-header">
-                    <h4 class="card-title">Payment Methods</h4>
-                    <a name="" id="" class="btn btn-primary btn-xs" href="#" role="button"><i class="fa fa-info-circle" aria-hidden="true"></i> Pelajari</a>
+                    <h4 class="card-title">Metode Pembayaran</h4>
                 </div>
                 <div class="card-body">
                     <!-- Type of Listing -->
@@ -141,14 +138,14 @@
                                                 </label>
                                             </div>
                                         </div>
-                                        <div class="col-6 col-md-3 px-2 mb-3 mb-md-0">
+                                        <!-- <div class="col-6 col-md-3 px-2 mb-3 mb-md-0">
                                             <div class="custom-control custom-radio custom-control-inline checkbox-outline checkbox-icon text-center w-100 h-100">
                                                 <input type="radio" id="typeOfListingRadio3" name="method" class="custom-control-input checkbox-outline-input checkbox-icon-input" value="EWALLET_SHOPEEPAY">
                                                 <label class="checkbox-outline-label checkbox-icon-label w-100 rounded py-3 px-1 mb-0" for="typeOfListingRadio3">
                                                     <img class="img-fluid w-90 fit-image" src="https://kampungbahasajogja.net/assets/img/about/shopeepay.png" alt="SHOPEEPAY">
                                                 </label>
                                             </div>
-                                        </div>
+                                        </div> -->
                                         <div class="col-6 col-md-3 px-2 mb-3 mb-md-0">
                                             <div class="custom-control custom-radio custom-control-inline checkbox-outline checkbox-icon text-center w-100 h-100">
                                                 <input type="radio" id="typeOfListingRadio4" name="method" class="custom-control-input checkbox-outline-input checkbox-icon-input" value="EWALLET_LINKAJA">
@@ -328,8 +325,9 @@
 
                 // set fee
                 var amount = Math.ceil(100 / 98.5 * parseInt(<?= $total_bayar->total_bayar ?>));
-                var fee = amount - parseInt(<?= $total_bayar->total_bayar ?>);
-                $('#total_amount').text(format_rupiah(amount));
+                var new_amount = Math.ceil(amount / 1000) * 1000;
+                var fee = new_amount - parseInt(<?= $total_bayar->total_bayar ?>);
+                $('#total_amount').text(format_rupiah(new_amount));
                 $('#fee').text(format_rupiah(fee));
             } else {
                 $('#name-card-holder').prop('required', true);
