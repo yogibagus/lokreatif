@@ -32,7 +32,7 @@
                 <div class="col-lg-6">
                     <div class="card">
                         <div class="card-header">
-                            <h4 class="card-title">Nama Team</h4>
+                            <h4 class="card-title">Nama Tim</h4>
                         </div>
                         <div class="card-body">
                             <div class="d-md-flex">
@@ -40,7 +40,7 @@
                                     <?php
                                     foreach ($tim as $item) {
                                         echo '
-                                    <h5><li>' . $item->NAMA_TIM . '</li></h5><br>
+                                    <h4><li>' . $item->NAMA_TIM . '</li></h4><br>
                                 ';
                                     }
                                     ?>
@@ -59,7 +59,7 @@
                                 <h5>Subtotal</h5>
                                 <ul class="list-unstyled">
                                     <div class="d-flex justify-content-between">
-                                        <li><?= $total_team->total_team ?> Team x Rp <?= number_format($total_team->biaya, 0, ',', '.') ?></li>
+                                        <li><?= $total_team->total_team ?> Tim x Rp <?= number_format($total_team->biaya, 0, ',', '.') ?></li>
                                         <li>Rp <?= number_format($total_bayar->total_bayar, 0, ',', '.') ?></li>
                                     </div>
                                     <div class="d-flex justify-content-between">
@@ -71,8 +71,8 @@
                             <hr>
                             <div class="mb-4 list-unstyled">
                                 <div class="d-flex justify-content-between">
-                                    <h3>Total</h3>
-                                    <h3 class="text-primary">Rp <span id="total_amount"><?= number_format($total_bayar->total_bayar, 0, ',', '.') ?></span></h3>
+                                    <h2>Total</h2>
+                                    <h2 class="text-primary">Rp <span id="total_amount"><?= number_format($total_bayar->total_bayar, 0, ',', '.') ?></span></h2>
                                 </div>
                             </div>
                         </div>
@@ -91,13 +91,10 @@
                         <div class="text-center">
                             <ul class="nav nav-segment nav-pills scrollbar-horizontal mb-7" role="tablist">
                                 <li class="nav-item">
-                                    <a class="nav-link active" id="pills-one-code-features-example1-tab" data-toggle="pill" href="#pills-one-code-features-example1" role="tab" aria-controls="pills-one-code-features-example1" aria-selected="true">E-WALLET</a>
+                                    <a class="nav-link active" id="pills-one-code-features-example1-tab" data-toggle="pill" href="#tab-menu-ewallet" role="tab" aria-controls="tab-menu-ewallet" aria-selected="true">E-WALLET</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link" id="pills-two-code-features-example1-tab" data-toggle="pill" href="#pills-two-code-features-example1" role="tab" aria-controls="pills-two-code-features-example1" aria-selected="false">VERTUAL ACCOUNT</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link" id="pills-three-code-features-example1-tab" data-toggle="pill" href="#pills-three-code-features-example1" role="tab" aria-controls="pills-three-code-features-example1" aria-selected="false">OTHERS</a>
+                                    <a class="nav-link" id="pills-two-code-features-example1-tab" data-toggle="pill" href="#tab-menu-va" role="tab" aria-controls="tab-menu-va" aria-selected="false">VERTUAL ACCOUNT</a>
                                 </li>
                             </ul>
                         </div>
@@ -107,7 +104,7 @@
                         <form action="<?= base_url("payment/pay") ?>" method="post">
                             <input type="hidden" name="kode_trans" id="kode_trans" value="<?= $kode_trans ?>">
                             <div class="tab-content">
-                                <div class="tab-pane fade show active" id="pills-one-code-features-example1" role="tabpanel" aria-labelledby="pills-one-code-features-example1-tab">
+                                <div class="tab-pane fade show active" id="tab-menu-ewallet" role="tabpanel" aria-labelledby="pills-one-code-features-example1-tab">
                                     <style>
                                         .fit-image {
                                             width: 130px;
@@ -176,7 +173,7 @@
                                     <!-- End Input Group -->
                                 </div>
 
-                                <div class="tab-pane fade" id="pills-two-code-features-example1" role="tabpanel" aria-labelledby="pills-two-code-features-example1-tab">
+                                <div class="tab-pane fade" id="tab-menu-va" role="tabpanel" aria-labelledby="pills-two-code-features-example1-tab">
                                     <!-- Radio Checkbox Group -->
                                     <div class="row mx-n2">
                                         <div class="col-6 col-md-3 px-2 mb-3 mb-md-0">
@@ -228,10 +225,6 @@
                                     </div>
                                     <small class="text-muted" id="required-alert-va">*) Harap masukan Nama yang tercantum pada ATM .</small>
                                     <!-- End Input Group -->
-                                </div>
-
-                                <div class="tab-pane fade" id="pills-three-code-features-example1" role="tabpanel" aria-labelledby="pills-three-code-features-example1-tab">
-                                    <p>Coming soon...</p>
                                 </div>
                             </div>
                             <!-- End Tab Content -->

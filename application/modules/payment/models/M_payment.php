@@ -204,4 +204,28 @@ class M_payment extends CI_Model
         $kode_pay   = $this->db->escape($kode_pay);
         $this->db->query("DELETE FROM tb_payment WHERE KODE_PAY = $kode_pay");
     }
+
+    // update tb_transaksi berdasarkan kode_trans
+    function update_pay_by_order_id($order_id, $data)
+    {
+        $this->db->where('ORDER_ID', $order_id);
+        $this->db->update('tb_payment', $data);
+        if ($this->db->affected_rows() >= 0) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    // get payment berdasarkan KODE_TRANS
+    function get_payment_by_order_id($order_id)
+    {
+        $order_id   = $this->db->escape($order_id);
+        $query = $this->db->query("SELECT * FROM tb_payment WHERE ORDER_ID = $order_id");
+        if ($query->num_rows() > 0) {
+            return $query->row();
+        } else {
+            return false;
+        }
+    }
 }

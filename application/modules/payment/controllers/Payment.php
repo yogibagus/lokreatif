@@ -48,36 +48,47 @@ class Payment extends MX_Controller
         $transaksi = $this->M_payment->get_transaksi_by_id($param);
         if ($transaksi != false) {
             if ($transaksi->KODE_USER_BILL == $this->kode_user) {
-                // get data pendaftaran
-                $dataPeserta = $this->General->get_detailDaftarKompetisi($this->kode_user);
-                if ($this->role == 1) {
-                    $is_paid_by_univ = $this->General->cek_dibayarinUniv($dataPeserta->KODE_PENDAFTARAN, $this->kode_user);
-                } else {
-                    $is_paid_by_univ = false;
-                }
-                // check already paid by univ
-                if ($is_paid_by_univ == false) {
-                    $data['kode_trans'] = $transaksi->KODE_TRANS;
-                    $data['total_bayar'] = $this->M_payment->get_total_bayar($transaksi->KODE_TRANS);
-                    $data['total_team'] = $this->M_payment->get_total_team_and_biaya($transaksi->KODE_TRANS);
-                    $data['tim']        = $this->M_payment->get_tim($transaksi->KODE_TRANS);
-                    $data['payment_history'] = $this->M_payment->count_payment_by_kode_trans($transaksi->KODE_TRANS);
-
-                    $data['is_mobile'] = $this->agent->is_mobile();
-                    $data['CI']                = $this;
-                    $data['module']         = "payment";
-                    $data['fileview']         = "checkout_page";
-
-                    if ($this->role == "1") {
-                        echo Modules::run('template/frontend_payment', $data);
-                    } else if ($this->role == "3") {
-                        echo Modules::run('template/frontend_payment', $data);
+                if ($transaksi->STAT_BAYAR != 3) { // if payment not complete
+                    // get data pendaftaran
+                    $dataPeserta = $this->General->get_detailDaftarKompetisi($this->kode_user);
+                    if ($this->role == 1) {
+                        $is_paid_by_univ = $this->General->cek_dibayarinUniv($dataPeserta->KODE_PENDAFTARAN, $this->kode_user);
+                    } else {
+                        $is_paid_by_univ = false;
                     }
+                    // check already paid by univ
+                    if ($is_paid_by_univ == false) {
+                        $data['kode_trans'] = $transaksi->KODE_TRANS;
+                        $data['total_bayar'] = $this->M_payment->get_total_bayar($transaksi->KODE_TRANS);
+                        $data['total_team'] = $this->M_payment->get_total_team_and_biaya($transaksi->KODE_TRANS);
+                        $data['tim']        = $this->M_payment->get_tim($transaksi->KODE_TRANS);
+                        $data['payment_history'] = $this->M_payment->count_payment_by_kode_trans($transaksi->KODE_TRANS);
+
+                        $data['is_mobile'] = $this->agent->is_mobile();
+                        $data['CI']                = $this;
+                        $data['module']         = "payment";
+                        $data['fileview']         = "checkout_page";
+
+                        if ($this->role == "1") {
+                            echo Modules::run('template/frontend_payment', $data);
+                        } else if ($this->role == "3") {
+                            echo Modules::run('template/frontend_payment', $data);
+                        }
+                    } else {
+                        $this->session->set_flashdata('warning', "Biaya pendaftaran anda telah di urus oleh PTS anda, harap tunggu hingga proses pembayaran selesai.");
+                        redirect($this->agent->referrer());
+                    }
+                    $this->session->set_flashdata('success', "Pilih metode pembayaran yang tersedia.");
                 } else {
-                    $this->session->set_flashdata('warning', "Biaya pendaftaran anda telah di urus oleh PTS anda, harap tunggu hingga proses pembayaran selesai.");
-                    redirect($this->agent->referrer());
+                    $this->session->set_flashdata('warning', "Pembayaran telah berhasil dilakukan. Anda tidak dapat mengakses halaman tersebut!");
+                    if ($this->role == 1) {
+                        redirect('peserta/riwayat-pembayaran');
+                    } elseif ($this->role = 3) {
+                        redirect('transaksi-pts');
+                    } else {
+                        redirect();
+                    }
                 }
-                $this->session->set_flashdata('success', "Pilih metode pembayaran yang tersedia.");
             } else {
                 $this->session->set_flashdata('error', "You're not allowed to view checkout page using another account!");
                 redirect($this->agent->referrer());
@@ -94,40 +105,51 @@ class Payment extends MX_Controller
         $payment = $this->M_payment->get_payment_by_id($param);
         if ($payment != false) {
             $transaksi = $this->M_payment->get_transaksi_by_id($payment->KODE_TRANS);
-            if ($transaksi->KODE_USER_BILL == $this->kode_user) {
-                //get user and split
-                $kode_user = explode('_', trim($transaksi->KODE_USER_BILL));
-                if ($kode_user == "UNIV") {
-                    $data['user'] = $this->M_payment->get_univ_by_id($this->kode_user);
-                } else {
-                    $data['user'] = $this->General->get_akun($this->kode_user);
-                }
-                $data['bank_tut'] = $this->M_payment->get_tutorial_payment_by_bank_name($payment->METHOD);
-                $data['payment'] = $payment;
-                $data['status'] = $this->M_payment->get_status_payment_by_stat_pay($payment->STAT_PAY);
-
-                $data['CI']                = $this;
-                $data['module']         = "payment";
-                $data['fileview']         = "payment_details";
-
-                // ewallet
-                if ($payment->TYPE == 1) {
-                    if ($payment->METHOD == "OVO") {
-                        echo Modules::run('template/frontend_payment', $data);
-                    } else if ($payment->METHOD == "DANA") {
-                        redirect($payment->CHECKOUT_URL);
-                    } else if ($payment->METHOD == "LINKAJA") {
-                        redirect($payment->CHECKOUT_URL);
+            if ($transaksi->STAT_BAYAR != 3) { // if payment not complete
+                if ($transaksi->KODE_USER_BILL == $this->kode_user) {
+                    //get user and split
+                    $kode_user = explode('_', trim($transaksi->KODE_USER_BILL));
+                    if ($kode_user == "UNIV") {
+                        $data['user'] = $this->M_payment->get_univ_by_id($this->kode_user);
                     } else {
-                        $this->session->set_flashdata('error', "Unknown payment method.");
-                        redirect($this->agent->referrer());
+                        $data['user'] = $this->General->get_akun($this->kode_user);
                     }
-                } else if ($payment->TYPE == 2) { // VA
-                    echo Modules::run('template/frontend_payment', $data);
+                    $data['bank_tut'] = $this->M_payment->get_tutorial_payment_by_bank_name($payment->METHOD);
+                    $data['payment'] = $payment;
+                    $data['status'] = $this->M_payment->get_status_payment_by_stat_pay($payment->STAT_PAY);
+
+                    $data['CI']                = $this;
+                    $data['module']         = "payment";
+                    $data['fileview']         = "payment_details";
+
+                    // ewallet
+                    if ($payment->TYPE == 1) {
+                        if ($payment->METHOD == "OVO") {
+                            echo Modules::run('template/frontend_payment', $data);
+                        } else if ($payment->METHOD == "DANA") {
+                            redirect($payment->CHECKOUT_URL);
+                        } else if ($payment->METHOD == "LINKAJA") {
+                            redirect($payment->CHECKOUT_URL);
+                        } else {
+                            $this->session->set_flashdata('error', "Unknown payment method.");
+                            redirect($this->agent->referrer());
+                        }
+                    } else if ($payment->TYPE == 2) { // VA
+                        echo Modules::run('template/frontend_payment', $data);
+                    }
+                } else {
+                    $this->session->set_flashdata('error', "You're not allowed to view payment detail using another account!");
+                    redirect($this->agent->referrer());
                 }
             } else {
-                $this->session->set_flashdata('error', "You're not allowed to view payment detail using another account!");
-                redirect($this->agent->referrer());
+                $this->session->set_flashdata('warning', "Pembayaran telah berhasil dilakukan. Anda tidak dapat mengakses halaman tersebut!");
+                if ($this->role == 1) {
+                    redirect('peserta/riwayat-pembayaran');
+                } elseif ($this->role = 3) {
+                    redirect('transaksi-pts');
+                } else {
+                    redirect();
+                }
             }
         } else {
             $this->session->set_flashdata('error', "Kode pembayaran tidak ditemukan");
@@ -374,5 +396,34 @@ class Payment extends MX_Controller
             $data['message'] = file_get_contents(base_url() . "payment/mail_payment_created/" . $param . "/" . $user->KODE_USER . "/" . $this->role);
             $this->mailer->send($data);
         }
+    }
+
+    public function test()
+    {
+        $json = '{
+        "event": "payment.completed",
+        "data": {
+            "amount": 2000000,
+            "amount_str": "20000.00",
+            "created_at": "2021-08-27T13:26:18.273608Z",
+            "currency": "IDR",
+            "customer_email": "jane_doe@nomail.com",
+            "customer_id": "cus_sC5dfAV4fx5059",
+            "customer_name": "Jane Doe",
+            "id": "pay_ZwZyyZGlsq0135",
+            "is_live": false,
+            "merchant_id": "mer_sViRXcr7WQ0681",
+            "metadata": {},
+            "order_id": "ord_gQIvmgRKCu9671",
+            "order_ref_id": "order_ref_001",
+            "payment_method": "LINKAJA",
+            "payment_ref_id": "",
+            "signature": "4442010b0e9dc68b9615accc0c6c3d93a1f735dafa8c9841d56c51b4061a94d5",
+            "updated_at": "2021-08-27T13:26:18.314Z"
+        },
+        "retry_count": 0
+        }';
+
+        echo $json;
     }
 }
