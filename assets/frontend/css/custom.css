@@ -1,5 +1,7 @@
 /* Custom css file */
-
+.form-control.is-valid, .was-validated .form-control:valid{
+  background-image: none !important;
+}
 .custom-select-flush,
 .form-control-flush {
   background-color: transparent;
