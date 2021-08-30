@@ -274,7 +274,7 @@
                         $('#pay-button').prop("disabled", true);
                         // add spinner to button
                         $('#pay-button').html(
-                            `<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Loading...`
+                            `<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Loading, please wait...`
                         );
                         return;
                     }
@@ -283,7 +283,7 @@
                     $('#pay-button').prop("disabled", true);
                     // add spinner to button
                     $('#pay-button').html(
-                        `<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Loading...`
+                        `<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Loading, please wait...`
                     );
                     return;
                 }
