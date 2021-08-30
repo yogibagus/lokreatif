@@ -119,7 +119,7 @@
                           <div class="form-group"><input type="text" class="form-control form-control-flush" value="Upload file" readonly /><input type="hidden" name="TIPE[]" value="FILE" readonly /></div>
                         </div>
                       </div>
-                      <div class="row mb-0">
+                      <div class="row mb-0 d-none">
                         <div class="col-4">
                           <label class="input-label">Ukuran file</label>
                           <div class="form-group">
