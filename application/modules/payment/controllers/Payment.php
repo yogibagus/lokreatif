@@ -397,33 +397,4 @@ class Payment extends MX_Controller
             $this->mailer->send($data);
         }
     }
-
-    public function test()
-    {
-        $json = '{
-        "event": "payment.completed",
-        "data": {
-            "amount": 2000000,
-            "amount_str": "20000.00",
-            "created_at": "2021-08-27T13:26:18.273608Z",
-            "currency": "IDR",
-            "customer_email": "jane_doe@nomail.com",
-            "customer_id": "cus_sC5dfAV4fx5059",
-            "customer_name": "Jane Doe",
-            "id": "pay_ZwZyyZGlsq0135",
-            "is_live": false,
-            "merchant_id": "mer_sViRXcr7WQ0681",
-            "metadata": {},
-            "order_id": "ord_gQIvmgRKCu9671",
-            "order_ref_id": "order_ref_001",
-            "payment_method": "LINKAJA",
-            "payment_ref_id": "",
-            "signature": "4442010b0e9dc68b9615accc0c6c3d93a1f735dafa8c9841d56c51b4061a94d5",
-            "updated_at": "2021-08-27T13:26:18.314Z"
-        },
-        "retry_count": 0
-        }';
-
-        echo $json;
-    }
 }
