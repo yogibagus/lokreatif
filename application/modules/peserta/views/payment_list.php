@@ -4,13 +4,13 @@
 		<h5 class="card-header-title">Riwayat Pembayaran - <?= $dataPendaftaran->NAMA_TIM; ?></h5><?php if ($sudahBayar == false) : ?><a href="<?= site_url('payment/checkout/'.$KODE_TRANS);?>" class="btn btn-xs btn-success float-right">Pilih metode pembayaran baru</a><?php endif ?>
 	</div>
 	<div class="card-body">
-		<?php if ($sudahBayar == false) : ?>
-
-		<?php else : ?>
+		<?php if ($sudahBayar != false) : ?>
 			<div class="alert alert-success">
-				<p class="mb-0">Anda telah menyelesaikan proses pembayaran biaya pendaftaran, berikut riwayat pembayaran anda</p>
+				<p class="mb-0">Anda telah menyelesaikan proses pembayaran biaya pendaftaran.</p>
 			</div>
+		<?php else : ?>
 		<?php endif ?>
+		<?php if ($sudahBayar == false) : ?>
 		<table id="myTable" class="table table-stripped table-hover no-warp">
 			<thead class="thead-light">
 				<tr>
@@ -60,5 +60,6 @@
 				<?php endif; ?>
 			</tbody>
 		</table>
+		<?php endif ?>
 	</div>
 </div>
