@@ -11,7 +11,7 @@
     <!-- Form Group -->
     <div class="form-group">
       <label class="input-label" for="signinSrNama">Nama PTS <span class="text-danger">*</span></label>
-      <select id="select-pts" class="custom-select" data-select="listPts" size="1" style="width: 100%;"
+      <select name="kodept" id="select-pts" class="custom-select" data-select="listPts" size="1" style="width: 100%;"
               data-hs-select2-options='{
                 "placeholder": "Pilih PTS"
               }'>
