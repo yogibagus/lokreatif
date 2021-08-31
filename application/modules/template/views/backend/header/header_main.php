@@ -222,7 +222,7 @@
             <div class="dropdown-divider"></div>
 
             <a class="dropdown-item" href="<?= site_url('logout'); ?>">
-              <span class="text-truncate pr-2" title="Sign out">logout</span>
+              <span class="text-truncate pr-2" title="Sign out">Logout</span>
             </a>
           </div>
         </div>

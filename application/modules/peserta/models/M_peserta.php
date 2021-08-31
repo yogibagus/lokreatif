@@ -287,11 +287,16 @@ class M_peserta extends CI_Model {
 				'EMAIL'				=> isset($EMAIL_ANGGOTA[$i]) ? $EMAIL_ANGGOTA[$i] : '',
 				'PERAN'				=> 3
 			);
-			if ((($this->db->affected_rows() != 1) ? false : true) == false) {
-				break;
-				return false;
+			$nim = isset($NIM_ANGGOTA[$i]) ? $NIM_ANGGOTA[$i] : '';
+			if($this->General->cek_anggotaRedundant($this->session->userdata('kode_user'), $nim) == null){
+				$this->db->insert('tb_anggota', $anggota);
+			}else{
+				return ['status' => false, 'msg' => "Data dengan nim $nim telah terdaftar !!!"];
 			}
-			$this->db->insert('tb_anggota', $anggota);
+			
+			if ((($this->db->affected_rows() != 1) ? false : true) == false) {
+				return ['status' => false, 'msg' => "Terjadi kesalahan saat mengatur data anggota !!"];
+			}
 		}
 
 		// DOSPEM
@@ -307,7 +312,7 @@ class M_peserta extends CI_Model {
 			'PERAN'				=> 2
 		);
 		$this->db->insert('tb_anggota', $dospem);
-		return ($this->db->affected_rows() != 1) ? false : true;
+		return ($this->db->affected_rows() != 1) ? ['status' => false, 'msg' => "Terjadi kesalahan saat mengatur data anggota !!"] : ['status' => true, 'msg' => "Berhasil mengatur data anggota !!"];
 	}
 
 	function hapus_anggota($id){
