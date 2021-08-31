@@ -43,7 +43,6 @@
       <!-- End Nav -->
     </div>
   </div>
-<<<<<<< HEAD
   </header>
   <!-- ========== END HEADER ========== -->
 
