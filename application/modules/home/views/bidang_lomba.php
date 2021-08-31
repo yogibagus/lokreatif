@@ -7,7 +7,7 @@
       </div>
 
       <div class="col-lg-5 text-lg-right">
-        <a class="btn btn-light btn-wide btn-pill transition-3d-hover mx-1 mb-2" href="<?= site_url('pendaftaran');?>">Daftarkan diri sekarang!</a>
+        <a class="btn btn-light btn-wide btn-pill transition-3d-hover mx-1 mb-2" href="<?= site_url('daftar-kompetisi');?>">Daftarkan diri sekarang!</a>
       </div>
     </div>
   </div>
