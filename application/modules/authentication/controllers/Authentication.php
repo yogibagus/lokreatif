@@ -637,6 +637,14 @@ class Authentication extends MX_Controller {
 		echo json_encode($datas);
 	}
 
+	public function ajx_dataPtsAll(){
+		$param = $_POST;
+
+		$search = !empty($param['search']) ? $param['search'] : '';
+		$datas = $this->M_auth->get_ptsAll($search);
+		echo json_encode($datas);
+	}
+
 	// LOGOUT
     public function logout(){
 

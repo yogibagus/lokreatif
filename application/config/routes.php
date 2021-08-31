@@ -79,7 +79,8 @@ $route['lupa-password']               	= 'authentication/recovery';
 $route['recovery-password/(:any)']    	= 'authentication/ubah_pass/$1';
 
 $route['ubah-password']         		= 'authentication/ubah_password';
-$route['ajx-data-pts']                  = 'authentication/ajx_dataPts';      
+$route['ajx-data-pts']                  = 'authentication/ajx_dataPts';     
+$route['ajx-data-pts-all']                  = 'authentication/ajx_dataPtsAll';      
 
 // END LOGIN
 
