@@ -94,7 +94,6 @@ class Authentication extends MX_Controller {
 		}else{
 			$data['email']	= null;
 		}
-        $data['pts']        = $this->M_auth->get_pts();
 
 		$data['module'] 	= "authentication";
 		$data['fileview'] 	= "univ";
@@ -629,6 +628,14 @@ class Authentication extends MX_Controller {
     		redirect($this->agent->referrer());
     	}
     }
+
+	public function ajx_dataPts(){
+		$param = $_POST;
+
+		$search = !empty($param['search']) ? $param['search'] : '';
+		$datas = $this->M_auth->get_pts($search);
+		echo json_encode($datas);
+	}
 
 	// LOGOUT
     public function logout(){

@@ -39,6 +39,25 @@
   <script type="text/javascript" src="<?=base_url();?>assets/frontend/plugin/tinymce/tinymce.min.js"></script>
 
   <script src="<?php echo base_url();?>assets/frontend/plugin/jquery.inputmask.bundle.min.js" crossorigin="anonymous"></script>
+  <style type="">
+    .selectcss-custom{
+      display: inline-block;
+      width: 100%;
+      height: calc(1.6em + 1.625rem);
+      padding: .75rem 2rem .75rem 1rem;
+      font-size: 1rem;
+      font-weight: 400;
+      line-height: 1.6;
+      color: #1e2022;
+      vertical-align: middle;
+      /* background: #fff url(data:image/svg+xml,%3Csvg width='24' height='24' viewBox='0 0 24 24' fill='%2371869d' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M12.72,15.78a.75.75,0,0,1-.53.22h-.38a.77.77,0,0,1-.53-.22L6.15,10.64a.5.5,0,0,1,0-.71l.71-.71a.49.49,0,0,1,.7,0L12,13.67l4.44-4.45a.5.5,0,0,1,.71,0l.7.71a.5.5,0,0,1,0,.71Z'/%3E%3C/svg%3E) no-repeat right .5rem center/1rem 1rem; */
+      border: .0625rem solid #e7eaf3;
+      border-radius: .3125rem;
+      -webkit-appearance: none;
+      -moz-appearance: none;
+      appearance: none;
+    }
+  </style>
 </head>
 <div id="progressMessage" style="display: none; padding:5px">
   <div id="activityIndicator">&nbsp;</div>

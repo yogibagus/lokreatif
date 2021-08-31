@@ -11,18 +11,22 @@
     <!-- Form Group -->
     <div class="js-form-message form-group">
       <label class="input-label" for="signinSrNama">Nama PTS <span class="text-danger">*</span></label>
-      <div class="tom-select-custom">
-
-            <select class="js-custom-select custom-select" name="kodept" size="1"
+      <!-- <div class="tom-select-custom">
+        <select class="js-custom-select custom-select" name="kodept" size="1"
             data-hs-select2-options='{
             "placeholder": "Pilih PTS"
-          }' required>
+        }' required>
           <option value="">Pilih pts</option>
           <?php foreach ($pts as $item) :?>
             <option value="<?= $item['kodept'];?>"><?= $item['nama'];?></option>
           <?php endforeach;?>
         </select>
-      </div>
+      </div> -->
+      <select id="select-pts" class="form-control" data-select="listPts" size="1" style="opacity: 0;"
+              data-hs-select2-options='{
+                "placeholder": "Pilih PTS"
+              }'>
+      </select>
       <!-- <input type="text" class="form-control" name="nama" id="signinSrNama" placeholder="Nama lengkap anda" aria-label="Nama lengkap anda" required data-msg="Harap masukkan nama lengkap anda."> -->
       <small>
         <span class="font-size-1 text-muted">PTS anda tidak tersedia?</span>
@@ -236,7 +240,31 @@
 </div>
 
 <script type="text/javascript">
-
+  $('#select-pts').select2({
+    ajax: {
+      url: '<?= site_url('ajx-data-pts')?>',
+      dataType: 'json',
+      method: 'post',
+      data: params => {
+        console.log(params)
+        var query = {
+          search: params.term,
+          type: 'public'
+        }
+        return query;
+      },
+      processResults: data => {
+        let arrData = [];
+        for(x of data){
+          temp = {id: x.kodept, text: x.namapt}
+          arrData.push(temp)
+        }
+        return {results: arrData}
+      }
+    },
+    placeholder: "Pilih PTS",
+    // selectionCssClass: 'selectcss-custom'
+  });
   $('input:radio[name="jabatan"]').change(
     function(){
       if (this.checked && this.value == '3') {
@@ -271,6 +299,8 @@
       });
     });
   }
+
+  
 
   // Install input filters Tambah Hp Pegawai.
   setInputFilter(document.getElementById("signinSrTelepon"), function(value) { return /^\d*$/.test(value); });
