@@ -31,30 +31,36 @@
 		<?php endif;?>
 
 		<div class="row">
-			<div class="col-sm-12 col-md-8">
-				<div class="border-bottom mb-4">
-					<div class="media align-items-center mb-3">
-						<span class="d-block font-size-1 mr-3">Bidang lomba</span>
-						<div class="media-body text-right">
-							<span class="text-dark font-weight-bold"><?= $dataPendaftaran->BIDANG_LOMBA;?></span>
+			<div class="col-12">
+				<div class="mb-4">
+					<div class="row">
+						<div class="col-sm-12 col-md-6">
+							<div class="media align-items-center mb-3">
+								<span class="d-block font-size-1 mr-3">Bidang lomba</span>
+								<div class="media-body text-right">
+									<span class="text-dark font-weight-bold"><?= $dataPendaftaran->BIDANG_LOMBA;?></span>
+								</div>
+							</div>
+							<div class="media align-items-center mb-3">
+								<span class="d-block font-size-1 mr-3">Nama TIM </span>
+								<div class="media-body text-right">
+									<span class="text-dark font-weight-bold"><?= $dataPendaftaran->NAMA_TIM;?></span>
+								</div>
+							</div>
 						</div>
-					</div>
-					<div class="media align-items-center mb-3">
-						<span class="d-block font-size-1 mr-3">Nama TIM </span>
-						<div class="media-body text-right">
-							<span class="text-dark font-weight-bold"><?= $dataPendaftaran->NAMA_TIM;?></span>
-						</div>
-					</div>
-					<div class="media align-items-center mb-3">
-						<span class="d-block font-size-1 mr-3">Asal PTS <i class="far fa-question-circle text-body ml-1" data-container="body" data-toggle="popover" data-placement="top" data-trigger="hover" title="Alamat PTS" data-content="<?= $dataPendaftaran->ALAMAT_PTS;?>"></i></span>
-						<div class="media-body text-right">
-							<span class="text-dark font-weight-bold"><?= $dataPendaftaran->namapt;?></span>
-						</div>
-					</div>
-					<div class="media align-items-center mb-3">
-						<span class="d-block font-size-1 mr-3">Jumlah TIM dari PTS anda <i class="far fa-question-circle text-body ml-1" data-container="body" data-toggle="popover" data-placement="top" data-trigger="hover" title="Apa ini?" data-content="Jumlah tim dari PTS anda yang telah melakukan proses pembayaran, lihat pendoman untuk info lebih lanjut."></i></span>
-						<div class="media-body text-right">
-							<span class="text-dark font-weight-bold"><?= $dataPendaftaran->JML_TIM;?> TIM</span>
+						<div class="col-sm-12 col-md-6 border-left">
+							<div class="media align-items-center mb-3">
+								<span class="d-block font-size-1 mr-3">Asal PTS <i class="far fa-question-circle text-body ml-1" data-container="body" data-toggle="popover" data-placement="top" data-trigger="hover" title="Alamat PTS" data-content="<?= $dataPendaftaran->ALAMAT_PTS;?>"></i></span>
+								<div class="media-body text-right">
+									<span class="text-dark font-weight-bold"><?= $dataPendaftaran->namapt;?></span>
+								</div>
+							</div>
+							<div class="media align-items-center mb-3">
+								<span class="d-block font-size-1 mr-3">Jumlah TIM dari PTS anda <i class="far fa-question-circle text-body ml-1" data-container="body" data-toggle="popover" data-placement="top" data-trigger="hover" title="Apa ini?" data-content="Jumlah tim dari PTS anda yang telah melakukan proses pembayaran, lihat pendoman untuk info lebih lanjut."></i></span>
+								<div class="media-body text-right">
+									<span class="text-dark font-weight-bold"><?= $dataPendaftaran->JML_TIM;?> TIM</span>
+								</div>
+							</div>
 						</div>
 					</div>
 				</div>
@@ -72,9 +78,9 @@
 						<span class="d-block font-size-1 mr-3">Data PTS</span>
 						<div class="media-body text-right">
 							<?php if ($dataPendaftaran->ASAL_PTS == null || $dataPendaftaran->ALAMAT_PTS == null || $dataPendaftaran->ALAMAT_PTS == null):?>
-								<span class="badge badge-secondary">belum lengkap</span>
+								<span class="badge badge-secondary" type="button" data-toggle="modal" data-target="#data-pts">belum lengkap</span>
 							<?php else:?>
-								<span class="badge badge-success">lengkap</span>
+								<span class="badge badge-success" type="button" data-toggle="modal" data-target="#data-pts">lengkap</span>
 							<?php endif;?>
 						</div>
 					</div>
@@ -82,9 +88,9 @@
 						<span class="d-block font-size-1 mr-3">Data anggota</span>
 						<div class="media-body text-right">
 							<?php if ($dataAnggota == false) :?>
-								<span class="badge badge-secondary">belum lengkap</span>
+								<a href="<?= site_url('peserta/data-anggota');?>" class="badge badge-secondary">belum lengkap</a>
 							<?php else:?>
-								<span class="badge badge-success">lengkap</span>
+								<a href="<?= site_url('peserta/data-anggota');?>" class="badge badge-success">lengkap</a>
 							<?php endif;?>
 						</div>
 					</div>
@@ -92,93 +98,58 @@
 						<span class="d-block font-size-1 mr-3">Berkas TIM</span>
 						<div class="media-body text-right">
 							<?php if ($cekBerkas == false) :?>
-								<span class="badge badge-secondary">belum lengkap</span>
+								<a href="<?= site_url('peserta/berkas-kompetisi');?>" class="badge badge-secondary">belum lengkap</a>
 							<?php else:?>
-								<span class="badge badge-success">lengkap</span>
+								<a href="<?= site_url('peserta/berkas-kompetisi');?>" class="badge badge-success">lengkap</a>
 							<?php endif;?>
 						</div>
 					</div>
 					<div class="media align-items-center mb-3">
 						<span class="d-block font-size-1 mr-3">Pembayaran biaya pendaftaran</span>
 						<div class="media-body text-right">
+
 							<?php if ($bayarGagal == true) :?>
-								<span class="badge badge-danger">pembayaran gagal</span>
+								<form action="<?= site_url('peserta/bayar_pendaftaran');?>" method="POST">
+									<input type="hidden" name="KODE_PENDAFTARAN" value="<?= $dataPendaftaran->KODE_PENDAFTARAN;?>">
+									<input type="hidden" name="BIAYA_TIM" value="<?= $totBayar;?>">
+									<button type="submit" class="badge badge-success mb-2">
+										<i class="fas fa-credit-card fa-sm mr-2"></i> Bayar ulang
+									</button>
+								</form>
 							<?php elseif ($statBayar == false):?>
 								<?php if($dibayarinUniv == true):?>
-									<span class="badge badge-info">sedang diproses</span>
+									<button class="badge badge-success mb-2" disabled>
+										<i class="fas fa-check fa-sm mr-2"></i> sedang diproses
+									</button>
 								<?php else:?>
 									<?php if ($sudahBayar == true) :?>
-										<span class="badge badge-info">selesaikan proses pembayaran</span>
+										<a href="<?= site_url('peserta/riwayat-pembayaran');?>" class="badge badge-success mb-2">
+											<i class="fas fa-credit-card fa-sm mr-2"></i> Lanjutkan pembayaran
+										</a>
 									<?php else:?>
-										<span class="badge badge-secondary">lakukan proses pembayaran</span>
+										<form action="<?= site_url('peserta/bayar_pendaftaran');?>" method="POST">
+											<input type="hidden" name="KODE_PENDAFTARAN" value="<?= $dataPendaftaran->KODE_PENDAFTARAN;?>">
+											<input type="hidden" name="BIAYA_TIM" value="<?= $totBayar;?>">
+											<button type="submit" class="badge badge-success mb-2">
+												<i class="fas fa-credit-card fa-sm mr-2"></i> Bayar biaya pendaftara
+											</button>
+										</form>
 									<?php endif;?>
 								<?php endif;?>
 							<?php else:?>
-								<span class="badge badge-success">lengkap</span>
+								<button class="btn btn-sm btn-block btn-success mb-2" disabled>
+									<i class="fas fa-check fa-sm mr-2"></i> sudah dibayar
+								</button>
 							<?php endif;?>
 						</div>
 					</div>
 					<div class="media align-items-center mb-3">
 						<span class="d-block font-size-1 mr-3">Upload Karya</span>
 						<div class="media-body text-right">
-							<span class="badge badge-secondary">belum lengkap</span>
+							<a href="<?= site_url('peserta/upload-karya');?>" class="badge badge-secondary">belum lengkap</a>
 						</div>
 					</div>
 				</div>
-			</div>
-			<div class="col-sm-12 col-md-4">
-				<?php if ($statBayar == false) :?>
-					<button class="btn btn-sm btn-block btn-primary mb-2" disabled>
-						<i class="fas fa-file fa-sm mr-2"></i> Upload KARYA
-					</button>
-				<?php else:?>
-					<a href="<?= site_url('peserta/upload-karya');?>" class="btn btn-sm btn-block btn-primary mb-2">
-						<i class="fas fa-file fa-sm mr-2"></i> Upload KARYA
-					</a>
-				<?php endif;?>
-				<a href="<?= site_url('peserta/data-anggota');?>" class="btn btn-sm btn-block btn-white mb-2" >
-					<i class="fas fa-users fa-sm mr-2"></i> Data anggota
-				</a>
-				<button type="button" data-toggle="modal" data-target="#data-pts" class="btn btn-sm btn-block btn-white mb-2" >
-					<i class="fas fa-building fa-sm mr-2"></i> Data PTS
-				</button>
-				<a class="btn btn-sm btn-block btn-white mb-2" href="<?= site_url('peserta/berkas-kompetisi');?>">
-					<i class="fas fa-check fa-sm mr-2"></i> Berkas
-				</a>
-
-				<?php if ($bayarGagal == true) :?>
-					<form action="<?= site_url('peserta/bayar_pendaftaran');?>" method="POST">
-						<input type="hidden" name="KODE_PENDAFTARAN" value="<?= $dataPendaftaran->KODE_PENDAFTARAN;?>">
-						<input type="hidden" name="BIAYA_TIM" value="<?= $totBayar;?>">
-						<button type="submit" class="btn btn-sm btn-block btn-success mb-2">
-							<i class="fas fa-credit-card fa-sm mr-2"></i> Bayar ulang
-						</button>
-					</form>
-				<?php elseif ($statBayar == false):?>
-					<?php if($dibayarinUniv == true):?>
-						<button class="btn btn-sm btn-block btn-success mb-2" disabled>
-							<i class="fas fa-check fa-sm mr-2"></i> sedang diproses
-						</button>
-					<?php else:?>
-						<?php if ($sudahBayar == true) :?>
-							<a href="<?= site_url('peserta/riwayat-pembayaran');?>" class="btn btn-sm btn-block btn-success mb-2">
-								<i class="fas fa-credit-card fa-sm mr-2"></i> Lanjutkan pembayaran
-							</a>
-						<?php else:?>
-							<form action="<?= site_url('peserta/bayar_pendaftaran');?>" method="POST">
-								<input type="hidden" name="KODE_PENDAFTARAN" value="<?= $dataPendaftaran->KODE_PENDAFTARAN;?>">
-								<input type="hidden" name="BIAYA_TIM" value="<?= $totBayar;?>">
-								<button type="submit" class="btn btn-sm btn-block btn-success mb-2">
-									<i class="fas fa-credit-card fa-sm mr-2"></i> Bayar
-								</button>
-							</form>
-						<?php endif;?>
-					<?php endif;?>
-				<?php else:?>
-					<button class="btn btn-sm btn-block btn-success mb-2" disabled>
-						<i class="fas fa-check fa-sm mr-2"></i> sudah dibayar
-					</button>
-				<?php endif;?>
 			</div>
 		</div>
 	</div>

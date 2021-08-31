@@ -20,13 +20,13 @@
 				</div>
 				<div class="col-md-3">
 					<div class="form-group">
-						<label for="NimKetua" class="input-label font-weight-bold">NRP/NIM <b>KETUA</b> <small class="text-danger">*</small></label>
+						<label for="NimKetua" class="input-label font-weight-bold">NIM <small class="text-danger">*</small></label>
 						<input type="text" class="form-control form-control-sm" name="NIM_KETUA" id="NimKetua" value="<?= $dataKetua != false ? $dataKetua->NIM : '';?>" required>
 					</div>
 				</div>
 				<div class="col-md-5">
 					<div class="form-group">
-						<label for="EmailKetua" class="input-label font-weight-bold">EMAIL <b>KETUA</b> <small class="text-danger">*</small></label>
+						<label for="EmailKetua" class="input-label font-weight-bold">EMAIL <small class="text-danger">*</small></label>
 						<div class="d-flex">
 							<input type="email" class="form-control form-control-sm" name="EMAIL_KETUA" id="EmailKetua" value="<?= $this->session->userdata('email');?>" readonly>
 						</div>
@@ -43,13 +43,13 @@
 				</div>
 				<div class="col-md-3">
 					<div class="form-group">
-						<label for="NimDospem" class="input-label font-weight-bold">NIP <b>Dospem</b> <small class="text-muted">(jika ada)</small></label>
+						<label for="NimDospem" class="input-label font-weight-bold">NIDN <small class="text-muted">(jika ada)</small></label>
 						<input type="text" class="form-control form-control-sm" name="NIM_DOSPEM" id="NimDospem" value="<?= $dataDospem != false ? $dataDospem->NIM : '' ;?>">
 					</div>
 				</div>
 				<div class="col-md-5">
 					<div class="form-group">
-						<label for="EmailDospem" class="input-label font-weight-bold">EMAIL <b>Dosen Pembimbing</b> <small class="text-danger">*</small></label>
+						<label for="EmailDospem" class="input-label font-weight-bold">EMAIL <small class="text-danger">*</small></label>
 						<div class="d-flex">
 							<input type="email" class="form-control form-control-sm" name="EMAIL_DOSPEM" id="EmailDospem" value="<?= $dataDospem != false ? $dataDospem->EMAIL : '' ;?>" required>
 						</div>
@@ -59,6 +59,7 @@
 		</div>
 		<div class="card-header border-bottom pb-2">
 			<h5 class="card-header-title">Data anggota TIM <i><?= $dataPendaftaran->NAMA_TIM;?></i> <small class="text-danger">max 4 anggota TIM</small></h5>
+			<button type="button" class="btn btn-soft-info btn-xs btn-sm" id="add">Tambah field anggota</button>
 		</div>
 		<div class="card-body">
 			<?php if ($dataAnggota != false) : ?>
@@ -99,8 +100,8 @@
 						</div>
 						<div class="col-md-3">
 							<div class="form-group">
-								<label for="NimAnggota" class="input-label font-weight-bold">NRP/NIM <small class="text-danger">*</small></label>
-								<input type="text" class="form-control form-control-sm" name="NIM_ANGGOTA[]" id="NimAnggota" placeholder="Masukkan NRP/NIM anggota" required>
+								<label for="NimAnggota" class="input-label font-weight-bold">NIM <small class="text-danger">*</small></label>
+								<input type="text" class="form-control form-control-sm" name="NIM_ANGGOTA[]" id="NimAnggota" placeholder="Masukkan NIM anggota" required>
 							</div>
 						</div>
 						<div class="col-md-5">
@@ -116,8 +117,7 @@
 			<?php endif;?>
 		</div>
 		<div class="card-footer text-right">
-			<a href="<?= site_url('peserta/data-pendaftaran');?>" class="btn btn-white btn-sm">Batal</a>
-			<button type="button" class="btn btn-soft-info btn-sm" id="add">Tambah</button>
+			<a href="<?= site_url('peserta/data-pendaftaran');?>" class="btn btn-white btn-sm">Kembali</a>
 			<button type="submit" class="btn btn-soft-primary btn-sm" id="send-button">Simpan data</button>
 		</div>
 	</form>
@@ -132,7 +132,7 @@
 			}else{
 				$('#add').removeClass('d-none'); 
 			}
-			$('#add_anggota').append('<div class="row" id="row'+i+'"><div class="col-md-4"><div class="form-group"><label for="NamaAngota" class="input-label font-weight-bold">Nama <small class="text-danger">*</small></label><input type="text" class="form-control form-control-sm" name="NAMA_ANGGOTA[]" id="NamaAngota" placeholder="Masukkan Nama anggota" required></div></div><div class="col-md-3"><div class="form-group"><label for="NimAnggota" class="input-label font-weight-bold">NRP/NIM <small class="text-danger">*</small></label><input type="text" class="form-control form-control-sm" name="NIM_ANGGOTA[]" id="NimAnggota" placeholder="Masukkan NRP/NIM anggota" required></div></div><div class="col-md-5"><div class="form-group"><label for="EmailAnggota" class="input-label font-weight-bold">EMAIL <small class="text-danger">*</small></label><div class="d-flex"><input type="email" class="form-control form-control-sm" name="EMAIL_ANGGOTA[]" id="EmailAnggota" placeholder="Masukkan Email anggota" required><button type="button" class="btn btn-soft-danger ml-2 btn-sm btn_remove" id="'+i+'"><i class="fas fa-trash"></i></button></div></div></div></div>');
+			$('#add_anggota').append('<div class="row" id="row'+i+'"><div class="col-md-4"><div class="form-group"><label for="NamaAngota" class="input-label font-weight-bold">Nama <small class="text-danger">*</small></label><input type="text" class="form-control form-control-sm" name="NAMA_ANGGOTA[]" id="NamaAngota" placeholder="Masukkan Nama anggota" required></div></div><div class="col-md-3"><div class="form-group"><label for="NimAnggota" class="input-label font-weight-bold">NIM <small class="text-danger">*</small></label><input type="text" class="form-control form-control-sm" name="NIM_ANGGOTA[]" id="NimAnggota" placeholder="Masukkan NIM anggota" required></div></div><div class="col-md-5"><div class="form-group"><label for="EmailAnggota" class="input-label font-weight-bold">EMAIL <small class="text-danger">*</small></label><div class="d-flex"><input type="email" class="form-control form-control-sm" name="EMAIL_ANGGOTA[]" id="EmailAnggota" placeholder="Masukkan Email anggota" required><button type="button" class="btn btn-soft-danger ml-2 btn-sm btn_remove" id="'+i+'"><i class="fas fa-trash"></i></button></div></div></div></div>');
 		});
 		$(document).on('click', '.btn_remove', function(){
 			var button_id = $(this).attr("id");
