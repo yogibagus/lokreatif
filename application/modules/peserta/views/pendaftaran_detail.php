@@ -133,9 +133,9 @@
 									<?php endif;?>
 								<?php endif;?>
 							<?php else:?>
-								<button class="badge badge-success mb-2">
-									<i class="fas fa-check fa-sm mr-2"></i> sudah dibayar
-								</button>
+								<a class="badge badge-success mb-2">
+									sudah dibayar
+								</a>
 							<?php endif;?>
 						</div>
 					</div>
