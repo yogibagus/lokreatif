@@ -1,4 +1,4 @@
-name : Panji Belajar Deploy 
+name : Deploy to testing env lokreatif 
 on:
   push:
     branches: [ main ]
