@@ -19,10 +19,6 @@
       </div>
 
       <div class="col-auto">
-        <div class="d-none d-lg-block">
-          <a class="btn btn-sm btn-soft-light" href="<?= site_url('logout') ?>">Log out</a>
-        </div>
-
         <!-- Responsive Toggle Button -->
         <button type="button" class="navbar-toggler btn btn-icon btn-sm rounde-circle d-lg-none"
         aria-label="Toggle navigation"
