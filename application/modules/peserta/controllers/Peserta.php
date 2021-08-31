@@ -553,10 +553,11 @@ class Peserta extends MX_Controller
 				redirect(site_url('payment/checkout/' . $KODE_TRANS));
 			} else {
 				$dataPeserta 			= $this->General->get_detailDaftarKompetisi($this->session->userdata("kode_user"));
+				$JML_TIM				= $this->General->get_jmlPTSbayar($dataPeserta->ASAL_PTS);
+				$BIAYA_TIM				= $this->General->get_biayaDaftar($JML_TIM);
 
 				// GENERATE KODE_TRANS
 				$KODE_TRANS				= $this->transaksi->gen_kodeTrans();
-				$BIAYA_TIM				= $this->General->get_biayaDaftar($dataPeserta->JML_TIM);
 
 				// INSERT INTO DB WHEN DONT HAVE ANY PENDING TRANSACTION
 				if ($this->M_peserta->bayar_pendaftaran($KODE_TRANS, $KODE_PENDAFTARAN, $BIAYA_TIM) == TRUE) {
