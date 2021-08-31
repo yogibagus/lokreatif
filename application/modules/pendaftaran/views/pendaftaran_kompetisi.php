@@ -7,11 +7,10 @@
 			<p class="mb-0">Lengkapi data diri berikut dengan sebenar-benarnya.</p>
 		</div>
 		<!-- End Title -->
-		<form action="<?= site_url('pendaftaran/prosesPendaftaran/kompetisi');?>" method="POST" enctype="multipart/form-data">
-			<input type="hidden" name="KODE_KEGIATAN" value="lokreatif">
+		<form action="<?= site_url('pendaftaran/prosesPendaftaranKompetisi');?>" method="POST" enctype="multipart/form-data">
 
 			<div class="card card-frame card-body mb-4">
-				<p class="font-size-1">Pendaftaran menggunakan akun anda <?= $this->session->userdata('nama');?> -  <?= $this->session->userdata('email');?>, ubah data diri? <a href="<?= site_url('peserta/pengaturan');?>">ubah</a></p>
+				<p class="font-size-1">Pendaftaran lomba ini menggunakan akun <?= $this->session->userdata('nama');?> -  <?= $this->session->userdata('email');?> sebagai KETUA TIM, <a href="<?= site_url('logout');?>">ganti akun?</a></p>
 			</div>
 
 			<div class="card card-frame card-body mb-4">

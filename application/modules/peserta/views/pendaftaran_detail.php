@@ -113,7 +113,7 @@
 									<input type="hidden" name="KODE_PENDAFTARAN" value="<?= $dataPendaftaran->KODE_PENDAFTARAN;?>">
 									<input type="hidden" name="BIAYA_TIM" value="<?= $totBayar;?>">
 									<button type="submit" class="badge badge-success mb-2">
-										<i class="fas fa-credit-card fa-sm mr-2"></i> Bayar ulang
+										Bayar ulang
 									</button>
 								</form>
 							<?php elseif ($statBayar == false):?>
@@ -124,20 +124,16 @@
 								<?php else:?>
 									<?php if ($sudahBayar == true) :?>
 										<a href="<?= site_url('peserta/riwayat-pembayaran');?>" class="badge badge-success mb-2">
-											<i class="fas fa-credit-card fa-sm mr-2"></i> Lanjutkan pembayaran
+											Lanjutkan pembayaran
 										</a>
 									<?php else:?>
-										<form action="<?= site_url('peserta/bayar_pendaftaran');?>" method="POST">
-											<input type="hidden" name="KODE_PENDAFTARAN" value="<?= $dataPendaftaran->KODE_PENDAFTARAN;?>">
-											<input type="hidden" name="BIAYA_TIM" value="<?= $totBayar;?>">
-											<button type="submit" class="badge badge-success mb-2">
-												<i class="fas fa-credit-card fa-sm mr-2"></i> Bayar biaya pendaftara
-											</button>
-										</form>
+										<a href="<?= site_url('peserta/bayar_pendaftaran/'.$dataPendaftaran->KODE_PENDAFTARAN);?>" class="badge badge-success mb-2">
+											Bayar biaya pendaftaran
+										</a>
 									<?php endif;?>
 								<?php endif;?>
 							<?php else:?>
-								<button class="btn btn-sm btn-block btn-success mb-2" disabled>
+								<button class="badge badge-success mb-2">
 									<i class="fas fa-check fa-sm mr-2"></i> sudah dibayar
 								</button>
 							<?php endif;?>

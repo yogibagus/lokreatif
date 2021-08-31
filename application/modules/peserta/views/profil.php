@@ -12,7 +12,7 @@
 
 <div class="row mb-4">
   <div class="col-md-6 col-sm-12">
-    <a href="<?= site_url(($daftarKompetisi > 0 ? 'peserta/data-pendaftaran' : 'daftar-kompetisi'));?>" <?= ($daftarKompetisi > 0 ? '' : 'target="_blank"');?> class="card card-frame h-100">
+    <a href="<?= site_url(($daftarKompetisi > 0 ? 'peserta/data-pendaftaran' : 'daftar-kompetisi'));?>" class="card card-frame h-100">
       <div class="card-body">
         <!-- Icon Block -->
         <div class="media d-block d-sm-flex">

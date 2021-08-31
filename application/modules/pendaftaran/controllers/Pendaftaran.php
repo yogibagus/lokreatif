@@ -74,6 +74,47 @@ class Pendaftaran extends MX_Controller {
 		}
 	}
 
+	function prosesPendaftaranKompetisi(){
+		$tabel = "pendaftaran_kompetisi";
+
+		$uniqid		= substr(md5(strtolower($this->session->userdata('kode_user'))), 0, 4);
+		$time 		= substr(md5(time()), 0, 6);
+
+		do {
+			$KODE_PENDAFTARAN      = "{$uniqid}-{$time}";
+		} while ($this->M_daftar->cek_kodeDaftar($KODE_PENDAFTARAN) > 0);
+
+		// STATIC FORM DEFAULT
+		$BIDANG_LOMBA		= $this->input->post('BIDANG_LOMBA');
+		$NAMA_TIM			= $this->input->post('NAMA_TIM');
+
+		// PTS
+		$PT					= $this->input->post('ASAL_PTS');
+		$PT 	    		= explode("-", $PT);
+		$ASAL_PTS			= $PT[0];
+		$ALAMAT_PTS			= $this->input->post('ALAMAT_PTS');
+
+		$daftar = array(
+			'KODE_PENDAFTARAN' 	=> $KODE_PENDAFTARAN, 
+			'KODE_USER' 		=> $this->session->userdata('kode_user'), 
+			'BIDANG_LOMBA' 		=> $BIDANG_LOMBA,
+			'NAMA_TIM' 			=> $NAMA_TIM,
+			'ASAL_PTS' 			=> $ASAL_PTS,
+			'ALAMAT_PTS' 		=> $ALAMAT_PTS
+		);
+
+		if ($this->M_daftar->insert_pendaftaran($daftar, $tabel) == true) {
+			$this->session->set_flashdata('success', "Berhasil mengirim data pendaftaran anda !!");
+			$this->General->log_aktivitas($this->session->userdata('kode_user'), $this->session->userdata('kode_user'), 14);
+			redirect(site_url('peserta/data-pendaftaran'));
+		}else{
+			$this->M_daftar->delete_pendaftaran($KODE_PENDAFTARAN, $tabel);
+			$this->session->set_flashdata('error', "Terjadi kesalahan saat mengirim pendaftaran anda !!");
+			redirect($this->agent->referrer());
+		}
+
+	}
+
 	function prosesPendaftaran($kegiatan){
 
 		if ($kegiatan == "kegiatan") {
