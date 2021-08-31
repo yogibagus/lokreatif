@@ -154,7 +154,7 @@ class Peserta extends MX_Controller
 
 	public function data_pendaftaran()
 	{
-		if ($this->M_peserta->cek_daftarKompetisi($this->session->userdata("kode_user")) == false) {
+		if ($this->M_peserta->cek_daftarKompetisi($this->session->userdata("kode_user")) == false || $this->General->get_detailDaftarKompetisi($this->session->userdata("kode_user")) == false) {
 
 			$data['module'] 		= "peserta";
 			$data['fileview'] 		= "pendaftaran_detailNo";
