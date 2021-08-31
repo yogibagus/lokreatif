@@ -26,7 +26,7 @@
     <!-- Form Group -->
     <div class="form-group">
       <label class="input-label" for="signinSrEmail">Email <span class="text-danger">*</span></label>
-      <input type="text" class="form-control" name="email" id="signinSrEmail" <?= ($email == null ? 'placeholder="Email anda"' : 'value="'.$email.'"');?> aria-label="Email anda" required data-msg="Harap masukkan email anda.">
+      <input type="email" class="form-control" name="email" id="signinSrEmail" <?= ($email == null ? 'placeholder="Email anda"' : 'value="'.$email.'"');?> aria-label="Email anda" required data-msg="Harap masukkan email anda.">
     </div>
     <!-- End Form Group -->
 
