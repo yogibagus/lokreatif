@@ -3,15 +3,15 @@
   <form class="js-validate w-md-75 w-lg-50 mx-md-auto" action="<?= site_url('authentication/proses_daftar_univ') ?>" method="post">
     <!-- Title -->
     <div class="mb-5 mb-md-7">
-      <h1 class="h2 mb-0">Gabung sekarang!</h1>
-      <p>Daftarkan akun anda untuk dapat bergabung bersama kami.</p>
+      <h1 class="h2 mb-0">Daftar sekarang!</h1>
+      <p>Daftarkan PTS anda untuk dapat mengelolah tim dari PTS anda.</p>
     </div>
     <!-- End Title -->
 
     <!-- Form Group -->
-    <div class="js-form-message form-group">
+    <div class="form-group">
       <label class="input-label" for="signinSrNama">Nama PTS <span class="text-danger">*</span></label>
-      <select id="select-pts" class="" data-select="listPts" size="1" style="width: 100%;opacity: 0; background: #000 !important;"
+      <select id="select-pts" class="custom-select" data-select="listPts" size="1" style="width: 100%;"
               data-hs-select2-options='{
                 "placeholder": "Pilih PTS"
               }'>
@@ -24,14 +24,14 @@
     <!-- End Form Group -->
 
     <!-- Form Group -->
-    <div class="js-form-message form-group">
+    <div class="form-group">
       <label class="input-label" for="signinSrEmail">Email <span class="text-danger">*</span></label>
       <input type="text" class="form-control" name="email" id="signinSrEmail" <?= ($email == null ? 'placeholder="Email anda"' : 'value="'.$email.'"');?> aria-label="Email anda" required data-msg="Harap masukkan email anda.">
     </div>
     <!-- End Form Group -->
 
     <!-- Form Group -->
-    <div class="js-form-message form-group">
+    <div class="form-group">
       <label class="input-label" for="signinSrTelepon">Nomor telepon <span class="text-danger">*</span></label>
       <!-- Input Group -->
       <div class="input-group input-group-merge">
@@ -48,21 +48,21 @@
     <!-- End Form Group -->
 
     <!-- Form Group -->
-    <div class="js-form-message form-group">
+    <div class="form-group">
       <label class="input-label" for="signinSrPassword">Password <span class="text-danger">*</span></label>
       <input type="password" class="form-control" name="password" minlength="6" id="signinSrPassword" placeholder="********" aria-label="********" required required data-msg="Harap masukkan password, minimal 6 karakter.">
     </div>
     <!-- End Form Group -->
 
     <!-- Form Group -->
-    <div class="js-form-message form-group">
+    <div class="form-group">
       <label class="input-label" for="signinSrConfirmPassword">Konfirmasi password</label>
       <input type="password" class="form-control" name="confirmPassword" minlength="6" id="signinSrConfirmPassword" placeholder="********" aria-label="********" required required data-msg="Harap masukkan konfirmasi password, minimal 6 karakter">
     </div>
     <!-- End Form Group -->
 
     <!-- Checkbox -->
-    <div class="js-form-message mb-5">
+    <div class="mb-5">
       <div class="custom-control custom-checkbox d-flex align-items-center text-muted">
         <input type="checkbox" class="custom-control-input" id="termsCheckbox" name="termsCheckbox" required
         data-msg="Harap setuju dengan syarat dan kondisi kami.">

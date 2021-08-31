@@ -38,23 +38,20 @@
 					<label class="input-label">Nama TIM<span class="text-danger">*</span></label>
 					<input type="text" name="NAMA_TIM" class="form-control form-control-sm form-control-flush" placeholder="Masukkan nama tim anda" required>
 				</div>
-				<div class="form-group">
-					<label class="input-label">Asal PTS<span class="text-danger">*</span></label>
-
-					<select class="js-custom-select custom-select" name="ASAL_PTS" size="1"
-					data-hs-select2-options='{
-						"placeholder": "Pilih pts"
-						}' required>
-						<option value="">Pilih pts</option>
-						<?php foreach ($pts as $item) :?>
-							<option value="<?= $item;?>"><?= $item;?></option>
-						<?php endforeach;?>
-					</select>
-					<small>
-						<span class="font-size-1 text-muted">PTS anda tidak tersedia?</span>
-						<a class="font-size-1 font-weight-bold" href="<?= site_url('tambah-pts') ?>">Daftarkan PTS</a>
-					</small>
-				</div>
+			    <!-- Form Group -->
+			    <div class="form-group">
+			      <label class="input-label" for="signinSrNama">Nama PTS <span class="text-danger">*</span></label>
+			      <select id="select-pts" class="custom-select" data-select="listPts" size="1" style="width: 100%;"
+			              data-hs-select2-options='{
+			                "placeholder": "Pilih PTS"
+			              }'>
+			      </select>
+			      <small>
+			        <span class="font-size-1 text-muted">PTS anda tidak tersedia?</span>
+			        <a class="font-size-1 font-weight-bold" href="<?= site_url('tambah-pts') ?>">Daftarkan PTS</a>
+			      </small>
+			    </div>
+			    <!-- End Form Group -->
 				<div class="form-group">
 					<label class="input-label">Alamat PTS<span class="text-danger">*</span></label>
 					<textarea type="text" name="ALAMAT_PTS" class="form-control form-control-sm form-control-flush" placeholder="Masukkan alamat pts anda" required></textarea>
@@ -70,3 +67,30 @@
 		</form>
 	</div>
 </div>
+
+<script type="text/javascript">
+  $('#select-pts').select2({
+    ajax: {
+      url: '<?= site_url('ajx-data-pts-all')?>',
+      dataType: 'json',
+      method: 'post',
+      data: params => {
+        console.log(params)
+        var query = {
+          search: params.term,
+          type: 'public'
+        }
+        return query;
+      },
+      processResults: data => {
+        let arrData = [];
+        for(x of data){
+          temp = {id: x.kodept, text: x.namapt}
+          arrData.push(temp)
+        }
+        return {results: arrData}
+      }
+    },
+    placeholder: "Pilih PTS",
+    // selectionCssClass: 'selectcss-custom'
+  });</script>

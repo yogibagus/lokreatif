@@ -30,6 +30,17 @@ class M_authentication extends CI_Model {
         return $result;
 	}
 
+	public function get_ptsAll($search = null){
+		$querSearch = "";
+		if($search != null){
+			$querSearch = "WHERE namapt LIKE '%$search%' OR kodept LIKE '%$search%'";
+		}
+
+        $query  = $this->db->query("SELECT kodept,namapt FROM pt $querSearch LIMIT 20");
+        $result = $query->result();
+        return $result;
+	}
+
 	public function cek_kodeUser($kode_user){
 		$kode_user 	= $this->db->escape($kode_user);
 		$query 		= $this->db->query("SELECT * FROM tb_auth WHERE KODE_USER = $kode_user");

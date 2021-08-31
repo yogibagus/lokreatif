@@ -11,7 +11,7 @@
 
       <!-- Informasi -->
       <li class="hs-has-sub-menu navbar-nav-item">
-        <a id="pengumumanMenu" class="hs-mega-menu-invoker nav-link nav-link-toggle " href="javascript:;" aria-haspopup="true" aria-expanded="false" aria-labelledby="pengumumanSubMenu">Informasi</a>
+        <a id="pengumumanMenu" class="hs-mega-menu-invoker nav-link nav-link-toggle " href="javascript:;" aria-haspopup="true" aria-expanded="false" aria-labelledby="pengumumanSubMenu">Informasi Lomba</a>
 
         <!-- Blog - Submenu -->
         <div id="pengumumanSubMenu" class="hs-sub-menu dropdown-menu" aria-labelledby="pengumumanMenu" style="min-width: 230px;">

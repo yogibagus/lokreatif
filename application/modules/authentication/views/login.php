@@ -42,14 +42,3 @@
       </form>
     </div>
     <!-- End Login Form -->
-
-<script>
-    $('form').submit(function(event) {
-        $('#send-button').prop("disabled", true);
-        // add spinner to button
-        $('#send-button').html(
-            `<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Loading...`
-        );
-        return;
-    });
-</script>

@@ -171,14 +171,11 @@
 						<div class="col-12">
 							<div class="form-group">
 								<label class="input-label font-weight-bold">Asal PTS <small class="text-danger">*</small></label>
-								<select class="js-custom-select custom-select" name="ASAL_PTS" size="1" data-hs-select2-options='{
-									"placeholder": "Pilih pts"
-									}' required>
-									<option value="<?= $dataPendaftaran->ASAL_PTS;?>"><?= $dataPendaftaran->namapt;?></option>
-									<?php foreach ($pts as $item) :?>
-										<option value="<?= $item;?>"><?= $item;?></option>
-									<?php endforeach;?>
-								</select>
+							      <select id="select-pts" class="custom-select" data-select="listPts" size="1" style="width: 100%;"
+							              data-hs-select2-options='{
+							                "placeholder": "Pilih PTS"
+							              }'>
+							      </select>
 							</div>
 						</div>
 						<div class="col-12">
@@ -197,3 +194,32 @@
 		</div>
 	</div>
 </div>
+
+
+
+<script type="text/javascript">
+  $('#select-pts').select2({
+    ajax: {
+      url: '<?= site_url('ajx-data-pts-all')?>',
+      dataType: 'json',
+      method: 'post',
+      data: params => {
+        console.log(params)
+        var query = {
+          search: params.term,
+          type: 'public'
+        }
+        return query;
+      },
+      processResults: data => {
+        let arrData = [];
+        for(x of data){
+          temp = {id: x.kodept, text: x.namapt}
+          arrData.push(temp)
+        }
+        return {results: arrData}
+      }
+    },
+    placeholder: "Pilih PTS",
+    // selectionCssClass: 'selectcss-custom'
+  });</script>
