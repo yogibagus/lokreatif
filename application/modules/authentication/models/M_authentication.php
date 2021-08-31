@@ -19,15 +19,15 @@ class M_authentication extends CI_Model {
 		}
 	}
 
-	public function get_pts(){
-        $query  = $this->db->query("SELECT kodept,namapt FROM pt WHERE kodept NOT IN (SELECT KODE_PT FROM tb_univ)");
-        $result = $query->result();
+	public function get_pts($search = null){
+		$querSearch = "";
+		if($search != null){
+			$querSearch = " AND namapt LIKE '%$search%' OR kodept LIKE '%$search%'";
+		}
 
-        foreach ($result as $row){
-            $pt[$row->kodept]['nama'] 	= $row->kodept . '-'. $row->namapt;
-            $pt[$row->kodept]['kodept'] = $row->kodept;
-        }
-        return $pt;
+        $query  = $this->db->query("SELECT kodept,namapt FROM pt WHERE kodept NOT IN (SELECT KODE_PT FROM tb_univ) $querSearch LIMIT 20");
+        $result = $query->result();
+        return $result;
 	}
 
 	public function cek_kodeUser($kode_user){

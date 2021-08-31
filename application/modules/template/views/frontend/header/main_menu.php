@@ -3,15 +3,11 @@
     <ul class="navbar-nav">
       <!-- Home -->
       <li class="navbar-nav-item">
-        <a class="nav-link" href="<?= base_url() ?>">Home</a>
+        <a class="nav-link" href="<?= base_url() ?>">Beranda</a>
       </li>
       <!-- End Home -->
 
-      <!-- Kegiatan -->
-      <li class="navbar-nav-item">
-        <a class="nav-link" href="<?= site_url('kegiatan') ?>">Kegiatan</a>
-      </li>
-      <!-- End Kegiatan -->
+      
 
       <!-- Informasi -->
       <li class="hs-has-sub-menu navbar-nav-item">
@@ -91,6 +87,12 @@
       </li>
       <!-- End Layanan -->
 
+      <!-- Kegiatan -->
+      <li class="navbar-nav-item">
+        <a class="nav-link" href="<?= site_url('kegiatan') ?>">Kegiatan</a>
+      </li>
+      <!-- End Kegiatan -->
+
       <?php if ($this->session->userdata('logged_in') == false || !$this->session->userdata('logged_in')):?>
       <li class="list-inline-item d-none d-sm-block">
         <div class="hs-unfold">
@@ -103,7 +105,7 @@
             "hasOverlay": "rgba(55, 125, 255, 0.1)",
             "smartPositionOff": true
           }'>
-            <i class="fas fa-user-circle mr-2"></i> bergabung
+            <i class="fas fa-user-circle mr-2"></i> Daftar
           </a>
         </div>
       </li>

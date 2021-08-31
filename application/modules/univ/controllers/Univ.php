@@ -117,6 +117,8 @@ class Univ extends MX_Controller {
 		redirect('payment/checkout/'.$kodeTrans);
 	}
 
+	
+
 	public function notifikasi(){
 		$this->load->library('pagination');
 

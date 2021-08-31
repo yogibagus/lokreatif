@@ -43,18 +43,20 @@
       <!-- End Nav -->
     </div>
   </div>
-</header>
-<!-- ========== END HEADER ========== -->
+<<<<<<< HEAD
+  </header>
+  <!-- ========== END HEADER ========== -->
 
-<!-- Account Sidebar Navigation -->
-<aside id="sidebarContent" class="hs-unfold-content sidebar">
-  <div class="sidebar-scroller">
-    <div class="sidebar-container">
-      <div class="sidebar-footer-offset" style="padding-bottom: 7rem;">
-        <!-- Toggle Button -->
-        <div class="d-flex justify-content-end align-items-center pt-4 px-4">
-          <div class="hs-unfold">
-            <a class="js-hs-unfold-invoker btn btn-icon btn-xs btn-soft-secondary" href="javascript:;" data-hs-unfold-options='{
+  <!-- Account Sidebar Navigation -->
+  <aside id="sidebarContent" class="hs-unfold-content sidebar">
+    <div class="sidebar-scroller">
+      <div class="sidebar-container">
+        <div class="sidebar-footer-offset" style="padding-bottom: 7rem;">
+          <!-- Toggle Button -->
+          <div class="d-flex justify-content-end align-items-center pt-4 px-4">
+            <div class="hs-unfold">
+              <a class="js-hs-unfold-invoker btn btn-icon btn-xs btn-soft-secondary" href="javascript:;"
+                data-hs-unfold-options='{
                   "target": "#sidebarContent",
                   "type": "css-animation",
                   "animationIn": "fadeInRight",
