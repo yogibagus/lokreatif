@@ -105,7 +105,7 @@ class Payment extends MX_Controller
         $payment = $this->M_payment->get_payment_by_id($param);
         if ($payment != false) {
             $transaksi = $this->M_payment->get_transaksi_by_id($payment->KODE_TRANS);
-            if ($transaksi->STAT_BAYAR != 3) { // if payment not complete
+            if ($payment->STAT_PAY != 3) { // if payment not complete
                 if ($transaksi->KODE_USER_BILL == $this->kode_user) {
                     //get user and split
                     $kode_user = explode('_', trim($transaksi->KODE_USER_BILL));
@@ -142,7 +142,7 @@ class Payment extends MX_Controller
                     redirect($this->agent->referrer());
                 }
             } else {
-                $this->session->set_flashdata('warning', "Pembayaran telah berhasil dilakukan. Anda tidak dapat mengakses halaman tersebut!");
+                $this->session->set_flashdata('warning', "Pembayaran telah berhasil dilakukan!");
                 if ($this->role == 1) {
                     redirect('peserta/riwayat-pembayaran');
                 } elseif ($this->role = 3) {
@@ -186,7 +186,7 @@ class Payment extends MX_Controller
             $time_limit = date('Y-m-d H:i:s', $time_limit);
             // check if now is more than time limit
             if (date("Y-m-d H:i:s") > $time_limit) {
-                $name = ($this->input->post("name") != "") ? $this->input->post("name") : "";
+                $name = "LOKREATIF";
                 $mobile = ($this->input->post("mobile") != "") ? $this->input->post("mobile") : "";
                 $mobile = preg_replace('/^(?:\+?62|0)?/', '0', $mobile);
                 $method = ($this->input->post("method") != "") ? $this->input->post("method") : "";
@@ -395,6 +395,18 @@ class Payment extends MX_Controller
             $data['subject'] = "Selesaikan Pembayaran - Pendaftaran LO-KREATIF";
             $data['message'] = file_get_contents(base_url() . "payment/mail_payment_created/" . $param . "/" . $user->KODE_USER . "/" . $this->role);
             $this->mailer->send($data);
+        }
+    }
+
+    public function get_payment_stat($param)
+    {
+        $payment = $this->M_payment->get_payment_by_id($param);
+        if ($param != false) {
+            if ($payment->STAT_PAY == 3) {
+                echo true;
+            } else {
+                echo false;
+            }
         }
     }
 }

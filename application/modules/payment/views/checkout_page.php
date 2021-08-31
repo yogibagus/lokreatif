@@ -4,7 +4,7 @@
             <!-- start center -->
             <div class="card mb-3">
                 <div class="card-header">
-                    <h4 class="card-title">Checkout <?= $kode_trans ?></h4>
+                    <h4 class="card-title">Checkout</h4>
                 </div>
                 <div class="card-body">
                     <?php if ($this->session->userdata('role') == 1) { ?>
@@ -94,7 +94,7 @@
                                     <a class="nav-link active" id="pills-one-code-features-example1-tab" data-toggle="pill" href="#tab-menu-ewallet" role="tab" aria-controls="tab-menu-ewallet" aria-selected="true">E-WALLET</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link" id="pills-two-code-features-example1-tab" data-toggle="pill" href="#tab-menu-va" role="tab" aria-controls="tab-menu-va" aria-selected="false">VERTUAL ACCOUNT</a>
+                                    <a class="nav-link" id="pills-two-code-features-example1-tab" data-toggle="pill" href="#tab-menu-va" role="tab" aria-controls="tab-menu-va" aria-selected="false">VIRTUAL ACCOUNT</a>
                                 </li>
                             </ul>
                         </div>
@@ -218,13 +218,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <label for="basic-url" class="form-label mt-3 text-method" id="">Nama:</label>
-                                    <!-- Input Group -->
-                                    <div class="input-group">
-                                        <input type="text" class="form-control" oninput="requiredAlertName()" name="name" id="name-card-holder" placeholder="Nama yang tercantum pada ATM" value="">
-                                    </div>
-                                    <small class="text-muted" id="required-alert-va">*) Harap masukan Nama yang tercantum pada ATM .</small>
-                                    <!-- End Input Group -->
+                                    <small class="text-muted" id="required-alert-va">*) Pilih salah satu metode pembayaran diatas.</small>
                                 </div>
                             </div>
                             <!-- End Tab Content -->
@@ -244,13 +238,6 @@
             $("#required-alert-wallet").hide();
             if ($('#mobile').val() == "") {
                 $("#required-alert-wallet").show();
-            }
-        }
-
-        function requiredAlertName() {
-            $("#required-alert-va").hide();
-            if ($('#name').val() == "") {
-                $("#required-alert-va").show();
             }
         }
     </script>
@@ -312,7 +299,6 @@
             if (arr[0] == "EWALLET") {
                 // add required input mobile
                 $('#mobile').prop('required', true);
-                $('#name-card-holder').prop('required', false);
                 // change method text
                 $('.text-method').text(arr[1] + " Number:");
 
@@ -323,7 +309,6 @@
                 $('#total_amount').text(format_rupiah(new_amount));
                 $('#fee').text(format_rupiah(fee));
             } else {
-                $('#name-card-holder').prop('required', true);
                 $('#mobile').prop('required', false);
                 // change method text
                 $('.text-method').text("Nama:");
@@ -338,16 +323,6 @@
 
 
         });
-
-        // check radio va
-        // $("input[name='va']").on('change', function() {
-        //     // remove required input mobile
-        //     $('#mobile').prop('required', false);
-        //     //set type value
-        //     $("#type").val("VA");
-        //     // remove checked ewallet
-        //     $("input[type=radio][name=ewallet]").prop('checked', false);
-        // });
     </script>
 </div>
 <footer class="py-3">
