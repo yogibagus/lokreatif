@@ -480,7 +480,13 @@ class Authentication extends MX_Controller {
     					$this->General->log_aktivitas($this->session->userdata('kode_user'), $this->session->userdata('kode_user'), 3);
 
     					$this->session->set_flashdata('success', 'Berhasil aktivasi akun, sekarang anda dapat mendaftarkan TIM anda ke lomba LO Kreatif !!');
-    					redirect(site_url('daftar-kompetisi'));
+    					if ($this->session->userdata('role') == 1) {
+	    					redirect(site_url('daftar-kompetisi'));
+    					}elseif ($this->session->userdata('role') == 3) {
+	    					redirect(site_url('pts'));
+    					}else{
+	    					redirect(base_url());
+    					}
     				}else {
     					$this->session->set_flashdata('error', 'Terjadi kesalahan saat mencoba meng-aktivasi akun anda !!');
     					redirect($this->agent->referrer());
