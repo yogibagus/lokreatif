@@ -55,7 +55,7 @@ if ($payment->TYPE == 1) {
                         </div>
                         <div class="col-lg-6 col-6 mb-2">
                             <span class="font-weight-bold d-block">Status Pembayaran:</span>
-                            <span class="badge badge-<?= $status->COLOR_STAT_PAY ?>" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="<?= $status->KETERANGAN_STAT_PAY ?>"><?= $status->ALIAS_STAT_PAY ?></span>
+                            <span id="status-payment" class="badge badge-<?= $status->COLOR_STAT_PAY ?>" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="<?= $status->KETERANGAN_STAT_PAY ?>"><?= $status->ALIAS_STAT_PAY ?></span>
                         </div>
                         <div class="col-lg-6 col-6 mb-2">
                             <span class="font-weight-bold d-block">Order dibuat oleh:</span>
@@ -164,11 +164,11 @@ if ($payment->TYPE == 1) {
                                 <h3>PAYMENT METHOD</h3>
                                 <span class="badge badge-info"><?= $type ?></span><br>
                                 <span class="badge badge-primary">BANK <?= $payment->METHOD ?></span>
-                                <h4 class="mt-3">VA Number</h4>
+                                <h4 class="mt-3">VA Number <small><i class="fa fa-question-circle text-muted" data-toggle="tooltip" data-placement="top" title="Virtual Account Number" aria-hidden="true"></i></small></h4>
                                 <div class=" input-group mb-3" style="max-width: 300px;">
                                     <input type="text" class="form-control bg-white text-center font-weight-bold" value="<?= $payment->ACC_NUMBER ?>" id="va_number" disabled>
                                     <div class="input-group-append">
-                                        <button class="btn btn-outline-secondary" onclick="copyInput()" type=" button"><i class="fas fa-copy    "></i></button>
+                                        <button class="btn btn-outline-secondary" title="Copy VA Number" onclick="copyInput()" type=" button"><i class="fas fa-copy    "></i></button>
                                     </div>
                                 </div>
                             </center>
@@ -254,4 +254,27 @@ if ($payment->TYPE == 1) {
     }
 
     timer = setInterval(showRemaining, 1000);
+</script>
+
+<script>
+    setInterval(function() {
+        // this code runs every second 
+        jQuery.ajax({
+            url: "<?= base_url('payment/get_payment_stat/' . $payment->KODE_PAY) ?>",
+            type: "GET",
+            success: function(data) {
+                if (data == 1) {
+                    // Send new refresh request in 1 sec:
+                    $("#payment-info").html("<center><strong>Pembayaran sukses.</strong></center>");
+                    $("#status-payment").removeClass(" badge-warning");
+                    $("#status-payment").addClass(" badge-success");
+                    $("#status-payment").text("Pembayaran Sukses");
+                    $("#alert").html("<strong>Selamat!</strong> Pembayaran anda telah berhasil divalidasi.");
+                    location.reload();
+                } else {
+
+                }
+            }
+        });
+    }, 6000);
 </script>
