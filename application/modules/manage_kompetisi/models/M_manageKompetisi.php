@@ -39,15 +39,9 @@ class M_manageKompetisi extends CI_Model {
 
 	function tambah_bidangLomba(){
 		$BIDANG_LOMBA 	= htmlspecialchars($this->input->post('BIDANG_LOMBA'), true);
-		$TEAM 			= $this->input->post('TEAM');
-		$MIN_ANGGOTA 	= htmlspecialchars($this->input->post('MIN_ANGGOTA'), true);
-		$MAX_ANGGOTA 	= htmlspecialchars($this->input->post('MAX_ANGGOTA'), true);
 		$KETERANGAN 	= htmlspecialchars($this->input->post('KETERANGAN'), true);
 
 		$data = array(
-			'TEAM'			=> ($TEAM == true ? 1 : 0),
-			'MIN_ANGGOTA'	=> ($TEAM == true ? $MIN_ANGGOTA : null),
-			'MAX_ANGGOTA'	=> ($TEAM == true ? $MAX_ANGGOTA : null),
 			'BIDANG_LOMBA' 	=> $BIDANG_LOMBA,
 			'KETERANGAN' 	=> $KETERANGAN,
 		);
@@ -59,16 +53,10 @@ class M_manageKompetisi extends CI_Model {
 		$ID_BIDANG 		= $this->input->post('ID_BIDANG');
 
 		$BIDANG_LOMBA 	= htmlspecialchars($this->input->post('BIDANG_LOMBA'), true);
-		$TEAM 			= $this->input->post('TEAM');
-		$MIN_ANGGOTA 	= htmlspecialchars($this->input->post('MIN_ANGGOTA'), true);
-		$MAX_ANGGOTA 	= htmlspecialchars($this->input->post('MAX_ANGGOTA'), true);
 		$KETERANGAN 	= htmlspecialchars($this->input->post('KETERANGAN'), true);
 
 		$data = array(
 			'BIDANG_LOMBA' 	=> $BIDANG_LOMBA,
-			'TEAM'			=> ($TEAM == true ? 1 : 0),
-			'MIN_ANGGOTA'	=> ($TEAM == true ? $MIN_ANGGOTA : null),
-			'MAX_ANGGOTA'	=> ($TEAM == true ? $MAX_ANGGOTA : null),
 			'KETERANGAN' 	=> $KETERANGAN,
 		);
 

@@ -479,8 +479,8 @@ class Authentication extends MX_Controller {
 						// 2. AKTIVASI AKUN
     					$this->General->log_aktivitas($this->session->userdata('kode_user'), $this->session->userdata('kode_user'), 3);
 
-    					$this->session->set_flashdata('success', 'Berhasil aktivasi akun, Selamat datang di LO Kreatif !!');
-    					redirect(base_url());
+    					$this->session->set_flashdata('success', 'Berhasil aktivasi akun, sekarang anda dapat mendaftarkan TIM anda ke lomba LO Kreatif !!');
+    					redirect(site_url('daftar-kompetisi'));
     				}else {
     					$this->session->set_flashdata('error', 'Terjadi kesalahan saat mencoba meng-aktivasi akun anda !!');
     					redirect($this->agent->referrer());

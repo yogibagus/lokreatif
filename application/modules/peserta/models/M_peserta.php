@@ -20,6 +20,16 @@ class M_peserta extends CI_Model {
 
 	// PESERTA
 
+	public function cek_kodePendaftaran($kode){
+		$kode  = $this->db->escape($kode);
+		$query = $this->db->query("SELECT * FROM pendaftaran_kompetisi WHERE KODE_PENDAFTARAN = $kode");
+		if ($query->num_rows() > 0) {
+			return $query->row();
+		}else {
+			return false;
+		}
+	}
+
 	public function cek_aktivasi($kode_user){
 		$query = $this->db->query("SELECT * FROM tb_token WHERE KODE = '$kode_user' AND TYPE = 1");
 		if ($query->num_rows() > 0) {
@@ -325,9 +335,7 @@ class M_peserta extends CI_Model {
 		return ($this->db->affected_rows() != 1) ? false : true;
 	}
 
-	function bayar_pendaftaran($KODE_TRANS){
-		$KODE_PENDAFTARAN	= $this->input->post('KODE_PENDAFTARAN');
-		$BIAYA_TIM 			= $this->input->post('BIAYA_TIM');
+	function bayar_pendaftaran($KODE_TRANS, $KODE_PENDAFTARAN, $BIAYA_TIM){
 		$KODE_USER_BILL 	= $this->session->userdata('kode_user');
 		$ROLE_USER_BILL 	= $this->session->userdata('role');
 

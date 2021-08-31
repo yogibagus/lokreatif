@@ -37,7 +37,7 @@
             </button>
           </div>
           <div class="modal-body">
-            <form action="<?= site_url('manage_kompetisi/tambah_bidangLomba');?>" method="post">
+            <form action="<?= site_url('manage_kompetisi/tambah_bidangLomba');?>" method="post" entype="multipart/form-data">
 
               <div class="row mb-2">
                 <div class="col-12">
@@ -46,57 +46,7 @@
                     <label class="input-label font-weight-bold">Nama bidang lomba <small class="text-danger">*</small></label>
                     <input type="text" class="form-control form-control-sm" name="BIDANG_LOMBA" placeholder="Masukkan nama bidang lomba" reqired>
                   </div>
-                  <div class="row">
-                    <div class="col-4">
-                      <div class="form-group">
-                        <label class="input-label font-weight-bold">TEAM?</label>
-                        <label class="toggle-switch d-flex align-items-center mb-3" for="TEAM">
-                          <input type="checkbox" class="toggle-switch-input" name="TEAM" id="TEAM">
-                          <span class="toggle-switch-label">
-                            <span class="toggle-switch-indicator"></span>
-                          </span>
-                          <span class="toggle-switch-content">
-                            <span class="d-block">Berbentuk team?</span>
-                          </span>
-                        </label>
-                        <!-- End Checkbox Switch -->
-                      </div>
-                    </div>
-                    <div class="col-4 d-none" id="aturMin">
-                      <div class="form-group row">
-                        <label class="input-label font-weight-bold">Jumlah anggota Minimal</label>
-                        <div class="js-quantity-counter input-group-quantity-counter">
-                          <input type="number" class="js-result form-control form-control-sm input-group-quantity-counter-control" value="1" min="1" max="25" name="MIN_ANGGOTA">
 
-                          <div class="input-group-quantity-counter-toggle">
-                            <a class="js-minus input-group-quantity-counter-btn" href="javascript:;">
-                              <i class="tio-remove"></i>
-                            </a>
-                            <a class="js-plus input-group-quantity-counter-btn" href="javascript:;">
-                              <i class="tio-add"></i>
-                            </a>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                    <div class="col-4 d-none" id="aturMax">
-                      <div class="form-group row">
-                        <label class="input-label font-weight-bold">Jumlah anggota Maximal</label>
-                        <div class="js-quantity-counter input-group-quantity-counter">
-                          <input type="number" class="js-result form-control form-control-sm input-group-quantity-counter-control" value="2" min="2" max="25" name="MAX_ANGGOTA">
-
-                          <div class="input-group-quantity-counter-toggle">
-                            <a class="js-minus input-group-quantity-counter-btn" href="javascript:;">
-                              <i class="tio-remove"></i>
-                            </a>
-                            <a class="js-plus input-group-quantity-counter-btn" href="javascript:;">
-                              <i class="tio-add"></i>
-                            </a>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
                   <div class="form-group mb-0">
                     <label class="input-label font-weight-bold">Keterangan bidang lomba <small class="text-danger">*</small></label>
                     <textarea type="text" class="form-control form-control-sm" name="KETERANGAN" rows="3" placeholder="Masukkan keterangan bidang lomba" reqired></textarea>
@@ -123,7 +73,6 @@
           <th>No</th>
           <th></th>
           <th>Bidang Lomba</th>
-          <th>Team</th>
           <th>Keterangan</th>
         </tr>
       </thead>
@@ -137,7 +86,6 @@
                 <button type="button" class="btn btn-xs btn-danger" data-toggle="modal" data-target="#hapus<?= $no;?>"><i class="tio-delete"></i></button>
               </td>
               <td><?= $key->BIDANG_LOMBA;?></td>
-              <td><?= ($key->TEAM == 1 ? 'YA, anggota '.$key->MIN_ANGGOTA.' s/d '.$key->MAX_ANGGOTA : 'TIDAK');?></td>
               <td>
                 <button type="button" class="btn btn-xs btn-soft-secondary" data-toggle="modal" data-target="#keterangan<?= $no;?>"><i class="tio-eye"></i> keterangan</button>
               </td>
@@ -185,57 +133,6 @@
                           <div class="form-group">
                             <label class="input-label font-weight-bold">Nama bidang lomba <small class="text-danger">*</small></label>
                             <input type="text" class="form-control form-control-sm" name="BIDANG_LOMBA" value="<?= $key->BIDANG_LOMBA;?>" reqired>
-                          </div>
-                          <div class="row">
-                            <div class="col-4">
-                              <div class="form-group">
-                                <label class="input-label font-weight-bold">TEAM?</label>
-                                <label class="toggle-switch d-flex align-items-center mb-3" for="TEAM<?= $no;?>">
-                                  <input type="checkbox" class="toggle-switch-input" name="TEAM" id="TEAM<?= $no;?>" <?= ($key->TEAM == 1 ? 'checked' : '');?>>
-                                  <span class="toggle-switch-label">
-                                    <span class="toggle-switch-indicator"></span>
-                                  </span>
-                                  <span class="toggle-switch-content">
-                                    <span class="d-block">Berbentuk team?</span>
-                                  </span>
-                                </label>
-                                <!-- End Checkbox Switch -->
-                              </div>
-                            </div>
-                            <div class="col-4 <?= ($key->TEAM == 1 ? '' : 'd-none');?>" id="aturMin<?= $no;?>">
-                              <div class="form-group row">
-                                <label class="input-label font-weight-bold">Jumlah anggota Minimal</label>
-                                <div class="js-quantity-counter input-group-quantity-counter">
-                                  <input type="number" class="js-result form-control form-control-sm input-group-quantity-counter-control" value="<?= ($key->TEAM == 1 ? $key->MIN_ANGGOTA : 1);?>" min="1" max="25" name="MIN_ANGGOTA">
-
-                                  <div class="input-group-quantity-counter-toggle">
-                                    <a class="js-minus input-group-quantity-counter-btn" href="javascript:;">
-                                      <i class="tio-remove"></i>
-                                    </a>
-                                    <a class="js-plus input-group-quantity-counter-btn" href="javascript:;">
-                                      <i class="tio-add"></i>
-                                    </a>
-                                  </div>
-                                </div>
-                              </div>
-                            </div>
-                            <div class="col-4 <?= ($key->TEAM == 1 ? '' : 'd-none');?>" id="aturMax<?= $no;?>">
-                              <div class="form-group row">
-                                <label class="input-label font-weight-bold">Jumlah anggota Maximal</label>
-                                <div class="js-quantity-counter input-group-quantity-counter">
-                                  <input type="number" class="js-result form-control form-control-sm input-group-quantity-counter-control" value="<?= ($key->TEAM == 1 ? $key->MAX_ANGGOTA : 2);?>" min="2" max="25" name="MAX_ANGGOTA">
-
-                                  <div class="input-group-quantity-counter-toggle">
-                                    <a class="js-minus input-group-quantity-counter-btn" href="javascript:;">
-                                      <i class="tio-remove"></i>
-                                    </a>
-                                    <a class="js-plus input-group-quantity-counter-btn" href="javascript:;">
-                                      <i class="tio-add"></i>
-                                    </a>
-                                  </div>
-                                </div>
-                              </div>
-                            </div>
                           </div>
                           <div class="form-group mb-0">
                             <label class="input-label font-weight-bold">Keterangan bidang lomba <small class="text-danger">*</small></label>

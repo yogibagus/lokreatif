@@ -5,7 +5,6 @@
             <div class="card mb-3">
                 <div class="card-header">
                     <h4 class="card-title">Checkout <?= $kode_trans ?></h4>
-                    <a name="" id="" class="btn btn-primary btn-xs" href="#" role="button"><i class="fa fa-info-circle" aria-hidden="true"></i> Pelajari</a>
                 </div>
                 <div class="card-body">
                     <?php if ($this->session->userdata('role') == 1) { ?>
@@ -33,16 +32,15 @@
                 <div class="col-lg-6">
                     <div class="card">
                         <div class="card-header">
-                            <h4 class="card-title">Tim Yang Akan Dibayar</h4>
+                            <h4 class="card-title">Nama Tim</h4>
                         </div>
                         <div class="card-body">
-                            <h5>Nama Team</h5>
                             <div class="d-md-flex">
-                                <div class="overflow-auto p-3 mb-3 mb-md-0 bg-light rounded " style="max-height: 130px; width:100%">
+                                <div class="overflow-auto p-3 mb-3 mb-md-0 bg-light rounded " style="max-height: 180px; width:100%">
                                     <?php
                                     foreach ($tim as $item) {
                                         echo '
-                                    <h5><li>' . $item->NAMA_TIM . '</li></h5><br>
+                                    <h4><li>' . $item->NAMA_TIM . '</li></h4><br>
                                 ';
                                     }
                                     ?>
@@ -61,7 +59,7 @@
                                 <h5>Subtotal</h5>
                                 <ul class="list-unstyled">
                                     <div class="d-flex justify-content-between">
-                                        <li><?= $total_team->total_team ?> Team x Rp <?= number_format($total_team->biaya, 0, ',', '.') ?></li>
+                                        <li><?= $total_team->total_team ?> Tim x Rp <?= number_format($total_team->biaya, 0, ',', '.') ?></li>
                                         <li>Rp <?= number_format($total_bayar->total_bayar, 0, ',', '.') ?></li>
                                     </div>
                                     <div class="d-flex justify-content-between">
@@ -73,8 +71,8 @@
                             <hr>
                             <div class="mb-4 list-unstyled">
                                 <div class="d-flex justify-content-between">
-                                    <h3>Total</h3>
-                                    <h3 class="text-primary">Rp <span id="total_amount"><?= number_format($total_bayar->total_bayar, 0, ',', '.') ?></span></h3>
+                                    <h2>Total</h2>
+                                    <h2 class="text-primary">Rp <span id="total_amount"><?= number_format($total_bayar->total_bayar, 0, ',', '.') ?></span></h2>
                                 </div>
                             </div>
                         </div>
@@ -84,8 +82,7 @@
 
             <div class="card mt-3">
                 <div class="card-header">
-                    <h4 class="card-title">Payment Methods</h4>
-                    <a name="" id="" class="btn btn-primary btn-xs" href="#" role="button"><i class="fa fa-info-circle" aria-hidden="true"></i> Pelajari</a>
+                    <h4 class="card-title">Metode Pembayaran</h4>
                 </div>
                 <div class="card-body">
                     <!-- Type of Listing -->
@@ -94,13 +91,10 @@
                         <div class="text-center">
                             <ul class="nav nav-segment nav-pills scrollbar-horizontal mb-7" role="tablist">
                                 <li class="nav-item">
-                                    <a class="nav-link active" id="pills-one-code-features-example1-tab" data-toggle="pill" href="#pills-one-code-features-example1" role="tab" aria-controls="pills-one-code-features-example1" aria-selected="true">E-WALLET</a>
+                                    <a class="nav-link active" id="pills-one-code-features-example1-tab" data-toggle="pill" href="#tab-menu-ewallet" role="tab" aria-controls="tab-menu-ewallet" aria-selected="true">E-WALLET</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link" id="pills-two-code-features-example1-tab" data-toggle="pill" href="#pills-two-code-features-example1" role="tab" aria-controls="pills-two-code-features-example1" aria-selected="false">VERTUAL ACCOUNT</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link" id="pills-three-code-features-example1-tab" data-toggle="pill" href="#pills-three-code-features-example1" role="tab" aria-controls="pills-three-code-features-example1" aria-selected="false">OTHERS</a>
+                                    <a class="nav-link" id="pills-two-code-features-example1-tab" data-toggle="pill" href="#tab-menu-va" role="tab" aria-controls="tab-menu-va" aria-selected="false">VERTUAL ACCOUNT</a>
                                 </li>
                             </ul>
                         </div>
@@ -110,7 +104,7 @@
                         <form action="<?= base_url("payment/pay") ?>" method="post">
                             <input type="hidden" name="kode_trans" id="kode_trans" value="<?= $kode_trans ?>">
                             <div class="tab-content">
-                                <div class="tab-pane fade show active" id="pills-one-code-features-example1" role="tabpanel" aria-labelledby="pills-one-code-features-example1-tab">
+                                <div class="tab-pane fade show active" id="tab-menu-ewallet" role="tabpanel" aria-labelledby="pills-one-code-features-example1-tab">
                                     <style>
                                         .fit-image {
                                             width: 130px;
@@ -141,14 +135,14 @@
                                                 </label>
                                             </div>
                                         </div>
-                                        <div class="col-6 col-md-3 px-2 mb-3 mb-md-0">
+                                        <!-- <div class="col-6 col-md-3 px-2 mb-3 mb-md-0">
                                             <div class="custom-control custom-radio custom-control-inline checkbox-outline checkbox-icon text-center w-100 h-100">
                                                 <input type="radio" id="typeOfListingRadio3" name="method" class="custom-control-input checkbox-outline-input checkbox-icon-input" value="EWALLET_SHOPEEPAY">
                                                 <label class="checkbox-outline-label checkbox-icon-label w-100 rounded py-3 px-1 mb-0" for="typeOfListingRadio3">
                                                     <img class="img-fluid w-90 fit-image" src="https://kampungbahasajogja.net/assets/img/about/shopeepay.png" alt="SHOPEEPAY">
                                                 </label>
                                             </div>
-                                        </div>
+                                        </div> -->
                                         <div class="col-6 col-md-3 px-2 mb-3 mb-md-0">
                                             <div class="custom-control custom-radio custom-control-inline checkbox-outline checkbox-icon text-center w-100 h-100">
                                                 <input type="radio" id="typeOfListingRadio4" name="method" class="custom-control-input checkbox-outline-input checkbox-icon-input" value="EWALLET_LINKAJA">
@@ -179,7 +173,7 @@
                                     <!-- End Input Group -->
                                 </div>
 
-                                <div class="tab-pane fade" id="pills-two-code-features-example1" role="tabpanel" aria-labelledby="pills-two-code-features-example1-tab">
+                                <div class="tab-pane fade" id="tab-menu-va" role="tabpanel" aria-labelledby="pills-two-code-features-example1-tab">
                                     <!-- Radio Checkbox Group -->
                                     <div class="row mx-n2">
                                         <div class="col-6 col-md-3 px-2 mb-3 mb-md-0">
@@ -232,10 +226,6 @@
                                     <small class="text-muted" id="required-alert-va">*) Harap masukan Nama yang tercantum pada ATM .</small>
                                     <!-- End Input Group -->
                                 </div>
-
-                                <div class="tab-pane fade" id="pills-three-code-features-example1" role="tabpanel" aria-labelledby="pills-three-code-features-example1-tab">
-                                    <p>Coming soon...</p>
-                                </div>
                             </div>
                             <!-- End Tab Content -->
 
@@ -277,7 +267,7 @@
                         $('#pay-button').prop("disabled", true);
                         // add spinner to button
                         $('#pay-button').html(
-                            `<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Loading...`
+                            `<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Loading, please wait...`
                         );
                         return;
                     }
@@ -286,7 +276,7 @@
                     $('#pay-button').prop("disabled", true);
                     // add spinner to button
                     $('#pay-button').html(
-                        `<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Loading...`
+                        `<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Loading, please wait...`
                     );
                     return;
                 }
@@ -328,8 +318,9 @@
 
                 // set fee
                 var amount = Math.ceil(100 / 98.5 * parseInt(<?= $total_bayar->total_bayar ?>));
-                var fee = amount - parseInt(<?= $total_bayar->total_bayar ?>);
-                $('#total_amount').text(format_rupiah(amount));
+                var new_amount = Math.ceil(amount / 1000) * 1000;
+                var fee = new_amount - parseInt(<?= $total_bayar->total_bayar ?>);
+                $('#total_amount').text(format_rupiah(new_amount));
                 $('#fee').text(format_rupiah(fee));
             } else {
                 $('#name-card-holder').prop('required', true);

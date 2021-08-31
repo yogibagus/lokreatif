@@ -30,6 +30,8 @@
 
   <link rel="stylesheet" href="<?= base_url();?>assets/frontend/plugin/toast/toast.style.css?<?= time() ?>">
 
+  <!-- dataTables -->
+  <link rel="stylesheet" href="https://cdn.datatables.net/1.10.24/css/dataTables.bootstrap4.min.css">
 
   <!-- JS Implementing Plugins -->
   <script src="<?= base_url();?>assets/frontend/js/vendor.min.js"></script>
@@ -37,6 +39,9 @@
   <!-- JS Front -->
   <script src="<?= base_url();?>assets/frontend/js/theme.min.js"></script>
 
+  <script src="https://cdn.datatables.net/1.10.24/js/jquery.dataTables.min.js"></script>
+  <script src="https://cdn.datatables.net/1.10.24/js/dataTables.bootstrap4.min.js"></script>
+  
   <script type="text/javascript" src="<?=base_url();?>assets/frontend/plugin/tinymce/jquery.tinymce.min.js"></script>
   <script type="text/javascript" src="<?=base_url();?>assets/frontend/plugin/tinymce/tinymce.min.js"></script>
   <script type="text/javascript" src="<?=base_url();?>assets/frontend/plugin/tinymce-textarea.js"></script>
@@ -116,6 +121,12 @@
     }
   }).init();
 
+
+  $(document).ready( function () {
+    $('#myTable').DataTable( {
+          "scrollX": true
+      });
+  } );
 
   // INITIALIZATION OF ADD INPUT FILED
   // =======================================================
