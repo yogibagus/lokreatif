@@ -281,4 +281,22 @@ class General extends CI_Model {
         ");
         return $query->result();
     }
+    public function cek_anggotaRedundant($kodeUser, $nim){
+        $query = $this->db->query("
+            SELECT ta.NIM 
+            FROM tb_anggota ta , pendaftaran_kompetisi pk , pt p 
+            WHERE ta.KODE_PENDAFTARAN = pk.KODE_PENDAFTARAN 
+                AND ta.NIM = '$nim'
+                AND ta.PERAN = '3'
+                AND pk.ASAL_PTS IN (
+                    SELECT p2.kodept 
+                    FROM pt p2 , pendaftaran_kompetisi pk2 
+                    WHERE p2.kodept = pk2.ASAL_PTS 
+                        AND pk2.KODE_USER = '$kodeUser'
+                )
+            GROUP BY ta.NIM 
+        ");
+
+        return $query->result();
+    }
 }

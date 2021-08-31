@@ -409,12 +409,12 @@ class Peserta extends MX_Controller
 
 	function set_anggota()
 	{
-
-		if ($this->M_peserta->set_anggota() == TRUE) {
-			$this->session->set_flashdata('success', "Berhasil mengatur data anggota !!");
+		$setAnggota = $this->M_peserta->set_anggota();
+		if ($setAnggota['status'] == true) {
+			$this->session->set_flashdata('success', $setAnggota['msg']);
 			redirect(site_url('peserta/data-pendaftaran'));
 		} else {
-			$this->session->set_flashdata('error', "Terjadi kesalahan saat mengatur data anggota !!");
+			$this->session->set_flashdata('error', $setAnggota['msg']);
 			redirect($this->agent->referrer());
 		}
 	}
