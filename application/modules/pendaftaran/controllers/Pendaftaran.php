@@ -5,6 +5,16 @@ class Pendaftaran extends MX_Controller {
 	public function __construct(){
 		parent::__construct();
 		$this->load->model('M_pendaftaran', 'M_daftar');
+		if ($this->session->userdata('logged_in') == FALSE || !$this->session->userdata('logged_in')){
+			if (!empty($_SERVER['QUERY_STRING'])) {
+				$uri = uri_string() . '?' . $_SERVER['QUERY_STRING'];
+			} else {
+				$uri = uri_string();
+			}
+			$this->session->set_userdata('redirect', $uri);
+			$this->session->set_flashdata('warning', "Harap login ke akun anda, untuk melanjutkan");
+			redirect('login');
+		}
 
 	}
 
