@@ -11,12 +11,13 @@
 				<p class="mb-0">Anda telah menyelesaikan proses pembayaran biaya pendaftaran, berikut riwayat pembayaran anda</p>
 			</div>
 		<?php endif ?>
-		<table class="table table-stripped table-hover">
+		<table id="myTable" class="table table-stripped table-hover no-warp">
 			<thead class="thead-light">
 				<tr>
 					<th>No</th>
 					<th>Tanggal Exp.</th>
 					<th>Metode</th>
+					<th>Nominal</th>
 					<th>Status</th>
 					<?php if ($sudahBayar == false) : ?>
 						<th></th>
@@ -35,8 +36,9 @@
 					foreach ($payments as $value) : ?>
 						<tr>
 							<td><?= $no++; ?></td>
-							<td><?= date('d M Y H:i:s', strtotime($value->EXP_TIME)); ?></td>
+							<td><?= date('d F Y H:i:s', strtotime($value->EXP_TIME)); ?></td>
 							<td><img style="max-width: 50px;" class="img-fluid w-90 fit-image" src="<?= $this->transaksi->get_imageMethodPayment($value->METHOD); ?>"></td>
+							<td>Rp.<?= number_format($value->PAID_AMOUNT,0,",","."); ?></td>
 							<?php if ($sudahBayar == false) : ?>
 								<td>
 									<span class="badge badge-<?= $CI->M_payment->get_status_payment_by_stat_pay($value->STAT_PAY)->COLOR_STAT_PAY; ?>"><?= $CI->M_payment->get_status_payment_by_stat_pay($value->STAT_PAY)->ALIAS_STAT_PAY; ?></span>

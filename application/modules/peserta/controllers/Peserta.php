@@ -537,34 +537,38 @@ class Peserta extends MX_Controller
 		}
 	}
 
-	function bayar_pendaftaran()
-	{
+	function bayar_pendaftaran($KODE_PENDAFTARAN){
 
-		$KODE_PENDAFTARAN	= $this->input->post('KODE_PENDAFTARAN');
+		if ($this->M_peserta->cek_kodePendaftaran($KODE_PENDAFTARAN) != false) {
+			// CHECK IF HAVE PENDING TRANSACTION
+			if ($this->General->cek_sudahBayar($KODE_PENDAFTARAN) == true) {
 
-		// CHECK IF HAVE PENDING TRANSACTION
-		if ($this->General->cek_sudahBayar($KODE_PENDAFTARAN) == true) {
+				// GET KODE_TRANS FROM DB WHEN HAVE PENDING TRANSACTION
+				$KODE_TRANS			= $this->General->get_kodeTrans($KODE_PENDAFTARAN);
 
-			// GET KODE_TRANS FROM DB WHEN HAVE PENDING TRANSACTION
-			$KODE_TRANS			= $this->General->get_kodeTrans($KODE_PENDAFTARAN);
-
-			// REDIRECT WHEN HAVE PENDING TRANSACTION
-			$this->session->set_flashdata('success', "Anda memiliki pembayaran yang belum diselesaikan !!");
-			redirect(site_url('payment/checkout/' . $KODE_TRANS));
-		} else {
-
-			// GENERATE KODE_TRANS
-			$KODE_TRANS			= $this->transaksi->gen_kodeTrans();
-
-			// INSERT INTO DB WHEN DONT HAVE ANY PENDING TRANSACTION
-			if ($this->M_peserta->bayar_pendaftaran($KODE_TRANS) == TRUE) {
-				$this->General->log_aktivitas($this->session->userdata('kode_user'), $this->session->userdata('kode_user'), 15);
-				$this->session->set_flashdata('success', "Harap lanjutkan proses pembayaran !!");
+				// REDIRECT WHEN HAVE PENDING TRANSACTION
+				$this->session->set_flashdata('success', "Anda memiliki pembayaran yang belum diselesaikan !!");
 				redirect(site_url('payment/checkout/' . $KODE_TRANS));
 			} else {
-				$this->session->set_flashdata('error', "Terjadi kesalahan saat melakukan proses pembayaran!!");
-				redirect($this->agent->referrer());
+				$dataPeserta 			= $this->General->get_detailDaftarKompetisi($this->session->userdata("kode_user"));
+
+				// GENERATE KODE_TRANS
+				$KODE_TRANS				= $this->transaksi->gen_kodeTrans();
+				$BIAYA_TIM				= $this->General->get_biayaDaftar($dataPeserta->JML_TIM);
+
+				// INSERT INTO DB WHEN DONT HAVE ANY PENDING TRANSACTION
+				if ($this->M_peserta->bayar_pendaftaran($KODE_TRANS, $KODE_PENDAFTARAN, $BIAYA_TIM) == TRUE) {
+					$this->General->log_aktivitas($this->session->userdata('kode_user'), $this->session->userdata('kode_user'), 15);
+					$this->session->set_flashdata('success', "Harap lanjutkan proses pembayaran !!");
+					redirect(site_url('payment/checkout/' . $KODE_TRANS));
+				} else {
+					$this->session->set_flashdata('error', "Terjadi kesalahan saat melakukan proses pembayaran!!");
+					redirect($this->agent->referrer());
+				}
 			}
+		}else{
+			$this->session->set_flashdata('error', "Terjadi kesalahan saat mencari data pendaftaran kompetisi anda !!");
+			redirect($this->agent->referrer());
 		}
 	}
 }
