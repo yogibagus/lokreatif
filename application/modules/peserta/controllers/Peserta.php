@@ -169,7 +169,9 @@ class Peserta extends MX_Controller
 			$data['sudahBayar']		= $this->General->cek_sudahBayar($dataPeserta->KODE_PENDAFTARAN);
 			$data['statBayar']		= $this->General->cek_statBayar($dataPeserta->KODE_PENDAFTARAN);
 			$data['bayarGagal']		= $this->General->cek_statBayarFailed($dataPeserta->KODE_PENDAFTARAN);
-			$data['totBayar']		= $this->General->get_biayaDaftar($dataPeserta->JML_TIM);
+			$JML_TIM				= $this->General->get_jmlPTSbayar($dataPeserta->ASAL_PTS);
+			$data['JML_TIM']		= $JML_TIM;
+			$data['totBayar']		= $this->General->get_biayaDaftar($JML_TIM);
 			$data['dataAnggota']	= $this->General->get_dataAnggota($dataPeserta->KODE_PENDAFTARAN);
 			$data['dataKetua']		= $this->General->get_dataKetua($dataPeserta->KODE_PENDAFTARAN);
 			$data['dataDospem']		= $this->General->get_dataDospem($dataPeserta->KODE_PENDAFTARAN);

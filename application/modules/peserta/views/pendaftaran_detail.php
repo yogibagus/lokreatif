@@ -58,7 +58,7 @@
 							<div class="media align-items-center mb-3">
 								<span class="d-block font-size-1 mr-3">Jumlah TIM dari PTS anda <i class="far fa-question-circle text-body ml-1" data-container="body" data-toggle="popover" data-placement="top" data-trigger="hover" title="Apa ini?" data-content="Jumlah tim dari PTS anda yang telah melakukan proses pembayaran, lihat pendoman untuk info lebih lanjut."></i></span>
 								<div class="media-body text-right">
-									<span class="text-dark font-weight-bold"><?= $dataPendaftaran->JML_TIM;?> TIM</span>
+									<span class="text-dark font-weight-bold"><?= $JML_TIM;?> TIM</span>
 								</div>
 							</div>
 						</div>
@@ -171,7 +171,7 @@
 						<div class="col-12">
 							<div class="form-group">
 								<label class="input-label font-weight-bold">Asal PTS <small class="text-danger">*</small></label>
-							      <select id="select-pts" class="custom-select" data-select="listPts" size="1" style="width: 100%;"
+							      <select id="select-pts" class="custom-select" name="ASAL_PTS" data-select="listPts" size="1" style="width: 100%;"
 							              data-hs-select2-options='{
 							                "placeholder": "Pilih PTS"
 							              }'>

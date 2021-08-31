@@ -160,7 +160,7 @@ class General extends CI_Model {
 
     // - get data pendaftaran kompetisi by kode_user
     public function get_detailDaftarKompetisi($id){
-        $this->db->select("a.*, b.*, c.namapt, (SELECT COUNT(*) FROM pendaftaran_kompetisi WHERE ASAL_PTS = a.ASAL_PTS) as JML_TIM");
+        $this->db->select("a.*, b.*, c.namapt");
         $this->db->from("pendaftaran_kompetisi a");
         $this->db->join("bidang_lomba b", "a.BIDANG_LOMBA = b.ID_BIDANG");
         $this->db->join("pt c", "a.ASAL_PTS = c.kodept");
@@ -168,6 +168,17 @@ class General extends CI_Model {
         $query = $this->db->get();
         if ($query->num_rows() > 0) {
             return $query->row();
+        }else {
+            return false;
+        }
+    }
+
+    // - get data pendaftaran kompetisi by kode_user
+    public function get_jmlPTSbayar($kode_pts){
+        $query = $this->db->query("SELECT COUNT(*) as TOTAL_TIM FROM pendaftaran_kompetisi WHERE KODE_PENDAFTARAN IN (SELECT KODE_PENDAFTARAN FROM tb_order WHERE KODE_TRANS IN  (SELECT KODE_TRANS FROM tb_transaksi WHERE STAT_BAYAR = 3)) AND ASAL_PTS = '$kode_pts' 
+        ");
+        if ($query->num_rows() > 0) {
+            return $query->row()->TOTAL_TIM;
         }else {
             return false;
         }
