@@ -11,7 +11,7 @@
     <!-- Form Group -->
     <div class="form-group">
       <label class="input-label" for="signinSrNama">Nama PTS <span class="text-danger">*</span></label>
-      <select id="select-pts" class="custom-select" data-select="listPts" size="1" style="opacity: 0;"
+      <select id="select-pts" class="custom-select" data-select="listPts" size="1" style="width: 100%;"
               data-hs-select2-options='{
                 "placeholder": "Pilih PTS"
               }'>
@@ -251,8 +251,9 @@
       }
     },
     placeholder: "Pilih PTS",
-    // selectionCssClass: 'selectcss-custom'
+    selectionCssClass: 'custom-select'
   });
+
   $('input:radio[name="jabatan"]').change(
     function(){
       if (this.checked && this.value == '3') {
@@ -286,6 +287,10 @@
         }
       });
     });
+  }
+
+  const get_ajaxDataPTS = () => {
+    
   }
 
   
