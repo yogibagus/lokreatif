@@ -3,8 +3,11 @@ class M_Cronjob extends CI_Model{
     public function get_countTimUniv(){
         $query = $this->db->query("
             SELECT p.namapt , p.kodept , COUNT(pk.KODE_PENDAFTARAN) AS TOTAL_TIM
-            FROM pendaftaran_kompetisi pk , pt p 
-            WHERE pk.ASAL_PTS = p.kodept 
+            FROM tb_transaksi tt , tb_order to2 , pendaftaran_kompetisi pk , pt p 
+            WHERE tt.KODE_TRANS = to2.KODE_TRANS 
+                AND to2.KODE_PENDAFTARAN = pk.KODE_PENDAFTARAN 
+                AND pk.ASAL_PTS = p.kodept 
+                AND tt.STAT_BAYAR = '3'
             GROUP BY p.kodept 
         ");
 
