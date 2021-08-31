@@ -90,7 +90,7 @@ class Payment extends MX_Controller
                     }
                 }
             } else {
-                $this->session->set_flashdata('error', "You're not allowed to view checkout page using another account!");
+                $this->session->set_flashdata('error', "Anda tidak diizinkan !");
                 redirect($this->agent->referrer());
             }
         } else {
