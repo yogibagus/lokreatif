@@ -21,7 +21,7 @@
 					<?php $no=1; foreach ($bidang_lomba as $lomba) :?>
 					<div class="col-6 col-md-3 px-2 mb-3">
 						<div class="custom-control custom-radio custom-control-inline checkbox-outline checkbox-icon text-center w-100 h-100">
-							<input type="radio" id="radioLomba<?= $no;?>" name="BIDANG_LOMBA" value="<?= $lomba->ID_BIDANG;?>" class="custom-control-input checkbox-outline-input checkbox-icon-input" <?= $no == 1 ? 'checked' : '' ;?> >
+							<input type="radio" id="radioLomba<?= $no;?>" name="BIDANG_LOMBA" value="<?= $lomba->ID_BIDANG;?>" class="custom-control-input checkbox-outline-input checkbox-icon-input" required>
 							<label class="checkbox-outline-label checkbox-icon-label w-100 rounded py-3 px-1 mb-0" for="radioLomba<?= $no;?>">
 								<img class="img-fluid w-50 mb-3" src="<?= base_url();?><?= $lomba->POSTER == null ? 'assets/frontend/svg/illustrations/discussion-scene.svg' : 'berkas/kompetisi/bidang-lomba/'.$lomba->POSTER;?>" alt="SVG">
 								<span class="d-block"><?= $lomba->BIDANG_LOMBA;?></span>
@@ -31,6 +31,32 @@
 					<?php $no++; endforeach;?>
 				</div>
 				<!-- End Radio Checkbox Group -->
+				<div id="ketentuan">
+				</div>
+
+				<?php foreach ($bidang_lomba as $lomba) :?>
+					<!-- MODAL -->
+					<div class="modal fade" id="syaratlomba<?= $lomba->ID_BIDANG;?>" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="data-anggotaLabel" aria-hidden="true">
+						<div class="modal-dialog modal-lg" role="document">
+							<div class="modal-content">
+								<div class="modal-header">
+									<h5 class="modal-title" id="data-anggotaLabel">Syarat dan ketentuan lomba <?= $lomba->BIDANG_LOMBA;?></h5>
+									<button type="button" class="btn btn-xs btn-icon btn-soft-secondary" data-dismiss="modal" aria-label="Close">
+										<svg aria-hidden="true" width="10" height="10" viewBox="0 0 18 18" xmlns="http://www.w3.org/2000/svg">
+											<path fill="currentColor" d="M11.5,9.5l5-5c0.2-0.2,0.2-0.6-0.1-0.9l-1-1c-0.3-0.3-0.7-0.3-0.9-0.1l-5,5l-5-5C4.3,2.3,3.9,2.4,3.6,2.6l-1,1 C2.4,3.9,2.3,4.3,2.5,4.5l5,5l-5,5c-0.2,0.2-0.2,0.6,0.1,0.9l1,1c0.3,0.3,0.7,0.3,0.9,0.1l5-5l5,5c0.2,0.2,0.6,0.2,0.9-0.1l1-1 c0.3-0.3,0.3-0.7,0.1-0.9L11.5,9.5z"/>
+										</svg>
+									</button>
+								</div>
+								<div class="modal-body">
+									<p><?= $lomba->KETERANGAN;?></p>
+								</div>
+								<div class="modal-footer">
+									<button type="button" class="btn btn-white btn-sm" data-dismiss="modal">Tutup</button>
+								</div>
+							</div>
+						</div>
+					</div>
+				<?php endforeach;?>
 			</div>
 
 			<div class="card card-frame card-body mb-4">
@@ -38,59 +64,71 @@
 					<label class="input-label">Nama TIM<span class="text-danger">*</span></label>
 					<input type="text" name="NAMA_TIM" class="form-control form-control-sm form-control-flush" placeholder="Masukkan nama tim anda" required>
 				</div>
-			    <!-- Form Group -->
-			    <div class="form-group">
-			      <label class="input-label" for="signinSrNama">Nama PTS <span class="text-danger">*</span></label>
-			      <select id="select-pts" class="custom-select" data-select="listPts" size="1" style="width: 100%;"
-			              data-hs-select2-options='{
-			                "placeholder": "Pilih PTS"
-			              }'>
-			      </select>
-			      <small>
-			        <span class="font-size-1 text-muted">PTS anda tidak tersedia?</span>
-			        <a class="font-size-1 font-weight-bold" href="<?= site_url('tambah-pts') ?>">Daftarkan PTS</a>
-			      </small>
-			    </div>
-			    <!-- End Form Group -->
+				<!-- Form Group -->
 				<div class="form-group">
-					<label class="input-label">Alamat PTS<span class="text-danger">*</span></label>
-					<textarea type="text" name="ALAMAT_PTS" class="form-control form-control-sm form-control-flush" placeholder="Masukkan alamat pts anda" required></textarea>
-				</div>
-			</div>
-
-			<!-- Divider -->
-			<hr class="my-0 mb-4">
-			<!-- End Divider -->
-
-
-			<button class="btn btn-sm btn-primary float-right" id="send-button">Daftar</button>
-		</form>
+					<label class="input-label" for="signinSrNama">Nama PTS <span class="text-danger">*</span></label>
+					<select id="select-pts" class="custom-select" data-select="listPts" size="1" style="width: 100%;"
+					data-hs-select2-options='{
+					"placeholder": "Pilih PTS"
+				}' required>
+			</select>
+			<small>
+				<span class="font-size-1 text-muted">PTS anda tidak tersedia?</span>
+				<a class="font-size-1 font-weight-bold" href="<?= site_url('tambah-pts') ?>">Daftarkan PTS</a>
+			</small>
+		</div>
+		<!-- End Form Group -->
+		<div class="form-group">
+			<label class="input-label">Alamat PTS<span class="text-danger">*</span></label>
+			<textarea type="text" name="ALAMAT_PTS" class="form-control form-control-sm form-control-flush" placeholder="Masukkan alamat pts anda" required></textarea>
+		</div>
 	</div>
+
+	<!-- Divider -->
+	<hr class="my-0 mb-4">
+	<!-- End Divider -->
+
+
+	<button class="btn btn-sm btn-primary float-right" id="send-button">Daftar</button>
+</form>
+</div>
 </div>
 
 <script type="text/javascript">
-  $('#select-pts').select2({
-    ajax: {
-      url: '<?= site_url('ajx-data-pts-all')?>',
-      dataType: 'json',
-      method: 'post',
-      data: params => {
-        console.log(params)
-        var query = {
-          search: params.term,
-          type: 'public'
-        }
-        return query;
-      },
-      processResults: data => {
-        let arrData = [];
-        for(x of data){
-          temp = {id: x.kodept, text: x.namapt}
-          arrData.push(temp)
-        }
-        return {results: arrData}
-      }
-    },
-    placeholder: "Pilih PTS",
+	$('#select-pts').select2({
+		ajax: {
+			url: '<?= site_url('ajx-data-pts-all')?>',
+			dataType: 'json',
+			method: 'post',
+			data: params => {
+				console.log(params)
+				var query = {
+					search: params.term,
+					type: 'public'
+				}
+				return query;
+			},
+			processResults: data => {
+				let arrData = [];
+				for(x of data){
+					temp = {id: x.kodept, text: x.namapt}
+					arrData.push(temp)
+				}
+				return {results: arrData}
+			}
+		},
+		placeholder: "Pilih PTS",
     // selectionCssClass: 'selectcss-custom'
-  });</script>
+});
+
+
+        // check radio ewaller
+        $("input[name='BIDANG_LOMBA']").on('change', function() {
+            // show or hide alert
+            var method = $('input[name=BIDANG_LOMBA]:checked').val();
+            $('#ketentuan').html('<span class="text-primary cursor" data-toggle="modal" data-target="#syaratlomba'+method+'">Syarat dan ketentuan lomba</span>');
+
+
+
+        });
+    </script>
