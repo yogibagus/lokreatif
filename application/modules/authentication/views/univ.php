@@ -11,23 +11,11 @@
     <!-- Form Group -->
     <div class="js-form-message form-group">
       <label class="input-label" for="signinSrNama">Nama PTS <span class="text-danger">*</span></label>
-      <!-- <div class="tom-select-custom">
-        <select class="js-custom-select custom-select" name="kodept" size="1"
-            data-hs-select2-options='{
-            "placeholder": "Pilih PTS"
-        }' required>
-          <option value="">Pilih pts</option>
-          <?php foreach ($pts as $item) :?>
-            <option value="<?= $item['kodept'];?>"><?= $item['nama'];?></option>
-          <?php endforeach;?>
-        </select>
-      </div> -->
-      <select id="select-pts" class="form-control" data-select="listPts" size="1" style="opacity: 0;"
+      <select id="select-pts" class="" data-select="listPts" size="1" style="width: 100%;opacity: 0; background: #000 !important;"
               data-hs-select2-options='{
                 "placeholder": "Pilih PTS"
               }'>
       </select>
-      <!-- <input type="text" class="form-control" name="nama" id="signinSrNama" placeholder="Nama lengkap anda" aria-label="Nama lengkap anda" required data-msg="Harap masukkan nama lengkap anda."> -->
       <small>
         <span class="font-size-1 text-muted">PTS anda tidak tersedia?</span>
         <a class="font-size-1 font-weight-bold" href="<?= site_url('tambah-pts') ?>">Daftarkan PTS</a>
@@ -263,8 +251,9 @@
       }
     },
     placeholder: "Pilih PTS",
-    // selectionCssClass: 'selectcss-custom'
+    selectionCssClass: 'custom-select'
   });
+
   $('input:radio[name="jabatan"]').change(
     function(){
       if (this.checked && this.value == '3') {
@@ -298,6 +287,10 @@
         }
       });
     });
+  }
+
+  const get_ajaxDataPTS = () => {
+    
   }
 
   
