@@ -149,11 +149,7 @@ class M_peserta extends CI_Model {
 	// PAYMENT
 
 	function get_paymentList($KODE_TRANS){
-		$this->db->select('*');
-		$this->db->from('tb_payment');
-		$this->db->where('KODE_TRANS', $KODE_TRANS);
-		$this->db->order_by('CREATED_TIME', 'DESC');
-		$query = $this->db->get();
+		$query = $this->db->query("SELECT * FROM tb_payment WHERE KODE_TRANS = '$KODE_TRANS' ORDER BY CREATED_TIME DESC");
 		if ($query->num_rows() > 0) {
 			return $query->result();
 		}else{
