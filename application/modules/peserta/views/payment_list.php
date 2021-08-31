@@ -11,7 +11,7 @@
 			</div>
 		<?php else : ?>
 		<?php endif ?>
-		<?php if ($sudahBayar == false) : ?>
+		<?php if ($sudahBayar != false) : ?>
 		<table id="myTable" class="table table-stripped table-hover no-warp">
 			<?php if ($payments == false):?>
 				<div class="text-center space-1">
