@@ -78,7 +78,7 @@
 						<span class="d-block font-size-1 mr-3">Data PTS</span>
 						<div class="media-body text-right">
 							<?php if ($dataPendaftaran->ASAL_PTS == null || $dataPendaftaran->ALAMAT_PTS == null || $dataPendaftaran->ALAMAT_PTS == null):?>
-								<span class="badge badge-secondary" type="button" data-toggle="modal" data-target="#data-pts">belum lengkap</span>
+								<span class="badge badge-danger" type="button" data-toggle="modal" data-target="#data-pts">belum lengkap</span>
 							<?php else:?>
 								<span class="badge badge-success" type="button" data-toggle="modal" data-target="#data-pts">lengkap</span>
 							<?php endif;?>
@@ -88,7 +88,7 @@
 						<span class="d-block font-size-1 mr-3">Data anggota</span>
 						<div class="media-body text-right">
 							<?php if ($dataAnggota == false) :?>
-								<a href="<?= site_url('peserta/data-anggota');?>" class="badge badge-secondary">belum lengkap</a>
+								<a href="<?= site_url('peserta/data-anggota');?>" class="badge badge-danger">belum lengkap</a>
 							<?php else:?>
 								<a href="<?= site_url('peserta/data-anggota');?>" class="badge badge-success">lengkap</a>
 							<?php endif;?>
@@ -98,7 +98,7 @@
 						<span class="d-block font-size-1 mr-3">Berkas TIM</span>
 						<div class="media-body text-right">
 							<?php if ($cekBerkas == false) :?>
-								<a href="<?= site_url('peserta/berkas-kompetisi');?>" class="badge badge-secondary">belum lengkap</a>
+								<a href="<?= site_url('peserta/berkas-kompetisi');?>" class="badge badge-danger">belum lengkap</a>
 							<?php else:?>
 								<a href="<?= site_url('peserta/berkas-kompetisi');?>" class="badge badge-success">lengkap</a>
 							<?php endif;?>
@@ -112,22 +112,22 @@
 								<form action="<?= site_url('peserta/bayar_pendaftaran');?>" method="POST">
 									<input type="hidden" name="KODE_PENDAFTARAN" value="<?= $dataPendaftaran->KODE_PENDAFTARAN;?>">
 									<input type="hidden" name="BIAYA_TIM" value="<?= $totBayar;?>">
-									<button type="submit" class="badge badge-success mb-2">
+									<button type="submit" class="badge badge-danger mb-2">
 										Bayar ulang
 									</button>
 								</form>
 							<?php elseif ($statBayar == false):?>
 								<?php if($dibayarinUniv == true):?>
-									<button class="badge badge-success mb-2" disabled>
+									<button class="badge badge-warning mb-2" disabled>
 										<i class="fas fa-check fa-sm mr-2"></i> sedang diproses
 									</button>
 								<?php else:?>
 									<?php if ($sudahBayar == true) :?>
-										<a href="<?= site_url('peserta/riwayat-pembayaran');?>" class="badge badge-success mb-2">
+										<a href="<?= site_url('peserta/riwayat-pembayaran');?>" class="badge badge-danger mb-2">
 											Lanjutkan pembayaran
 										</a>
 									<?php else:?>
-										<a href="<?= site_url('peserta/bayar_pendaftaran/'.$dataPendaftaran->KODE_PENDAFTARAN);?>" class="badge badge-success mb-2">
+										<a href="<?= site_url('peserta/bayar_pendaftaran/'.$dataPendaftaran->KODE_PENDAFTARAN);?>" class="badge badge-danger mb-2">
 											Bayar biaya pendaftaran
 										</a>
 									<?php endif;?>
@@ -142,7 +142,7 @@
 					<div class="media align-items-center mb-3">
 						<span class="d-block font-size-1 mr-3">Upload Karya</span>
 						<div class="media-body text-right">
-							<a href="<?= site_url('peserta/upload-karya');?>" class="badge badge-secondary">belum lengkap</a>
+							<a href="<?= site_url('peserta/upload-karya');?>" class="badge badge-danger">belum lengkap</a>
 						</div>
 					</div>
 				</div>

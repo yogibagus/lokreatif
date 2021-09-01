@@ -9,9 +9,7 @@
 			<div class="alert alert-success">
 				<p class="mb-0">Anda telah menyelesaikan proses pembayaran biaya pendaftaran.</p>
 			</div>
-		<?php else : ?>
 		<?php endif ?>
-		<?php if ($sudahBayar != false) : ?>
 		<table id="myTable" class="table table-stripped table-hover no-warp">
 			<?php if ($payments == false):?>
 				<div class="text-center space-1">
@@ -61,6 +59,5 @@
 			</tbody>
 			<?php endif; ?>
 		</table>
-		<?php endif ?>
 	</div>
 </div>
