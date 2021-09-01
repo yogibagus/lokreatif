@@ -230,6 +230,7 @@ class Payment extends MX_Controller
                     $insert_data = $this->update_pay($kode_pay, $kode_trans, $method[1], $amount, $pay);
                     if ($insert_data != false) { // if fail insert data
                         $data_pay['TOT_BAYAR'] = $amount;
+                        $data_pay['BAYAR'] = (float)$total_bayar->total_bayar;
                         //save to db
                         $update_transaksi = $this->M_payment->update_transaksi($kode_trans, $data_pay);
                         if ($update_transaksi != false) {
