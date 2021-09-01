@@ -268,33 +268,6 @@ class M_peserta extends CI_Model {
 			'PERAN'				=> 1
 		);
 
-		$this->db->insert('tb_anggota', $ketua);
-
-		// ANGGOTA
-		$NAMA_ANGGOTA 		= $this->input->post('NAMA_ANGGOTA', true);
-		$NIM_ANGGOTA 		= $this->input->post('NIM_ANGGOTA', true);
-		$EMAIL_ANGGOTA 		= $this->input->post('EMAIL_ANGGOTA', true);
-
-		foreach ($NAMA_ANGGOTA as $i => $a) {
-			$anggota = array(
-				'KODE_PENDAFTARAN' 	=> $KODE_PENDAFTARAN,
-				'NAMA' 				=> isset($NAMA_ANGGOTA[$i]) ? $NAMA_ANGGOTA[$i] : '',
-				'NIM'				=> isset($NIM_ANGGOTA[$i]) ? $NIM_ANGGOTA[$i] : '',
-				'EMAIL'				=> isset($EMAIL_ANGGOTA[$i]) ? $EMAIL_ANGGOTA[$i] : '',
-				'PERAN'				=> 3
-			);
-			$nim = isset($NIM_ANGGOTA[$i]) ? $NIM_ANGGOTA[$i] : '';
-			if($this->General->cek_anggotaRedundant($this->session->userdata('kode_user'), $nim) == null){
-				$this->db->insert('tb_anggota', $anggota);
-			}else{
-				return ['status' => false, 'msg' => "Data dengan nim $nim telah terdaftar !!!"];
-			}
-			
-			if ((($this->db->affected_rows() != 1) ? false : true) == false) {
-				return ['status' => false, 'msg' => "Terjadi kesalahan saat mengatur data anggota !!"];
-			}
-		}
-
 		// DOSPEM
 		$NAMA_DOSPEM		= $this->input->post('NAMA_DOSPEM');
 		$NIM_DOSPEM			= $this->input->post('NIM_DOSPEM');
@@ -308,6 +281,37 @@ class M_peserta extends CI_Model {
 			'PERAN'				=> 2
 		);
 		$this->db->insert('tb_anggota', $dospem);
+
+		$this->db->insert('tb_anggota', $ketua);
+
+		// ANGGOTA
+		$NAMA_ANGGOTA 		= $this->input->post('NAMA_ANGGOTA', true);
+		$NIM_ANGGOTA 		= $this->input->post('NIM_ANGGOTA', true);
+		$EMAIL_ANGGOTA 		= $this->input->post('EMAIL_ANGGOTA', true);
+
+		// cek data anggota redundant
+		foreach ($NIM_ANGGOTA as $i) {
+			$nim = isset($i) ? $i : '';
+			if($this->General->cek_anggotaRedundant($this->session->userdata('kode_user'), $nim) != null){
+				return ['status' => false, 'msg' => "Data dengan NIM $nim telah terdaftar !!!"];
+			}
+		}
+
+		foreach ($NAMA_ANGGOTA as $i => $a) {
+			$anggota = array(
+				'KODE_PENDAFTARAN' 	=> $KODE_PENDAFTARAN,
+				'NAMA' 				=> isset($NAMA_ANGGOTA[$i]) ? $NAMA_ANGGOTA[$i] : '',
+				'NIM'				=> isset($NIM_ANGGOTA[$i]) ? $NIM_ANGGOTA[$i] : '',
+				'EMAIL'				=> isset($EMAIL_ANGGOTA[$i]) ? $EMAIL_ANGGOTA[$i] : '',
+				'PERAN'				=> 3
+			);
+
+			$this->db->insert('tb_anggota', $anggota);
+
+			if ((($this->db->affected_rows() != 1) ? false : true) == false) {
+				return ['status' => false, 'msg' => "Terjadi kesalahan saat mengatur data anggota !!"];
+			}
+		}
 		return ($this->db->affected_rows() != 1) ? ['status' => false, 'msg' => "Terjadi kesalahan saat mengatur data anggota !!"] : ['status' => true, 'msg' => "Berhasil mengatur data anggota !!"];
 	}
 
