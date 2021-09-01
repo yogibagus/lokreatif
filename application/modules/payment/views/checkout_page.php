@@ -277,7 +277,7 @@
                 // set interval redirect
                 setInterval(function() {
                     window.location.replace("<?= $redirect_url ?>");
-                }, 3000);
+                }, 10000);
                 var method = $('input[name=method]:checked').val();
                 var arr = method.split("_");
                 if (arr[0] == "EWALLET") {
