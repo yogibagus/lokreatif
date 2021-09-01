@@ -124,16 +124,6 @@
 </div>
 <script type="text/javascript">
 	$(document).ready(function(){
-		// $.Toast("Terjadi Kesalahan", "Harap mengisikan data anggota dengan benar", "error", {
-		// 	has_icon:true,
-		// 	has_close_btn:true,
-		// 	stack: true,
-		// 	fullscreen:false,
-		// 	timeout:8000,
-		// 	sticky:false,
-		// 	has_progress:true,
-		// 	rtl:false,
-		// });
 		var i=1;
 		$('#add').click(function(){
 			i++;
@@ -171,7 +161,6 @@
 			method: 'post',
 			dataType: 'json',
 			success: function(res){
-				res.status && window.location.replace("<?= site_url('peserta/data-pendaftaran')?>")
 
 				$.Toast(res.status? "Berhasil" : "Terjadi Kesalahan", res.msg, res.status? 'success' : 'error', {
 					has_icon:true,
@@ -183,6 +172,8 @@
 					has_progress:true,
 					rtl:false,
 				});
+				
+				res.status && window.location.replace("<?= site_url('peserta/data-pendaftaran')?>")
 
         		$('#send-button').prop("disabled", false);
 				$('#send-button').html(
@@ -193,28 +184,4 @@
 
         return false;
     });
-	// $.validate(); 
-	// $('#send-button').on('click', function(e){
-	// 	// $(this).prop("disabled", true);
-	// 	// $(this).html('<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Loading...');
-	// 	var form = $( "#form-anggota" );
-	// 	form.validate()
-	// 	alert( "Valid: " + form.valid() );
-	// 	console.log(form.valid())
-	// 	console.log(form.serialize())
-	// 	// if(!isValid) {
-	// 	// 	e.preventDefault(); //prevent the default action
-	// 	// 	alert('oke')
-	// 	// }else{
-	// 	// 	alert('tidak')
-	// 	// }
-	// })
-	// $(document).on('click', 'form button[type=submit]', function(e) {
-	// 	var isValid = $(e.target).parents('form').isValid();
-	// 	if(!isValid) {
-	// 		e.preventDefault(); //prevent the default action
-	// 		alert('oke')
-	// 	}
-	// 	alert('tidak')
-	// });
 </script>
