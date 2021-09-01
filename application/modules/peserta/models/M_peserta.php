@@ -165,24 +165,11 @@ class M_peserta extends CI_Model {
 		$nama        	= htmlspecialchars($this->input->post('nama'), true);
 		$jk   			= htmlspecialchars($this->input->post('jk'), true);
 		$hp   			= htmlspecialchars($this->input->post('hp'), true);
-		$alamat     	= htmlspecialchars($this->input->post('alamat'), true);
-		$instagram   	= htmlspecialchars($this->input->post('instagram'), true);
-		$instansi     	= htmlspecialchars($this->input->post('instansi'), true);
-		$jabatan   		= htmlspecialchars($this->input->post('jabatan'), true);
-
-		if ($jabatan == 3) {
-			$jabatan = htmlspecialchars($this->input->post('lainnya'), true);
-			$jabatan = "3|".$jabatan;
-		}
 
 		$data = array(
 			'NAMA'  			=> $nama,
 			'JK'  				=> $jk,
-			'HP' 				=> $hp,
-			'ALAMAT'			=> $alamat,
-			'INSTAGRAM'			=> $instagram,
-			'INSTANSI'			=> $instansi,
-			'JABATAN'			=> $jabatan
+			'HP' 				=> $hp
 		);
 
 		$this->db->where('KODE_USER', $kode_user);
