@@ -53,8 +53,10 @@ class Payment extends MX_Controller
                     $dataPeserta = $this->General->get_detailDaftarKompetisi($this->kode_user);
                     if ($this->role == 1) {
                         $is_paid_by_univ = $this->General->cek_dibayarinUniv($dataPeserta->KODE_PENDAFTARAN, $this->kode_user);
+                        $redirect_url = base_url('peserta/riwayat-pembayaran');
                     } else {
                         $is_paid_by_univ = false;
+                        $redirect_url = base_url('transaksi-pts');
                     }
                     // check already paid by univ
                     if ($is_paid_by_univ == false) {
@@ -63,7 +65,7 @@ class Payment extends MX_Controller
                         $data['total_team'] = $this->M_payment->get_total_team_and_biaya($transaksi->KODE_TRANS);
                         $data['tim']        = $this->M_payment->get_tim($transaksi->KODE_TRANS);
                         $data['payment_history'] = $this->M_payment->count_payment_by_kode_trans($transaksi->KODE_TRANS);
-
+                        $data['redirect_url'] = $redirect_url;
                         $data['is_mobile'] = $this->agent->is_mobile();
                         $data['CI']                = $this;
                         $data['module']         = "payment";
@@ -407,6 +409,18 @@ class Payment extends MX_Controller
             } else {
                 echo false;
             }
+        }
+    }
+
+    public function success()
+    {
+        $data['CI']                = $this;
+        $data['module']         = "payment";
+        $data['fileview']         = "payment_success";
+        if ($this->role == "1") {
+            echo Modules::run('template/frontend_payment', $data);
+        } else if ($this->role == "3") {
+            echo Modules::run('template/frontend_payment', $data);
         }
     }
 }
