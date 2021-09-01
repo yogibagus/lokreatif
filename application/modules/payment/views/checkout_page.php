@@ -100,8 +100,8 @@
                         </div>
                         <!-- End Nav -->
 
-                        <!-- Tab Content -->
-                        <form action="<?= base_url("payment/pay") ?>" method="post">
+                        <!-- Tab Content <?= base_url("payment/pay") ?> -->
+                        <form id='form' action="/" method="post">
                             <input type="hidden" name="kode_trans" id="kode_trans" value="<?= $kode_trans ?>">
                             <div class="tab-content">
                                 <div class="tab-pane fade show active" id="tab-menu-ewallet" role="tabpanel" aria-labelledby="pills-one-code-features-example1-tab">
@@ -274,6 +274,10 @@
     <script>
         $(document).ready(function() {
             $('form').submit(function(event) {
+                // set interval redirect
+                setInterval(function() {
+                    window.location.replace("<?= $redirect_url ?>");
+                }, 3000);
                 var method = $('input[name=method]:checked').val();
                 var arr = method.split("_");
                 if (arr[0] == "EWALLET") {
@@ -308,10 +312,10 @@
             // show or hide alert
             var method = $('input[name=method]:checked').val();
             var arr = method.split("_");
-            if (arr[1] == "SHOPEEPAY") {
-                $("#shopeepay-alert").show();
+            if (arr[1] == "LINKAJA" || arr[1] == "DANA") {
+                $("#form").attr('target', '_blank');
             } else {
-                $("#shopeepay-alert").hide();
+                $("#form").removeAttr('target');
             }
             if (arr[0] == "EWALLET") {
                 // add required input mobile
