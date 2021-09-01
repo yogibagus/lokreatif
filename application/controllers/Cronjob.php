@@ -20,6 +20,7 @@ class Cronjob extends CI_Controller{
                 foreach ($transRefund as $item2) {
                     $temp['KODE_REFUND'] = $this->transaksi->gen_kodeRefund();
                     $temp['KODE_TRANS']  = $item2->KODE_TRANS;
+                    $temp['JML_REFUND']  = $item2->REFUND;
                     array_push($dataStoreRefund, $temp);
                 }
                 $this->M_Cronjob->insert_refund($dataStoreRefund);

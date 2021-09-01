@@ -7,7 +7,7 @@
 			</svg>
 		</a>
 	</div>
-	<form action="<?= site_url('peserta/set_anggota');?>" method="POST">
+	<form id="form-anggota">
 		<input type="hidden" name="KODE_PENDAFTARAN" value="<?= $dataPendaftaran->KODE_PENDAFTARAN;?>">
 		<div class="card-body pb-0">
 
@@ -59,7 +59,7 @@
 		</div>
 		<div class="card-header border-bottom pb-2">
 			<h5 class="card-header-title">Data anggota TIM <i><?= $dataPendaftaran->NAMA_TIM;?></i> <small class="text-danger">max 4 anggota TIM</small></h5>
-			<button type="button" class="btn btn-soft-info btn-xs btn-sm" id="add">Tambah field anggota</button>
+			<button type="button" class="btn btn-info btn-xs btn-sm" id="add">Tambah field anggota</button>
 		</div>
 		<div class="card-body">
 			<?php if ($dataAnggota != false) : ?>
@@ -118,12 +118,22 @@
 		</div>
 		<div class="card-footer text-right">
 			<a href="<?= site_url('peserta/data-pendaftaran');?>" class="btn btn-white btn-sm">Kembali</a>
-			<button type="submit" class="btn btn-soft-primary btn-sm" id="send-button">Simpan data</button>
+			<button type="submit" class="btn btn-primary btn-sm" id="send-button">Simpan data</button>
 		</div>
 	</form>
 </div>
 <script type="text/javascript">
 	$(document).ready(function(){
+		// $.Toast("Terjadi Kesalahan", "Harap mengisikan data anggota dengan benar", "error", {
+		// 	has_icon:true,
+		// 	has_close_btn:true,
+		// 	stack: true,
+		// 	fullscreen:false,
+		// 	timeout:8000,
+		// 	sticky:false,
+		// 	has_progress:true,
+		// 	rtl:false,
+		// });
 		var i=1;
 		$('#add').click(function(){
 			i++;
@@ -154,6 +164,57 @@
         $('#send-button').html(
             `<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Loading...`
         );
-        return;
+
+		$.ajax({
+			url: '<?= site_url('peserta/set_anggota')?>',
+			data: $('#form-anggota').serialize(),
+			method: 'post',
+			dataType: 'json',
+			success: function(res){
+				res.status && window.location.replace("<?= site_url('peserta/data-pendaftaran')?>")
+
+				$.Toast(res.status? "Berhasil" : "Terjadi Kesalahan", res.msg, res.status? 'success' : 'error', {
+					has_icon:true,
+					has_close_btn:true,
+					stack: true,
+					fullscreen:false,
+					timeout:8000,
+					sticky:false,
+					has_progress:true,
+					rtl:false,
+				});
+
+        		$('#send-button').prop("disabled", false);
+				$('#send-button').html(
+					`Simpan data`
+				);				
+			}
+		})
+
+        return false;
     });
+	// $.validate(); 
+	// $('#send-button').on('click', function(e){
+	// 	// $(this).prop("disabled", true);
+	// 	// $(this).html('<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Loading...');
+	// 	var form = $( "#form-anggota" );
+	// 	form.validate()
+	// 	alert( "Valid: " + form.valid() );
+	// 	console.log(form.valid())
+	// 	console.log(form.serialize())
+	// 	// if(!isValid) {
+	// 	// 	e.preventDefault(); //prevent the default action
+	// 	// 	alert('oke')
+	// 	// }else{
+	// 	// 	alert('tidak')
+	// 	// }
+	// })
+	// $(document).on('click', 'form button[type=submit]', function(e) {
+	// 	var isValid = $(e.target).parents('form').isValid();
+	// 	if(!isValid) {
+	// 		e.preventDefault(); //prevent the default action
+	// 		alert('oke')
+	// 	}
+	// 	alert('tidak')
+	// });
 </script>
