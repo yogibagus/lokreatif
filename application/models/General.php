@@ -184,6 +184,16 @@ class General extends CI_Model {
         }
     }
 
+    // get jml data tim pts
+    public function get_jmlPTSTim($asalPTS){
+        $query = $this->db->query("
+            SELECT COUNT(*) AS JML_TIM  
+            FROM pendaftaran_kompetisi pk
+            WHERE pk.ASAL_PTS = '$asalPTS'
+        ");
+        return $query->row()->JML_TIM;
+    }
+
     // TRANSAKSI
 
     // - biaya daftar tim (KIRIM PARAM, jumlah tim dari pts X)
@@ -278,7 +288,8 @@ class General extends CI_Model {
     }
 
     public function count_jmlRefund($KODE_TRANS){
-        $query= $this->db->query("SELECT (TOT_BAYAR - (SELECT SUM(BIAYA_TIM) FROM tb_order WHERE KODE_TRANS = '$KODE_TRANS')) AS JML_REFUND FROM tb_transaksi WHERE KODE_TRANS = '$KODE_TRANS'");
+        // $query= $this->db->query("SELECT (TOT_BAYAR - (SELECT SUM(BIAYA_TIM) FROM tb_order WHERE KODE_TRANS = '$KODE_TRANS')) AS JML_REFUND FROM tb_transaksi WHERE KODE_TRANS = '$KODE_TRANS'");
+        $query = $this->db->get_where('tb_refund', ['KODE_TRANS' => $KODE_TRANS]);
         return $query->row();
     }
 
