@@ -182,6 +182,33 @@ if ($payment->TYPE == 1) {
         </div>
     </div>
 </div>
+<!-- Modal Bayar -->
+<div class="modal fade" id="mdlBayarMulti" tabindex="-1" aria-labelledby="mdlBayarMulti" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="mdlBayarMulti">Info</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <h2>
+                        SUKSES
+                    </h2>
+                </div>
+
+                <!-- <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
+                    <form action="<?= site_url('pts/order') ?>" method="post">
+                        <input type="hidden" id="mdlBayarMulti_itemId" name="KODE_PENDAFTARAN" />
+                        <input type="hidden" id="" name="TOTAL_TIM" value="" />
+                        <button type="submit" class="btn btn-success">Bayar</button>
+                    </form>
+                </div> -->
+            </div>
+        </div>
+    </div>
 
 
 
@@ -270,7 +297,9 @@ if ($payment->TYPE == 1) {
                     $("#status-payment").addClass(" badge-success");
                     $("#status-payment").text("Pembayaran Sukses");
                     $("#alert").html("<strong>Selamat!</strong> Pembayaran anda telah berhasil divalidasi.");
-                    location.reload();
+                    $('#mdlBayarMulti').modal('show');
+                    setTimeout(function(){ location.reload(); }, 3000);
+                    
                 } else {
 
                 }
