@@ -6,7 +6,6 @@
 
   <div class="header-section">
 
-    <?php $this->load->view('header/main_topbar') ?>
 
     <div id="logoAndNav" class="container">
       <!-- Nav -->
