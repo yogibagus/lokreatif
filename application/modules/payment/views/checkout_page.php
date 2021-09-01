@@ -91,10 +91,10 @@
                         <div class="text-center">
                             <ul class="nav nav-segment nav-pills scrollbar-horizontal mb-7" role="tablist">
                                 <li class="nav-item">
-                                    <a class="nav-link active" id="pills-one-code-features-example1-tab" data-toggle="pill" href="#tab-menu-ewallet" role="tab" aria-controls="tab-menu-ewallet" aria-selected="true">E-WALLET</a>
+                                    <a class="nav-link active" id="ewallet-tab" data-toggle="pill" href="#tab-menu-ewallet" role="tab" aria-controls="tab-menu-ewallet" aria-selected="true">E-WALLET</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link" id="pills-two-code-features-example1-tab" data-toggle="pill" href="#tab-menu-va" role="tab" aria-controls="tab-menu-va" aria-selected="false">VIRTUAL ACCOUNT</a>
+                                    <a class="nav-link" id="va-tab" data-toggle="pill" href="#tab-menu-va" role="tab" aria-controls="tab-menu-va" aria-selected="false">VIRTUAL ACCOUNT</a>
                                 </li>
                             </ul>
                         </div>
@@ -167,7 +167,7 @@
                                                 +62
                                             </span>
                                         </div>
-                                        <input type="number" class="form-control" oninput="requiredAlertMobile()" name="mobile" id="mobile" value="" required>
+                                        <input type="number" class="form-control" oninput="requiredAlertMobile()" placeholder="XXX-XXXX-XXXX" name="mobile" id="mobile" value="" required>
                                     </div>
                                     <small class="text-muted" id="required-alert-wallet">*) Harap masukan Nomor E-Wallet anda pada form diatas.</small>
                                     <!-- End Input Group -->
@@ -232,6 +232,35 @@
         </div>
     </div>
 
+    <script>
+        $(document).ready(function() {
+            function format_rupiah(angka) {
+                var reverse = angka.toString().split('').reverse().join(''),
+                    ribuan = reverse.match(/\d{1,3}/g);
+                ribuan = ribuan.join('.').split('').reverse().join('');
+                return ribuan;
+            }
+            $("#va-tab").click(function() {
+                $("input[name='method']").removeAttr('checked')
+
+                // set fee
+                var amount = 4000 + parseInt(<?= $total_bayar->total_bayar ?>);
+                var fee = amount - parseInt(<?= $total_bayar->total_bayar ?>);
+                $('#total_amount').text(format_rupiah(amount));
+                $('#fee').text(format_rupiah(fee));
+            });
+            $("#ewallet-tab").click(function() {
+                $("input[name='method']").removeAttr('checked')
+
+                // set fee
+                var amount = Math.ceil(100 / 98.5 * parseInt(<?= $total_bayar->total_bayar ?>));
+                var new_amount = Math.ceil(amount / 1000) * 1000;
+                var fee = new_amount - parseInt(<?= $total_bayar->total_bayar ?>);
+                $('#total_amount').text(format_rupiah(new_amount));
+                $('#fee').text(format_rupiah(fee));
+            });
+        });
+    </script>
 
     <script>
         function requiredAlertMobile() {
@@ -274,17 +303,6 @@
     </script>
 
     <script>
-        $(document).ready(function() {
-            $("#shopeepay-alert").hide();
-        });
-
-        function format_rupiah(angka) {
-            var reverse = angka.toString().split('').reverse().join(''),
-                ribuan = reverse.match(/\d{1,3}/g);
-            ribuan = ribuan.join('.').split('').reverse().join('');
-            return ribuan;
-        }
-
         // check radio ewaller
         $("input[name='method']").on('change', function() {
             // show or hide alert
@@ -295,33 +313,16 @@
             } else {
                 $("#shopeepay-alert").hide();
             }
-
             if (arr[0] == "EWALLET") {
                 // add required input mobile
                 $('#mobile').prop('required', true);
                 // change method text
                 $('.text-method').text(arr[1] + " Number:");
-
-                // set fee
-                var amount = Math.ceil(100 / 98.5 * parseInt(<?= $total_bayar->total_bayar ?>));
-                var new_amount = Math.ceil(amount / 1000) * 1000;
-                var fee = new_amount - parseInt(<?= $total_bayar->total_bayar ?>);
-                $('#total_amount').text(format_rupiah(new_amount));
-                $('#fee').text(format_rupiah(fee));
             } else {
                 $('#mobile').prop('required', false);
                 // change method text
                 $('.text-method').text("Nama:");
-
-                // set fee
-                var amount = 4000 + parseInt(<?= $total_bayar->total_bayar ?>);
-                var fee = amount - parseInt(<?= $total_bayar->total_bayar ?>);
-                $('#total_amount').text(format_rupiah(amount));
-                $('#fee').text(format_rupiah(fee));
             }
-
-
-
         });
     </script>
 </div>
