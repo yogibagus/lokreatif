@@ -2,7 +2,7 @@
   <div class="card mb-4">
     <div class="card-header">
       <h5 class="card-header-title">Refund biaya pendaftaran kompetisi</h5>
-      <button type="button" class="btn btn-sm btn-primary float-right" data-toggle="modal" data-target="#atur-via">Atur VIA untuk refund</button>
+      <button type="button" class="btn btn-sm btn-primary float-right" data-toggle="modal" data-target="#atur-via">Metode Refund</button>
     </div>
     <div class="card-body">
       <div class="row">
@@ -56,20 +56,20 @@
           <div class="media align-items-center mb-3">
             <span class="d-block font-size-1 mr-3">Total Bayar sebelumnya <span class="font-size-1 text-danger text-highlight-danger">- Fee <i class="fa fa-question-circle" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="Dikurangi biaya Fee 1.5% E-Wallet dan -4000 Virtual Account"></i></span></span>
             <div class="media-body text-right">
-              <span class="text-dark font-weight-bold">Rp.<?= number_format($dataRefund->TOT_BAYAR,0,",",".");?></span>
+              <span class="text-dark font-weight-bold">Rp.<?= number_format($dataRefund->BAYAR,0,",",".");?></span>
             </div>
           </div>
           <div class="media align-items-center bg-soft-secondary mb-3">
             <span class="d-block font-size-1 mr-3">Jumlah Refund</span>
             <div class="media-body text-right">
-              <span class="text-dark font-weight-bold">Rp.<?= number_format(round($biayaRefund->JML_REFUND, -4),0,",",".");?></span>
+              <span class="text-dark font-weight-bold">Rp.<?= number_format($biayaRefund->JML_REFUND,0,",",".");?></span>
             </div>
           </div>
           <div class="media align-items-center">
             <span class="d-block font-size-1 mr-3">Status Refund</span>
             <div class="media-body text-right">
               <?php if ($dataRefund->STAT_REFUND == 0):?>
-                <span class="badge badge-secondary">Isikan VIA dan No VIA</span>
+                <span class="badge badge-secondary">Pilih Metode Refund</span>
               <?php elseif($dataRefund->STAT_REFUND == 1):?>
                 <span class="badge badge-info">Sedang diproses admin</span>
               <?php elseif($dataRefund->STAT_REFUND == 2):?>
@@ -88,7 +88,7 @@
     <div class="modal-dialog modal-dialog-centered" role="document">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalCenterTitle">Atur via</h5>
+          <h5 class="modal-title" id="exampleModalCenterTitle">Metode Refund</h5>
           <button type="button" class="btn btn-xs btn-icon btn-soft-secondary" data-dismiss="modal" aria-label="Close">
             <svg aria-hidden="true" width="10" height="10" viewBox="0 0 18 18" xmlns="http://www.w3.org/2000/svg">
               <path fill="currentColor" d="M11.5,9.5l5-5c0.2-0.2,0.2-0.6-0.1-0.9l-1-1c-0.3-0.3-0.7-0.3-0.9-0.1l-5,5l-5-5C4.3,2.3,3.9,2.4,3.6,2.6l-1,1 C2.4,3.9,2.3,4.3,2.5,4.5l5,5l-5,5c-0.2,0.2-0.2,0.6,0.1,0.9l1,1c0.3,0.3,0.7,0.3,0.9,0.1l5-5l5,5c0.2,0.2,0.6,0.2,0.9-0.1l1-1 c0.3-0.3,0.3-0.7,0.1-0.9L11.5,9.5z"/>
@@ -97,7 +97,7 @@
         </div>
         <form action="<?= site_url('refund/atur_via');?>" method="POST">
           <input type="hidden" name="KODE_REFUND" value="<?= $dataRefund->KODE_REFUND;?>">
-          <input type="hidden" name="JML_REFUND" value="<?= round($biayaRefund->JML_REFUND, -4);?>">
+          <input type="hidden" name="JML_REFUND" value="<?= $biayaRefund->JML_REFUND;?>">
           <div class="modal-body">
             <div class="alert alert-soft-info">
               <p class="mb-0"><b>VIA</b>: merupakan melalui media apa anda ingin kami mengirimkan dana refund anda, sedangkan <br><b>NO VIA</b>: merupakan Nomor sesuai pilihan VIA anda.</p>
