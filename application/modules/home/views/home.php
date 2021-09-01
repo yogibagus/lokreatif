@@ -2,7 +2,7 @@
 <div class="container space-top-2">
   <div class="row justify-content-lg-between align-items-lg-center">
     <div class="col-sm-10 col-lg-5 mb-7 mb-lg-0">
-      <img class="img-fluid" src="<?= base_url();?>assets/frontend/svg/illustrations/reading.svg" alt="Image Description">
+      <img class="img-fluid" src="<?= base_url();?>assets/illustration_teamwork.png" alt="<?= $WEB_JUDUL;?>">
     </div>
 
     <div class="col-lg-6">
@@ -10,7 +10,7 @@
         <h1 class="display-5 mb-3">
           Kompetisi NASIONAL
           <br>
-          <span class="text-primary font-weight-bold">
+          <span class="text-info font-weight-bold">
             <span class="js-text-animation"
               data-hs-typed-options='{
               "strings": [ "ide bisnis", "desain poster", "game mobile", "video pendek", "tiktok" ],
