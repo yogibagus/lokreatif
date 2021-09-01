@@ -411,22 +411,23 @@ class Peserta extends MX_Controller
 
 	function set_anggota()
 	{
-		// cek post duplicate nim
-		$duplicateItem = array_count_values($this->input->post('NIM_ANGGOTA', true));
+		// // cek post duplicate nim
+		$duplicateItem 	= array_count_values($this->input->post('NIM_ANGGOTA', true));
+		$isDuplicate 	= false;
 		foreach ($duplicateItem as $item) {
 			if($item > 1){
-				$this->session->set_flashdata('error', 'Data NIM anggota yang anda masukkan tidak boleh sama !!!');
-				redirect($this->agent->referrer());
+				echo json_encode(['status' => false, 'msg' => 'Data NIM anggota yang anda masukkan tidak boleh sama !!!']);
+				$isDuplicate = true;
 			}
 		}
 
-		$setAnggota = $this->M_peserta->set_anggota();
-		if ($setAnggota['status'] == true) {
-			$this->session->set_flashdata('success', $setAnggota['msg']);
-			redirect(site_url('peserta/data-pendaftaran'));
-		} else {
-			$this->session->set_flashdata('error', $setAnggota['msg']);
-			redirect($this->agent->referrer());
+		if($isDuplicate == false){
+			$setAnggota = $this->M_peserta->set_anggota();
+			if ($setAnggota['status'] == true) {
+				echo json_encode($setAnggota);
+			} else {
+				echo json_encode($setAnggota);
+			}
 		}
 	}
 
