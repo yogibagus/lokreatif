@@ -135,14 +135,14 @@
                                                 </label>
                                             </div>
                                         </div>
-                                        <!-- <div class="col-6 col-md-3 px-2 mb-3 mb-md-0">
+                                        <div class="col-6 col-md-3 px-2 mb-3 mb-md-0">
                                             <div class="custom-control custom-radio custom-control-inline checkbox-outline checkbox-icon text-center w-100 h-100">
                                                 <input type="radio" id="typeOfListingRadio3" name="method" class="custom-control-input checkbox-outline-input checkbox-icon-input" value="EWALLET_SHOPEEPAY">
                                                 <label class="checkbox-outline-label checkbox-icon-label w-100 rounded py-3 px-1 mb-0" for="typeOfListingRadio3">
                                                     <img class="img-fluid w-90 fit-image" src="https://kampungbahasajogja.net/assets/img/about/shopeepay.png" alt="SHOPEEPAY">
                                                 </label>
                                             </div>
-                                        </div> -->
+                                        </div>
                                         <div class="col-6 col-md-3 px-2 mb-3 mb-md-0">
                                             <div class="custom-control custom-radio custom-control-inline checkbox-outline checkbox-icon text-center w-100 h-100">
                                                 <input type="radio" id="typeOfListingRadio4" name="method" class="custom-control-input checkbox-outline-input checkbox-icon-input" value="EWALLET_LINKAJA">

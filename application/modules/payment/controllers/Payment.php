@@ -132,6 +132,8 @@ class Payment extends MX_Controller
                             redirect($payment->CHECKOUT_URL);
                         } else if ($payment->METHOD == "LINKAJA") {
                             redirect($payment->CHECKOUT_URL);
+                        } else if ($payment->METHOD == "SHOPEEPAY") {
+                            redirect($payment->CHECKOUT_URL);
                         } else {
                             $this->session->set_flashdata('error', "Unknown payment method.");
                             redirect($this->agent->referrer());
