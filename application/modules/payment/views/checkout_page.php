@@ -115,42 +115,24 @@
                                     </style>
                                     <div class="alert alert-soft-primary" role="alert">
                                         <strong><i class="fa fa-info-circle" aria-hidden="true"></i> </strong>
-                                        Siapkan Aplikasi E-Wallet Anda agar proses pembayaran lebih cepat.
+                                        Siapkan Aplikasi E-Wallet Anda agar proses pembayaran lebih cepat. <a href="#" class="text-dark">Pelajari lebih lanjut.</a>
                                     </div>
                                     <!-- Radio Checkbox Group -->
                                     <div class="row mx-n2">
-                                        <div class="col-6 col-md-3 px-2 mb-3 mb-md-0">
-                                            <div class="custom-control custom-radio custom-control-inline checkbox-outline checkbox-icon text-center w-100 h-100">
-                                                <input type="radio" id="typeOfListingRadio1" name="method" class="custom-control-input checkbox-outline-input checkbox-icon-input" value="EWALLET_OVO" required>
-                                                <label class="checkbox-outline-label checkbox-icon-label w-100 rounded py-3 px-1 mb-0" for="typeOfListingRadio1">
-                                                    <img class="img-fluid w-90 fit-image" src="https://image.cermati.com/c_fit,fl_progressive,h_240,q_80,w_360/pm2gnkl5edgago9h4lho.jpg" alt="OVO">
-                                                </label>
-                                            </div>
-                                        </div>
-                                        <div class="col-6 col-md-3 px-2 mb-3 mb-md-0">
-                                            <div class="custom-control custom-radio custom-control-inline checkbox-outline checkbox-icon text-center w-100 h-100">
-                                                <input type="radio" id="typeOfListingRadio2" name="method" class="custom-control-input checkbox-outline-input checkbox-icon-input" value="EWALLET_DANA">
-                                                <label class="checkbox-outline-label checkbox-icon-label w-100 rounded py-3 px-1 mb-0" for="typeOfListingRadio2">
-                                                    <img class="img-fluid w-90 fit-image" src="https://1.bp.blogspot.com/-LDwtS_oxYgg/XO67MmzGN7I/AAAAAAAAADI/hrSqgCRod3oIS6NtwjOqdY0okl8hwyi6gCLcBGAs/s1600/logo%2Bdana%2Bdompet%2Bdigital%2BPNG.png" alt="DANA">
-                                                </label>
-                                            </div>
-                                        </div>
-                                        <div class="col-6 col-md-3 px-2 mb-3 mb-md-0">
-                                            <div class="custom-control custom-radio custom-control-inline checkbox-outline checkbox-icon text-center w-100 h-100">
-                                                <input type="radio" id="typeOfListingRadio3" name="method" class="custom-control-input checkbox-outline-input checkbox-icon-input" value="EWALLET_SHOPEEPAY">
-                                                <label class="checkbox-outline-label checkbox-icon-label w-100 rounded py-3 px-1 mb-0" for="typeOfListingRadio3">
-                                                    <img class="img-fluid w-90 fit-image" src="https://kampungbahasajogja.net/assets/img/about/shopeepay.png" alt="SHOPEEPAY">
-                                                </label>
-                                            </div>
-                                        </div>
-                                        <div class="col-6 col-md-3 px-2 mb-3 mb-md-0">
-                                            <div class="custom-control custom-radio custom-control-inline checkbox-outline checkbox-icon text-center w-100 h-100">
-                                                <input type="radio" id="typeOfListingRadio4" name="method" class="custom-control-input checkbox-outline-input checkbox-icon-input" value="EWALLET_LINKAJA">
-                                                <label class="checkbox-outline-label checkbox-icon-label w-100 rounded py-3 px-1 mb-0" for="typeOfListingRadio4">
-                                                    <img class="img-fluid w-90 fit-image" src="https://vectorlogo4u.com/wp-content/uploads/2019/03/link-aja-logo-vector.png" alt="LINKAJA">
-                                                </label>
-                                            </div>
-                                        </div>
+                                        <?php $no = 1;
+                                        foreach ($pay_method as $row) { ?>
+                                            <?php if ($row->TYPE_PAY_METHOD == "EWALLET") { ?>
+                                                <div class="col-6 col-md-3 px-2 mb-3 mb-3">
+                                                    <div class="custom-control custom-radio custom-control-inline checkbox-outline checkbox-icon text-center w-100 h-100">
+                                                        <input type="radio" id="<?= $row->TYPE_PAY_METHOD . "_" . $row->NAMA_PAY_METHOD . "_" . $no ?>" name="method" class="custom-control-input checkbox-outline-input checkbox-icon-input" value="<?= $row->ID_PAY_METHOD ?>" required>
+                                                        <label class="checkbox-outline-label checkbox-icon-label w-100 rounded py-3 px-1 mb-0" for="<?= $row->TYPE_PAY_METHOD . "_" . $row->NAMA_PAY_METHOD . "_" . $no ?>">
+                                                            <img class="img-fluid w-90 fit-image" src="<?= $row->IMG_PAY_METHOD ?>" alt="<?= $row->NAMA_PAY_METHOD ?>">
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                            <?php } ?>
+                                        <?php $no++;
+                                        } ?>
                                     </div>
                                     <!-- Alert -->
                                     <?php if ($is_mobile) { ?>
@@ -176,47 +158,28 @@
                                 <div class="tab-pane fade" id="tab-menu-va" role="tabpanel" aria-labelledby="pills-two-code-features-example1-tab">
                                     <!-- Radio Checkbox Group -->
                                     <div class="row mx-n2">
-                                        <div class="col-6 col-md-3 px-2 mb-3 mb-md-0">
+                                        <!-- <div class="col-6 col-md-3 px-2 mb-3 mb-md-0">
                                             <div class="custom-control custom-radio custom-control-inline checkbox-outline checkbox-icon text-center w-100 h-100">
                                                 <input type="radio" id="vamandiri" name="method" class="custom-control-input checkbox-outline-input checkbox-icon-input" value="VA_MANDIRI">
                                                 <label class="checkbox-outline-label checkbox-icon-label w-100 rounded py-3 px-1 mb-0" for="vamandiri">
                                                     <img class="img-fluid w-90 fit-image" src="https://brandeps.com/logo-download/B/Bank-Mandiri-logo-vector-01.svg" alt="MANDIRI">
                                                 </label>
                                             </div>
-                                        </div>
-                                        <div class="col-6 col-md-3 px-2 mb-3 mb-md-0">
-                                            <div class="custom-control custom-radio custom-control-inline checkbox-outline checkbox-icon text-center w-100 h-100">
-                                                <input type="radio" id="vabni" name="method" class="custom-control-input checkbox-outline-input checkbox-icon-input" value="VA_BNI">
-                                                <label class="checkbox-outline-label checkbox-icon-label w-100 rounded py-3 px-1 mb-0" for="vabni">
-                                                    <img class="img-fluid w-90 fit-image" src="https://i.pinimg.com/originals/36/38/43/36384348ef9d7bfff66da6da9e975d56.png" alt="BNI">
-                                                </label>
-                                            </div>
-                                        </div>
-                                        <div class="col-6 col-md-3 px-2">
-                                            <div class="custom-control custom-radio custom-control-inline checkbox-outline checkbox-icon text-center w-100 h-100">
-                                                <input type="radio" id="vabri" name="method" class="custom-control-input checkbox-outline-input checkbox-icon-input" value="VA_BRI">
-                                                <label class="checkbox-outline-label checkbox-icon-label w-100 rounded py-3 px-1 mb-0" for="vabri">
-                                                    <img class="img-fluid w-90 fit-image" src="https://i.ibb.co/Hg1gDdM/images-q-tbn-ANd9-Gc-TIan-Xv-IR5-Wnc-Pv461-AIGT8-FL7t-JJk-A7z-Ui-Dw-usqp-CAU.png" alt="BRI">
-                                                </label>
-                                            </div>
-                                        </div>
-                                        <!-- <div class="col-6 col-md-3 px-2">
-                                            <div class="custom-control custom-radio custom-control-inline checkbox-outline checkbox-icon text-center w-100 h-100">
-                                                <input type="radio" id="vabca" name="method" class="custom-control-input checkbox-outline-input checkbox-icon-input" value="VA_BCA">
-                                                <label class="checkbox-outline-label checkbox-icon-label w-100 rounded py-3 px-1 mb-0" for="vabca">
-                                                    <img class="img-fluid w-90 fit-image" src="https://cdn.freebiesupply.com/logos/thumbs/2x/bca-bank-central-asia-logo.png" alt="BCA">
-                                                </label>
-                                            </div>
                                         </div> -->
-
-                                        <div class="col-6 col-md-3 px-2">
-                                            <div class="custom-control custom-radio custom-control-inline checkbox-outline checkbox-icon text-center w-100 h-100">
-                                                <input type="radio" id="vapermata" name="method" class="custom-control-input checkbox-outline-input checkbox-icon-input" value="VA_PERMATA">
-                                                <label class="checkbox-outline-label checkbox-icon-label w-100 rounded py-3 px-1 mb-0" for="vapermata">
-                                                    <img class="img-fluid w-90 fit-image" src="https://1.bp.blogspot.com/-tZkp5O70Rqo/XAJ7BwL9_lI/AAAAAAAAAZw/DGusJ0Y5XL84uKmWpnPJ0kQPOjabtqMTwCPcBGAYYCw/s1600/Lowongan%2BKerja%2BTerbaru%2BBank%2BPermata.png" alt="PERMATA">
-                                                </label>
-                                            </div>
-                                        </div>
+                                        <?php $no = 1;
+                                        foreach ($pay_method as $row) { ?>
+                                            <?php if ($row->TYPE_PAY_METHOD == "VA") { ?>
+                                                <div class="col-6 col-md-3 px-2 mb-3 mb-3">
+                                                    <div class="custom-control custom-radio custom-control-inline checkbox-outline checkbox-icon text-center w-100 h-100">
+                                                        <input type="radio" id="<?= $row->TYPE_PAY_METHOD . "_" . $row->NAMA_PAY_METHOD . "_" . $no ?>" name="method" class="custom-control-input checkbox-outline-input checkbox-icon-input" value="<?= $row->ID_PAY_METHOD ?>" required>
+                                                        <label class="checkbox-outline-label checkbox-icon-label w-100 rounded py-3 px-1 mb-0" for="<?= $row->TYPE_PAY_METHOD . "_" . $row->NAMA_PAY_METHOD . "_" . $no ?>">
+                                                            <img class="img-fluid w-90 fit-image" src="<?= $row->IMG_PAY_METHOD ?>" alt="<?= $row->NAMA_PAY_METHOD ?>">
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                            <?php } ?>
+                                        <?php $no++;
+                                        } ?>
                                     </div>
                                     <small class="text-muted" id="required-alert-va">*) Pilih salah satu metode pembayaran diatas.</small>
                                 </div>
@@ -234,6 +197,13 @@
 
     <script>
         $(document).ready(function() {
+            // set fee begining
+            var amount = Math.ceil(100 / 98.5 * parseInt(<?= $total_bayar->total_bayar ?>));
+            var new_amount = Math.ceil(amount / 1000) * 1000;
+            var fee = new_amount - parseInt(<?= $total_bayar->total_bayar ?>);
+            $('#total_amount').text(format_rupiah(new_amount));
+            $('#fee').text(format_rupiah(fee));
+
             function format_rupiah(angka) {
                 var reverse = angka.toString().split('').reverse().join(''),
                     ribuan = reverse.match(/\d{1,3}/g);
@@ -278,7 +248,7 @@
                 setInterval(function() {
                     window.location.replace("<?= $redirect_url ?>");
                 }, 10000);
-                var method = $('input[name=method]:checked').val();
+                var method = $('input[name=method]:checked').attr('id');
                 var arr = method.split("_");
                 if (arr[0] == "EWALLET") {
                     var mobile = $("#mobile").val();
@@ -310,7 +280,7 @@
         // check radio ewaller
         $("input[name='method']").on('change', function() {
             // show or hide alert
-            var method = $('input[name=method]:checked').val();
+            var method = $('input[name=method]:checked').attr('id');
             var arr = method.split("_");
             if (arr[1] == "LINKAJA" || arr[1] == "DANA") {
                 $("#form").attr('target', '_blank');
