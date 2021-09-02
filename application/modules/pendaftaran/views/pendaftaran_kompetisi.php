@@ -17,7 +17,7 @@
 				<label class="input-label">Pilih bidang lomba yang diikuti <span class="text-danger">*</span></label>
 
 				<!-- Radio Checkbox Group -->
-				<div class="row mx-n2">
+				<div class="row center-flext">
 					<?php $no=1; foreach ($bidang_lomba as $lomba) :?>
 					<div class="col-6 col-md-3 px-2 mb-3">
 						<div class="custom-control custom-radio custom-control-inline checkbox-outline checkbox-icon text-center w-100 h-100">
