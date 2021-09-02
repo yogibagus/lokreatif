@@ -1,5 +1,5 @@
 <!-- Card -->
-<div class="card mb-4">
+<div class="card mb-4" id="display">
 	<div class="card-header">
 		<h5 class="card-header-title">Riwayat Pembayaran - <?= $dataPendaftaran->NAMA_TIM; ?></h5>
 		<?php if ($sudahBayar == false) : ?><?php if ($payments != false):?><a href="<?= site_url('payment/checkout/'.$KODE_TRANS);?>" class="btn btn-xs btn-success float-right">Pilih metode pembayaran baru</a><?php endif ?><?php endif ?>
@@ -61,3 +61,19 @@
 		</table>
 	</div>
 </div>
+
+<script type="text/javascript">
+  $(document).ready(function(){
+    function display(){           
+      $.ajax({
+        url:'<?php echo site_url('peserta/get_listPayment');?>',
+        success:function(rs){
+          $("#display").html(rs);
+        }
+      });
+    }   
+    setInterval(function(){
+      display();
+    },15000);  
+  });
+</script>

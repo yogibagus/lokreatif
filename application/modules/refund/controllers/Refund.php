@@ -32,10 +32,11 @@ class Refund extends MX_Controller {
 			$data['CI']				= $this;
 
 			$data['module'] 		= "refund";
-			$data['fileview'] 		= "refund";
 			if ($this->session->userdata('role') == 1) {
+				$data['fileview'] 		= "refund";
 				echo Modules::run('template/frontend_user', $data);
 			}else{
+				$data['fileview'] 		= "pts_refund";
 				echo Modules::run('template/backend_main', $data);
 			}
 		}else{

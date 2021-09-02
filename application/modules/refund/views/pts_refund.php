@@ -126,7 +126,7 @@
             </div>
             <div class="form-group" id="e_wallet">
               <label class="input-label">Pilih Metode Refund <small class="text-danger">*</small></label>
-              <select class="js-custom-select custom-select" size="1" id="a" 
+              <select class="js-select2-custom custom-select" size="1" id="a" 
                 data-hs-select2-options='{
                   "minimumResultsForSearch": "Infinity"
                 }' required>
@@ -145,7 +145,7 @@
             </div>
             <div class="form-group d-none" id="bank">
               <label class="input-label">Pilih Metode Refund <small class="text-danger">*</small></label>
-              <select class="js-custom-select custom-select" size="1" id="b"
+              <select class="js-select2-custom custom-select" size="1" id="b"
                 data-hs-select2-options='{
                   "minimumResultsForSearch": "Infinity"
                 }' required>
@@ -198,11 +198,11 @@
           $("#e_wallet").removeClass("d-none");
         });
 
-        $(".js-custom-select optgroup option").filter(function() {
+        $(".js-select2-custom optgroup option").filter(function() {
             return $(this).val() == $("#VIA").val();
         }).attr('selected', true);
 
-        $(".js-custom-select").change(function () {
+        $(".js-select2-custom").change(function () {
 
             $("#VIA").val($(this).find("option:selected").attr("value"));
         });

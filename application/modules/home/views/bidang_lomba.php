@@ -16,7 +16,7 @@
 
 <!-- Description Section -->
 <div class="container w-lg-80 space-2">
-  <div class="row">
+  <div class="row center-flext">
     <?php if ($bidangLomba != false) : ?>
       <?php $no=1; foreach ($bidangLomba as $value) :?>
       <div class="col-6 col-md-3 px-2 mb-3">

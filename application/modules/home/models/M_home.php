@@ -28,6 +28,18 @@ class M_home extends CI_Model {
 
 	}
 
+	public function get_detailLomba($id){
+		$this->db->select('*');
+		$query = $this->db->get_where('bidang_lomba', array('ID_BIDANG' => $id));
+
+		if ($query->num_rows() > 0) {
+			return $query->row();
+		}else{
+			return false;
+		}
+
+	}
+
 	public function get_tahapPenilaian(){
 		$this->db->select('*');
 		$query = $this->db->get('tahap_penilaian');

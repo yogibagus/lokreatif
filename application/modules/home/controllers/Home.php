@@ -37,12 +37,12 @@ class Home extends MX_Controller{
 	public function detail_lomba($id_bidang){
 		if ($this->M_home->get_bidangLomba($id_bidang) != false) {
 			$data['bidangLomba']		= $this->M_home->get_detailLomba($id_bidang);
-			// $data['tahapPenilaian']		= $this->M_home->get_tahapPenilaian($id_bidang);
+			$data['tahapPenilaian']		= $this->M_home->get_tahapPenilaian($id_bidang);
 
 			$data['CI']			= $this;
 
 			$data['module'] 	= "home";
-			$data['fileview'] 	= "bidang_lomba";
+			$data['fileview'] 	= "detail_lomba";
 			echo Modules::run('template/frontend_main', $data);
 		}else{
 			$this->session->set_flashdata('warning', "Data bidang lomba tidak ditemukan");

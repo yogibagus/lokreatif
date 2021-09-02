@@ -360,8 +360,20 @@ class M_peserta extends CI_Model {
 	}
 
 	function update_jawaban($KODE_PENDAFTARAN, $ID_FORM, $data){
-		$this->db->where(array('KODE_PENDAFTARAN' => $KODE_PENDAFTARAN, 'ID_FORM' => $ID_FORM));
-		$this->db->update('pendaftaran_data', $data);
-		return ($this->db->affected_rows() != 1) ? false : true;
+
+		$cek = $this->db->get_where('pendaftaran_data', array('KODE_PENDAFTARAN' => $KODE_PENDAFTARAN, 'ID_FORM' => $ID_FORM));
+
+		if ($cek->num_rows() > 0) {
+			$this->db->where(array('KODE_PENDAFTARAN' => $KODE_PENDAFTARAN, 'ID_FORM' => $ID_FORM));
+			$this->db->update('pendaftaran_data', $data);
+			return ($this->db->affected_rows() != 1) ? false : true;
+		}else{
+
+			$this->db->insert('pendaftaran_data', array('KODE_PENDAFTARAN' => $KODE_PENDAFTARAN, 'ID_FORM' => $ID_FORM));
+
+			$this->db->where(array('KODE_PENDAFTARAN' => $KODE_PENDAFTARAN, 'ID_FORM' => $ID_FORM));
+			$this->db->update('pendaftaran_data', $data);
+			return ($this->db->affected_rows() != 1) ? false : true;
+		}
 	}
 }
