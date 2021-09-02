@@ -67,13 +67,9 @@
 
     <!-- Button -->
     <div class="row align-items-center mb-5">
-      <div class="col-sm-6 mb-3 mb-sm-0">
-        <span class="font-size-1 text-muted">Sudah punya akun?</span>
-        <a class="font-size-1 font-weight-bold" href="<?= site_url('login') ?>">Login</a>
-      </div>
 
       <div class="col-sm-6 text-sm-right">
-        <button type="submit" class="btn btn-primary btn-sm transition-3d-hover">Daftar Sekarang</button>
+        <button type="submit" class="btn btn-primary btn-sm transition-3d-hover">Request PTS</button>
       </div>
     </div>
     <!-- End Button -->
