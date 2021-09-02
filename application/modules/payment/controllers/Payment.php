@@ -66,6 +66,7 @@ class Payment extends MX_Controller
                         $data['tim']        = $this->M_payment->get_tim($transaksi->KODE_TRANS);
                         $data['payment_history'] = $this->M_payment->count_payment_by_kode_trans($transaksi->KODE_TRANS);
                         $data['redirect_url'] = $redirect_url;
+                        $data['pay_method'] = $this->M_payment->get_all_payment_method();
                         $data['is_mobile'] = $this->agent->is_mobile();
                         $data['CI']                = $this;
                         $data['module']         = "payment";
@@ -118,6 +119,7 @@ class Payment extends MX_Controller
                     }
                     $data['bank_tut'] = $this->M_payment->get_tutorial_payment_by_bank_name($payment->METHOD);
                     $data['payment'] = $payment;
+                    $data['pay_method'] = $this->M_payment->get_payment_method_by_id($payment->ID_PAY_METHOD);
                     $data['status'] = $this->M_payment->get_status_payment_by_stat_pay($payment->STAT_PAY);
 
                     $data['CI']                = $this;
@@ -194,63 +196,70 @@ class Payment extends MX_Controller
                 $mobile = ($this->input->post("mobile") != "") ? $this->input->post("mobile") : "";
                 $mobile = preg_replace('/^(?:\+?62|0)?/', '0', $mobile);
                 $method = ($this->input->post("method") != "") ? $this->input->post("method") : "";
-                //get amount
-                $total_bayar = $this->M_payment->get_total_bayar($kode_trans);
-                $amount = (float)$total_bayar->total_bayar;
 
-                //split : ex VA_MANDIRI
-                $method = explode('_', trim($method));
-                if ($method[0] == "EWALLET") {
-                    $type = $method[0];
-                    $walletType = $method[1];
+                $pay_method = $this->M_payment->get_payment_method_by_id($method);
+                if ($pay_method != false) {
+                    //get amount
+                    $total_bayar = $this->M_payment->get_total_bayar($kode_trans);
+                    $amount = (float)$total_bayar->total_bayar;
 
-                    // set fee EW | 1.8 %
-                    $result = (100 / 98.5) * $amount;
-                    $new_amount = ceil($result);
-                    $amount = (int)ceil($new_amount / 1000) * 1000;
-                } else if ($method[0] == "VA") {
-                    $type = $method[0];
-                    $bankCode = $method[1];
+                    //split : ex VA_MANDIRI
+                    $method = explode('_', trim($method));
+                    if ($pay_method->TYPE_PAY_METHOD == "EWALLET") {
+                        $type = $pay_method->TYPE_PAY_METHOD;
+                        $walletType = $pay_method->KODE_PAY_METHOD;
 
-                    // set fee VA | +4000
-                    $amount = (4000 + $amount);
-                }
+                        // set fee EW | 1.8 %
+                        $result = (100 / 98.5) * $amount;
+                        $new_amount = ceil($result);
+                        $amount = (int)ceil($new_amount / 1000) * 1000;
+                    } else if ($pay_method->TYPE_PAY_METHOD == "VA") {
+                        $type = $pay_method->TYPE_PAY_METHOD;
+                        $bankCode = $pay_method->KODE_PAY_METHOD;
 
-                // create order_id
-                $order_id = $this->create_order_id($amount, $kode_trans);
-
-                if ($order_id != "") {
-                    if ($type == "EWALLET") {
-                        //param : orderid,$amount,$mobile,$walletType
-                        $pay = $this->durianpay->createEwalletPayment($order_id, $amount, $mobile, $walletType);
-                    } elseif ($type == "VA") {
-                        //param : $orderid,$amount,$bankCode,$name
-                        $pay = $this->durianpay->createVAPayment($order_id, $amount, $bankCode, $name);
+                        // set fee VA | +4000
+                        $amount = (4000 + $amount);
                     }
-                    $kode_pay = $this->generatepay->gen_kodePay();
-                    // save payment_id
-                    $insert_data = $this->update_pay($kode_pay, $kode_trans, $method[1], $amount, $pay);
-                    if ($insert_data != false) { // if fail insert data
-                        $data_pay['TOT_BAYAR'] = $amount;
-                        $data_pay['BAYAR'] = (float)$total_bayar->total_bayar;
-                        //save to db
-                        $update_transaksi = $this->M_payment->update_transaksi($kode_trans, $data_pay);
-                        if ($update_transaksi != false) {
-                            // delete last payment
-                            $this->M_payment->delete_last_payment($last_payment_id);
-                            // send email reminder
-                            // $this->send_email(1, $kode_pay);
-                            redirect('payment/details/' . $kode_pay);
+
+                    // create order_id
+                    $order_id = $this->create_order_id($amount, $kode_trans);
+
+                    if ($order_id != "") {
+                        if ($type == "EWALLET") {
+                            //param : orderid,$amount,$mobile,$walletType
+                            $pay = $this->durianpay->createEwalletPayment($order_id, $amount, $mobile, $walletType);
+                        } elseif ($type == "VA") {
+                            //param : $orderid,$amount,$bankCode,$name
+                            $pay = $this->durianpay->createVAPayment($order_id, $amount, $bankCode, $name);
+                        }
+                        $kode_pay = $this->generatepay->gen_kodePay();
+                        // save payment_id
+                        $insert_data = $this->update_pay($kode_pay, $kode_trans, $pay_method, $amount, $pay);
+                        if ($insert_data != false) { // if fail insert data
+                            $data_pay['TOT_BAYAR'] = $amount;
+                            $data_pay['BAYAR'] = (float)$total_bayar->total_bayar;
+                            //save to db
+                            $update_transaksi = $this->M_payment->update_transaksi($kode_trans, $data_pay);
+                            if ($update_transaksi != false) {
+                                // delete last payment
+                                $this->M_payment->delete_last_payment($last_payment_id);
+                                // send email reminder
+                                // $this->send_email(1, $kode_pay);
+                                redirect('payment/details/' . $kode_pay);
+                            } else {
+                                $this->session->set_flashdata('error', "Failed to update transaction");
+                                redirect($this->agent->referrer());
+                            }
                         } else {
-                            $this->session->set_flashdata('error', "Failed to update transaction");
+                            $this->session->set_flashdata('error', "Failed to create payment charge");
                             redirect($this->agent->referrer());
                         }
                     } else {
-                        $this->session->set_flashdata('error', "Failed to create payment charge");
+                        $this->session->set_flashdata('error', "Failed to create transaction");
                         redirect($this->agent->referrer());
                     }
                 } else {
-                    $this->session->set_flashdata('error', "Failed to create transaction");
+                    $this->session->set_flashdata('error', "Unknown payment method.");
                     redirect($this->agent->referrer());
                 }
             } else {
@@ -263,7 +272,7 @@ class Payment extends MX_Controller
         }
     }
 
-    public function update_pay($kode_pay, $kode_trans, $method, $amount, $pay)
+    public function update_pay($kode_pay, $kode_trans, $pay_method, $amount, $pay)
     {
         $payment_id = $pay->data->response->payment_id;
         $utc = explode('.', trim($pay->data->response->expiration_time));
@@ -277,8 +286,9 @@ class Payment extends MX_Controller
                 'ORDER_ID' => $pay->data->response->order_id,
                 'PAYMENT_ID' => $payment_id,
                 'KODE_TRANS' => $kode_trans,
+                'ID_PAY_METHOD' => $pay_method->ID_PAY_METHOD,
                 'TYPE' => 1, // E-WALLET
-                'METHOD' => $method,
+                'METHOD' => $pay_method->KODE_PAY_METHOD,
                 'PAID_AMOUNT' => $pay->data->response->paid_amount,
                 'CHECKOUT_URL' => $pay->data->response->checkout_url,
                 'WEB_URL' => $pay->data->response->web_url,
@@ -291,8 +301,9 @@ class Payment extends MX_Controller
                 'ORDER_ID' => $pay->data->response->order_id,
                 'PAYMENT_ID' => $payment_id,
                 'KODE_TRANS' => $kode_trans,
+                'ID_PAY_METHOD' => $pay_method->ID_PAY_METHOD,
                 'TYPE' => 2, // Virtual Account
-                'METHOD' => $method,
+                'METHOD' => $pay_method->KODE_PAY_METHOD,
                 'ACC_NUMBER' => $pay->data->response->account_number,
                 'PAID_AMOUNT' =>  $pay->data->response->paid_amount,
                 'STAT_PAY' => 2,
