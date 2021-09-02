@@ -165,6 +165,7 @@ $route['k-panel/init/(:any)']	= 'handlers/init_kpanel/$1';
 $route['akses-kegiatan/(:any)']	= 'handlers/akses_kegiatan/$1';
 
 $route['bidang-lomba']			= 'home/bidang_lomba';
+$route['detail-lomba/(:any)']   = 'home/detail_lomba/$1';
 $route['tentang-juri']			= 'home/tentang_juri';
 
 // END ETC

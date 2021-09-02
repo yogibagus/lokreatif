@@ -14,12 +14,14 @@ class M_refund extends CI_Model {
 	function atur_via(){
 		$KODE_REFUND 	= $this->input->post('KODE_REFUND');
 		$JML_REFUND 	= $this->input->post('JML_REFUND');
+		$METHOD 		= $this->input->post('METHOD');
 		$VIA 			= $this->input->post('VIA');
 		$AN_VIA 		= $this->input->post('AN_VIA');
 		$NO_VIA			= $this->input->post('NO_VIA');
 
 		$data = array(
 			'JML_REFUND' 	=> $JML_REFUND,
+			'METHOD' 			=> $METHOD,
 			'VIA' 			=> $VIA,
 			'AN_VIA' 		=> $AN_VIA,
 			'NO_VIA' 		=> $NO_VIA,
