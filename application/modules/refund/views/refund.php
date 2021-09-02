@@ -42,23 +42,31 @@
         </div>
         <div class="col-sm-12 col-md-6 p-2 border-dashed">
           <div class="media align-items-center mb-3">
-            <span class="d-block font-size-1 mr-3">VIA <i class="far fa-question-circle text-body ml-1" data-container="body" data-toggle="popover" data-placement="top" data-trigger="hover" title="Apa ini?" data-content="Merupakan media transfer refund ke anda dari admin kami."></i></span>
+            <span class="d-block font-size-1 mr-3">Metode Refund <i class="far fa-question-circle text-body ml-1" data-container="body" data-toggle="popover" data-placement="top" data-trigger="hover" title="Apa ini?" data-content="Merupakan media transfer refund ke anda dari admin kami."></i></span>
             <div class="media-body text-right">
               <span class="text-dark font-weight-bold"><?= $dataRefund->VIA != "" ? $dataRefund->VIA : 'belum diatur';?></span>
             </div>
           </div>
-          <div class="media align-items-center mb-3">
-            <span class="d-block font-size-1 mr-3">NO VIA</span>
-            <div class="media-body text-right">
-              <span class="text-dark font-weight-bold"><?= $dataRefund->NO_VIA != "" ? $dataRefund->NO_VIA : 'belum diatur';?></span>
+          <?php if ($dataRefund->METHOD != "" || $dataRefund->METHOD != null) :?>
+            <div class="media align-items-center mb-3">
+              <span class="d-block font-size-1 mr-3">Atas nama</span>
+              <div class="media-body text-right">
+                <span class="text-dark font-weight-bold"><?= $dataRefund->AN_VIA != "" ? $dataRefund->AN_VIA : 'belum diatur';?></span>
+              </div>
             </div>
-          </div>
-          <div class="media align-items-center mb-3">
-            <span class="d-block font-size-1 mr-3">Total Bayar sebelumnya <span class="font-size-1 text-danger text-highlight-danger">- Fee <i class="fa fa-question-circle" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="Dikurangi biaya Fee 1.5% E-Wallet dan -4000 Virtual Account"></i></span></span>
+            <div class="media align-items-center mb-3">
+              <span class="d-block font-size-1 mr-3">NO Tujuan</span>
+              <div class="media-body text-right">
+                <span class="text-dark font-weight-bold"><?= $dataRefund->NO_VIA != "" ? $dataRefund->NO_VIA : 'belum diatur';?></span>
+              </div>
+            </div>
+          <?php endif;?>
+          <!-- <div class="media align-items-center mb-3">
+            <span class="d-block font-size-1 mr-3">Total Bayar sebelumnya</span>
             <div class="media-body text-right">
               <span class="text-dark font-weight-bold">Rp.<?= number_format($dataRefund->BAYAR,0,",",".");?></span>
             </div>
-          </div>
+          </div> -->
           <div class="media align-items-center bg-soft-secondary mb-3">
             <span class="d-block font-size-1 mr-3">Jumlah Refund</span>
             <div class="media-body text-right">
@@ -71,11 +79,11 @@
               <?php if ($dataRefund->STAT_REFUND == 0):?>
                 <span class="badge badge-secondary">Pilih Metode Refund</span>
               <?php elseif($dataRefund->STAT_REFUND == 1):?>
-                <span class="badge badge-info">Sedang diproses admin</span>
+                <span class="badge badge-warning">Sedang diproses admin</span>
               <?php elseif($dataRefund->STAT_REFUND == 2):?>
                 <span class="badge badge-success">Refund telah dikirim</span>
               <?php else:?>
-                <span class="badge badge-warning">Refund ditolak</span>
+                <span class="badge badge-danger">Refund ditolak</span>
               <?php endif;?>
             </div>
           </div>
@@ -100,36 +108,69 @@
           <input type="hidden" name="JML_REFUND" value="<?= $biayaRefund->JML_REFUND;?>">
           <div class="modal-body">
             <div class="alert alert-soft-info">
-              <p class="mb-0"><b>VIA</b>: merupakan melalui media apa anda ingin kami mengirimkan dana refund anda, sedangkan <br><b>NO VIA</b>: merupakan Nomor sesuai pilihan VIA anda.</p>
+              <p class="mb-0"><b>Metode Refund</b>: merupakan melalui media apa anda ingin kami mengirimkan dana refund anda, sedangkan <br><b>NO Tujuan</b>: merupakan Nomor sesuai pilihan Metode Refund anda.</p>
             </div>
             <div class="form-group">
-              <label class="input-label">Pilih VIA <small class="text-danger">*</small></label>
-              <select class="js-custom-select custom-select" size="1" name="VIA" 
+             <!-- Nav -->
+              <div class="text-center">
+                  <ul class="nav nav-segment nav-pills scrollbar-horizontal" role="tablist">
+                      <li class="nav-item">
+                          <a class="nav-link active" id="ewallet-tab" data-toggle="pill" href="#tab-menu-ewallet" role="tab" aria-controls="tab-menu-ewallet" aria-selected="true">E-Wallet</a>
+                      </li>
+                      <li class="nav-item">
+                          <a class="nav-link" id="va-tab" data-toggle="pill" href="#tab-menu-va" role="tab" aria-controls="tab-menu-va" aria-selected="false">Rek. Bank</a>
+                      </li>
+                  </ul>
+              </div>
+              <!-- End Nav -->
+            </div>
+            <div class="form-group" id="e_wallet">
+              <label class="input-label">Pilih Metode Refund <small class="text-danger">*</small></label>
+              <select class="js-custom-select custom-select" size="1" id="a" 
                 data-hs-select2-options='{
-                "minimumResultsForSearch": "Infinity"
-              }' required>
-              <optgroup label="Current">
-                <?php if ($dataRefund->VIA != "") :?>
-                  <option value="<?= $dataRefund->VIA;?>"><?= $dataRefund->VIA;?></option>
-                <?php else:?>
-                  <option value="">Pilih VIA</option>
-                <?php endif;?>
-              </optgroup>
-              <optgroup label="Changes">
-                <option value="OVO">OVO</option>
-                <option value="DANA">DANA</option>
-                <option value="BCA">BCA</option>
-                <option value="BNI">BNI</option>
-                <option value="BRI">BRI</option>
-              </optgroup>
-            </select>
-          </div>
+                  "minimumResultsForSearch": "Infinity"
+                }' required>
+                <optgroup label="Current">
+                  <?php if ($dataRefund->VIA != "") :?>
+                    <option value="<?= $dataRefund->VIA;?>"><?= $dataRefund->VIA;?></option>
+                  <?php else:?>
+                    <option value="">Pilih Metode</option>
+                  <?php endif;?>
+                </optgroup>
+                <optgroup label="Changes">
+                  <option value="OVO">OVO</option>
+                  <option value="DANA">DANA</option>
+                </optgroup>
+              </select>
+            </div>
+            <div class="form-group d-none" id="bank">
+              <label class="input-label">Pilih Metode Refund <small class="text-danger">*</small></label>
+              <select class="js-custom-select custom-select" size="1" id="b"
+                data-hs-select2-options='{
+                  "minimumResultsForSearch": "Infinity"
+                }' required>
+                <optgroup label="Current">
+                  <?php if ($dataRefund->VIA != "") :?>
+                    <option value="<?= $dataRefund->VIA;?>"><?= $dataRefund->VIA;?></option>
+                  <?php else:?>
+                    <option value="">Pilih Metode</option>
+                  <?php endif;?>
+                </optgroup>
+                <optgroup label="Changes" class="d-none" id="bank">
+                  <option value="BCA">BCA</option>
+                  <option value="BNI">BNI</option>
+                  <option value="BRI">BRI</option>
+                </optgroup>
+              </select>
+            </div>
+            <input type="hidden" name="METHOD" class="form-control form-control-sm" value="<?= $dataRefund->METHOD;?>" value="E_WALLET" id="METHOD">
+            <input type="hidden" name="VIA" class="form-control form-control-sm" value="<?= $dataRefund->VIA;?>" id="VIA">
           <div class="form-group">
             <label class="input-label">Masukkan Atas Nama <small class="text-muted">(jika diperlukan)</small></label>
-            <input type="text" name="NO_VIA" class="form-control form-control-sm" value="<?= $dataRefund->NO_VIA;?>">
+            <input type="text" name="AN_VIA" class="form-control form-control-sm" value="<?= $dataRefund->AN_VIA;?>">
           </div>
           <div class="form-group">
-            <label class="input-label">Masukkan NO VIA <small class="text-danger">*</small></label>
+            <label class="input-label">Masukkan NO Tujuan <small class="text-danger">*</small></label>
             <input type="text" name="NO_VIA" class="form-control form-control-sm" value="<?= $dataRefund->NO_VIA;?>" required>
           </div>
         </div>
@@ -141,3 +182,29 @@
     </div>
   </div>
 </div>
+
+<script>
+    $(document).ready(function() {
+        $("#va-tab").click(function() {
+          $("#METHOD").val("BANK");
+          $('#a optgroup option:selected').attr("selected",null).change();
+          $("#e_wallet").addClass("d-none");
+          $("#bank").removeClass("d-none");
+        });
+        $("#ewallet-tab").click(function() {
+          $("#METHOD").val("E_WALLET");
+          $('#b optgroup option:selected').attr("selected",null).change();
+          $("#bank").addClass("d-none");
+          $("#e_wallet").removeClass("d-none");
+        });
+
+        $(".js-custom-select optgroup option").filter(function() {
+            return $(this).val() == $("#VIA").val();
+        }).attr('selected', true);
+
+        $(".js-custom-select").change(function () {
+
+            $("#VIA").val($(this).find("option:selected").attr("value"));
+        });
+    });
+</script>

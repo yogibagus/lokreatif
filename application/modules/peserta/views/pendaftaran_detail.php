@@ -56,9 +56,9 @@
 								</div>
 							</div>
 							<div class="media align-items-center mb-3">
-								<span class="d-block font-size-1 mr-3">Jumlah TIM dari PTS anda <i class="far fa-question-circle text-body ml-1" data-container="body" data-toggle="popover" data-placement="top" data-trigger="hover" title="Apa ini?" data-content="Jumlah tim dari PTS anda yang telah melakukan proses pembayaran, lihat pendoman untuk info lebih lanjut."></i></span>
+								<span class="d-block font-size-1 mr-3">TIM dari PTS anda <i class="far fa-question-circle text-body ml-1" data-container="body" data-toggle="popover" data-placement="top" data-trigger="hover" title="Apa ini?" data-content="Jumlah tim dari PTS anda yang mengikuti kompetisi LO Kreatif, lihat pendoman untuk info lebih lanjut."></i></span>
 								<div class="media-body text-right">
-									<span class="text-dark font-weight-bold"><?= $JML_TIM;?> TIM</span>
+									<span class="text-dark font-weight-bold" id="display"><?= $JML_TIM;?> TIM</span>
 								</div>
 							</div>
 						</div>
@@ -223,3 +223,21 @@
     placeholder: "Pilih PTS",
     // selectionCssClass: 'selectcss-custom'
   });</script>
+
+
+
+<script type="text/javascript">
+  $(document).ready(function(){
+    function display(){           
+      $.ajax({
+        url:'<?php echo site_url('peserta/get_jmlTIMbayar');?>',
+        success:function(rs){
+          $("#display").html(rs);
+        }
+      });
+    }   
+    setInterval(function(){
+      display();
+    },10000);  
+  });
+</script>

@@ -186,6 +186,15 @@ class Peserta extends MX_Controller
 		}
 	}
 
+	function get_jmlTIMbayar(){
+		$dataPeserta 			= $this->General->get_detailDaftarKompetisi($this->session->userdata("kode_user"));
+		$JML_TIM				= $this->General->get_jmlPTSTim($dataPeserta->ASAL_PTS);
+		$JML_TIMSUDAHBAYAR		= $this->General->get_jmlPTSbayar($dataPeserta->ASAL_PTS);
+
+		echo $JML_TIM." TIM";
+
+	}
+
 	public function data_anggota()
 	{
 		if ($this->M_peserta->cek_daftarKompetisi($this->session->userdata("kode_user")) == false) {
@@ -232,8 +241,20 @@ class Peserta extends MX_Controller
 		}
 	}
 
-	public function berkas_kompetisi()
-	{
+	function get_listPayment(){
+		$dataPeserta 			= $this->General->get_detailDaftarKompetisi($this->session->userdata("kode_user"));
+		$KODE_TRANS				= $this->General->get_kodeTrans($dataPeserta->KODE_PENDAFTARAN);
+
+		$data['dataPendaftaran'] = $dataPeserta;
+		$data['sudahBayar']		= $this->General->cek_statBayar($dataPeserta->KODE_PENDAFTARAN);
+		$data['payments']		= $this->M_peserta->get_paymentList($KODE_TRANS);
+		$data['KODE_TRANS']		= $KODE_TRANS;
+
+		$data['CI']				= $this;
+		$this->load->view('payment_list', $data);
+	}
+
+	public function berkas_kompetisi(){
 		if ($this->M_peserta->cek_daftarKompetisi($this->session->userdata("kode_user")) == false) {
 			$this->session->set_flashdata('warning', "Anda belum melakukan pendaftaran kompetisi !!");
 			redirect($this->agent->referrer());
@@ -505,7 +526,7 @@ class Peserta extends MX_Controller
 
 				$config['upload_path']          = $folder;
 				$config['allowed_types']        = '*';
-				$config['max_size']             = 10 * 1024;
+				$config['max_size']             = 10*1024;
 				$config['overwrite']            = true;
 
 				$this->load->library('upload', $config);
