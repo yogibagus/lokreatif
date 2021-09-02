@@ -367,7 +367,7 @@ class Authentication extends MX_Controller {
 		}else{
 			$this->session->set_flashdata('error', 'Kode PTS atau akun PTS telah terdaftar !');
 		}
-		redirect(base_url();
+		redirect('');
 	}
 
 	// AKTIVASI AKUN
