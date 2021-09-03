@@ -171,6 +171,7 @@ class Peserta extends MX_Controller
 			$data['bayarGagal']		= $this->General->cek_statBayarFailed($dataPeserta->KODE_PENDAFTARAN);
 			$data['JML_TIM']		= $this->General->get_jmlPTSTim($dataPeserta->ASAL_PTS);
 			$JML_TIMSUDAHBAYAR		= $this->General->get_jmlPTSbayar($dataPeserta->ASAL_PTS);
+			$data['JML_TIM_BAYAR']	= $JML_TIMSUDAHBAYAR;
 			$data['totBayar']		= $this->General->get_biayaDaftar($JML_TIMSUDAHBAYAR);
 			$data['dataAnggota']	= $this->General->get_dataAnggota($dataPeserta->KODE_PENDAFTARAN);
 			$data['dataKetua']		= $this->General->get_dataKetua($dataPeserta->KODE_PENDAFTARAN);
@@ -251,7 +252,7 @@ class Peserta extends MX_Controller
 		$data['KODE_TRANS']		= $KODE_TRANS;
 
 		$data['CI']				= $this;
-		$this->load->view('payment_list', $data);
+		$this->load->view('ajax_payment', $data);
 	}
 
 	public function berkas_kompetisi(){
