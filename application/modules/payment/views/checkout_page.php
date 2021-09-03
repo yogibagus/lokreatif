@@ -115,8 +115,31 @@
                                     </style>
                                     <div class="alert alert-soft-primary" role="alert">
                                         <strong><i class="fa fa-info-circle" aria-hidden="true"></i> </strong>
-                                        Siapkan Aplikasi E-Wallet Anda agar proses pembayaran lebih cepat. <a href="#" class="text-dark">Pelajari lebih lanjut.</a>
+                                        Siapkan Aplikasi E-Wallet Anda agar proses pembayaran lebih cepat.
+                                        <a class="btn btn-xs btn-primary" data-toggle="modal" data-target="#carabayar" style="cursor: pointer;"><i class="fa fa-info-circle" aria-hidden="true"></i> Cara bayar <span class="cara-bayar"></span></a>
                                     </div>
+
+                                    <!-- Modal -->
+                                    <div class="modal fade" id="carabayar" tabindex="-1" role="dialog" aria-labelledby="modelTitleId" aria-hidden="true">
+                                        <div class="modal-dialog" role="document">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title">Cara Bayar</h5>
+                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                        <span aria-hidden="true">&times;</span>
+                                                    </button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <p><strong>Catatan: </strong> <span id="catatan-tut">-</span></p>
+                                                    <div id="deskripsi-tut">Anda belum memilih metode pembayaran.</div>
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
                                     <!-- Radio Checkbox Group -->
                                     <div class="row mx-n2">
                                         <?php $no = 1;
@@ -124,8 +147,8 @@
                                             <?php if ($row->TYPE_PAY_METHOD == "EWALLET") { ?>
                                                 <div class="col-6 col-md-3 px-2 mb-3 mb-3">
                                                     <div class="custom-control custom-radio custom-control-inline checkbox-outline checkbox-icon text-center w-100 h-100">
-                                                        <input type="radio" id="<?= $row->TYPE_PAY_METHOD . "_" . $row->NAMA_PAY_METHOD . "_" . $no ?>" name="method" class="custom-control-input checkbox-outline-input checkbox-icon-input" value="<?= $row->ID_PAY_METHOD ?>" required>
-                                                        <label class="checkbox-outline-label checkbox-icon-label w-100 rounded py-3 px-1 mb-0" for="<?= $row->TYPE_PAY_METHOD . "_" . $row->NAMA_PAY_METHOD . "_" . $no ?>">
+                                                        <input type="radio" id="<?= $row->TYPE_PAY_METHOD . "_" . $row->NAMA_PAY_METHOD . "_" . $row->KODE_PAY_METHOD . "_" . $no ?>" name="method" class="custom-control-input checkbox-outline-input checkbox-icon-input" value="<?= $row->ID_PAY_METHOD ?>" required>
+                                                        <label class="checkbox-outline-label checkbox-icon-label w-100 rounded py-3 px-1 mb-0" for="<?= $row->TYPE_PAY_METHOD . "_" . $row->NAMA_PAY_METHOD . "_" . $row->KODE_PAY_METHOD . "_" . $no ?>">
                                                             <img class="img-fluid w-90 fit-image" src="<?= $row->IMG_PAY_METHOD ?>" alt="<?= $row->NAMA_PAY_METHOD ?>">
                                                         </label>
                                                     </div>
@@ -164,8 +187,8 @@
                                             <?php if ($row->TYPE_PAY_METHOD == "VA") { ?>
                                                 <div class="col-6 col-md-3 px-2 mb-3 mb-3">
                                                     <div class="custom-control custom-radio custom-control-inline checkbox-outline checkbox-icon text-center w-100 h-100">
-                                                        <input type="radio" id="<?= $row->TYPE_PAY_METHOD . "_" . $row->NAMA_PAY_METHOD . "_" . $no ?>" name="method" class="custom-control-input checkbox-outline-input checkbox-icon-input" value="<?= $row->ID_PAY_METHOD ?>" required>
-                                                        <label class="checkbox-outline-label checkbox-icon-label w-100 rounded py-3 px-1 mb-0" for="<?= $row->TYPE_PAY_METHOD . "_" . $row->NAMA_PAY_METHOD . "_" . $no ?>">
+                                                        <input type="radio" id="<?= $row->TYPE_PAY_METHOD . "_" . $row->NAMA_PAY_METHOD . "_" . $row->KODE_PAY_METHOD . "_" . $no ?>" name="method" class="custom-control-input checkbox-outline-input checkbox-icon-input" value="<?= $row->ID_PAY_METHOD ?>" required>
+                                                        <label class="checkbox-outline-label checkbox-icon-label w-100 rounded py-3 px-1 mb-0" for="<?= $row->TYPE_PAY_METHOD . "_" . $row->NAMA_PAY_METHOD . "_" . $row->KODE_PAY_METHOD . "_" . $no ?>">
                                                             <img class="img-fluid w-90 fit-image" src="<?= $row->IMG_PAY_METHOD ?>" alt="<?= $row->NAMA_PAY_METHOD ?>">
                                                         </label>
                                                     </div>
@@ -203,7 +226,7 @@
                         }
                     }
                 });
-            }, 10000);
+            }, 6000);
         }
     </script>
 
@@ -301,11 +324,31 @@
                 $('#mobile').prop('required', true);
                 // change method text
                 $('.text-method').text(arr[1] + " Number:");
+                $('.cara-bayar').text(arr[1]);
             } else {
                 $('#mobile').prop('required', false);
                 // change method text
                 $('.text-method').text("Nama:");
             }
+        });
+    </script>
+
+    <script>
+        $("input[name='method']").on('change', function() {
+            var method = $('input[name=method]:checked').attr('id');
+            var arr = method.split("_");
+            $('#catatan-tut').html(
+                `<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Loading, please wait...`
+            );
+            jQuery.ajax({
+                url: "<?= base_url('payment/get_tutorial_payment/') ?>" + arr[2],
+                type: "GET",
+                success: function(data) {
+                    const obj = JSON.parse(data);
+                    $('#deskripsi-tut').html(obj[0].DESKRIPSI_TUT);
+                    $('#catatan-tut').html(obj[0].CATATAN_TUT);
+                }
+            });
         });
     </script>
 </div>

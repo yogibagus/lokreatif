@@ -490,4 +490,16 @@ class Payment extends MX_Controller
             redirect();
         }
     }
+
+    public function get_tutorial_payment($bank_name = "")
+    {
+        $bank = $this->M_payment->get_tutorial_payment_by_bank_name($bank_name);
+        if ($bank != false) {
+            echo json_encode($bank);
+        } else {
+            // $this->session->set_flashdata('error', "Cara bayar not found.");
+            // redirect($this->agent->referrer());
+            echo "salah";
+        }
+    }
 }
