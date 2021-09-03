@@ -141,7 +141,7 @@ if ($payment->TYPE == 1) {
                                                 </div>
                                                 <div class="modal-body">
                                                     <div class="alert alert-soft-primary" role="alert">
-                                                        <strong><i class="fa fa-info-circle" aria-hidden="true"></i> </strong> Buka Aplikasi <strong>Shopee</strong> / Aplikasi <strong>E-Wallet</strong> lainnya. Scan QR Code dibawah. <a href="#" class="text-dark">Pelajari lebih lanjut.</a>
+                                                        <strong><i class="fa fa-info-circle" aria-hidden="true"></i> </strong> Buka Aplikasi <strong><?= $pay_method->NAMA_PAY_METHOD ?></strong> / Aplikasi <strong>E-Wallet</strong> lainnya. Scan QR Code dibawah. <a href="#" class="text-dark">Pelajari lebih lanjut.</a>
                                                     </div>
                                                     <img src="<?= $payment->WEB_URL ?>" class="img-fluid img-thumbnail" alt="QR Code ShoopePay Zoom" data-toggle="modal" data-target="#qrcodezoom">
                                                 </div>
@@ -274,7 +274,7 @@ if ($payment->TYPE == 1) {
     setInterval(function() {
         // this code runs every second 
         jQuery.ajax({
-            url: "<?= base_url('payment/get_payment_stat/' . $payment->KODE_PAY) ?>",
+            url: "<?= base_url('payment/get_payment_stat/' . $payment->KODE_TRANS) ?>",
             type: "GET",
             success: function(data) {
                 if (data == 1) {
@@ -298,4 +298,33 @@ if ($payment->TYPE == 1) {
             }
         });
     }, 6000);
+
+
+    setInterval(function() {
+        // this code runs every second 
+        jQuery.ajax({
+            url: "<?= base_url('payment/check_payment/' . $payment->KODE_PAY) ?>",
+            type: "GET",
+            success: function(data) {
+                if (data == 1) {
+                    // Send new refresh request in 1 sec:
+                    $("#payment-info").html("<center><strong>Pembayaran sukses.</strong></center>");
+                    $("#status-payment").removeClass(" badge-warning");
+                    $("#status-payment").addClass(" badge-success");
+                    $("#status-payment").text("Pembayaran Sukses");
+                    $("#alert").html("<strong>Selamat!</strong> Pembayaran anda telah berhasil divalidasi.");
+                    $('#mdlBayarMulti').modal('show');
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Pembayaran Sukses',
+                        text: 'Selamat! Pembayaran Anda telah berhasil terverifikasi oleh sistem.',
+                        showConfirmButton: false
+                    })
+                    setTimeout(function() {
+                        location.reload();
+                    }, 4000);
+                }
+            }
+        });
+    }, 10000);
 </script>

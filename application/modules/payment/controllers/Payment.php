@@ -327,11 +327,13 @@ class Payment extends MX_Controller
             $user = $this->General->get_akun($this->kode_user);
             $nama = $user->NAMA;
         }
+        $redirect_url = base_url('payment/success');
         $payload = array(
             'amount' => "$amount",
             'payment_option' => 'full_payment',
             'currency' => 'IDR',
             'order_ref_id' => $kode_trans,
+            'redirect_url' => "$redirect_url",
             'customer' =>
             array(
                 'customer_ref_id' => $user->KODE_USER,
@@ -414,7 +416,7 @@ class Payment extends MX_Controller
         }
     }
 
-    public function get_payment_stat($param)
+    public function get_payment_stat($param = "")
     {
         $payment = $this->M_payment->get_payment_by_id($param);
         if ($param != false) {
@@ -423,6 +425,9 @@ class Payment extends MX_Controller
             } else {
                 echo false;
             }
+        } else {
+            $this->session->set_flashdata('error', "You're not allowed.");
+            redirect($this->agent->referrer());
         }
     }
 
@@ -435,6 +440,49 @@ class Payment extends MX_Controller
             echo Modules::run('template/frontend_payment', $data);
         } else if ($this->role == "3") {
             echo Modules::run('template/frontend_payment', $data);
+        }
+    }
+
+    public function check_payment($kode_trans = "")
+    {
+        $payment = $this->M_payment->get_payment_by_kode_trans($kode_trans);
+        if ($payment != false) {
+            $payment_id = $payment->PAYMENT_ID;
+            $pay_status = $this->durianpay->checkPayment($payment_id);
+            $verifed = $this->durianpay->verifyPayment($payment_id, $pay_status->data->signature);
+            if ($pay_status->data->status == "completed") {
+                echo true;
+                $this->change_stat_payment($pay_status->data->status, $payment);
+            } elseif ($pay_status->data->status == "processing") {
+                echo false;
+            } elseif ($pay_status->data->status == "failed") {
+                $this->change_stat_payment($pay_status->data->status, $payment);
+                echo false;
+            } else {
+                $this->session->set_flashdata('error', "You're not allowed.");
+                redirect($this->agent->referrer());
+            }
+        } else {
+            $this->session->set_flashdata('error', "You're not allowed.");
+            redirect($this->agent->referrer());
+        }
+    }
+
+    public function change_stat_payment($status, $payment)
+    {
+        if ($status == "completed") {
+            $data_pay['STAT_PAY'] = 3; //payment success 
+            $data_pay['LOG_TIME'] = date('Y-m-d H:i:s');; //payment success 
+            $update_payment =  $this->M_payment->update_pay_by_order_id($payment->ORDER_ID, $data_pay);
+            if ($update_payment == true) {
+                $data_trans['STAT_BAYAR'] = 3; //order complete
+                $this->M_payment->update_transaksi($payment->KODE_TRANS, $data_trans);
+            }
+        } else if ($status == "failed") {
+            $data_pay['STAT_PAY'] = 4; //payment failed
+            $update_payment =  $this->M_payment->update_pay_by_order_id($payment->ORDER_ID, $data_pay);
+        } else {
+            redirect();
         }
     }
 }

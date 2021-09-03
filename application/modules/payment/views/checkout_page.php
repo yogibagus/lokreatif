@@ -100,8 +100,8 @@
                         </div>
                         <!-- End Nav -->
 
-                        <!-- Tab Content  -->
-                        <form id='form' action="<?= base_url("payment/pay") ?>" method="post">
+                        <!-- Tab Content <?= base_url("payment/pay") ?> -->
+                        <form id='form' action="" method="post">
                             <input type="hidden" name="kode_trans" id="kode_trans" value="<?= $kode_trans ?>">
                             <div class="tab-content">
                                 <div class="tab-pane fade show active" id="tab-menu-ewallet" role="tabpanel" aria-labelledby="pills-one-code-features-example1-tab">
@@ -134,13 +134,6 @@
                                         <?php $no++;
                                         } ?>
                                     </div>
-                                    <!-- Alert -->
-                                    <?php if ($is_mobile) { ?>
-                                        <div id="shopeepay-alert" class="alert alert-warning text-center rounded-0 mt-3" role="alert">
-                                            <strong><i class="fa fa-info-circle" aria-hidden="true"></i></strong> Anda terdeteksi menggunakan perangkat <strong>Mobile</strong>, pembayaran melalui <strong>ShoopePay</strong> akan diarahkan ke <strong>Aplikasi Shopee</strong> secara langsung. <a href="#">Pelajari selengkapnya.</a>
-                                        </div>
-                                    <?php } ?>
-                                    <!-- End Alert -->
                                     <label for="basic-url" class="form-label mt-3 text-method" id="">OVO Number:</label>
                                     <!-- Input Group -->
                                     <div class="input-group input-group-merge">
@@ -186,7 +179,7 @@
                             </div>
                             <!-- End Tab Content -->
 
-                            <button type="submit" name="" id="pay-button" class="btn btn-primary btn-block mt-3">Bayar Sekarang</button>
+                            <button type="submit" name="" onsubmit="" id="pay-button" class="btn btn-primary btn-block mt-3">Bayar Sekarang</button>
                         </form>
                     </div>
                     <!-- End Type of Listing -->
@@ -194,6 +187,27 @@
             </div>
         </div>
     </div>
+
+    <script>
+        function checkPayment() {
+            setInterval(function() {
+                // this code runs every second 
+                jQuery.ajax({
+                    url: "<?= base_url('payment/check_payment/' . $kode_trans) ?>",
+                    type: "GET",
+                    success: function(data) {
+                        if (data == 1) {
+                            setTimeout(function() {
+                                location.reload();
+                            }, 4000);
+                        } else {
+                            console.log("Hello world!");
+                        }
+                    }
+                });
+            }, 10000);
+        }
+    </script>
 
     <script>
         $(document).ready(function() {
@@ -244,10 +258,7 @@
     <script>
         $(document).ready(function() {
             $('form').submit(function(event) {
-                // set interval redirect
-                setInterval(function() {
-                    window.location.replace("<?= $redirect_url ?>");
-                }, 10000);
+                checkPayment();
                 var method = $('input[name=method]:checked').attr('id');
                 var arr = method.split("_");
                 if (arr[0] == "EWALLET") {
@@ -282,7 +293,7 @@
             // show or hide alert
             var method = $('input[name=method]:checked').attr('id');
             var arr = method.split("_");
-            if (arr[1] == "LINKAJA" || arr[1] == "DANA") {
+            if (arr[1] == "LINK AJA" || arr[1] == "DANA") {
                 $("#form").attr('target', '_blank');
             } else {
                 $("#form").removeAttr('target');
