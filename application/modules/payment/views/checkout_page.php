@@ -197,11 +197,9 @@
                     type: "GET",
                     success: function(data) {
                         if (data == 1) {
-                            setTimeout(function() {
-                                location.reload();
-                            }, 4000);
-                        } else {
-                            console.log("Hello world!");
+                            location.reload();
+                        } else if (data == "failed") {
+                            location.reload();
                         }
                     }
                 });

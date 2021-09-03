@@ -323,6 +323,14 @@ if ($payment->TYPE == 1) {
                     setTimeout(function() {
                         location.reload();
                     }, 4000);
+                } else if (data == "failed") {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Time Out!',
+                        text: 'Ups! Waktu pembayaran Anda telah habis. Ulangi proses pembayaran pada halaman Checkout',
+                    }).then(function() {
+                        window.location = "<?= base_url('payment/checkout/' . $payment->KODE_TRANS) ?>";
+                    });
                 }
             }
         });

@@ -457,7 +457,7 @@ class Payment extends MX_Controller
                 echo false;
             } elseif ($pay_status->data->status == "failed") {
                 $this->change_stat_payment($pay_status->data->status, $payment);
-                echo false;
+                echo "failed";
             } else {
                 $this->session->set_flashdata('error', "You're not allowed.");
                 redirect($this->agent->referrer());
