@@ -66,6 +66,32 @@ class Durianpay
         return $data;
     }
 
+    private function durianPut($url)
+    {
+        $curl = curl_init();
+
+        curl_setopt_array($curl, array(
+            CURLOPT_URL => "$url",
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_ENCODING => "",
+            CURLOPT_MAXREDIRS => 10,
+            CURLOPT_TIMEOUT => 30,
+            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+            CURLOPT_CUSTOMREQUEST => "PUT",
+            CURLOPT_HTTPHEADER => array(
+                "authorization: $this->apikey",
+                "content-type: application/json"
+            ),
+        ));
+
+        $response = curl_exec($curl);
+        $err = curl_error($curl);
+
+        curl_close($curl);
+        $data = json_decode($response, false);
+        return $data;
+    }
+
     public function createOrder($payload)
     {
         $url = $this->endpoint;
@@ -140,6 +166,16 @@ class Durianpay
         $payload = json_encode($payload);
 
         $result = $this->durianPost($url, $payload);
+
+        return $result;
+    }
+
+    public function cancelPayment($payment_id)
+    {
+        $url = $this->endpoint;
+        $url = $url . "/payments/" . $payment_id . "/cancel";
+
+        $result = $this->durianPut($url);
 
         return $result;
     }
