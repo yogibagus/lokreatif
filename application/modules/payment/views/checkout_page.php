@@ -100,8 +100,8 @@
                         </div>
                         <!-- End Nav -->
 
-                        <!-- Tab Content <?= base_url("payment/pay") ?> -->
-                        <form id='form' action="" method="post">
+                        <!-- Tab Content -->
+                        <form id='form' action="<?= base_url("payment/pay") ?>" method="post">
                             <input type="hidden" name="kode_trans" id="kode_trans" value="<?= $kode_trans ?>">
                             <div class="tab-content">
                                 <div class="tab-pane fade show active" id="tab-menu-ewallet" role="tabpanel" aria-labelledby="pills-one-code-features-example1-tab">
