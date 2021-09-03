@@ -20,7 +20,7 @@
 					</div>
 				<?php else:?>
 					<div class="alert alert-secondary font-size-1 mb-3">
-						<p class="mb-0"><b>PERHATIAN !!</b> Anda belum dapat melakukan proses <u>Upload Karya</u>, harap menyelesaikan pembayaran administrasi terlebih dahulu!</p>
+						<p class="mb-0"><b>PERHATIAN !!</b> Anda belum dapat melakukan proses <u>Unggah Karya</u>, harap menyelesaikan pembayaran administrasi terlebih dahulu!</p>
 					</div>
 				<?php endif;?>
 			<?php endif;?>
@@ -33,7 +33,7 @@
 		<div class="row">
 			<div class="col-12">
 				<div class="mb-4">
-					<div class="row">
+					<div class="row border-bottom">
 						<div class="col-sm-12 col-md-6">
 							<div class="media align-items-center mb-3">
 								<span class="d-block font-size-1 mr-3">Bidang lomba</span>
@@ -47,28 +47,32 @@
 									<span class="text-dark font-weight-bold"><?= $dataPendaftaran->NAMA_TIM;?></span>
 								</div>
 							</div>
-						</div>
-						<div class="col-sm-12 col-md-6 border-left">
 							<div class="media align-items-center mb-3">
 								<span class="d-block font-size-1 mr-3">Asal PTS <i class="far fa-question-circle text-body ml-1" data-container="body" data-toggle="popover" data-placement="top" data-trigger="hover" title="Alamat PTS" data-content="<?= $dataPendaftaran->ALAMAT_PTS;?>"></i></span>
 								<div class="media-body text-right">
 									<span class="text-dark font-weight-bold"><?= $dataPendaftaran->namapt;?></span>
 								</div>
 							</div>
+						</div>
+						<div class="col-sm-12 col-md-6 border-left">
 							<div class="media align-items-center mb-3">
 								<span class="d-block font-size-1 mr-3">TIM dari PTS anda <i class="far fa-question-circle text-body ml-1" data-container="body" data-toggle="popover" data-placement="top" data-trigger="hover" title="Apa ini?" data-content="Jumlah tim dari PTS anda yang mengikuti kompetisi LO Kreatif, lihat pendoman untuk info lebih lanjut."></i></span>
 								<div class="media-body text-right">
 									<span class="text-dark font-weight-bold" id="display"><?= $JML_TIM;?> TIM</span>
 								</div>
 							</div>
-						</div>
-					</div>
-				</div>
-				<div class="border-bottom badge-secondary mb-4 px-1 py-2">
-					<div class="media align-items-center">
-						<span class="d-block text-white font-size-1 mr-3">Biaya pendaftaran saat ini</span>
-						<div class="media-body text-right">
-							<span class="text-white font-weight-bold">Rp.<?= number_format($totBayar,0,",",".");?></span>
+							<div class="media align-items-center mb-3">
+								<span class="d-block font-size-1 mr-3">TIM dari PTS anda, yang telah membayar <i class="far fa-question-circle text-body ml-1" data-container="body" data-toggle="popover" data-placement="top" data-trigger="hover" title="Apa ini?" data-content="Jumlah tim dari PTS anda yang mengikuti kompetisi LO Kreatif dan telah membayar, lihat pendoman untuk info lebih lanjut."></i></span>
+								<div class="media-body text-right">
+									<span class="text-dark font-weight-bold" id="display"><?= $JML_TIM_BAYAR;?> TIM</span>
+								</div>
+							</div>
+							<div class="media align-items-center badge-secondary px-1 py-2 mb-3">
+								<span class="d-block font-size-1 mr-3">Biaya pendaftaran saat ini <i class="far fa-question-circle text-body ml-1" data-container="body" data-toggle="popover" data-placement="top" data-trigger="hover" title="Apa ini?" data-content="Dihitung sesuai dengan jumlah TIM dari masing-masing PTS yang dianggap valid, lihat pedoman untuk info lebih lanjut."></i></span>
+								<div class="media-body text-right">
+									<span class="text-white font-weight-bold">Rp.<?= number_format($totBayar,0,",",".");?></span>
+								</div>
+							</div>
 						</div>
 					</div>
 				</div>
@@ -140,9 +144,15 @@
 						</div>
 					</div>
 					<div class="media align-items-center mb-3">
-						<span class="d-block font-size-1 mr-3">Upload Karya</span>
+						<span class="d-block font-size-1 mr-3">Unggah Karya</span>
 						<div class="media-body text-right">
-							<a href="<?= site_url('peserta/upload-karya');?>" class="badge badge-danger">belum lengkap</a>
+							<?php if ($bayarGagal == false && $statBayar != false) :?>
+								<a href="<?= site_url('peserta/Unggah-karya');?>" class="badge badge-success">unggah karya</a>
+							<?php else:?>
+								<a class="badge badge-danger mb-2">
+									selesaikan pembayaran terlebih dahulu
+								</a>
+							<?php endif;?>
 						</div>
 					</div>
 				</div>

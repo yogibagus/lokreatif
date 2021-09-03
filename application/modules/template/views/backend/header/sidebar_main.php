@@ -140,9 +140,9 @@
           <!-- End Dashboards -->
 
           <li class="nav-item ">
-            <a class="js-nav-tooltip-link nav-link <?= ($this->uri->segment(2) == 'atur-pendaftaran' ? 'active' : '') ?>" href="<?= site_url('kompetisi/atur-pendaftaran') ?>" title="Atur Pendaftaran" data-placement="left">
+            <a class="js-nav-tooltip-link nav-link <?= ($this->uri->segment(2) == 'atur-pendaftaran' ? 'active' : '') ?>" href="<?= site_url('kompetisi/atur-pendaftaran') ?>" title="Atur Berkas Pendaftaran" data-placement="left">
               <i class="tio-category-outlined nav-icon"></i>
-              <span class="navbar-vertical-aside-mini-mode-hidden-elements text-truncate">Atur Pendaftaran</span>
+              <span class="navbar-vertical-aside-mini-mode-hidden-elements text-truncate">Atur Berkas Pendaftaran</span>
             </a>
           </li>
           <!-- End Dashboards -->

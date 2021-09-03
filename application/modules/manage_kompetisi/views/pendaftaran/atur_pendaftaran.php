@@ -171,7 +171,8 @@
                   <div class="row mb-0">
                     <div class="col-12">
                       <div class="form-group mb-0">
-                        <textarea type="text" class="form-control form-control-flush d-none" id="ket<?= $form->ID_FORM;?>" name="KETERANGAN[]" rows="1" placeholder="Keterangan"></textarea><input type="hidden" id="status_ket<?= $form->ID_FORM;?>" value="0" />
+                          <textarea type="text" class="form-control form-control-flush <?= $form->KETERANGAN != null  || isset($form->KETERANGAN) ? '' : 'd-none';?>" id="ket_form<?= $form->ID_FORM;?>" name="KETERANGAN[]" rows="1"><?= $form->KETERANGAN;?></textarea>
+                          <input type="hidden" id="status_ket<?= $form->ID_FORM;?>" value="0" />
                       </div>
                     </div>
                   </div>
@@ -184,10 +185,15 @@
                     </div>
                     <div class="col-3">
                       <div class="form-group mb-0">
-                        <label class="toggle-switch d-flex align-items-center" for="REQUIRED<?= $form->ID_FORM;?>">
-                          <input type="checkbox" class="toggle-switch-input" name="REQUIRED[]" id="REQUIRED<?= $form->ID_FORM;?>" /><span class="toggle-switch-label"><span class="toggle-switch-indicator"></span></span>
-                          <span class="toggle-switch-content"><span class="d-block">Wajib diisi?</span></span>
-                        </label>
+                          <label class="toggle-switch d-flex align-items-center" for="REQUIRED<?= $form->ID_FORM;?>">
+                            <input type="checkbox" class="toggle-switch-input" name="REQUIRED[]" id="REQUIRED<?= $form->ID_FORM;?>" <?= ($form->REQUIRED == 1) ? "checked" : "";?>>
+                            <span class="toggle-switch-label">
+                              <span class="toggle-switch-indicator"></span>
+                            </span>
+                            <span class="toggle-switch-content">
+                              <span class="d-block">Wajib diisi?</span>
+                            </span>
+                          </label>
                       </div>
                     </div>
                   </div>
@@ -288,7 +294,7 @@
           <div class="sticky-top">
             <button type="submit" class="btn btn-sm btn-primary btn-block"><?= $cek_form == true ? 'Delete' : 'Atur';?> formulir</button>
             <?php if($cek_form == true):?>
-              <a href="<?= site_url('daftar-kompetisi');?>" target="_blank" class="btn btn-sm btn-info btn-block">Lihat formulir</a>
+              <a href="" target="_blank" class="btn btn-sm btn-info btn-block">Lihat formulir</a>
             <?php endif;?>
             <hr>
             <div class="card">
