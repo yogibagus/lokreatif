@@ -182,10 +182,12 @@ class Payment extends MX_Controller
         if ($transaksi != false) {
             // create delay time
             if ($last_payment->CREATED_TIME == null) {
-                $last_payment_id = null; // set last_payment_id
+                $last_kode_pay = null; // set last_kode_pay
+                $last_payment_id = null; // get payment_id
                 $time_limit = strtotime("01-01-90 00:00:00");
             } else {
-                $last_payment_id = $last_payment->KODE_PAY; // get last_payment_id
+                $last_kode_pay = $last_payment->KODE_PAY; // get last_kode_pay
+                $last_payment_id = $last_payment->PAYMENT_ID; // get payment_id
                 $created_time = $last_payment->CREATED_TIME;
                 $time_limit = strtotime("$created_time + 1 minute");
             }
@@ -242,7 +244,9 @@ class Payment extends MX_Controller
                             $update_transaksi = $this->M_payment->update_transaksi($kode_trans, $data_pay);
                             if ($update_transaksi != false) {
                                 // delete last payment
-                                $this->M_payment->delete_last_payment($last_payment_id);
+                                $this->M_payment->delete_last_payment($last_kode_pay);
+                                // cancel last payment
+                                $this->durianpay->cancelPayment($last_payment_id);
                                 // send email reminder
                                 // $this->send_email(1, $kode_pay);
                                 redirect('payment/details/' . $kode_pay);
@@ -472,7 +476,7 @@ class Payment extends MX_Controller
     {
         if ($status == "completed") {
             $data_pay['STAT_PAY'] = 3; //payment success 
-            $data_pay['LOG_TIME'] = date('Y-m-d H:i:s');; //payment success 
+            $data_pay['LOG_TIME'] = date('Y-m-d H:i:s'); //payment success 
             $update_payment =  $this->M_payment->update_pay_by_order_id($payment->ORDER_ID, $data_pay);
             if ($update_payment == true) {
                 $data_trans['STAT_BAYAR'] = 3; //order complete
@@ -480,6 +484,7 @@ class Payment extends MX_Controller
             }
         } else if ($status == "failed") {
             $data_pay['STAT_PAY'] = 4; //payment failed
+            $data_pay['LOG_TIME'] = date('Y-m-d H:i:s'); //payment failed 
             $update_payment =  $this->M_payment->update_pay_by_order_id($payment->ORDER_ID, $data_pay);
         } else {
             redirect();

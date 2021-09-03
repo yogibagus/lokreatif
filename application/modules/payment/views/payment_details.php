@@ -250,10 +250,6 @@ if ($payment->TYPE == 1) {
             }).then(function() {
                 window.location = "<?= base_url('payment/checkout/' . $payment->KODE_TRANS) ?>";
             });
-
-            // document.getElementById('ket').innerHTML = '*Batas waktu telah habis, ulangi proses pembayaran dari awal.';
-            // document.getElementById('status_message').innerHTML = 'Batas waktu telah habis, ulangi proses pembayaran dari awal.';
-            // document.getElementById('va').innerHTML = 'EXPIRED!';
             return;
         }
         var days = Math.floor(distance / _day);
@@ -303,7 +299,7 @@ if ($payment->TYPE == 1) {
     setInterval(function() {
         // this code runs every second 
         jQuery.ajax({
-            url: "<?= base_url('payment/check_payment/' . $payment->KODE_PAY) ?>",
+            url: "<?= base_url('payment/check_payment/' . $payment->KODE_TRANS) ?>",
             type: "GET",
             success: function(data) {
                 if (data == 1) {
@@ -322,7 +318,7 @@ if ($payment->TYPE == 1) {
                     })
                     setTimeout(function() {
                         location.reload();
-                    }, 4000);
+                    }, 2000);
                 } else if (data == "failed") {
                     Swal.fire({
                         icon: 'error',
@@ -331,6 +327,7 @@ if ($payment->TYPE == 1) {
                     }).then(function() {
                         window.location = "<?= base_url('payment/checkout/' . $payment->KODE_TRANS) ?>";
                     });
+                    console.log(data);
                 }
             }
         });
