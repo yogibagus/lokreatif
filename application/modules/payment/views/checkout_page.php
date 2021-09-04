@@ -203,6 +203,13 @@
                             <!-- End Tab Content -->
 
                             <button type="submit" name="" onsubmit="" id="pay-button" class="btn btn-primary btn-block mt-3">Bayar Sekarang</button>
+                            <center>
+                                <div class="row d-flex justify-content-center">
+                                    <small class="col-lg-7 mt-3">
+                                        Dengan melanjutkan pembayaran, anda telah menyetujui <span class="text-primary">syarat dan ketentuan</span> & <span class="text-primary">kebijakan privasi kami</span>, serta memahami bahwa pembayaran dilakukan melalui <a href="https://durianpay.id" target="_blank">Durianpay</a>.
+                                    </small>
+                                </div>
+                            </center>
                         </form>
                     </div>
                     <!-- End Type of Listing -->
