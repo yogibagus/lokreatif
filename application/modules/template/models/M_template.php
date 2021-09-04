@@ -62,6 +62,11 @@ class M_template extends CI_Model {
 		return $query->row()->VALUE;
 	}
 
+	function get_webEmail(){
+		$query 	= $this->db->query("SELECT VALUE FROM tb_pengaturan a WHERE a.KEY = 'WEB_EMAIL'");
+		return $query->row()->VALUE;
+	}
+
 	function get_webHeroButton(){
 		$query 	= $this->db->query("SELECT VALUE FROM tb_pengaturan a WHERE a.KEY = 'WEB_HERO_BUTTON'");
 		return $query->row()->VALUE;

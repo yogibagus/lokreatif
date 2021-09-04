@@ -116,6 +116,14 @@
           </li>
 
           <li class="nav-item ">
+            <a class="js-nav-tooltip-link nav-link <?= ($this->uri->segment(1) == 'berkas-lomba' ? 'active' : '') ?>" href="<?= site_url('berkas-lomba') ?>" title="Berkas Lomba" data-placement="left">
+              <i class="tio-albums nav-icon"></i>
+              <span class="navbar-vertical-aside-mini-mode-hidden-elements text-truncate">Berkas lomba</span>
+            </a>
+          </li>
+          <!-- End Dashboards -->
+
+          <li class="nav-item ">
             <a class="js-nav-tooltip-link nav-link <?= ($this->uri->segment(2) == 'bidang-lomba' ? 'active' : '') ?>" href="<?= site_url('kompetisi/bidang-lomba') ?>" title="Bidang Lomba" data-placement="left">
               <i class="tio-albums nav-icon"></i>
               <span class="navbar-vertical-aside-mini-mode-hidden-elements text-truncate">Bidang Lomba</span>

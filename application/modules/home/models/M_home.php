@@ -16,6 +16,17 @@ class M_home extends CI_Model {
 
 	}
 
+	public function get_juriLomba($id){
+		$query = $this->db->query("SELECT * FROM tb_peserta a LEFT JOIN bidang_juri b ON a.KODE_USER = b.KODE_USER WHERE b.ID_BIDANG = '$id'");
+
+		if ($query->num_rows() > 0) {
+			return $query->result();
+		}else{
+			return false;
+		}
+
+	}
+
 	public function get_bidangLomba(){
 		$this->db->select('*');
 		$query = $this->db->get('bidang_lomba');

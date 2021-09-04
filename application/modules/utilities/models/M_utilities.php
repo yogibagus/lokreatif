@@ -18,4 +18,13 @@ class M_utilities extends CI_Model {
 		return $this->db->query("SELECT KODE_KEGIATAN FROM tb_kegiatan")->num_rows();
 	}
 
+	function get_unduhanList(){
+		$query = $this->db->get('berkas_kebutuhan');
+		if ($query->num_rows() > 0) {
+			return $query->result();
+		}else{
+			return false;
+		}
+	}
+
 }

@@ -71,6 +71,111 @@ class Admin extends MX_Controller {
 		echo Modules::run('template/backend_main', $data);
 	}
 
+	// DATA BERKAS LOMBA
+	public function berkas_lomba(){
+		$data['berkas_lomba']		  	= $this->M_admin->get_berkasLomba();
+
+		$data['module'] 	= "admin";
+		$data['fileview'] 	= "berkas_lomba";
+		echo Modules::run('template/backend_main', $data);
+	}
+
+	function tambahBerkas(){
+
+		// UPLOAD
+		if (!empty($_FILES['LINK']['name'])) {
+
+			$folder   = "berkas/kebutuhan/";
+
+			if (!is_dir($folder)) {
+				mkdir($folder, 0755, true);
+			}
+
+      		// UPLOAD FILE
+			$config['upload_path']    		= $folder;
+			$config['allowed_types']        = '*';
+			$config['max_size']             = 10*1024;
+			$config['overwrite']			= TRUE;
+
+			$this->load->library('upload', $config);
+
+			if (!$this->upload->do_upload('LINK')){
+				$this->session->set_flashdata('error', 'Terjadi kesalahan saat mengunggah berkas!!');
+				redirect($this->agent->referrer());
+			}else {
+				$upload_data = $this->upload->data();
+
+				if ($this->M_admin->tambahBerkas($upload_data['file_name']) == TRUE) {
+
+					$this->session->set_flashdata('success', "Berhasil menambahkan berkas kebutuhan !!");
+					redirect($this->agent->referrer());
+				}else {
+					$this->session->set_flashdata('error', "Terjadi kesalahan saat menambahkan berkas kebutuhan !!");
+					redirect($this->agent->referrer());
+				}
+			}
+		}else {
+			$this->session->set_flashdata('warning', 'Anda tidak memilih file untuk diunggah!!');
+			redirect($this->agent->referrer());
+		}
+	}
+
+	function editBerkas(){
+
+		// UPLOAD
+		if (!empty($_FILES['NEW_LINK']['name'])) {
+			
+			$folder   = "berkas/kebutuhan/";
+
+			if (!is_dir($folder)) {
+				mkdir($folder, 0755, true);
+			}
+
+      		// UPLOAD FILE
+			$config['upload_path']    		= $folder;
+			$config['allowed_types']        = '*';
+			$config['max_size']             = 10*1024;
+			$config['overwrite']			= TRUE;
+
+			$this->load->library('upload', $config);
+
+			if (!$this->upload->do_upload('NEW_LINK')){
+				$this->session->set_flashdata('error', 'Terjadi kesalahan saat mengunggah berkas!!');
+				redirect($this->agent->referrer());
+			}else {
+				$upload_data = $this->upload->data();
+				if ($this->M_admin->editBerkas($upload_data['file_name']) == TRUE) {
+
+					$this->session->set_flashdata('success', "Berhasil mengubah berkas kebutuhan !!");
+					redirect($this->agent->referrer());
+				}else {
+					$this->session->set_flashdata('error', "Terjadi kesalahan saat mengubah berkas kebutuhan !!");
+					redirect($this->agent->referrer());
+				}
+			}
+		}else {
+			if ($this->M_admin->editBerkas($this->input->post('LINK')) == TRUE) {
+
+				$this->session->set_flashdata('success', "Berhasil mengubah berkas kebutuhan !!");
+				redirect($this->agent->referrer());
+			}else {
+				$this->session->set_flashdata('error', "Terjadi kesalahan saat mengubah berkas kebutuhan !!");
+				redirect($this->agent->referrer());
+			}
+		}
+	}
+
+	function hapusBerkas(){
+		if ($this->M_admin->hapusBerkas() == TRUE) {
+
+			$this->session->set_flashdata('success', "Berhasil menghapus berkas kebutuhan !!");
+			redirect($this->agent->referrer());
+		}else {
+			$this->session->set_flashdata('error', "Terjadi kesalahan saat menghapus berkas kebutuhan !!");
+			redirect($this->agent->referrer());
+		}
+	}
+
 	// DATA PENGATURAN
 	public function pengaturan(){
 
