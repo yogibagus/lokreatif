@@ -83,10 +83,31 @@
             <div class="card mt-3">
                 <div class="card-header">
                     <h4 class="card-title">Metode Pembayaran</h4>
+                    <a class="btn btn-xs btn-primary" data-toggle="modal" data-target="#carabayar" style="cursor: pointer;"><i class="fa fa-info-circle" aria-hidden="true"></i> Cara bayar <span class="cara-bayar"></span></a>
+
+                    <!-- Modal -->
+                    <div class="modal fade" id="carabayar" tabindex="-1" role="dialog" aria-labelledby="modelTitleId" aria-hidden="true">
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title">Cara Bayar <span class="cara-bayar"></span></h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    <div id="deskripsi-tut"><span class="text-warning">Anda belum memilih metode pembayaran.</span></div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
                 <div class="card-body">
                     <!-- Type of Listing -->
-                    <div class="mb-10">
+                    <div class="mb-1">
                         <!-- Nav -->
                         <div class="text-center">
                             <ul class="nav nav-segment nav-pills scrollbar-horizontal mb-7" role="tablist">
@@ -116,28 +137,6 @@
                                     <div class="alert alert-soft-primary" role="alert">
                                         <strong><i class="fa fa-info-circle" aria-hidden="true"></i> </strong>
                                         Siapkan Aplikasi E-Wallet Anda agar proses pembayaran lebih cepat.
-                                        <a class="btn btn-xs btn-primary" data-toggle="modal" data-target="#carabayar" style="cursor: pointer;"><i class="fa fa-info-circle" aria-hidden="true"></i> Cara bayar <span class="cara-bayar"></span></a>
-                                    </div>
-
-                                    <!-- Modal -->
-                                    <div class="modal fade" id="carabayar" tabindex="-1" role="dialog" aria-labelledby="modelTitleId" aria-hidden="true">
-                                        <div class="modal-dialog" role="document">
-                                            <div class="modal-content">
-                                                <div class="modal-header">
-                                                    <h5 class="modal-title">Cara Bayar</h5>
-                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                        <span aria-hidden="true">&times;</span>
-                                                    </button>
-                                                </div>
-                                                <div class="modal-body">
-                                                    <p><strong>Catatan: </strong> <span id="catatan-tut">-</span></p>
-                                                    <div id="deskripsi-tut">Anda belum memilih metode pembayaran.</div>
-                                                </div>
-                                                <div class="modal-footer">
-                                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                                </div>
-                                            </div>
-                                        </div>
                                     </div>
 
                                     <!-- Radio Checkbox Group -->
@@ -331,7 +330,6 @@
                 $('#mobile').prop('required', true);
                 // change method text
                 $('.text-method').text(arr[1] + " Number:");
-                $('.cara-bayar').text(arr[1]);
             } else {
                 $('#mobile').prop('required', false);
                 // change method text
@@ -342,23 +340,34 @@
 
     <script>
         $("input[name='method']").on('change', function() {
-            var method = $('input[name=method]:checked').attr('id');
-            var arr = method.split("_");
-            $('#catatan-tut').html(
-                `<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Loading, please wait...`
-            );
+            var method = $('input[name=method]:checked').val();
+            $('#deskripsi-tut').html(`<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Loading, please wait...`);
             jQuery.ajax({
-                url: "<?= base_url('payment/get_tutorial_payment/') ?>" + arr[2],
+                url: "<?= base_url('payment/get_tutorial_payment/') ?>" + method,
                 type: "GET",
                 success: function(data) {
                     const obj = JSON.parse(data);
-                    $('#deskripsi-tut').html(obj[0].DESKRIPSI_TUT);
-                    $('#catatan-tut').html(obj[0].CATATAN_TUT);
+                    $('.cara-bayar').text(" via " + obj[0].BANK_TUT);
+                    $('#deskripsi-tut').html(``);
+                    var deskripsi_tut = $('#deskripsi-tut');
+                    $.each(obj, function(i, order) {
+                        if (obj[i].CATATAN_TUT == null) {
+                            catatan = "-";
+                        } else {
+                            catatan = obj[i].CATATAN_TUT;
+                        }
+                        deskripsi_tut.append("<h4><i class='fa fa-info-circle' aria-hidden='true'></i> " + obj[i].NAMA_TUT + "</h4>");
+                        deskripsi_tut.append("<strong class='mt-2'>Catatan: </strong>" + catatan + "<br><br>");
+                        deskripsi_tut.append(obj[i].DESKRIPSI_TUT + "<hr>");
+                    });
+
+                    // $('#deskripsi-tut').html(obj[0].DESKRIPSI_TUT);
+                    // $('#catatan-tut').html(obj[0].CATATAN_TUT);
                 }
             });
         });
     </script>
 </div>
 <footer class="py-3">
-    <center>APTISI VII - LO-Kreatif 2021 © All right reserved</center>
+    <center>LO-Kreatif 2021 © All rights reserved</center>
 </footer>

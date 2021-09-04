@@ -117,7 +117,7 @@ class Payment extends MX_Controller
                     } else {
                         $data['user'] = $this->General->get_akun($this->kode_user);
                     }
-                    $data['bank_tut'] = $this->M_payment->get_tutorial_payment_by_bank_name($payment->METHOD);
+                    $data['bank_tut'] = $this->M_payment->get_tutorial_payment_by_id_pay_method($payment->ID_PAY_METHOD);
                     $data['payment'] = $payment;
                     $data['pay_method'] = $this->M_payment->get_payment_method_by_id($payment->ID_PAY_METHOD);
                     $data['status'] = $this->M_payment->get_status_payment_by_stat_pay($payment->STAT_PAY);
@@ -491,15 +491,14 @@ class Payment extends MX_Controller
         }
     }
 
-    public function get_tutorial_payment($bank_name = "")
+    public function get_tutorial_payment($id_pay_method = "")
     {
-        $bank = $this->M_payment->get_tutorial_payment_by_bank_name($bank_name);
+        $bank = $this->M_payment->get_tutorial_payment_by_id_pay_method($id_pay_method);
         if ($bank != false) {
             echo json_encode($bank);
         } else {
-            // $this->session->set_flashdata('error', "Cara bayar not found.");
-            // redirect($this->agent->referrer());
-            echo "salah";
+            $this->session->set_flashdata('error', "Cara bayar not found.");
+            redirect($this->agent->referrer());
         }
     }
 }
