@@ -71,11 +71,31 @@
         url:'<?php echo site_url('peserta/get_listPayment');?>',
         success:function(rs){
           $("#display").html(rs);
+        	console.log("success");
         }
       });
     }   
     setInterval(function(){
       display();
-    },15000);  
+    },5000);  
   });
+
+      function checkPayment() {
+        setInterval(function() {
+            // this code runs every second 
+            jQuery.ajax({
+                url: "<?= base_url('payment/check_payment/'.$KODE_TRANS) ?>",
+                type: "GET",
+                success: function(data) {
+                    if (data == 1) {
+					    display();
+                    	console.log("success");
+                    } else if (data == "failed") {
+					    display();
+                    	console.log("failed");
+                    }
+                }
+            });
+        }, 6000);
+    }
 </script>
