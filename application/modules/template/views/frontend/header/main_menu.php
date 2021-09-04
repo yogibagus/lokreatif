@@ -76,7 +76,7 @@
               <div class="col-6 navbar-promo-footer-ver-divider">
                 <div class="navbar-promo-footer-item">
                   <span class="navbar-promo-footer-text">Punya pertanyaan?</span>
-                  <a class="navbar-promo-footer-text" href="#"> Kontak kami</a>
+                  <a class="navbar-promo-footer-text" href="<?= site_url('kontak-kami');?>"> Kontak kami</a>
                 </div>
               </div>
             </div>
