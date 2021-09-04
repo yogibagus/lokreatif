@@ -86,12 +86,62 @@ class Manage_kompetisi extends MX_Controller {
   
   function tambah_juri(){
     if ($this->input->post('PASSWORD') == $this->input->post('CONFIRM_PASSWORD')) {
-      if ($this->M_manage->tambah_juri() == TRUE) {
-        $this->session->set_flashdata('success', "Berhasil menambahkan data juri !!");
-        redirect($this->agent->referrer());
-      }else{
-        $this->session->set_flashdata('error', "Terjadi kesalahan saat menambahkan data juri !!");
-        redirect($this->agent->referrer());
+
+
+      // CREATE UNIQ NAME KODE USER
+
+      $string = preg_replace('/[^a-z]/i', '', $NAMA_JURI);
+
+      $vocal  = array("a", "e", "i", "o", "u", "A", "E", "I", "O", "U", " ");
+      $scrap  = str_replace($vocal, "", $string);
+      $begin  = substr($scrap, 0, 4);
+      $uniqid = strtoupper($begin);
+
+      // CREATE KODE USER
+      do {
+        $KODE_USER      = "JRI_".$uniqid.substr(md5(time()), 0, 3);
+      } while ($this->M_manage->cek_kodeUser($KODE_USER) > 0);
+
+          // UPLOAD
+      if (!empty($_FILES['PROFIL']['name'])) {
+
+        $folder   = "berkas/juri/{$KODE_USER}/";
+
+        if (!is_dir($folder)) {
+          mkdir($folder, 0755, true);
+        }
+
+              // UPLOAD FILE
+        $config['upload_path']        = $folder;
+        $config['allowed_types']      = 'png|jpg|jpeg|gif';
+        $config['max_size']           = 10*1024;
+        $config['overwrite']          = TRUE;
+
+        $this->load->library('upload', $config);
+
+        if (!$this->upload->do_upload('PROFIL')){
+          $this->session->set_flashdata('error', 'Terjadi kesalahan saat mengunggah foto!!');
+          redirect($this->agent->referrer());
+        }else {
+          $upload_data = $this->upload->data();
+
+          if ($this->M_manage->tambah_juri($KODE_USER, $upload_data['file_name']) == TRUE) {
+            $this->session->set_flashdata('success', "Berhasil menambahkan data juri !!");
+            redirect($this->agent->referrer());
+          }else{
+            $this->session->set_flashdata('error', "Terjadi kesalahan saat menambahkan data juri !!");
+            redirect($this->agent->referrer());
+          }
+        }
+      }else {
+
+        if ($this->M_manage->tambah_juri($KODE_USER, null) == TRUE) {
+          $this->session->set_flashdata('success', "Berhasil menambahkan data juri !!");
+          redirect($this->agent->referrer());
+        }else{
+          $this->session->set_flashdata('error', "Terjadi kesalahan saat menambahkan data juri !!");
+          redirect($this->agent->referrer());
+        }
       }
     }else{
       $this->session->set_flashdata('error', "Password yang anda masukkan tidak sama !!");
@@ -100,12 +150,44 @@ class Manage_kompetisi extends MX_Controller {
   }
   
   function edit_juri(){
-    if ($this->M_manage->edit_juri() == TRUE) {
-      $this->session->set_flashdata('success', "Berhasil mengubah data juri !!");
-      redirect($this->agent->referrer());
-    }else{
-      $this->session->set_flashdata('error', "Terjadi kesalahan saat mengubah data juri !!");
-      redirect($this->agent->referrer());
+    if (!empty($_FILES['NEW_PROFIL']['name'])) {
+      $KODE_USER = $this->input->post('KODE_USER');
+      $folder   = "berkas/juri/{$KODE_USER}/";
+
+      if (!is_dir($folder)) {
+        mkdir($folder, 0755, true);
+      }
+
+              // UPLOAD FILE
+      $config['upload_path']        = $folder;
+      $config['allowed_types']      = 'png|jpg|jpeg|gif';
+      $config['max_size']           = 10*1024;
+      $config['overwrite']          = TRUE;
+
+      $this->load->library('upload', $config);
+
+      if (!$this->upload->do_upload('NEW_PROFIL')){
+        $this->session->set_flashdata('error', 'Terjadi kesalahan saat mengunggah foto!!');
+        redirect($this->agent->referrer());
+      }else {
+        $upload_data = $this->upload->data();
+
+        if ($this->M_manage->edit_juri($upload_data['file_name']) == TRUE) {
+          $this->session->set_flashdata('success', "Berhasil mengubah data juri !!");
+          redirect($this->agent->referrer());
+        }else{
+          $this->session->set_flashdata('error', "Terjadi kesalahan saat mengubah data juri !!");
+          redirect($this->agent->referrer());
+        }
+      }
+    }else {
+      if ($this->M_manage->edit_juri($this->input->post('PROFIL')) == TRUE) {
+        $this->session->set_flashdata('success', "Berhasil mengubah data juri !!");
+        redirect($this->agent->referrer());
+      }else{
+        $this->session->set_flashdata('error', "Terjadi kesalahan saat mengubah data juri !!");
+        redirect($this->agent->referrer());
+      }
     }
   }
 

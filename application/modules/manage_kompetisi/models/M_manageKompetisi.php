@@ -76,7 +76,7 @@ class M_manageKompetisi extends CI_Model {
 
 	//DATA JURI
 	function get_dataJuri(){
-		$query = $this->db->query("SELECT a.*, b.NAMA, b.HP FROM tb_auth a JOIN tb_peserta b ON a.KODE_USER = b.KODE_USER WHERE a.ROLE = 2 AND a.KODE_USER IN (SELECT KODE_USER FROM bidang_juri WHERE ID_BIDANG IN (SELECT ID_BIDANG FROM bidang_lomba))");
+		$query = $this->db->query("SELECT * FROM tb_auth a JOIN tb_peserta b ON a.KODE_USER = b.KODE_USER LEFT JOIN bidang_juri c ON a.KODE_USER = c.KODE_USER WHERE a.ROLE = 2 AND a.KODE_USER IN (SELECT KODE_USER FROM bidang_juri WHERE ID_BIDANG IN (SELECT ID_BIDANG FROM bidang_lomba))");
 		if ($query->num_rows() > 0) {
 			return $query->result();
 		}else{
@@ -107,26 +107,13 @@ class M_manageKompetisi extends CI_Model {
 		$this->db->delete('tb_auth');
 	}
 
-	function tambah_juri(){
+	function tambah_juri($KODE_USER, $file){
 		$NAMA_JURI 		= htmlspecialchars($this->input->post('NAMA_JURI'), true);
+		$PEKERJAAN 		= htmlspecialchars($this->input->post('PEKERJAAN'), true);
 		$EMAIL 			= htmlspecialchars($this->input->post('EMAIL'), true);
 		$HP 			= htmlspecialchars($this->input->post('HP'), true);
 		$PASSWORD 		= htmlspecialchars($this->input->post('PASSWORD'), true);
 		$BIDANG_JURI 	= htmlspecialchars($this->input->post('BIDANG_JURI'), true);
-
-		// CREATE UNIQ NAME KODE USER
-
-		$string = preg_replace('/[^a-z]/i', '', $NAMA_JURI);
-
-		$vocal  = array("a", "e", "i", "o", "u", "A", "E", "I", "O", "U", " ");
-		$scrap  = str_replace($vocal, "", $string);
-		$begin  = substr($scrap, 0, 4);
-		$uniqid	= strtoupper($begin);
-
-		// CREATE KODE USER
-		do {
-			$KODE_USER 			= "JRI_".$uniqid.substr(md5(time()), 0, 3);
-		} while ($this->cek_kodeUser($KODE_USER) > 0);
 
 		$data = array(
 			'KODE_USER'		=> $KODE_USER,
@@ -140,6 +127,7 @@ class M_manageKompetisi extends CI_Model {
 
 			$peserta = array(
 				'KODE_USER' 		=> $KODE_USER,
+				'PROFIL'  			=> $file,
 				'NAMA'  			=> $NAMA_JURI,
 				'HP' 				=> $HP,
 			);
@@ -151,6 +139,7 @@ class M_manageKompetisi extends CI_Model {
 				$bidang = array(
 					'KODE_USER' 		=> $KODE_USER,
 					'ID_BIDANG'  		=> $BIDANG_JURI,
+					'PEKERJAAN'  			=> $PEKERJAAN,
 				);
 
 				$this->db->insert('bidang_juri', $bidang);
@@ -167,11 +156,12 @@ class M_manageKompetisi extends CI_Model {
 		}
 	}
 
-	function edit_juri(){
+	function edit_juri($file){
 		$ID 			= htmlspecialchars($this->input->post('ID'), true);
 		$KODE_USER 		= htmlspecialchars($this->input->post('KODE_USER'), true);
 
 		$NAMA_JURI 		= htmlspecialchars($this->input->post('NAMA_JURI'), true);
+		$PEKERJAAN 		= htmlspecialchars($this->input->post('PEKERJAAN'), true);
 		$EMAIL 			= htmlspecialchars($this->input->post('EMAIL'), true);
 		$HP 			= htmlspecialchars($this->input->post('HP'), true);
 		$PASSWORD 		= htmlspecialchars($this->input->post('PASSWORD'), true);
@@ -188,6 +178,7 @@ class M_manageKompetisi extends CI_Model {
 
 		$peserta = array(
 			'NAMA'  			=> $NAMA_JURI,
+			'PROFIL'  			=> $file,
 			'HP' 				=> $HP,
 		);
 
@@ -196,6 +187,7 @@ class M_manageKompetisi extends CI_Model {
 
 		$bidang = array(
 			'ID_BIDANG'  		=> $BIDANG_JURI,
+			'PEKERJAAN'  			=> $PEKERJAAN,
 		);
 
 		$this->db->where('ID', $ID);

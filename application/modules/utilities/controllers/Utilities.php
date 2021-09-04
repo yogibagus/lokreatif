@@ -73,6 +73,20 @@ class Utilities extends MX_Controller{
 		echo Modules::run('template/frontend_main', $data);
 	}
 
+	public function unduhan(){
+		$data['unduhan']	= $this->M_uti->get_unduhanList();
+
+		$data['module'] 	= "utilities";
+		$data['fileview'] 	= "unduhan";
+		echo Modules::run('template/frontend_main', $data);
+	}
+
+	public function unduh($berkas, $link){
+		$link = base_url()."berkas/kebutuhan/".$link;
+		$this->load->helper('download');
+		force_download($berkas, $link);
+	}
+
 	public function package(){
 
 		$data['module'] 		= "utilities";

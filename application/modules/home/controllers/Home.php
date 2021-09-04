@@ -51,7 +51,7 @@ class Home extends MX_Controller{
 	}
 
 	public function tentang_juri(){
-		
+		$data['bidangLomba']= $this->M_home->get_bidangLomba();
 		$data['CI']			= $this;
 
 		$data['module'] 	= "home";

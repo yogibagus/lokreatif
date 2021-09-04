@@ -57,6 +57,7 @@ class Template extends MX_Controller
 		$data['WEB_JUDUL']			= $this->M_template->get_webJudul();
 		$data['WEB_DESKRIPSI']		= $this->M_template->get_webDeskripsi();
 		$data['WEB_WA']				= $this->M_template->get_webWa();
+		$data['WEB_EMAIL']			= $this->M_template->get_webEmail();
 		$data['WEB_HERO_BUTTON']	= $this->M_template->get_webHeroButton();
 
 		// ETC
@@ -89,6 +90,7 @@ class Template extends MX_Controller
 		$data['WEB_JUDUL']			= $this->M_template->get_webJudul();
 		$data['WEB_DESKRIPSI']		= $this->M_template->get_webDeskripsi();
 		$data['WEB_WA']				= $this->M_template->get_webWa();
+		$data['WEB_EMAIL']			= $this->M_template->get_webEmail();
 		$data['WEB_HERO_BUTTON']	= $this->M_template->get_webHeroButton();
 
 		// ETC
@@ -123,6 +125,7 @@ class Template extends MX_Controller
 		$data['WEB_JUDUL']			= $this->M_template->get_webJudul();
 		$data['WEB_DESKRIPSI']		= $this->M_template->get_webDeskripsi();
 		$data['WEB_WA']				= $this->M_template->get_webWa();
+		$data['WEB_EMAIL']			= $this->M_template->get_webEmail();
 		$data['WEB_HERO_BUTTON']	= $this->M_template->get_webHeroButton();
 
 		// ETC
@@ -150,6 +153,7 @@ class Template extends MX_Controller
 		$data['WEB_JUDUL']			= $this->M_template->get_webJudul();
 		$data['WEB_DESKRIPSI']		= $this->M_template->get_webDeskripsi();
 		$data['WEB_WA']				= $this->M_template->get_webWa();
+		$data['WEB_EMAIL']			= $this->M_template->get_webEmail();
 		$data['WEB_HERO_BUTTON']	= $this->M_template->get_webHeroButton();
 		$data['TERM_CONDITION']		= $this->M_template->get_termAndCondition();
 
@@ -178,6 +182,7 @@ class Template extends MX_Controller
 		$data['WEB_JUDUL']			= $this->M_template->get_webJudul();
 		$data['WEB_DESKRIPSI']		= $this->M_template->get_webDeskripsi();
 		$data['WEB_WA']				= $this->M_template->get_webWa();
+		$data['WEB_EMAIL']			= $this->M_template->get_webEmail();
 		$data['WEB_HERO_BUTTON']	= $this->M_template->get_webHeroButton();
 
 		// ETC
@@ -208,6 +213,7 @@ class Template extends MX_Controller
 		$data['WEB_JUDUL']			= $this->M_template->get_webJudul();
 		$data['WEB_DESKRIPSI']		= $this->M_template->get_webDeskripsi();
 		$data['WEB_WA']				= $this->M_template->get_webWa();
+		$data['WEB_EMAIL']			= $this->M_template->get_webEmail();
 		$data['WEB_HERO_BUTTON']	= $this->M_template->get_webHeroButton();
 
 		// ETC
@@ -239,6 +245,7 @@ class Template extends MX_Controller
 		$data['WEB_JUDUL']			= $this->M_template->get_webJudul();
 		$data['WEB_DESKRIPSI']		= $this->M_template->get_webDeskripsi();
 		$data['WEB_WA']				= $this->M_template->get_webWa();
+		$data['WEB_EMAIL']			= $this->M_template->get_webEmail();
 		$data['WEB_HERO_BUTTON']	= $this->M_template->get_webHeroButton();
 		$data['TERM_CONDITION']		= $this->M_template->get_termAndCondition();
 

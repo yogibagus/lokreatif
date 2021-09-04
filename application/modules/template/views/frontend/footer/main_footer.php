@@ -48,7 +48,7 @@
 
           <!-- Nav Link -->
           <ul class="nav nav-sm nav-x-0 nav-white flex-column">
-            <li class="nav-item"><a class="nav-link" href="<?= base_url() ?>">Home</a></li>
+            <li class="nav-item"><a class="nav-link" href="<?= base_url() ?>">Beranda</a></li>
             <li class="nav-item"><a class="nav-link" href="<?= site_url('about-us') ?>">Tentang</a></li>
             <li class="nav-item"><a class="nav-link" href="<?= site_url('blog') ?>">Pengumuman</a></li>
           </ul>
@@ -60,7 +60,7 @@
           <!-- Nav Link -->
           <ul class="nav nav-sm nav-x-0 nav-white flex-column">
             <li class="nav-item"><a class="nav-link" href="<?= site_url('pusat-bantuan') ?>">Pusat Bantuan</a></li>
-            <li class="nav-item"><a class="nav-link" href="<?= site_url('contact-us') ?>">Contact Us</a></li>
+            <li class="nav-item"><a class="nav-link" href="<?= site_url('hubungi-kami') ?>">Hubungi Kami</a></li>
           </ul>
           <!-- End Nav Link -->
         </div>

@@ -37,7 +37,7 @@
             </button>
           </div>
           <div class="modal-body">
-            <form action="<?= site_url('manage_kompetisi/tambah_juri');?>" method="post">
+            <form action="<?= site_url('manage_kompetisi/tambah_juri');?>" method="post" enctype="multipart/form-data">
 
               <div class="row mb-2">
                 <div class="col-6">
@@ -45,6 +45,22 @@
                   <div class="form-group">
                     <label class="input-label font-weight-bold">Nama juri <small class="text-danger">*</small></label>
                     <input type="text" class="form-control form-control-sm" name="NAMA_JURI" placeholder="Masukkan nama juri" reqired>
+                  </div>
+                  <div class="form-group">
+                    <label class="input-label font-weight-bold">Foto juri <small class="text-danger">*</small></label>
+                    <!-- File Attachment Button -->
+                    <label class="btn btn-sm btn-primary transition-3d-hover custom-file-btn" for="unggahTombol">
+                      <span id="unggahJudul">Tambahkan file</span>
+                      <input id="unggahTombol" name="PROFIL" type="file" class="js-file-attach  custom-file-btn-input"
+                        data-hs-file-attach-options='{
+                        "textTarget": "#unggahJudul"
+                      }'>
+                    </label>
+                    <!-- End File Attachment Button -->
+                  </div>
+                  <div class="form-group">
+                    <label class="input-label font-weight-bold">Jabatan <small class="text-muted">(optional)</small></label>
+                    <input type="text" class="form-control form-control-sm" name="PEKERJAAN" placeholder="Masukkan jabatan" reqired>
                   </div>
                   <div class="form-group">
                     <label class="input-label font-weight-bold">Email juri <small class="text-danger">*</small></label>
@@ -172,7 +188,7 @@
                   </button>
                 </div>
                 <div class="modal-body">
-                  <form action="<?= site_url('manage_kompetisi/edit_juri');?>" method="post">
+                  <form action="<?= site_url('manage_kompetisi/edit_juri');?>" method="post" enctype="multipart/form-data">
                     <input type="hidden" name="KODE_USER" value="<?= $key->KODE_USER;?>">
                     <input type="hidden" name="ID" value="<?= $CI->M_manage->get_bidangJuri($key->KODE_USER)->ID;?>">
                     <div class="row mb-2">
@@ -181,6 +197,23 @@
                         <div class="form-group">
                           <label class="input-label font-weight-bold">Nama juri <small class="text-danger">*</small></label>
                           <input type="text" class="form-control form-control-sm" name="NAMA_JURI" value="<?= $key->NAMA;?>" reqired>
+                        </div>
+                        <div class="form-group">
+                          <label class="input-label font-weight-bold">Foto juri <small class="text-danger">*</small></label>
+                          <!-- File Attachment Button -->
+                          <label class="btn btn-sm btn-primary transition-3d-hover custom-file-btn" for="unggahTombol<?= $no;?>">
+                            <span id="unggahJudul<?= $no;?>"><?= $key->PROFIL;?></span>
+                            <input id="unggahTombol<?= $no;?>" name="NEW_PROFIL" type="file" class="js-file-attach  custom-file-btn-input"
+                              data-hs-file-attach-options='{
+                              "textTarget": "#unggahJudul<?= $no;?>"
+                            }'>
+                          </label>
+                          <!-- End File Attachment Button -->
+                          <input type="hidden" name="PROFIL" value="<?= $key->PROFIL;?>">
+                        </div>
+                        <div class="form-group">
+                          <label class="input-label font-weight-bold">Jabatan <small class="text-muted">(optional)</small></label>
+                          <input type="text" class="form-control form-control-sm" name="PEKERJAAN" value="<?= $key->PEKERJAAN;?>" reqired>
                         </div>
                         <div class="form-group">
                           <label class="input-label font-weight-bold">Email juri <small class="text-danger">*</small></label>

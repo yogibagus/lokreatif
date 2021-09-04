@@ -86,6 +86,7 @@ $route['ajx-data-pts-all']                  = 'authentication/ajx_dataPtsAll';
 
 // ADMIN
 $route['data-peserta']               	= 'admin/data_peserta';
+$route['berkas-lomba']               	= 'admin/berkas_lomba';
 
 $route['data-kegiatan']    	  			= 'admin/data_kegiatan';
 $route['data-kompetisi']    	  		= 'admin/data_kompetisi';
@@ -171,15 +172,17 @@ $route['tentang-juri']			= 'home/tentang_juri';
 // END ETC
 
 // UTIL PAGE
-$route['statistik']   		= 'utilities/statistik';
-$route['jadwal']  	 		= 'utilities/jadwal';
+$route['statistik']   			= 'utilities/statistik';
+$route['jadwal']  	 			= 'utilities/jadwal';
+$route['unduhan']  	 			= 'utilities/unduhan';
+$route['unduh/(:any)/(:any)'] 	= 'utilities/unduh/$1/$2';
 
 $route['maintenance']   	= 'utilities/maintenance';
 $route['coming-soon']   	= 'utilities/coming_soon';
 $route['404-not-found'] 	= 'utilities/e_404';
 	
 $route['about-us']      	= 'utilities/about';
-$route['contact-us']    	= 'utilities/contact';
+$route['hubungi-kami']    	= 'utilities/contact';
 $route['pusat-bantuan'] 	= 'utilities/bantuan';
 
 $route['artikel/(:any)']	= 'pengumuman/artikel/$1';
