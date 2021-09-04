@@ -80,16 +80,21 @@
 					<label class="input-label"><?= $key->PERTANYAAN;?> <span class="text-danger">*</span></label>
 					<div>
 
-						<label class="btn btn-sm btn-primary transition-3d-hover file-attachment-btn" for="fileAttachmentBtn">
-							<span id="customFileUpload<?= $no;?>">Ubah file</span>
-							<input id="fileAttachmentBtn" name="JAWABAN[]" type="file" class="js-file-attach file-attachment-btn-label" accept=".pdf"
+						<label class="btn btn-sm btn-primary transition-3d-hover file-attachment-btn" for="fileAttachmentBtn<?= $no;?>">
+							<span id="customFileUpload<?= $no;?>"><?= $CI->General->get_formData($dataPendaftaran->KODE_PENDAFTARAN, $key->ID_FORM);?></span>
+							<input id="fileAttachmentBtn<?= $no;?>" name="JAWABAN[]" type="file" class="js-file-attach file-attachment-btn-label" accept=".pdf"
 							data-hs-file-attach-options='{
 							"textTarget": "#customFileUpload<?= $no;?>"
 						}'>
 					</label>
 					
 				</div>
-				<a href="<?= base_url();?>berkas/pendaftaran/kompetisi/lokreatif/<?= $this->session->userdata('kode_user');?>/<?= $CI->General->get_formData($dataPendaftaran->KODE_PENDAFTARAN, $key->ID_FORM);?>" target="_blank" class="text-muted mb-0 float-right"><?= $CI->General->get_formData($dataPendaftaran->KODE_PENDAFTARAN, $key->ID_FORM);?></a>
+				<script type="text/javascript">
+					$('#fileAttachmentBtn<?= $no;?>').change(function() {
+					  var file = $('#fileAttachmentBtn<?= $no;?>')[0].files[0].name;
+					  $('#customFileUpload<?= $no;?>').text(file);
+					});
+				</script>
 				<?php if (isset($key->KETERANGAN) || $key->KETERANGAN != null):?>
 					<small class="text-muted mt-2">Ukuran file <?= $key->FILE_SIZE;?> MB. <?= $key->KETERANGAN;?></small>
 				<?php endif;?>
