@@ -52,12 +52,12 @@
 
           <!-- Promo Item -->
           <div class="navbar-promo-item">
-            <a class="navbar-promo-link" href="<?= site_url('download');?>">
+            <a class="navbar-promo-link" href="<?= site_url('unduhan');?>">
               <div class="media align-items-center">
                 <img class="navbar-promo-icon" src="<?= base_url();?>assets/frontend/svg/icons/icon-2.svg" alt="SVG">
                 <div class="media-body">
-                  <span class="navbar-promo-title">Download</span>
-                  <small class="navbar-promo-text">Unduh berkas kebutuhan</small>
+                  <span class="navbar-promo-title">Unduhan</span>
+                  <small class="navbar-promo-text">Unduh berkas</small>
                 </div>
               </div>
             </a>
@@ -75,8 +75,8 @@
               </div>
               <div class="col-6 navbar-promo-footer-ver-divider">
                 <div class="navbar-promo-footer-item">
-                  <span class="navbar-promo-footer-text">Punya pertanyaan?</span>
-                  <a class="navbar-promo-footer-text" href="#"> Kontak kami</a>
+                  <span class="navbar-promo-footer-text">Pertanyaan?</span>
+                  <a class="navbar-promo-footer-text" href="<?= site_url('hubungi-kami');?>"> Hubungi Kami</a>
                 </div>
               </div>
             </div>
@@ -94,7 +94,7 @@
       <!-- End Kegiatan -->
 
       <?php if ($this->session->userdata('logged_in') == false || !$this->session->userdata('logged_in')):?>
-      <li class="list-inline-item d-none d-sm-block">
+      <li class="list-inline-item d-none d-sm-block ml-2">
         <div class="hs-unfold">
           <a class="js-hs-unfold-invoker btn btn-xs btn-primary" href="javascript:;"
           data-hs-unfold-options='{

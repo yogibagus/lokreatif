@@ -83,10 +83,31 @@
             <div class="card mt-3">
                 <div class="card-header">
                     <h4 class="card-title">Metode Pembayaran</h4>
+                    <a class="btn btn-xs btn-primary" data-toggle="modal" data-target="#carabayar" style="cursor: pointer;"><i class="fa fa-info-circle" aria-hidden="true"></i> Cara bayar <span class="cara-bayar"></span></a>
+
+                    <!-- Modal -->
+                    <div class="modal fade" id="carabayar" tabindex="-1" role="dialog" aria-labelledby="modelTitleId" aria-hidden="true">
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title">Cara Bayar <span class="cara-bayar"></span></h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    <div id="deskripsi-tut"><span class="text-warning">Anda belum memilih metode pembayaran.</span></div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
                 <div class="card-body">
                     <!-- Type of Listing -->
-                    <div class="mb-10">
+                    <div class="mb-1">
                         <!-- Nav -->
                         <div class="text-center">
                             <ul class="nav nav-segment nav-pills scrollbar-horizontal mb-7" role="tablist">
@@ -100,7 +121,7 @@
                         </div>
                         <!-- End Nav -->
 
-                        <!-- Tab Content  -->
+                        <!-- Tab Content -->
                         <form id='form' action="<?= base_url("payment/pay") ?>" method="post">
                             <input type="hidden" name="kode_trans" id="kode_trans" value="<?= $kode_trans ?>">
                             <div class="tab-content">
@@ -117,48 +138,24 @@
                                         <strong><i class="fa fa-info-circle" aria-hidden="true"></i> </strong>
                                         Siapkan Aplikasi E-Wallet Anda agar proses pembayaran lebih cepat.
                                     </div>
+
                                     <!-- Radio Checkbox Group -->
                                     <div class="row mx-n2">
-                                        <div class="col-6 col-md-3 px-2 mb-3 mb-md-0">
-                                            <div class="custom-control custom-radio custom-control-inline checkbox-outline checkbox-icon text-center w-100 h-100">
-                                                <input type="radio" id="typeOfListingRadio1" name="method" class="custom-control-input checkbox-outline-input checkbox-icon-input" value="EWALLET_OVO" required>
-                                                <label class="checkbox-outline-label checkbox-icon-label w-100 rounded py-3 px-1 mb-0" for="typeOfListingRadio1">
-                                                    <img class="img-fluid w-90 fit-image" src="https://image.cermati.com/c_fit,fl_progressive,h_240,q_80,w_360/pm2gnkl5edgago9h4lho.jpg" alt="OVO">
-                                                </label>
-                                            </div>
-                                        </div>
-                                        <div class="col-6 col-md-3 px-2 mb-3 mb-md-0">
-                                            <div class="custom-control custom-radio custom-control-inline checkbox-outline checkbox-icon text-center w-100 h-100">
-                                                <input type="radio" id="typeOfListingRadio2" name="method" class="custom-control-input checkbox-outline-input checkbox-icon-input" value="EWALLET_DANA">
-                                                <label class="checkbox-outline-label checkbox-icon-label w-100 rounded py-3 px-1 mb-0" for="typeOfListingRadio2">
-                                                    <img class="img-fluid w-90 fit-image" src="https://1.bp.blogspot.com/-LDwtS_oxYgg/XO67MmzGN7I/AAAAAAAAADI/hrSqgCRod3oIS6NtwjOqdY0okl8hwyi6gCLcBGAs/s1600/logo%2Bdana%2Bdompet%2Bdigital%2BPNG.png" alt="DANA">
-                                                </label>
-                                            </div>
-                                        </div>
-                                        <!-- <div class="col-6 col-md-3 px-2 mb-3 mb-md-0">
-                                            <div class="custom-control custom-radio custom-control-inline checkbox-outline checkbox-icon text-center w-100 h-100">
-                                                <input type="radio" id="typeOfListingRadio3" name="method" class="custom-control-input checkbox-outline-input checkbox-icon-input" value="EWALLET_SHOPEEPAY">
-                                                <label class="checkbox-outline-label checkbox-icon-label w-100 rounded py-3 px-1 mb-0" for="typeOfListingRadio3">
-                                                    <img class="img-fluid w-90 fit-image" src="https://kampungbahasajogja.net/assets/img/about/shopeepay.png" alt="SHOPEEPAY">
-                                                </label>
-                                            </div>
-                                        </div> -->
-                                        <div class="col-6 col-md-3 px-2 mb-3 mb-md-0">
-                                            <div class="custom-control custom-radio custom-control-inline checkbox-outline checkbox-icon text-center w-100 h-100">
-                                                <input type="radio" id="typeOfListingRadio4" name="method" class="custom-control-input checkbox-outline-input checkbox-icon-input" value="EWALLET_LINKAJA">
-                                                <label class="checkbox-outline-label checkbox-icon-label w-100 rounded py-3 px-1 mb-0" for="typeOfListingRadio4">
-                                                    <img class="img-fluid w-90 fit-image" src="https://vectorlogo4u.com/wp-content/uploads/2019/03/link-aja-logo-vector.png" alt="LINKAJA">
-                                                </label>
-                                            </div>
-                                        </div>
+                                        <?php $no = 1;
+                                        foreach ($pay_method as $row) { ?>
+                                            <?php if ($row->TYPE_PAY_METHOD == "EWALLET") { ?>
+                                                <div class="col-6 col-md-3 px-2 mb-3 mb-3">
+                                                    <div class="custom-control custom-radio custom-control-inline checkbox-outline checkbox-icon text-center w-100 h-100">
+                                                        <input type="radio" id="<?= $row->TYPE_PAY_METHOD . "_" . $row->NAMA_PAY_METHOD . "_" . $row->KODE_PAY_METHOD . "_" . $no ?>" name="method" class="custom-control-input checkbox-outline-input checkbox-icon-input" value="<?= $row->ID_PAY_METHOD ?>" required>
+                                                        <label class="checkbox-outline-label checkbox-icon-label w-100 rounded py-3 px-1 mb-0" for="<?= $row->TYPE_PAY_METHOD . "_" . $row->NAMA_PAY_METHOD . "_" . $row->KODE_PAY_METHOD . "_" . $no ?>">
+                                                            <img class="img-fluid w-90 fit-image" src="<?= $row->IMG_PAY_METHOD ?>" alt="<?= $row->NAMA_PAY_METHOD ?>">
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                            <?php } ?>
+                                        <?php $no++;
+                                        } ?>
                                     </div>
-                                    <!-- Alert -->
-                                    <?php if ($is_mobile) { ?>
-                                        <div id="shopeepay-alert" class="alert alert-warning text-center rounded-0 mt-3" role="alert">
-                                            <strong><i class="fa fa-info-circle" aria-hidden="true"></i></strong> Anda terdeteksi menggunakan perangkat <strong>Mobile</strong>, pembayaran melalui <strong>ShoopePay</strong> akan diarahkan ke <strong>Aplikasi Shopee</strong> secara langsung. <a href="#">Pelajari selengkapnya.</a>
-                                        </div>
-                                    <?php } ?>
-                                    <!-- End Alert -->
                                     <label for="basic-url" class="form-label mt-3 text-method" id="">OVO Number:</label>
                                     <!-- Input Group -->
                                     <div class="input-group input-group-merge">
@@ -176,54 +173,42 @@
                                 <div class="tab-pane fade" id="tab-menu-va" role="tabpanel" aria-labelledby="pills-two-code-features-example1-tab">
                                     <!-- Radio Checkbox Group -->
                                     <div class="row mx-n2">
-                                        <div class="col-6 col-md-3 px-2 mb-3 mb-md-0">
+                                        <!-- <div class="col-6 col-md-3 px-2 mb-3 mb-md-0">
                                             <div class="custom-control custom-radio custom-control-inline checkbox-outline checkbox-icon text-center w-100 h-100">
                                                 <input type="radio" id="vamandiri" name="method" class="custom-control-input checkbox-outline-input checkbox-icon-input" value="VA_MANDIRI">
                                                 <label class="checkbox-outline-label checkbox-icon-label w-100 rounded py-3 px-1 mb-0" for="vamandiri">
                                                     <img class="img-fluid w-90 fit-image" src="https://brandeps.com/logo-download/B/Bank-Mandiri-logo-vector-01.svg" alt="MANDIRI">
                                                 </label>
                                             </div>
-                                        </div>
-                                        <div class="col-6 col-md-3 px-2 mb-3 mb-md-0">
-                                            <div class="custom-control custom-radio custom-control-inline checkbox-outline checkbox-icon text-center w-100 h-100">
-                                                <input type="radio" id="vabni" name="method" class="custom-control-input checkbox-outline-input checkbox-icon-input" value="VA_BNI">
-                                                <label class="checkbox-outline-label checkbox-icon-label w-100 rounded py-3 px-1 mb-0" for="vabni">
-                                                    <img class="img-fluid w-90 fit-image" src="https://i.pinimg.com/originals/36/38/43/36384348ef9d7bfff66da6da9e975d56.png" alt="BNI">
-                                                </label>
-                                            </div>
-                                        </div>
-                                        <div class="col-6 col-md-3 px-2">
-                                            <div class="custom-control custom-radio custom-control-inline checkbox-outline checkbox-icon text-center w-100 h-100">
-                                                <input type="radio" id="vabri" name="method" class="custom-control-input checkbox-outline-input checkbox-icon-input" value="VA_BRI">
-                                                <label class="checkbox-outline-label checkbox-icon-label w-100 rounded py-3 px-1 mb-0" for="vabri">
-                                                    <img class="img-fluid w-90 fit-image" src="https://i.ibb.co/Hg1gDdM/images-q-tbn-ANd9-Gc-TIan-Xv-IR5-Wnc-Pv461-AIGT8-FL7t-JJk-A7z-Ui-Dw-usqp-CAU.png" alt="BRI">
-                                                </label>
-                                            </div>
-                                        </div>
-                                        <!-- <div class="col-6 col-md-3 px-2">
-                                            <div class="custom-control custom-radio custom-control-inline checkbox-outline checkbox-icon text-center w-100 h-100">
-                                                <input type="radio" id="vabca" name="method" class="custom-control-input checkbox-outline-input checkbox-icon-input" value="VA_BCA">
-                                                <label class="checkbox-outline-label checkbox-icon-label w-100 rounded py-3 px-1 mb-0" for="vabca">
-                                                    <img class="img-fluid w-90 fit-image" src="https://cdn.freebiesupply.com/logos/thumbs/2x/bca-bank-central-asia-logo.png" alt="BCA">
-                                                </label>
-                                            </div>
                                         </div> -->
-
-                                        <div class="col-6 col-md-3 px-2">
-                                            <div class="custom-control custom-radio custom-control-inline checkbox-outline checkbox-icon text-center w-100 h-100">
-                                                <input type="radio" id="vapermata" name="method" class="custom-control-input checkbox-outline-input checkbox-icon-input" value="VA_PERMATA">
-                                                <label class="checkbox-outline-label checkbox-icon-label w-100 rounded py-3 px-1 mb-0" for="vapermata">
-                                                    <img class="img-fluid w-90 fit-image" src="https://1.bp.blogspot.com/-tZkp5O70Rqo/XAJ7BwL9_lI/AAAAAAAAAZw/DGusJ0Y5XL84uKmWpnPJ0kQPOjabtqMTwCPcBGAYYCw/s1600/Lowongan%2BKerja%2BTerbaru%2BBank%2BPermata.png" alt="PERMATA">
-                                                </label>
-                                            </div>
-                                        </div>
+                                        <?php $no = 1;
+                                        foreach ($pay_method as $row) { ?>
+                                            <?php if ($row->TYPE_PAY_METHOD == "VA") { ?>
+                                                <div class="col-6 col-md-3 px-2 mb-3 mb-3">
+                                                    <div class="custom-control custom-radio custom-control-inline checkbox-outline checkbox-icon text-center w-100 h-100">
+                                                        <input type="radio" id="<?= $row->TYPE_PAY_METHOD . "_" . $row->NAMA_PAY_METHOD . "_" . $row->KODE_PAY_METHOD . "_" . $no ?>" name="method" class="custom-control-input checkbox-outline-input checkbox-icon-input" value="<?= $row->ID_PAY_METHOD ?>" required>
+                                                        <label class="checkbox-outline-label checkbox-icon-label w-100 rounded py-3 px-1 mb-0" for="<?= $row->TYPE_PAY_METHOD . "_" . $row->NAMA_PAY_METHOD . "_" . $row->KODE_PAY_METHOD . "_" . $no ?>">
+                                                            <img class="img-fluid w-90 fit-image" src="<?= $row->IMG_PAY_METHOD ?>" alt="<?= $row->NAMA_PAY_METHOD ?>">
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                            <?php } ?>
+                                        <?php $no++;
+                                        } ?>
                                     </div>
                                     <small class="text-muted" id="required-alert-va">*) Pilih salah satu metode pembayaran diatas.</small>
                                 </div>
                             </div>
                             <!-- End Tab Content -->
 
-                            <button type="submit" name="" id="pay-button" class="btn btn-primary btn-block mt-3">Bayar Sekarang</button>
+                            <button type="submit" name="" onsubmit="" id="pay-button" class="btn btn-primary btn-block mt-3">Bayar Sekarang</button>
+                            <center>
+                                <div class="row d-flex justify-content-center">
+                                    <small class="col-lg-7 mt-3">
+                                        Dengan melanjutkan pembayaran, anda telah menyetujui <span class="text-primary">syarat dan ketentuan</span> & <span class="text-primary">kebijakan privasi kami</span>, serta memahami bahwa pembayaran dilakukan melalui <a href="https://durianpay.id" target="_blank">Durianpay</a>.
+                                    </small>
+                                </div>
+                            </center>
                         </form>
                     </div>
                     <!-- End Type of Listing -->
@@ -233,7 +218,33 @@
     </div>
 
     <script>
+        function checkPayment() {
+            setInterval(function() {
+                // this code runs every second 
+                jQuery.ajax({
+                    url: "<?= base_url('payment/check_payment/' . $kode_trans) ?>",
+                    type: "GET",
+                    success: function(data) {
+                        if (data == 1) {
+                            location.reload();
+                        } else if (data == "failed") {
+                            location.reload();
+                        }
+                    }
+                });
+            }, 6000);
+        }
+    </script>
+
+    <script>
         $(document).ready(function() {
+            // set fee begining
+            var amount = Math.ceil(100 / 98.5 * parseInt(<?= $total_bayar->total_bayar ?>));
+            var new_amount = Math.ceil(amount / 1000) * 1000;
+            var fee = new_amount - parseInt(<?= $total_bayar->total_bayar ?>);
+            $('#total_amount').text(format_rupiah(new_amount));
+            $('#fee').text(format_rupiah(fee));
+
             function format_rupiah(angka) {
                 var reverse = angka.toString().split('').reverse().join(''),
                     ribuan = reverse.match(/\d{1,3}/g);
@@ -274,11 +285,8 @@
     <script>
         $(document).ready(function() {
             $('form').submit(function(event) {
-                // set interval redirect
-                setInterval(function() {
-                    window.location.replace("<?= $redirect_url ?>");
-                }, 10000);
-                var method = $('input[name=method]:checked').val();
+                checkPayment();
+                var method = $('input[name=method]:checked').attr('id');
                 var arr = method.split("_");
                 if (arr[0] == "EWALLET") {
                     var mobile = $("#mobile").val();
@@ -310,9 +318,9 @@
         // check radio ewaller
         $("input[name='method']").on('change', function() {
             // show or hide alert
-            var method = $('input[name=method]:checked').val();
+            var method = $('input[name=method]:checked').attr('id');
             var arr = method.split("_");
-            if (arr[1] == "LINKAJA" || arr[1] == "DANA") {
+            if (arr[1] == "LINK AJA" || arr[1] == "DANA") {
                 $("#form").attr('target', '_blank');
             } else {
                 $("#form").removeAttr('target');
@@ -329,7 +337,37 @@
             }
         });
     </script>
+
+    <script>
+        $("input[name='method']").on('change', function() {
+            var method = $('input[name=method]:checked').val();
+            $('#deskripsi-tut').html(`<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Loading, please wait...`);
+            jQuery.ajax({
+                url: "<?= base_url('payment/get_tutorial_payment/') ?>" + method,
+                type: "GET",
+                success: function(data) {
+                    const obj = JSON.parse(data);
+                    $('.cara-bayar').text(" via " + obj[0].BANK_TUT);
+                    $('#deskripsi-tut').html(``);
+                    var deskripsi_tut = $('#deskripsi-tut');
+                    $.each(obj, function(i, order) {
+                        if (obj[i].CATATAN_TUT == null) {
+                            catatan = "-";
+                        } else {
+                            catatan = obj[i].CATATAN_TUT;
+                        }
+                        deskripsi_tut.append("<h4><i class='fa fa-info-circle' aria-hidden='true'></i> " + obj[i].NAMA_TUT + "</h4>");
+                        deskripsi_tut.append("<strong class='mt-2'>Catatan: </strong>" + catatan + "<br><br>");
+                        deskripsi_tut.append(obj[i].DESKRIPSI_TUT + "<hr>");
+                    });
+
+                    // $('#deskripsi-tut').html(obj[0].DESKRIPSI_TUT);
+                    // $('#catatan-tut').html(obj[0].CATATAN_TUT);
+                }
+            });
+        });
+    </script>
 </div>
 <footer class="py-3">
-    <center>APTISI VII - LO-Kreatif 2021 © All right reserved</center>
+    <center>LO-Kreatif 2021 © All rights reserved</center>
 </footer>

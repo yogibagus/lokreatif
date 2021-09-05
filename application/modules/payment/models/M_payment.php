@@ -130,11 +130,11 @@ class M_payment extends CI_Model
         }
     }
 
-    // get data tutorial by bank name
-    function get_tutorial_payment_by_bank_name($bank_name)
+    // get data tutorial by id_pay_method
+    function get_tutorial_payment_by_id_pay_method($id_pay_method)
     {
-        $bank_name   = $this->db->escape($bank_name);
-        $query = $this->db->query("SELECT * FROM tb_tutorial WHERE BANK_TUT = $bank_name");
+        $id_pay_method   = $this->db->escape($id_pay_method);
+        $query = $this->db->query("SELECT * FROM tb_tutorial WHERE ID_PAY_METHOD = $id_pay_method");
         if ($query->num_rows() > 0) {
             return $query->result();
         } else {
@@ -217,11 +217,31 @@ class M_payment extends CI_Model
         }
     }
 
-    // get payment berdasarkan KODE_TRANS
     function get_payment_by_order_id($order_id)
     {
         $order_id   = $this->db->escape($order_id);
         $query = $this->db->query("SELECT * FROM tb_payment WHERE ORDER_ID = $order_id");
+        if ($query->num_rows() > 0) {
+            return $query->row();
+        } else {
+            return false;
+        }
+    }
+
+    function get_all_payment_method()
+    {
+        $query = $this->db->query("SELECT * FROM tb_payment_method WHERE STAT_PAY_METHOD = 1");
+        if ($query->num_rows() > 0) {
+            return $query->result();
+        } else {
+            return false;
+        }
+    }
+
+    function get_payment_method_by_id($id_pay_method)
+    {
+        $id_pay_method   = $this->db->escape($id_pay_method);
+        $query = $this->db->query("SELECT * FROM tb_payment_method WHERE ID_PAY_METHOD = $id_pay_method AND  STAT_PAY_METHOD = 1");
         if ($query->num_rows() > 0) {
             return $query->row();
         } else {

@@ -8,6 +8,14 @@ if ($payment->TYPE == 1) {
 }
 
 ?>
+<style>
+    .fit-image {
+        width: 130px;
+        object-fit: cover;
+        height: 60px;
+        /* only if you want fixed height */
+    }
+</style>
 <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <div class="container space-3">
     <div class="d-flex justify-content-center">
@@ -97,8 +105,8 @@ if ($payment->TYPE == 1) {
                                     </div>
                                     <hr>
                                     <h3>PAYMENT METHOD</h3>
-                                    <span class="badge badge-info"><?= $type ?></span>
-                                    <span class="badge badge-primary"><?= $payment->METHOD ?></span>
+                                    <span class="badge badge-primary"><?= $type ?></span><br>
+                                    <img src="<?= $pay_method->IMG_PAY_METHOD ?>" class="img-fluid fit-image" alt="IMG <?= $pay_method->NAMA_PAY_METHOD ?>">
                                 </center>
                             <?php } else if ($payment->METHOD == "SHOPEEPAY") { ?>
                                 <center>
@@ -113,28 +121,27 @@ if ($payment->TYPE == 1) {
                                     </div>
                                     <hr>
                                     <div class="alert alert-soft-primary" role="alert">
-                                        <strong><i class="fa fa-info-circle" aria-hidden="true"></i> </strong> Scan QR Code dibawah menggunakan Aplikasi <strong>Shopee</strong> / Aplikasi <strong>E-Wallet</strong> lainnya. <a href="#" class="text-dark">Pelajari lebih lanjut.</a>
+                                        <strong><i class="fa fa-info-circle" aria-hidden="true"></i> </strong> Scan QR Code dibawah menggunakan Aplikasi <strong><?= $pay_method->NAMA_PAY_METHOD ?></strong> / Aplikasi <strong>E-Wallet</strong> lainnya. <a href="#" class="text-dark">Pelajari lebih lanjut.</a>
                                     </div>
                                     <h3>PAYMENT METHOD</h3>
-                                    <span class="badge badge-info"><?= $type ?></span><br>
-                                    <span class="badge badge-primary"><?= $payment->METHOD ?></span>
-                                    <span class="badge badge-primary">QRIS</span>
+                                    <span class="badge badge-primary"><?= $type ?></span> <span class="badge badge-primary">QRIS</span><br>
+                                    <img src="<?= $pay_method->IMG_PAY_METHOD ?>" class="img-fluid fit-image" alt="IMG <?= $pay_method->NAMA_PAY_METHOD ?>">
                                     <br>
-                                    <a href="#"><img src="<?= $payment->WEB_URL ?>" class="img-fluid img-thumbnail mt-3" style="max-width: 270px;" alt="QR Code ShoopePay" data-toggle="modal" data-target="#qrcodezoom"></a>
+                                    <a href="#"><img src="<?= $payment->WEB_URL ?>" class="img-fluid img-thumbnail mt-3" style="max-width: 270px;" alt="QR Code <?= $pay_method->NAMA_PAY_METHOD ?>" data-toggle="modal" data-target="#qrcodezoom"></a>
 
                                     <!-- Zoom -->
                                     <div class="modal fade" id="qrcodezoom" tabindex="-1" role="dialog" aria-labelledby="modelTitleId" aria-hidden="true">
                                         <div class="modal-dialog" role="document">
                                             <div class="modal-content">
                                                 <div class="modal-header">
-                                                    <h5 class="modal-title">Shopee Pay</h5>
+                                                    <h5 class="modal-title"><?= $pay_method->NAMA_PAY_METHOD ?> QR Code</h5>
                                                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                                         <span aria-hidden="true">&times;</span>
                                                     </button>
                                                 </div>
                                                 <div class="modal-body">
                                                     <div class="alert alert-soft-primary" role="alert">
-                                                        <strong><i class="fa fa-info-circle" aria-hidden="true"></i> </strong> Buka Aplikasi <strong>Shopee</strong> / Aplikasi <strong>E-Wallet</strong> lainnya. Scan QR Code dibawah. <a href="#" class="text-dark">Pelajari lebih lanjut.</a>
+                                                        <strong><i class="fa fa-info-circle" aria-hidden="true"></i> </strong> Buka Aplikasi <strong><?= $pay_method->NAMA_PAY_METHOD ?></strong> / Aplikasi <strong>E-Wallet</strong> lainnya. Scan QR Code dibawah. <a href="#" class="text-dark">Pelajari lebih lanjut.</a>
                                                     </div>
                                                     <img src="<?= $payment->WEB_URL ?>" class="img-fluid img-thumbnail" alt="QR Code ShoopePay Zoom" data-toggle="modal" data-target="#qrcodezoom">
                                                 </div>
@@ -145,7 +152,7 @@ if ($payment->TYPE == 1) {
                                         </div>
                                     </div>
                                     <br>
-                                    <small class="mt-3">Scan this QR Code using ShopeePay / other e-wallet apps.</small>
+                                    <small class="mt-3">Scan this QR Code using <?= $pay_method->NAMA_PAY_METHOD ?> or other e-wallet apps.</small>
                                 </center>
                             <?php } ?>
                         <?php } ?>
@@ -163,8 +170,8 @@ if ($payment->TYPE == 1) {
                                 </div>
                                 <hr>
                                 <h3>PAYMENT METHOD</h3>
-                                <span class="badge badge-info"><?= $type ?></span><br>
-                                <span class="badge badge-primary">BANK <?= $payment->METHOD ?></span>
+                                <span class="badge badge-primary"><?= $type ?></span><br>
+                                <img src="<?= $pay_method->IMG_PAY_METHOD ?>" class="img-fluid fit-image" alt="IMG <?= $pay_method->NAMA_PAY_METHOD ?>">
                                 <h4 class="mt-3">VA Number <small><i class="fa fa-question-circle text-muted" data-toggle="tooltip" data-placement="top" title="Virtual Account Number" aria-hidden="true"></i></small></h4>
                                 <div class=" input-group mb-3" style="max-width: 300px;">
                                     <input type="text" class="form-control bg-white text-center font-weight-bold" value="<?= $payment->ACC_NUMBER ?>" id="va_number" disabled>
@@ -236,9 +243,13 @@ if ($payment->TYPE == 1) {
             $("#alert").html("<strong>Batas waktu telah habis</strong>");
             $("#checkout-button").html('<a class="btn btn-xs btn-primary" href="<?= base_url('payment/checkout/' . $payment->KODE_TRANS) ?>" role="button"><i class="fa fa-arrow-circle-left" aria-hidden="true"></i> Halaman Checkout</a>');
             document.getElementById('alert').innerHTML = 'Waktu pembayaran telah habis, ulangi proses pembayaran pada halaman <a href="<?= base_url('payment/checkout/' . $payment->KODE_TRANS) ?>">checkout.</a>';
-            // document.getElementById('ket').innerHTML = '*Batas waktu telah habis, ulangi proses pembayaran dari awal.';
-            // document.getElementById('status_message').innerHTML = 'Batas waktu telah habis, ulangi proses pembayaran dari awal.';
-            // document.getElementById('va').innerHTML = 'EXPIRED!';
+            Swal.fire({
+                icon: 'error',
+                title: 'Time Out!',
+                text: 'Ups! Waktu pembayaran Anda telah habis. Ulangi proses pembayaran pada halaman Checkout',
+            }).then(function() {
+                window.location = "<?= base_url('payment/checkout/' . $payment->KODE_TRANS) ?>";
+            });
             return;
         }
         var days = Math.floor(distance / _day);
@@ -259,7 +270,7 @@ if ($payment->TYPE == 1) {
     setInterval(function() {
         // this code runs every second 
         jQuery.ajax({
-            url: "<?= base_url('payment/get_payment_stat/' . $payment->KODE_PAY) ?>",
+            url: "<?= base_url('payment/get_payment_stat/' . $payment->KODE_TRANS) ?>",
             type: "GET",
             success: function(data) {
                 if (data == 1) {
@@ -283,4 +294,42 @@ if ($payment->TYPE == 1) {
             }
         });
     }, 6000);
+
+
+    setInterval(function() {
+        // this code runs every second 
+        jQuery.ajax({
+            url: "<?= base_url('payment/check_payment/' . $payment->KODE_TRANS) ?>",
+            type: "GET",
+            success: function(data) {
+                if (data == 1) {
+                    // Send new refresh request in 1 sec:
+                    $("#payment-info").html("<center><strong>Pembayaran sukses.</strong></center>");
+                    $("#status-payment").removeClass(" badge-warning");
+                    $("#status-payment").addClass(" badge-success");
+                    $("#status-payment").text("Pembayaran Sukses");
+                    $("#alert").html("<strong>Selamat!</strong> Pembayaran anda telah berhasil divalidasi.");
+                    $('#mdlBayarMulti').modal('show');
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Pembayaran Sukses',
+                        text: 'Selamat! Pembayaran Anda telah berhasil terverifikasi oleh sistem.',
+                        showConfirmButton: false
+                    })
+                    setTimeout(function() {
+                        location.reload();
+                    }, 2000);
+                } else if (data == "failed") {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Time Out!',
+                        text: 'Ups! Waktu pembayaran Anda telah habis. Ulangi proses pembayaran pada halaman Checkout',
+                    }).then(function() {
+                        window.location = "<?= base_url('payment/checkout/' . $payment->KODE_TRANS) ?>";
+                    });
+                    console.log(data);
+                }
+            }
+        });
+    }, 10000);
 </script>

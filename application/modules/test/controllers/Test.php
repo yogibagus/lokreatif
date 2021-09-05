@@ -6,6 +6,22 @@ class Test extends MX_Controller {
     parent::__construct();
   }
 
+  function test_mailing($message){
+      // $mail = array(
+      //   'to'        => "mahendradwipurwanto@gmail.com",
+      //   'subject'   => "test",
+      //   'message'   => file_get_contents(base_url() . "email_template/default_auth/".$message)
+      // );
+
+      // if ($this->mailer->send($mail) == TRUE) {
+      //   return true;
+      // }else {
+      //   return false;
+      // }
+
+    echo file_get_contents(base_url() . "email_template/default_auth/".$message);
+  }
+
   function email_valid($email){
     if (filter_var($email, FILTER_VALIDATE_EMAIL)) {
       echo "Valid";

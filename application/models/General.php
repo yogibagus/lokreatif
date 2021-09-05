@@ -216,7 +216,7 @@ class General extends CI_Model {
 
     // - cek sudah melakukan proses PEMBAYARAN [REDUNDANT]
     public function cek_sudahBayar($kode){
-        $query = $this->db->query("SELECT * FROM tb_order WHERE KODE_PENDAFTARAN = '$kode' AND KODE_TRANS IN (SELECT KODE_TRANS FROM tb_transaksi WHERE STAT_BAYAR > 0)");
+        $query = $this->db->query("SELECT * FROM tb_order WHERE KODE_PENDAFTARAN = '$kode' AND KODE_TRANS IN (SELECT KODE_TRANS FROM tb_transaksi WHERE TOT_BAYAR > 0 AND STAT_BAYAR > 0)");
         if ($query->num_rows() > 0) {
             // sudah melakukan proses pembayaran
             return true;

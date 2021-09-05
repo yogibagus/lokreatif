@@ -258,6 +258,20 @@ class M_admin extends CI_Model {
 
 	}
 
+	// BERKAS
+
+	public function get_berkasLomba(){
+		$this->db->select('*');
+		$this->db->from('berkas_kebutuhan');
+		$query = $this->db->get();
+		if ($query->num_rows() > 0) {
+			return $query->result();
+		}else{
+			return false;
+		}
+
+	}
+
 
 	// PROSES
 
@@ -266,6 +280,54 @@ class M_admin extends CI_Model {
 	// 1 DITERIMA / ACTIVE
 	// 2 DITOLAK / CANCELED
 	// 3 SUSPENDED
+
+	// BERKAS
+
+
+	public function tambahBerkas($file){
+		$JUDUL 		= $this->input->post('JUDUL');
+		$KETERANGAN = $this->input->post('KETERANGAN');
+
+		$data = array(
+			'JUDUL' 		=> $JUDUL,
+			'LINK' 			=> $file,
+			'KETERANGAN' 	=> $KETERANGAN,
+		);
+
+		$this->db->insert('berkas_kebutuhan', $data);
+		return ($this->db->affected_rows() != 1) ? false : true;
+
+	}
+
+
+	public function editBerkas($file){
+		$ID_BERKAS 	= $this->input->post('ID_BERKAS');
+		$JUDUL 		= $this->input->post('JUDUL');
+		$KETERANGAN = $this->input->post('KETERANGAN');
+
+		$data = array(
+			'JUDUL' 		=> $JUDUL,
+			'LINK' 			=> $file,
+			'KETERANGAN' 	=> $KETERANGAN,
+		);
+
+		$this->db->where('ID_BERKAS', $ID_BERKAS);
+		$this->db->update('berkas_kebutuhan', $data);
+		return ($this->db->affected_rows() != 1) ? false : true;
+
+	}
+
+
+	public function hapusBerkas(){
+		$ID_BERKAS 	= $this->input->post('ID_BERKAS');
+
+		$this->db->where('ID_BERKAS', $ID_BERKAS);
+		$this->db->delete('berkas_kebutuhan');
+		return ($this->db->affected_rows() != 1) ? false : true;
+
+	}
+
+	// PENGATURAN
 
 	public function ganti_passAdmin(){
 		$pass 		= htmlspecialchars($this->input->post('PASS_BARU'), true);

@@ -36,8 +36,8 @@ class Mailer{
     $mail->Username   = $this->get_data("EM_USERNAME");
     $mail->Password   = $this->get_data("EM_PASSWORD");
 
-    $mail->setFrom($this->get_data("EM_USERNAME"), $this->get_data("EM_USERNAME"));
-    $mail->addReplyTo($this->get_data("EM_USERNAME"), $this->get_data("EM_USERNAME"));
+    $mail->setFrom($this->get_data("EM_USERNAME"), $this->get_data("EM_ALIAS"));
+    $mail->addReplyTo($this->get_data("EM_USERNAME"), $this->get_data("EM_ALIAS"));
 
     // Add a recipient
     $mail->addAddress($data['to']);

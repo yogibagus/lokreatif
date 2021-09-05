@@ -129,7 +129,7 @@
                 <ul class="list-inline">
                   <?php foreach ($sosmed as $key): ?>
                     <li class="list-inline-item">
-                      <a class="icon icon-xs icon-soft-dark icon-circle" href="<?php echo $key->LINK_SOSMED;?>" data-toggle="tooltip" data-placement="top" title="<?= $key->NAMA_SOSMED;?> on <?= (isset($key->SOSMED) ? strtolower($key->SOSMED) : '');?>">
+                      <a class="icon icon-xs icon-soft-dark icon-circle" href="<?php echo prep_url($key->LINK_SOSMED);?>" data-toggle="tooltip" data-placement="top" title="<?= $key->NAMA_SOSMED;?> on <?= (isset($key->SOSMED) ? strtolower($key->SOSMED) : '');?>">
                         <i class="fab fa-<?= (isset($key->SOSMED) ? strtolower($key->SOSMED) : '');?>"></i>
                       </a>
                     </li>
