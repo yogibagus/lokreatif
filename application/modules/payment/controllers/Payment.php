@@ -456,12 +456,16 @@ class Payment extends MX_Controller
             $verifed = $this->durianpay->verifyPayment($payment_id, $pay_status->data->signature);
             if ($pay_status->data->status == "completed") {
                 echo true;
-                $this->change_stat_payment($pay_status->data->status, $payment);
+                if($payment->STAT_PAY != 3){
+                    $this->change_stat_payment($pay_status->data->status, $payment);
+                }
             } elseif ($pay_status->data->status == "processing") {
                 echo false;
             } elseif ($pay_status->data->status == "failed") {
-                $this->change_stat_payment($pay_status->data->status, $payment);
                 echo "failed";
+                if($payment->STAT_PAY != 4){
+                    $this->change_stat_payment($pay_status->data->status, $payment);
+                }
             } else {
                 $this->session->set_flashdata('error', "You're not allowed.");
                 redirect($this->agent->referrer());
@@ -489,6 +493,83 @@ class Payment extends MX_Controller
         } else {
             redirect();
         }
+    }
+
+    public function get_PaymentMultiTrans(){
+        $payments        = $this->M_payment->get_list_payment_by_kode_user($this->session->userdata('kode_user'));
+        $datas           = array();
+        $recordsTotal    = 0;
+        $recordsFiltered = 0;
+        
+        if($payments->result() != null){
+            $recordsTotal    = $payments->num_rows();
+            $recordsFiltered = $payments->num_rows();
+
+            foreach ($payments->result() as $item) {
+                if($item->KODE_PAY == null){
+                    $datas[] = array(
+                        "kodeTrans" => $item->KODE_TRANS,
+                        "tgl"       => "-",
+                        "tglExp"    => "-",
+                        "metode"    => "-",
+                        "nominal"   => "-",
+                        "stat"      => '<span class="badge bg-primary text-white">Belum Memilih Payment Method</span>',
+                        "aksi"      => '
+                            <a  href="'.site_url('payment/checkout/'.$item->KODE_TRANS).'" class="btn btn-xs btn-primary" target="_blank" data-bs-toggle="tooltip" data-bs-placement="top" title="Pilih Pembayaran">
+                                <i class="tio-money-vs" style="color: #fff;"></i>
+                            </a>
+                        '
+                    );
+                }else{
+                    if($item->STAT_PAY == 2){
+                        $this->check_payment($item->KODE_TRANS);
+                    }
+                    $paymentDetail = $this->M_payment->get_payment_by_kode_pay($item->KODE_PAY);
+
+                    $createdTime = date_create($paymentDetail->CREATED_TIME);
+                    $expTime     = date_create($paymentDetail->EXP_TIME);
+                    
+                    $aksi    = '
+                        <a  href="'.site_url('payment/checkout/'.$paymentDetail->KODE_TRANS).'" class="btn btn-xs btn-primary" target="_blank" data-bs-toggle="tooltip" data-bs-placement="top" title="Pilih Pembayaran">
+                            <i class="tio-money-vs" style="color: #fff;"></i>
+                        </a>
+                        <a href="'.site_url('payment/details/'.$paymentDetail->KODE_PAY).'" class="btn btn-xs btn-info" data-bs-toggle="tooltip" data-bs-placement="top" title="Detail Pembayaran" target="_blank">
+                            <i class="tio-info-outined"></i>
+                        </a>
+                    ';
+
+                    $status = '<span class="badge bg-'.$paymentDetail->COLOR_STAT_PAY.' text-white">'.$paymentDetail->ALIAS_STAT_PAY.'</span>';
+
+                    if($paymentDetail->STAT_PAY == 3){
+                        $aksi = '
+                            <a href="'.site_url('payment/details/'.$paymentDetail->KODE_PAY).'" class="btn btn-xs btn-info" data-bs-toggle="tooltip" data-bs-placement="top" title="Detail Pembayaran" target="_blank">
+                                <i class="tio-info-outined"></i>
+                            </a>
+                        ';
+                    }
+    
+                    $datas[] = array(
+                        "kodeTrans" => $paymentDetail->KODE_TRANS,
+                        "tgl"       => date_format($createdTime, 'd M Y H:i:s'),
+                        "tglExp"    => date_format($expTime, 'd M Y H:i:s'),
+                        "metode"    => '<img style="max-width: 50px;" class="img-fluid w-90 fit-image" src="'.$paymentDetail->IMG_PAY_METHOD.'">',
+                        "nominal"   => 'Rp. '.number_format($paymentDetail->PAID_AMOUNT),
+                        "stat"      => $status,
+                        "aksi"      => $aksi
+                    );
+                }
+
+            }
+        }
+
+        $response = array(
+            "draw" => intval($_POST['draw']),
+            "recordsTotal" => $recordsTotal,
+            "recordsFiltered" => $recordsFiltered,
+            "aaData" => $datas
+        );
+
+        echo json_encode($response);
     }
 
     public function get_tutorial_payment($id_pay_method = "")

@@ -164,7 +164,7 @@
                                                 +62
                                             </span>
                                         </div>
-                                        <input type="number" class="form-control" oninput="requiredAlertMobile()" placeholder="XXX-XXXX-XXXX" name="mobile" id="mobile" value="" required>
+                                        <input type="tel" class="form-control" oninput="requiredAlertMobile()" placeholder="XXX-XXXX-XXXX" name="mobile" id="mobile" value="" required>
                                     </div>
                                     <small class="text-muted" id="required-alert-wallet">*) Harap masukan Nomor E-Wallet anda pada form diatas.</small>
                                     <!-- End Input Group -->
