@@ -150,7 +150,7 @@ class General extends CI_Model {
     // - cek kelengkapan data berkas peserta by kode_pendaftaran
 
     public function cek_kelengkapanBerkas($kode){
-        $query = $this->db->query("SELECT ID_FORM FROM form_meta WHERE KODE = 'lokreatif' AND ID_FORM NOT IN (SELECT ID_FORM FROM pendaftaran_data WHERE KODE_PENDAFTARAN = '$kode' AND JAWABAN != '')");
+        $query = $this->db->query("SELECT ID_FORM FROM form_meta WHERE KODE = 'lokreatif' AND REQUIRED = 1 AND ID_FORM NOT IN (SELECT ID_FORM FROM pendaftaran_data WHERE KODE_PENDAFTARAN = '$kode' AND JAWABAN != '')");
         if ($query->num_rows() > 0) {
             return false;
         }else{
