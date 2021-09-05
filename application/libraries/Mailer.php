@@ -1,6 +1,7 @@
 <?php defined('BASEPATH') OR exit('No direct script access allowed');
 
 use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\SMTP;
 use PHPMailer\PHPMailer\Exception;
 
 class Mailer{
@@ -27,41 +28,59 @@ class Mailer{
     if ($this->get_data("SMPT_GMAIL") == true) {
         $mail->isSMTP();
     }
-    
-    $mail->SMTPDebug  = FALSE;
-    $mail->SMTPAuth   = TRUE;
-    $mail->SMTPSecure = "ssl";
-    $mail->Port       = 465;
-    $mail->Host       = $this->get_data("EM_HOST");
-    $mail->Username   = $this->get_data("EM_USERNAME");
-    $mail->Password   = $this->get_data("EM_PASSWORD");
+    try {
+        $mail->SMTPDebug  = $this->get_data("EM_DEBUG");
 
-    $mail->setFrom($this->get_data("EM_USERNAME"), $this->get_data("EM_ALIAS"));
-    $mail->addReplyTo($this->get_data("EM_USERNAME"), $this->get_data("EM_ALIAS"));
+        // SMTP configuration
+        if ($this->get_data("SMPT_GMAIL") == true) {
+            $mail->SMTPAuth   = TRUE;
+        }
+        $mail->SMTPSecure = "ssl";
+        $mail->Port       = 465;
+        $mail->Host       = $this->get_data("EM_HOST");
+        $mail->Username   = $this->get_data("EM_USERNAME");
+        $mail->Password   = $this->get_data("EM_PASSWORD");
 
-    // Add a recipient
-    $mail->addAddress($data['to']);
+        $mail->setFrom($this->get_data("EM_USERNAME"), $this->get_data("EM_ALIAS"));
+        $mail->addReplyTo($this->get_data("EM_USERNAME"), $this->get_data("EM_ALIAS"));
 
-    // Email subject
-    $mail->Subject = $data['subject'];
+        // Add a recipient
+        $mail->addAddress($data['to']);
 
-    // Set email format to HTML
-    $mail->isHTML(true);
-    // Email body content
-    $mail->Body = $data['message'];
+        // Email subject
+        $mail->Subject = $data['subject'];
 
-    // Send email
-    if (!$mail->send()) {
-			echo 'Message could not be sent. <br>';
-			echo 'Mailer Error: ' . $mail->ErrorInfo;
-			echo '<br>Contact ADMIN ';
-			die();
-      return false;
-    } else {
-      return true;
+        // Set email format to HTML
+        $mail->isHTML(true);
+        // Email body content
+        $mail->Body = $data['message'];
+
+        // Send email
+        if (!$mail->send()) {
+                echo 'Message could not be sent. <br>';
+                echo 'Mailer Error: ' . $mail->ErrorInfo;
+                echo '<br>Contact ADMIN ';
+                die();
+          return false;
+        } else {
+          return true;
+        }
+        $mail->clearAddresses();
+        $mail->clearAttachments();
+    } catch (Exception $e) {
+        echo 'Message could not be sent. <br>';
+        echo 'Mailer Error: ' . $mail->ErrorInfo;
+        echo '<br>Contact ADMIN ';
+        die();
+        $data = array(
+            'RECEIVER_GROUP'    => 1,
+            'RECEIVER'          => 'ADM_001',
+            'SENDER'            => 'System',
+            'CUST_MESSAGE'      => 'Galat mailer pada:'.$e,
+            'TYPE'              => 1
+        );
+        $this->_ci->db->insert('log_aktivitas', $data);
     }
-    $mail->clearAddresses();
-    $mail->clearAttachments();
   }
 
 }

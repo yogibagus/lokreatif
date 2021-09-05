@@ -81,11 +81,11 @@
 					<div>
 
 						<label class="btn btn-sm btn-primary transition-3d-hover file-attachment-btn" for="fileAttachmentBtn<?= $no;?>">
-							<span id="customFileUpload<?= $no;?>"><?= $CI->General->get_formData($dataPendaftaran->KODE_PENDAFTARAN, $key->ID_FORM);?></span>
+							<span id="customFileUpload<?= $no;?>"><?= empty($CI->General->get_formData($dataPendaftaran->KODE_PENDAFTARAN, $key->ID_FORM)) ? 'Tambahkan file' : $CI->General->get_formData($dataPendaftaran->KODE_PENDAFTARAN, $key->ID_FORM);?></span>
 							<input id="fileAttachmentBtn<?= $no;?>" name="JAWABAN[]" type="file" class="js-file-attach file-attachment-btn-label" accept=".pdf"
 							data-hs-file-attach-options='{
 							"textTarget": "#customFileUpload<?= $no;?>"
-						}'>
+						}'  <?= ($key->REQUIRED == 1) ? "required" : "";?>>
 					</label>
 					
 				</div>
