@@ -248,4 +248,54 @@ class M_payment extends CI_Model
             return false;
         }
     }
+
+    public function get_list_payment_by_kode_user($kodeUser){
+        return $this->db->query("
+            SELECT 
+                tt.KODE_TRANS ,
+                tp.KODE_PAY ,
+                tp.CREATED_TIME ,
+                tp.EXP_TIME ,
+                tpm.IMG_PAY_METHOD ,
+                tp.PAID_AMOUNT ,
+                tp.STAT_PAY ,
+                tsp.COLOR_STAT_PAY ,
+                tsp.ALIAS_STAT_PAY 
+            FROM  tb_transaksi tt
+            LEFT JOIN tb_payment tp ON tt.KODE_TRANS = tp.KODE_TRANS 
+            LEFT JOIN tb_payment_method tpm ON tp.ID_PAY_METHOD = tpm.ID_PAY_METHOD
+            LEFT JOIN tb_status_payment tsp ON tsp.ID_STAT_PAY = tp.STAT_PAY 
+            WHERE tt.KODE_USER_BILL = '$kodeUser'
+            ORDER BY tp.CREATED_TIME ASC, tp.CREATED_TIME DESC            
+        ");
+    }
+
+    public function get_payment_by_kode_pay($kodePay){
+        return $this->db->query("
+            SELECT 
+                tt.KODE_TRANS ,
+                tp.KODE_PAY ,
+                tp.CREATED_TIME ,
+                tp.EXP_TIME ,
+                tpm.IMG_PAY_METHOD ,
+                tp.PAID_AMOUNT ,
+                tp.STAT_PAY ,
+                tsp.COLOR_STAT_PAY ,
+                tsp.ALIAS_STAT_PAY 
+            FROM  tb_transaksi tt
+            LEFT JOIN tb_payment tp ON tt.KODE_TRANS = tp.KODE_TRANS 
+            LEFT JOIN tb_payment_method tpm ON tp.ID_PAY_METHOD = tpm.ID_PAY_METHOD
+            LEFT JOIN tb_status_payment tsp ON tsp.ID_STAT_PAY = tp.STAT_PAY 
+            WHERE tp.KODE_PAY = '$kodePay'
+            ORDER BY tp.CREATED_TIME DESC           
+            ")->row();
+    }
+
+    public function get_status_payment($kodeTrans){
+        return $this->db->query("
+            SELECT tsp.*
+            FROM tb_payment p, tb_status_payment tsp 
+            WHERE p.STAT_PAY = tsp.ID_STAT_PAY AND p.KODE_TRANS = '$kodeTrans'
+        ")->row();
+    }
 }

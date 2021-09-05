@@ -116,28 +116,28 @@
 								<form action="<?= site_url('peserta/bayar_pendaftaran');?>" method="POST">
 									<input type="hidden" name="KODE_PENDAFTARAN" value="<?= $dataPendaftaran->KODE_PENDAFTARAN;?>">
 									<input type="hidden" name="BIAYA_TIM" value="<?= $totBayar;?>">
-									<button type="submit" class="badge badge-danger mb-2">
+									<button type="submit" class="badge badge-danger">
 										Bayar ulang
 									</button>
 								</form>
 							<?php elseif ($statBayar == false):?>
 								<?php if($dibayarinUniv == true):?>
-									<button class="badge badge-warning mb-2" disabled>
+									<button class="badge badge-warning" disabled>
 										<i class="fas fa-check fa-sm mr-2"></i> sedang diproses
 									</button>
 								<?php else:?>
 									<?php if ($sudahBayar == true) :?>
-										<a href="<?= site_url('peserta/riwayat-pembayaran');?>" class="badge badge-danger mb-2">
+										<a href="<?= site_url('peserta/riwayat-pembayaran');?>" class="badge badge-danger">
 											Lanjutkan pembayaran
 										</a>
 									<?php else:?>
-										<a href="<?= site_url('peserta/bayar_pendaftaran/'.$dataPendaftaran->KODE_PENDAFTARAN);?>" class="badge badge-danger mb-2">
+										<a href="<?= site_url('peserta/bayar_pendaftaran/'.$dataPendaftaran->KODE_PENDAFTARAN);?>" class="badge badge-danger">
 											Bayar biaya pendaftaran
 										</a>
 									<?php endif;?>
 								<?php endif;?>
 							<?php else:?>
-								<a class="badge badge-success mb-2">
+								<a class="badge badge-success">
 									sudah dibayar
 								</a>
 							<?php endif;?>
@@ -149,7 +149,7 @@
 							<?php if ($bayarGagal == false && $statBayar != false) :?>
 								<a href="<?= site_url('peserta/Unggah-karya');?>" class="badge badge-success">unggah karya</a>
 							<?php else:?>
-								<a class="badge badge-danger mb-2">
+								<a class="badge badge-danger">
 									selesaikan pembayaran terlebih dahulu
 								</a>
 							<?php endif;?>
