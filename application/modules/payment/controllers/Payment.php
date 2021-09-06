@@ -428,18 +428,24 @@ class Payment extends MX_Controller
         }
     }
 
-    public function send_invoice($emailto, $kode_trans)
+    public function send_invoice($emailto = "", $kode_trans = "")
     {
-        $payment = $this->M_payment->get_transaksi_by_id($kode_trans);
-        if ($payment->STAT_BAYAR == 3) {
+        if ($emailto != "" && $kode_trans != "") {
             $data['to'] = $emailto;
             $data['subject'] = "Pembayaran Sukses - Pendaftaran LO-KREATIF";
             $data['message'] = file_get_contents(base_url() . "email_template/send_invoice/" . $kode_trans);
             $this->mailer->send($data);
         } else {
-            $this->session->set_flashdata('error', "Tidak dapat mengirim invoice, pembayaran belum diselesaikan.");
-            redirect($this->agent->referrer());
+            redirect();
         }
+    }
+
+    public function test($param = "TRAN_a8daf0")
+    {
+        $payment = $this->M_payment->get_payment_by_kode_trans($param);
+        // send invoice 
+        $get_user = $this->M_payment->get_user_by_order_id($payment->ORDER_ID); //get user
+        $this->send_invoice($get_user->EMAIL, $payment->KODE_TRANS);
     }
 
 
@@ -507,12 +513,11 @@ class Payment extends MX_Controller
             $update_payment =  $this->M_payment->update_pay_by_order_id($payment->ORDER_ID, $data_pay);
             if ($update_payment == true) {
                 $data_trans['STAT_BAYAR'] = 3; //order complete
-                $update_transaksi = $this->M_payment->update_transaksi($payment->KODE_TRANS, $data_trans);
-                if ($update_transaksi == true) {
-                    // send invoice 
-                    $get_user = $this->M_payment->get_user_by_order_id($payment->ORDER_ID); //get user
-                    $this->send_invoice($get_user->EMAIL, $payment->KODE_TRANS);
-                }
+                $this->M_payment->update_transaksi($payment->KODE_TRANS, $data_trans);
+
+                // send invoice 
+                $get_user = $this->M_payment->get_user_by_order_id($payment->ORDER_ID); //get user
+                $this->send_invoice($get_user->EMAIL, $payment->KODE_TRANS);
             }
         } else if ($status == "failed") {
             $data_pay['STAT_PAY'] = 4; //payment failed

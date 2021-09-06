@@ -24,10 +24,16 @@ class Webhook extends CI_Controller
 
             $data_pay['STAT_PAY'] = 3; //payment success 
             $data_pay['LOG_TIME'] = date('Y-m-d H:i:s');; //payment success 
-            $update_payment =  $this->M_payment->update_pay_by_order_id($order_id, $data_pay);
-            if ($update_payment == true) {
-                $data_trans['STAT_BAYAR'] = 3; //order complete
-                $this->M_payment->update_transaksi($payment->KODE_TRANS, $data_trans);
+            if ($payment->STAT_PAY != 3) { // if status unpaid
+                $update_payment =  $this->M_payment->update_pay_by_order_id($order_id, $data_pay);
+                if ($update_payment == true) {
+                    $data_trans['STAT_BAYAR'] = 3; //order complete
+                    $this->M_payment->update_transaksi($payment->KODE_TRANS, $data_trans);
+
+                    // send invoice 
+                    $get_user = $this->M_payment->get_user_by_order_id($payment->ORDER_ID); //get user
+                    $this->send_invoice($get_user->EMAIL, $payment->KODE_TRANS);
+                }
             }
         } else if ($result['event'] == "payment.failed") {
             $order_id = $result['data']['order_id'];
@@ -41,5 +47,17 @@ class Webhook extends CI_Controller
         $datas['CONTENT_LOG'] = $json_result;
         $datas['ORDER_ID'] = $result['data']['order_id'];
         $this->M_payment->insert_log_webhook($datas);
+    }
+
+    public function send_invoice($emailto = "", $kode_trans = "")
+    {
+        if ($emailto != "" && $kode_trans != "") {
+            $data['to'] = $emailto;
+            $data['subject'] = "Pembayaran Sukses - Pendaftaran LO-KREATIF";
+            $data['message'] = file_get_contents(base_url() . "email_template/send_invoice/" . $kode_trans);
+            $this->mailer->send($data);
+        } else {
+            redirect();
+        }
     }
 }
