@@ -384,7 +384,7 @@ class Authentication extends MX_Controller {
 
 				if ($aktivasi->STATUS == 0) {
 					$subject	= "KODE AKTIVASI AKUN LO Kreatif";
-					$message 	= "Kode aktivasi anda: <br><b style'font-size: 20px;'>{$this->encryption->decrypt($aktivasi->KEY)}</b></br><small class='text-muted'>TOKEN AKTIVASI akan valid selama 1x24JAM, harap melakukan aktivasi dalam batas waktu yang telah ditentukan. <span class='text-danger'>JIKA MELEBIHI BATAS WAKTU, AKUN ANDA AKAN DIHAPUS DAN HARAP MELAKUKAN PROES PENDAFTARAN AKUN DARI AWAL.</span></small>";
+					$message 	= "Kode aktivasi anda: <br><br><center><b style'font-size: 20px;'>{$this->encryption->decrypt($aktivasi->KEY)}</b></center><br><br><small class='text-muted'>KODE AKTIVASI akan valid selama 1x24JAM, harap melakukan aktivasi dalam batas waktu yang telah ditentukan. <span class='text-danger'>JIKA MELEBIHI BATAS WAKTU, AKUN ANDA AKAN DIHAPUS DAN HARAP MELAKUKAN PROES PENDAFTARAN AKUN DARI AWAL.</span></small>";
 
 					if ($this->send_email($email, $subject, $message) == TRUE) {
 
