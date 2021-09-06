@@ -79,7 +79,7 @@ $db['default'] = array(
 	// 'username' => 'nestive7_admin',
 	// 'password' => '@)1l51(MQ??a',
 	// 'database' => 'nestive7_cms',
-	'username' => 'lokreatif_prod',
+	'username' => 'lokreatif',
 	'password' => '1sampailo',
 	'database' => 'lokreatif',
 
