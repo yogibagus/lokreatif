@@ -556,9 +556,12 @@ class Payment extends MX_Controller
                     // btn refund
                     if(!empty($item->KODE_REFUND && $item->KODE_REFUND != null)){
                         if($item->STAT_REFUND == 0){
-                            $aksi .= '
+                            $aksi = '
                                 <a href="'.site_url('refund-pts/'.$item->KODE_TRANS).'" class="btn btn-xs btn-dark" data-bs-toggle="tooltip" data-bs-placement="top" title="Refund" target="_blank">
                                     <i class="tio-savings"></i>
+                                </a>
+                                <a href="'.site_url('payment/details/'.$item->KODE_PAY).'" class="btn btn-xs btn-info" data-bs-toggle="tooltip" data-bs-placement="top" title="Detail Pembayaran" target="_blank">
+                                    <i class="tio-info-outined"></i>
                                 </a>
                             ';
                             $status .= ' <span class="badge bg-dark text-white">Refund Pembayaran</span>';
