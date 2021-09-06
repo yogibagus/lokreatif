@@ -278,6 +278,21 @@ class General extends CI_Model {
         }
     }
 
+    // - get data refund by kode_trans
+    public function get_dataRefundPTS($KODE_TRANS){
+        $this->db->select('*');
+        $this->db->from('tb_transaksi a');
+        $this->db->join('tb_refund b', 'a.KODE_TRANS = b.KODE_TRANS');
+        $this->db->join('tb_order c', 'a.KODE_TRANS = c.KODE_TRANS');
+        $this->db->where(array('a.KODE_TRANS' => $KODE_TRANS));
+        $query = $this->db->get();
+        if ($query->num_rows() > 0) {
+            return $query->row();
+        }else{
+            return false;
+        }
+    }
+
     public function cek_refeundUniv($KODE_TRANS){
         $query = $this->db->get_where('tb_refund', array('KODE_TRANS' => $KODE_TRANS, 'STAT_REFUND' => 0));
         if ($query->num_rows() > 0) {

@@ -51,11 +51,12 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 */
 // UNIVERSITAS
 
-$route['pts']         		= 'univ';
-$route['pts/order']         = 'univ/order';
-$route['transaksi-pts']     = 'univ/transaksi';
-$route['pts/payment']       = 'univ/payment';
-$route['pengaturan-pts']    = 'univ/pengaturan';
+$route['pts']         			= 'univ';
+$route['pts/order']         	= 'univ/order';
+$route['transaksi-pts']     	= 'univ/transaksi';
+$route['pts/payment']       	= 'univ/payment';
+$route['pengaturan-pts']    	= 'univ/pengaturan';
+$route['refund-pts/(:any)']     = 'refund/pts/$1';
 // END UNIVERSITAS
 
 // LOGIN

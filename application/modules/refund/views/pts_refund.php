@@ -16,11 +16,7 @@
           <div class="media align-items-center mb-3 border-bottom">
             <span class="d-block font-size-1 mr-3">Asal PTS</span>
             <div class="media-body text-right">
-              <?php if ($this->session->userdata('role') == 1) :?>
-                <span class="text-dark font-weight-bold"><?= $dataPendaftaran->namapt;?></span>
-              <?php else:?>
-                <span class="text-dark font-weight-bold"><?= $this->session->userdata('nama');?></span>
-              <?php endif;?>
+              <span class="text-dark font-weight-bold"><?= $this->session->userdata('nama');?></span>
             </div>
           </div>
           <div class="media align-items-center">
