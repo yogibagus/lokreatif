@@ -494,7 +494,18 @@ class Payment extends MX_Controller
             redirect();
         }
     }
+    public function check_payment_mulitTrans(){
+        $payments   = $this->M_payment->get_list_payment_by_kode_user($this->session->userdata('kode_user'));
+        $status     = "Tidak ada perubahan data";
 
+        foreach ($payments->result() as $item) {
+            if($item->KODE_PAY != null){
+                $this->check_payment($item->KODE_TRANS);
+                $status = 'Check payment sukses'; 
+            }
+        }
+        echo json_encode($status);
+    }
     public function get_PaymentMultiTrans(){
         $payments        = $this->M_payment->get_list_payment_by_kode_user($this->session->userdata('kode_user'));
         $datas           = array();
@@ -521,39 +532,45 @@ class Payment extends MX_Controller
                         '
                     );
                 }else{
-                    if($item->STAT_PAY == 2){
-                        $this->check_payment($item->KODE_TRANS);
-                    }
-                    $paymentDetail = $this->M_payment->get_payment_by_kode_pay($item->KODE_PAY);
+                    $createdTime = date_create($item->CREATED_TIME);
+                    $expTime     = date_create($item->EXP_TIME);
+                    $status = '<span class="badge bg-'.$item->COLOR_STAT_PAY.' text-white">'.$item->ALIAS_STAT_PAY.'</span>';
 
-                    $createdTime = date_create($paymentDetail->CREATED_TIME);
-                    $expTime     = date_create($paymentDetail->EXP_TIME);
-                    
+                    // btn aksi
                     $aksi    = '
-                        <a  href="'.site_url('payment/checkout/'.$paymentDetail->KODE_TRANS).'" class="btn btn-xs btn-primary" target="_blank" data-bs-toggle="tooltip" data-bs-placement="top" title="Pilih Pembayaran">
+                        <a  href="'.site_url('payment/checkout/'.$item->KODE_TRANS).'" class="btn btn-xs btn-primary" target="_blank" data-bs-toggle="tooltip" data-bs-placement="top" title="Pilih Pembayaran">
                             <i class="tio-money-vs" style="color: #fff;"></i>
                         </a>
-                        <a href="'.site_url('payment/details/'.$paymentDetail->KODE_PAY).'" class="btn btn-xs btn-info" data-bs-toggle="tooltip" data-bs-placement="top" title="Detail Pembayaran" target="_blank">
+                        <a href="'.site_url('payment/details/'.$item->KODE_PAY).'" class="btn btn-xs btn-info" data-bs-toggle="tooltip" data-bs-placement="top" title="Detail Pembayaran" target="_blank">
                             <i class="tio-info-outined"></i>
                         </a>
                     ';
-
-                    $status = '<span class="badge bg-'.$paymentDetail->COLOR_STAT_PAY.' text-white">'.$paymentDetail->ALIAS_STAT_PAY.'</span>';
-
-                    if($paymentDetail->STAT_PAY == 3){
+                    if($item->STAT_PAY == 3){
                         $aksi = '
-                            <a href="'.site_url('payment/details/'.$paymentDetail->KODE_PAY).'" class="btn btn-xs btn-info" data-bs-toggle="tooltip" data-bs-placement="top" title="Detail Pembayaran" target="_blank">
+                            <a href="'.site_url('payment/details/'.$item->KODE_PAY).'" class="btn btn-xs btn-info" data-bs-toggle="tooltip" data-bs-placement="top" title="Detail Pembayaran" target="_blank">
                                 <i class="tio-info-outined"></i>
                             </a>
                         ';
                     }
+
+                    // btn refund
+                    if(!empty($item->KODE_REFUND && $item->KODE_REFUND != null)){
+                        if($item->STAT_REFUND == 0){
+                            $aksi .= '
+                                <a href="'.site_url('refund-pts/'.$item->KODE_TRANS).'" class="btn btn-xs btn-dark" data-bs-toggle="tooltip" data-bs-placement="top" title="Refund" target="_blank">
+                                    <i class="tio-savings"></i>
+                                </a>
+                            ';
+                            $status .= ' <span class="badge bg-dark text-white">Refund Pembayaran</span>';
+                        }
+                    }
     
                     $datas[] = array(
-                        "kodeTrans" => $paymentDetail->KODE_TRANS,
+                        "kodeTrans" => $item->KODE_TRANS,
                         "tgl"       => date_format($createdTime, 'd M Y H:i:s'),
                         "tglExp"    => date_format($expTime, 'd M Y H:i:s'),
-                        "metode"    => '<img style="max-width: 50px;" class="img-fluid w-90 fit-image" src="'.$paymentDetail->IMG_PAY_METHOD.'">',
-                        "nominal"   => 'Rp. '.number_format($paymentDetail->PAID_AMOUNT),
+                        "metode"    => '<img style="max-width: 50px;" class="img-fluid w-90 fit-image" src="'.$item->IMG_PAY_METHOD.'">',
+                        "nominal"   => 'Rp. '.number_format($item->PAID_AMOUNT,0,",","."),
                         "stat"      => $status,
                         "aksi"      => $aksi
                     );
