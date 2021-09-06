@@ -251,22 +251,25 @@ class M_payment extends CI_Model
 
     public function get_list_payment_by_kode_user($kodeUser){
         return $this->db->query("
-            SELECT 
-                tt.KODE_TRANS ,
-                tp.KODE_PAY ,
-                tp.CREATED_TIME ,
-                tp.EXP_TIME ,
-                tpm.IMG_PAY_METHOD ,
-                tp.PAID_AMOUNT ,
-                tp.STAT_PAY ,
-                tsp.COLOR_STAT_PAY ,
-                tsp.ALIAS_STAT_PAY 
-            FROM  tb_transaksi tt
-            LEFT JOIN tb_payment tp ON tt.KODE_TRANS = tp.KODE_TRANS 
-            LEFT JOIN tb_payment_method tpm ON tp.ID_PAY_METHOD = tpm.ID_PAY_METHOD
-            LEFT JOIN tb_status_payment tsp ON tsp.ID_STAT_PAY = tp.STAT_PAY 
-            WHERE tt.KODE_USER_BILL = '$kodeUser'
-            ORDER BY tp.CREATED_TIME ASC, tp.CREATED_TIME DESC            
+        SELECT 
+            tt.KODE_TRANS ,
+            tp.KODE_PAY ,
+            tp.CREATED_TIME ,
+            tp.EXP_TIME ,
+            tpm.IMG_PAY_METHOD ,
+            tp.PAID_AMOUNT ,
+            tp.STAT_PAY ,
+            tsp.COLOR_STAT_PAY ,
+            tsp.ALIAS_STAT_PAY ,
+            tr.KODE_REFUND ,
+            tr.STAT_REFUND 
+        FROM  tb_transaksi tt
+        LEFT JOIN tb_payment tp ON tt.KODE_TRANS = tp.KODE_TRANS 
+        LEFT JOIN tb_payment_method tpm ON tp.ID_PAY_METHOD = tpm.ID_PAY_METHOD
+        LEFT JOIN tb_status_payment tsp ON tsp.ID_STAT_PAY = tp.STAT_PAY 
+        LEFT JOIN tb_refund tr ON tr.KODE_TRANS = tt.KODE_TRANS
+        WHERE tt.KODE_USER_BILL = '$kodeUser'
+        ORDER BY FIELD(tp.CREATED_TIME, null), tp.CREATED_TIME DESC             
         ");
     }
 

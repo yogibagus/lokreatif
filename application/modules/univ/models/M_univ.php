@@ -49,7 +49,7 @@ class M_univ extends CI_Model {
 				tt2.LOG_TIME 
 			FROM tb_transaksi tt2, tb_order to2 , pendaftaran_kompetisi pk
 			WHERE tt2.KODE_TRANS = to2.KODE_TRANS AND to2.KODE_PENDAFTARAN = pk.KODE_PENDAFTARAN AND pk.ASAL_PTS = $kodept AND tt2.ROLE_USER_BILL = 3
-			GROUP BY KODE_TRANS 
+			GROUP BY KODE_TRANS
 		");
 		return $query->result();
 	}
@@ -76,6 +76,7 @@ class M_univ extends CI_Model {
 			LEFT JOIN tb_order to2 ON to2.KODE_PENDAFTARAN = pk.KODE_PENDAFTARAN 
 			LEFT JOIN tb_transaksi tt ON tt.KODE_TRANS = to2.KODE_TRANS
 		WHERE pk.ASAL_PTS = $kodept
+		ORDER BY tt.STAT_BAYAR ASC, tt.LOG_TIME DESC
 			");
 		return $query->result();
 	}
