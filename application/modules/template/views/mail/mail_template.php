@@ -47,11 +47,10 @@
     color: #4E4F52;
     font-size: 16px;
     background:#f2f5f8; 
-    background-image: repeating-linear-gradient(45deg, #ececff, #ececff 30px, #fafafa 30px, #fafafa 34px);">
+    background-image: grey; ">
      <div style="margin: 0 auto 0 auto; width: 560px;">
          <div style="padding-top: 55px; text-align : center;">
              <div style="font-weight: 700;font-size: 32px;">
-                 Pembayaran
                  <span style="border-bottom: 4px solid #5050ff; font-size: 32px; ">LO-KREATIF</span>
              </div>
          </div>

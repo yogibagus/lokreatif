@@ -31,9 +31,12 @@ class Payment extends MX_Controller
             } else {
                 $uri = uri_string();
             }
-            $this->session->set_userdata('redirect', $uri);
-            $this->session->set_flashdata('error', "Harap login ke akun anda, untuk melanjutkan");
-            redirect('login');
+
+            if ($this->uri->segment(2) != "mail_payment_created") {
+                $this->session->set_userdata('redirect', $uri);
+                $this->session->set_flashdata('error', "Harap login ke akun anda, untuk melanjutkan");
+                redirect('login');
+            }
         }
     }
 
@@ -181,7 +184,7 @@ class Payment extends MX_Controller
         $last_payment = $this->M_payment->get_last_payment($kode_trans);
         if ($transaksi != false) {
             // create delay time
-            if ($last_payment->CREATED_TIME == null) {
+            if ($last_payment->CREATED_TIME == null || !isset($last_payment->CREATED_TIME)) {
                 $last_kode_pay = null; // set last_kode_pay
                 $last_payment_id = null; // get payment_id
                 $time_limit = strtotime("01-01-90 00:00:00");
@@ -248,7 +251,7 @@ class Payment extends MX_Controller
                                 // cancel last payment
                                 $this->durianpay->cancelPayment($last_payment_id);
                                 // send email reminder
-                                // $this->send_email(1, $kode_pay);
+                                $this->send_email(1, $kode_pay);
                                 redirect('payment/details/' . $kode_pay);
                             } else {
                                 $this->session->set_flashdata('error', "Failed to update transaction");
@@ -403,22 +406,42 @@ class Payment extends MX_Controller
         }
     }
 
-    public function send_email($kode, $param) //kode_pay //kode_trans
+    public function send_email($kode = "", $param = "") //1kode_pay
     {
-        // kode 1 = payment details
-        // kode 2 = invoice
-        if ($this->role == "3") {
-            $user = $this->M_payment->get_univ_by_id($this->kode_user);
-        } else {
-            $user = $this->General->get_akun($this->kode_user);
-        }
-        if ($kode == 1) {
-            $data['to'] = $user->EMAIL;
-            $data['subject'] = "Selesaikan Pembayaran - Pendaftaran LO-KREATIF";
-            $data['message'] = file_get_contents(base_url() . "payment/mail_payment_created/" . $param . "/" . $user->KODE_USER . "/" . $this->role);
-            $this->mailer->send($data);
+        if ($kode != "" && $param != "") {
+            $payment = $this->M_payment->get_payment_by_id($param);
+            // kode 1 = payment details
+            // kode 2 = invoice
+            if ($this->role == "3") {
+                $user = $this->M_payment->get_univ_by_id($this->kode_user);
+            } else {
+                $user = $this->General->get_akun($this->kode_user);
+            }
+            if ($kode == 1) {
+                $data['to'] = $user->EMAIL;
+                $data['subject'] = "Selesaikan Pembayaran - Pendaftaran LO-KREATIF";
+                $data['message'] = file_get_contents(base_url() . "payment/mail_payment_created/" . $param . "/" . $user->KODE_USER . "/" . $this->role);
+                $this->mailer->send($data);
+            } else {
+                redirect();
+            }
         }
     }
+
+    public function send_invoice($emailto, $kode_trans)
+    {
+        $payment = $this->M_payment->get_transaksi_by_id($kode_trans);
+        if ($payment->STAT_BAYAR == 3) {
+            $data['to'] = $emailto;
+            $data['subject'] = "Pembayaran Sukses - Pendaftaran LO-KREATIF";
+            $data['message'] = file_get_contents(base_url() . "email_template/send_invoice/" . $kode_trans);
+            $this->mailer->send($data);
+        } else {
+            $this->session->set_flashdata('error', "Tidak dapat mengirim invoice, pembayaran belum diselesaikan.");
+            redirect($this->agent->referrer());
+        }
+    }
+
 
     public function get_payment_stat($param = "")
     {
@@ -456,14 +479,14 @@ class Payment extends MX_Controller
             $verifed = $this->durianpay->verifyPayment($payment_id, $pay_status->data->signature);
             if ($pay_status->data->status == "completed") {
                 echo true;
-                if($payment->STAT_PAY != 3){
+                if ($payment->STAT_PAY != 3) {
                     $this->change_stat_payment($pay_status->data->status, $payment);
                 }
             } elseif ($pay_status->data->status == "processing") {
                 echo false;
             } elseif ($pay_status->data->status == "failed") {
                 echo "failed";
-                if($payment->STAT_PAY != 4){
+                if ($payment->STAT_PAY != 4) {
                     $this->change_stat_payment($pay_status->data->status, $payment);
                 }
             } else {
@@ -484,7 +507,12 @@ class Payment extends MX_Controller
             $update_payment =  $this->M_payment->update_pay_by_order_id($payment->ORDER_ID, $data_pay);
             if ($update_payment == true) {
                 $data_trans['STAT_BAYAR'] = 3; //order complete
-                $this->M_payment->update_transaksi($payment->KODE_TRANS, $data_trans);
+                $update_transaksi = $this->M_payment->update_transaksi($payment->KODE_TRANS, $data_trans);
+                if ($update_transaksi == true) {
+                    // send invoice 
+                    $get_user = $this->M_payment->get_user_by_order_id($payment->ORDER_ID); //get user
+                    $this->send_invoice($get_user->EMAIL, $payment->KODE_TRANS);
+                }
             }
         } else if ($status == "failed") {
             $data_pay['STAT_PAY'] = 4; //payment failed
@@ -494,30 +522,34 @@ class Payment extends MX_Controller
             redirect();
         }
     }
-    public function check_payment_mulitTrans(){
+
+    public function check_payment_mulitTrans()
+    {
         $payments   = $this->M_payment->get_list_payment_by_kode_user($this->session->userdata('kode_user'));
         $status     = "Tidak ada perubahan data";
 
         foreach ($payments->result() as $item) {
-            if($item->KODE_PAY != null){
+            if ($item->KODE_PAY != null) {
                 $this->check_payment($item->KODE_TRANS);
-                $status = 'Check payment sukses'; 
+                $status = 'Check payment sukses';
             }
         }
         echo json_encode($status);
     }
-    public function get_PaymentMultiTrans(){
+
+    public function get_PaymentMultiTrans()
+    {
         $payments        = $this->M_payment->get_list_payment_by_kode_user($this->session->userdata('kode_user'));
         $datas           = array();
         $recordsTotal    = 0;
         $recordsFiltered = 0;
-        
-        if($payments->result() != null){
+
+        if ($payments->result() != null) {
             $recordsTotal    = $payments->num_rows();
             $recordsFiltered = $payments->num_rows();
 
             foreach ($payments->result() as $item) {
-                if($item->KODE_PAY == null){
+                if ($item->KODE_PAY == null) {
                     $datas[] = array(
                         "kodeTrans" => $item->KODE_TRANS,
                         "tgl"       => "-",
@@ -526,59 +558,58 @@ class Payment extends MX_Controller
                         "nominal"   => "-",
                         "stat"      => '<span class="badge bg-primary text-white">Belum Memilih Payment Method</span>',
                         "aksi"      => '
-                            <a  href="'.site_url('payment/checkout/'.$item->KODE_TRANS).'" class="btn btn-xs btn-primary" target="_blank" data-bs-toggle="tooltip" data-bs-placement="top" title="Pilih Pembayaran">
+                            <a  href="' . site_url('payment/checkout/' . $item->KODE_TRANS) . '" class="btn btn-xs btn-primary" target="_blank" data-bs-toggle="tooltip" data-bs-placement="top" title="Pilih Pembayaran">
                                 <i class="tio-money-vs" style="color: #fff;"></i>
                             </a>
                         '
                     );
-                }else{
+                } else {
                     $createdTime = date_create($item->CREATED_TIME);
                     $expTime     = date_create($item->EXP_TIME);
-                    $status = '<span class="badge bg-'.$item->COLOR_STAT_PAY.' text-white">'.$item->ALIAS_STAT_PAY.'</span>';
+                    $status = '<span class="badge bg-' . $item->COLOR_STAT_PAY . ' text-white">' . $item->ALIAS_STAT_PAY . '</span>';
 
                     // btn aksi
                     $aksi    = '
-                        <a  href="'.site_url('payment/checkout/'.$item->KODE_TRANS).'" class="btn btn-xs btn-primary" target="_blank" data-bs-toggle="tooltip" data-bs-placement="top" title="Pilih Pembayaran">
+                        <a  href="' . site_url('payment/checkout/' . $item->KODE_TRANS) . '" class="btn btn-xs btn-primary" target="_blank" data-bs-toggle="tooltip" data-bs-placement="top" title="Pilih Pembayaran">
                             <i class="tio-money-vs" style="color: #fff;"></i>
                         </a>
-                        <a href="'.site_url('payment/details/'.$item->KODE_PAY).'" class="btn btn-xs btn-info" data-bs-toggle="tooltip" data-bs-placement="top" title="Detail Pembayaran" target="_blank">
+                        <a href="' . site_url('payment/details/' . $item->KODE_PAY) . '" class="btn btn-xs btn-info" data-bs-toggle="tooltip" data-bs-placement="top" title="Detail Pembayaran" target="_blank">
                             <i class="tio-info-outined"></i>
                         </a>
                     ';
-                    if($item->STAT_PAY == 3){
+                    if ($item->STAT_PAY == 3) {
                         $aksi = '
-                            <a href="'.site_url('payment/details/'.$item->KODE_PAY).'" class="btn btn-xs btn-info" data-bs-toggle="tooltip" data-bs-placement="top" title="Detail Pembayaran" target="_blank">
+                            <a href="' . site_url('payment/details/' . $item->KODE_PAY) . '" class="btn btn-xs btn-info" data-bs-toggle="tooltip" data-bs-placement="top" title="Detail Pembayaran" target="_blank">
                                 <i class="tio-info-outined"></i>
                             </a>
                         ';
                     }
 
                     // btn refund
-                    if(!empty($item->KODE_REFUND && $item->KODE_REFUND != null)){
-                        if($item->STAT_REFUND == 0){
+                    if (!empty($item->KODE_REFUND && $item->KODE_REFUND != null)) {
+                        if ($item->STAT_REFUND == 0) {
                             $aksi = '
-                                <a href="'.site_url('refund-pts/'.$item->KODE_TRANS).'" class="btn btn-xs btn-dark" data-bs-toggle="tooltip" data-bs-placement="top" title="Refund" target="_blank">
+                                <a href="' . site_url('refund-pts/' . $item->KODE_TRANS) . '" class="btn btn-xs btn-dark" data-bs-toggle="tooltip" data-bs-placement="top" title="Refund" target="_blank">
                                     <i class="tio-savings"></i>
                                 </a>
-                                <a href="'.site_url('payment/details/'.$item->KODE_PAY).'" class="btn btn-xs btn-info" data-bs-toggle="tooltip" data-bs-placement="top" title="Detail Pembayaran" target="_blank">
+                                <a href="' . site_url('payment/details/' . $item->KODE_PAY) . '" class="btn btn-xs btn-info" data-bs-toggle="tooltip" data-bs-placement="top" title="Detail Pembayaran" target="_blank">
                                     <i class="tio-info-outined"></i>
                                 </a>
                             ';
                             $status .= ' <span class="badge bg-dark text-white">Refund Pembayaran</span>';
                         }
                     }
-    
+
                     $datas[] = array(
                         "kodeTrans" => $item->KODE_TRANS,
                         "tgl"       => date_format($createdTime, 'd M Y H:i:s'),
                         "tglExp"    => date_format($expTime, 'd M Y H:i:s'),
-                        "metode"    => '<img style="max-width: 50px;" class="img-fluid w-90 fit-image" src="'.$item->IMG_PAY_METHOD.'">',
-                        "nominal"   => 'Rp. '.number_format($item->PAID_AMOUNT,0,",","."),
+                        "metode"    => '<img style="max-width: 50px;" class="img-fluid w-90 fit-image" src="' . $item->IMG_PAY_METHOD . '">',
+                        "nominal"   => 'Rp. ' . number_format($item->PAID_AMOUNT, 0, ",", "."),
                         "stat"      => $status,
                         "aksi"      => $aksi
                     );
                 }
-
             }
         }
 
