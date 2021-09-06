@@ -33,8 +33,16 @@ class Mailer{
 
         // SMTP configuration
         if ($this->get_data("SMPT_GMAIL") == true) {
+            $mail->SMTPAuth   = TRUE;
         }
-            $mail->SMTPAuth   = FALSE;
+        $mail->SMTPOptions = array(
+            'ssl' => array(
+                'verify_peer' => false,
+                'verify_peer_name' => false,
+                'allow_self_signed' => true
+            )
+        );
+      
         $mail->SMTPSecure = "ssl";
         $mail->Port       = $this->get_data("EM_PORT");
         $mail->Host       = $this->get_data("EM_HOST");
