@@ -16,7 +16,7 @@ class M_Cronjob extends CI_Model{
 
     public function get_dataRefund($biayaUpdate, $kodept){
         $query = $this->db->query("
-            SELECT to2.KODE_TRANS , (to2.BIAYA_TIM - $biayaUpdate) AS REFUND
+            SELECT to2.KODE_TRANS , (to2.BIAYA_TIM - $biayaUpdate)*COUNT(tt.KODE_TRANS) AS REFUND
             FROM tb_order to2 , tb_transaksi tt, pendaftaran_kompetisi pk 
             WHERE to2.KODE_TRANS = tt.KODE_TRANS 
                 AND to2.KODE_PENDAFTARAN = pk.KODE_PENDAFTARAN 
