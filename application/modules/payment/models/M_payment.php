@@ -122,7 +122,7 @@ class M_payment extends CI_Model
     function get_payment_by_id($kode_pay)
     {
         $kode_pay   = $this->db->escape($kode_pay);
-        $query = $this->db->query("SELECT * FROM tb_payment WHERE KODE_PAY = $kode_pay");
+        $query = $this->db->query("SELECT * FROM tb_payment AS a, tb_status_payment AS b WHERE a.`KODE_PAY` = $kode_pay AND a.`STAT_PAY` = b.`ID_STAT_PAY`");
         if ($query->num_rows() > 0) {
             return $query->row();
         } else {
@@ -228,6 +228,21 @@ class M_payment extends CI_Model
         }
     }
 
+    function get_user_by_order_id($order_id)
+    {
+        $order_id   = $this->db->escape($order_id);
+        $query = $this->db->query("    SELECT * FROM tb_payment AS a, tb_transaksi AS b, tb_auth AS c WHERE a.`ORDER_ID` = $order_id 
+        AND a.`KODE_TRANS` = b.`KODE_TRANS` 
+        AND c.`KODE_USER` = b.`KODE_USER_BILL`");
+        if ($query->num_rows() > 0) {
+            return $query->row();
+        } else {
+            return false;
+        }
+    }
+
+
+
     function get_all_payment_method()
     {
         $query = $this->db->query("SELECT * FROM tb_payment_method WHERE STAT_PAY_METHOD = 1");
@@ -249,7 +264,8 @@ class M_payment extends CI_Model
         }
     }
 
-    public function get_list_payment_by_kode_user($kodeUser){
+    public function get_list_payment_by_kode_user($kodeUser)
+    {
         return $this->db->query("
         SELECT 
             tt.KODE_TRANS ,
@@ -273,7 +289,8 @@ class M_payment extends CI_Model
         ");
     }
 
-    public function get_payment_by_kode_pay($kodePay){
+    public function get_payment_by_kode_pay($kodePay)
+    {
         return $this->db->query("
             SELECT 
                 tt.KODE_TRANS ,
@@ -294,7 +311,8 @@ class M_payment extends CI_Model
             ")->row();
     }
 
-    public function get_status_payment($kodeTrans){
+    public function get_status_payment($kodeTrans)
+    {
         return $this->db->query("
             SELECT tsp.*
             FROM tb_payment p, tb_status_payment tsp 
