@@ -526,7 +526,7 @@ class Authentication extends MX_Controller {
 	public function proses_lupa(){
 		if ($this->M_auth->cek_akun(htmlspecialchars($this->input->post("email"), TRUE)) == TRUE) {
 
-			$user 		= $this->General->get_auth(htmlspecialchars($this->input->post("email"), TRUE));
+			$user 		= $this->General->get_authOnly(htmlspecialchars($this->input->post("email"), TRUE));
 			$kode_user 	= $this->db->escape($user->KODE_USER);
 			$this->db->delete("tb_token", array('KODE' => $kode_user, 'TYPE' => 2));
 
@@ -597,7 +597,7 @@ class Authentication extends MX_Controller {
 	public function reset_pass(){
 
 		if ($this->M_auth->cek_akun(htmlspecialchars($this->input->post("email"), TRUE)) == TRUE) {
-			$user = $this->General->get_auth(htmlspecialchars($this->input->post("email"), TRUE));
+			$user = $this->General->get_authOnly(htmlspecialchars($this->input->post("email"), TRUE));
 
 			$data = array('PASSWORD' => password_hash(htmlspecialchars($this->input->post("password"), TRUE), PASSWORD_DEFAULT));
 			$this->db->where("EMAIL", htmlspecialchars($this->input->post("email"), TRUE));

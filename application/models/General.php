@@ -102,6 +102,18 @@ class General extends CI_Model {
         }
     }
 
+    // - get data peserta by email
+    public function get_authOnly($email){
+        $email = $this->db->escape($email);
+        $query = $this->db->query("SELECT * FROM tb_auth WHERE EMAIL = $email");
+
+        if ($query->num_rows() > 0) {
+            return $query->row();
+        }else{
+            return false;
+        }
+    }
+
     // - get data peserta by kode_user
     public function get_akun($kode){
         $kode   = $this->db->escape($kode);
