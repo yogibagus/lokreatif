@@ -20,34 +20,51 @@ class Refund extends MX_Controller {
 	}
 
 	public function index(){
+		if ($this->session->userdata('role') == 1) {
 
-		if ($this->General->get_dataRefund($this->session->userdata("kode_user")) != false) {
-			$dataPeserta 			= $this->General->get_detailDaftarKompetisi($this->session->userdata("kode_user"));
-			$dataRefund 			= $this->General->get_dataRefund($this->session->userdata("kode_user"));
-			$data['dataPendaftaran']= $dataPeserta;
+			if ($this->General->get_dataRefund($this->session->userdata("kode_user")) != false) {
+				$dataPeserta 			= $this->General->get_detailDaftarKompetisi($this->session->userdata("kode_user"));
+				$dataRefund 			= $this->General->get_dataRefund($this->session->userdata("kode_user"));
+				$data['dataPendaftaran']= $dataPeserta;
+				$data['dataRefund']		= $dataRefund;
+				$data['biayaRefund']    = $this->General->count_jmlRefund($dataRefund->KODE_TRANS);
+				$data['tim']        	= $this->General->get_tim($dataRefund->KODE_TRANS);
+
+				$data['CI']				= $this;
+
+				$data['module'] 		= "refund";
+				$data['fileview'] 		= "refund";
+				echo Modules::run('template/frontend_user', $data);
+			}else{
+
+				$data['module'] 		= "refund";
+				$data['fileview'] 		= "no_refund";
+				echo Modules::run('template/frontend_user', $data);
+			}
+		}else{
+			$this->session->set_flashdata('warning', "Hak akses tidak cocok !!");
+			redirect($this->agent->referrer());
+		}
+	}
+
+	public function pts($KODE_TRANS = null){
+
+		if ($this->General->get_dataRefundPTS($KODE_TRANS) != false) {
+			$dataRefund 			= $this->General->get_dataRefundPTS($KODE_TRANS);
 			$data['dataRefund']		= $dataRefund;
-			$data['biayaRefund']    = $this->General->count_jmlRefund($dataRefund->KODE_TRANS);
-			$data['tim']        	= $this->General->get_tim($dataRefund->KODE_TRANS);
+			$data['biayaRefund']    = $this->General->count_jmlRefund($KODE_TRANS);
+			$data['tim']        	= $this->General->get_tim($KODE_TRANS);
 
 			$data['CI']				= $this;
 
 			$data['module'] 		= "refund";
-			if ($this->session->userdata('role') == 1) {
-				$data['fileview'] 		= "refund";
-				echo Modules::run('template/frontend_user', $data);
-			}else{
-				$data['fileview'] 		= "pts_refund";
-				echo Modules::run('template/backend_main', $data);
-			}
+			$data['fileview'] 		= "pts_refund";
+			echo Modules::run('template/backend_main', $data);
 		}else{
 
 			$data['module'] 		= "refund";
 			$data['fileview'] 		= "no_refund";
-			if ($this->session->userdata('role') == 1) {
-				echo Modules::run('template/frontend_user', $data);
-			}else{
-				echo Modules::run('template/backend_main', $data);
-			}
+			echo Modules::run('template/backend_main', $data);
 		}
 	}
 
