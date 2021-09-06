@@ -42,8 +42,9 @@ class Mailer{
                 'allow_self_signed' => true
             )
         );
+      
         $mail->SMTPSecure = "ssl";
-        $mail->Port       = 465;
+        $mail->Port       = $this->get_data("EM_PORT");
         $mail->Host       = $this->get_data("EM_HOST");
         $mail->Username   = $this->get_data("EM_USERNAME");
         $mail->Password   = $this->get_data("EM_PASSWORD");
