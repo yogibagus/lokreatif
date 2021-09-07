@@ -7,7 +7,7 @@ class M_utilities extends CI_Model {
 	}
 
 	function c_penyelenggara(){
-		return $this->db->get_where("tb_penyelenggara", array('STATUS' => 1))->num_rows();
+		return $this->db->get("bidang_lomba")->num_rows();
 	}
 
 	function c_peserta(){

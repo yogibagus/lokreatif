@@ -76,7 +76,7 @@
 
                     <div class="form-group">
                       <label class="input-label font-weight-bold">Keterangan Kriteria <small class="text-muted">(optional)</small></label>
-                      <textarea type="text" class="form-control form-control-sm" name="KETERANGAN[]" placeholder="Tambahkan keterangan kriteria"></textarea>
+                      <textarea type="text" class="form-control form-control-sm editor" name="KETERANGAN[]" placeholder="Tambahkan keterangan kriteria"></textarea>
                       <small class="text-muted">ex: Penyisihan</small>
                     </div>
 
@@ -133,7 +133,7 @@
 
                   <div class="form-group">
                     <label class="input-label font-weight-bold">Keterangan Kriteria <small class="text-muted">(optional)</small></label>
-                    <textarea type="text" class="form-control form-control-sm" name="KETERANGAN[]" placeholder="Tambahkan keterangan kriteria"></textarea>
+                    <textarea type="text" class="form-control form-control-sm editor" name="KETERANGAN[]" placeholder="Tambahkan keterangan kriteria"></textarea>
                     <small class="text-muted">ex: Penyisihan</small>
                   </div>
                 </div>
@@ -218,7 +218,7 @@
 
                     <div class="form-group">
                       <label class="input-label font-weight-bold">Keterangan Kriteria <small class="text-muted">(optional)</small></label>
-                      <textarea type="text" class="form-control form-control-sm" name="KETERANGAN"><?= $key->KETERANGAN;?></textarea>
+                      <textarea type="text" class="form-control form-control-sm editor" name="KETERANGAN"><?= $key->KETERANGAN;?></textarea>
                       <small class="text-muted">ex: Penyisihan</small>
                     </div>
 
@@ -263,3 +263,24 @@
 </div>
 </div>
 <!-- End Card -->
+
+
+<script type="text/javascript">
+  // TINYMCE
+  tinymce.init({
+    selector: 'textarea.editor',
+    height: 300,
+    menubar: false,
+    branding: false,
+    plugins: [
+    'advlist autolink lists link image charmap print preview anchor',
+    'searchreplace visualblocks code fullscreen',
+    'insertdatetime media table paste code help wordcount'
+    ],
+    toolbar: 'undo redo | formatselect | ' +
+    'bold italic backcolor | alignleft aligncenter ' +
+    'alignright alignjustify | bullist numlist outdent indent | ' +
+    'removeformat | help',
+    content_style: 'body { font-family:Helvetica,Arial,sans-serif; font-size:14px }'
+  });
+</script>
