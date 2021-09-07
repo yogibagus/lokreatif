@@ -49,7 +49,7 @@
 
                   <div class="form-group mb-0">
                     <label class="input-label font-weight-bold">Keterangan bidang lomba <small class="text-danger">*</small></label>
-                    <textarea type="text" class="form-control form-control-sm" name="KETERANGAN" rows="3" placeholder="Masukkan keterangan bidang lomba" reqired></textarea>
+                    <textarea type="text" class="form-control form-control-sm editor" name="KETERANGAN" rows="3" placeholder="Masukkan keterangan bidang lomba" reqired></textarea>
                   </div>
 
                 </div>
@@ -136,7 +136,7 @@
                           </div>
                           <div class="form-group mb-0">
                             <label class="input-label font-weight-bold">Keterangan bidang lomba <small class="text-danger">*</small></label>
-                            <textarea type="text" class="form-control form-control-sm" name="KETERANGAN" rows="3" reqired><?= $key->KETERANGAN;?></textarea>
+                            <textarea type="text" class="form-control form-control-sm editor" name="KETERANGAN" rows="3" reqired><?= $key->KETERANGAN;?></textarea>
                           </div>
 
                         </div>
@@ -204,5 +204,26 @@
       $("#aturMin").addClass('d-none');
       $("#aturMax").addClass('d-none');
     }
+  });
+</script>
+
+
+<script type="text/javascript">
+  // TINYMCE
+  tinymce.init({
+    selector: 'textarea.editor',
+    height: 300,
+    menubar: false,
+    branding: false,
+    plugins: [
+    'advlist autolink lists link image charmap print preview anchor',
+    'searchreplace visualblocks code fullscreen',
+    'insertdatetime media table paste code help wordcount'
+    ],
+    toolbar: 'undo redo | formatselect | ' +
+    'bold italic backcolor | alignleft aligncenter ' +
+    'alignright alignjustify | bullist numlist outdent indent | ' +
+    'removeformat | help',
+    content_style: 'body { font-family:Helvetica,Arial,sans-serif; font-size:14px }'
   });
 </script>

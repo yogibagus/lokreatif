@@ -49,7 +49,7 @@
   <!-- JS Plugins Init. -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.lazyload/1.9.1/jquery.lazyload.min.js" integrity="sha512-jNDtFf7qgU0eH/+Z42FG4fw3w7DM/9zbgNPe3wfJlCylVDTT3IgKW5r92Vy9IHa6U50vyMz5gRByIu4YIXFtaQ==" crossorigin="anonymous"></script>
 </head>
-<body>
+<body <?= current_url() == base_url() ? 'class="bg-cs"' : '' ;?>>
 
   <?php $this->load->view('header/main_header.php') ?>
 
@@ -144,6 +144,11 @@
     }).init();
   });
 
+  // INITIALIZATION OF COUNTDOWNS
+  // =======================================================
+  $('.js-countdown').each(function () {
+    var countdown = $.HSCore.components.HSCountdown.init($(this));
+  });
 
   // INITIALIZATION OF UNFOLD
   // =======================================================

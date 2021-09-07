@@ -107,7 +107,7 @@
             <a href="<?= $LN_TWITTER;?>" class="text-muted" target="_blank"><?= $LN_TWITTER;?></a>
           </li>
           <li>
-            <i class="tio-github nav-icon mr-1"></i>
+            <i class="tio-youtube nav-icon mr-1"></i>
             <a href="<?= $LN_GITHUB;?>" class="text-muted" target="_blank"><?= $LN_GITHUB;?></a>
           </li>
         </ul>
@@ -145,7 +145,7 @@
             <input type="text" class="form-control form-control-sm" name="LN_TWITTER" value="<?= $LN_TWITTER;?>" required>
           </div>
           <div class="form-group">
-            <label class="input-label"><i class="tio-github nav-icon mr-1"></i> Github</label>
+            <label class="input-label"><i class="tio-youtube nav-icon mr-1"></i> Youtube</label>
             <input type="text" class="form-control form-control-sm" name="LN_GITHUB" value="<?= $LN_GITHUB;?>" required>
           </div>
           <hr>

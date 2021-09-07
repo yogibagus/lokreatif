@@ -39,7 +39,7 @@ class M_manageKompetisi extends CI_Model {
 
 	function tambah_bidangLomba(){
 		$BIDANG_LOMBA 	= htmlspecialchars($this->input->post('BIDANG_LOMBA'), true);
-		$KETERANGAN 	= htmlspecialchars($this->input->post('KETERANGAN'), true);
+		$KETERANGAN 	= $this->input->post('KETERANGAN');
 
 		$data = array(
 			'BIDANG_LOMBA' 	=> $BIDANG_LOMBA,
@@ -53,7 +53,7 @@ class M_manageKompetisi extends CI_Model {
 		$ID_BIDANG 		= $this->input->post('ID_BIDANG');
 
 		$BIDANG_LOMBA 	= htmlspecialchars($this->input->post('BIDANG_LOMBA'), true);
-		$KETERANGAN 	= htmlspecialchars($this->input->post('KETERANGAN'), true);
+		$KETERANGAN 	= $this->input->post('KETERANGAN');
 
 		$data = array(
 			'BIDANG_LOMBA' 	=> $BIDANG_LOMBA,
@@ -220,7 +220,7 @@ class M_manageKompetisi extends CI_Model {
 
 	function tambah_tahap(){
 		$NAMA_TAHAP 		= htmlspecialchars($this->input->post('NAMA_TAHAP'), true);
-		$KETERANGAN 		= htmlspecialchars($this->input->post('KETERANGAN'), true);
+		$KETERANGAN 		= $this->input->post('KETERANGAN');
 		$TANGGAL_MULAI 		= htmlspecialchars($this->input->post('TANGGAL_MULAI'), true);
 		$WAKTU_MULAI 		= htmlspecialchars($this->input->post('WAKTU_MULAI'), true);
 		$TANGGAL_BERAKHIR 	= htmlspecialchars($this->input->post('TANGGAL_BERAKHIR'), true);
@@ -244,7 +244,7 @@ class M_manageKompetisi extends CI_Model {
 		$ID_TAHAP 			= $this->input->post('ID_TAHAP');
 
 		$NAMA_TAHAP 		= htmlspecialchars($this->input->post('NAMA_TAHAP'), true);
-		$KETERANGAN 		= htmlspecialchars($this->input->post('KETERANGAN'), true);
+		$KETERANGAN 		= $this->input->post('KETERANGAN');
 		$TANGGAL_MULAI 		= htmlspecialchars($this->input->post('TANGGAL_MULAI'), true);
 		$WAKTU_MULAI 		= htmlspecialchars($this->input->post('WAKTU_MULAI'), true);
 		$TANGGAL_BERAKHIR 	= htmlspecialchars($this->input->post('TANGGAL_BERAKHIR'), true);
@@ -325,7 +325,7 @@ class M_manageKompetisi extends CI_Model {
 
 		$KRITERIA 		= htmlspecialchars($this->input->post('KRITERIA'), true);
 		$BOBOT 			= htmlspecialchars($this->input->post('BOBOT'), true);
-		$KETERANGAN 	= htmlspecialchars($this->input->post('KETERANGAN'), true);
+		$KETERANGAN 	= $this->input->post('KETERANGAN');
 
 		$data = array(
 			'KRITERIA'		=> $KRITERIA,

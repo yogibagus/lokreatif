@@ -1,28 +1,47 @@
 <!-- Hero Section -->
-<div class="container space-top-2">
+<div class="container space-top-1">
   <div class="row justify-content-lg-between align-items-lg-center">
-    <div class="col-sm-10 col-lg-5 mb-7 mb-lg-0">
-      <img class="img-fluid" src="<?= base_url();?>assets/illustration_teamwork.png" alt="<?= $WEB_JUDUL;?>">
-    </div>
 
     <div class="col-lg-6">
       <div class="mb-4">
-        <h1 class="display-5 mb-3">
-          Kompetisi NASIONAL
-          <br>
-          <span class="text-info font-weight-bold">
-            <span class="js-text-animation"
-              data-hs-typed-options='{
-              "strings": [ "ide bisnis", "desain poster", "game mobile", "video pendek", "tiktok" ],
-              "typeSpeed": 90,
-              "loop": true,
-              "backSpeed": 30,
-              "backDelay": 2500
-            }'></span>
-          </span>
+        <small class="h5 font-weight-normal">BERBAGI INOVASI ANAK BANGSA UNTUK INDONESIA PADA KENORMALAN BARU</small>
+        <h1 class="display-4 font-weight-bold mb-3">
+          <?= $WEB_JUDUL;?> <?= date("Y");?>
         </h1>
-        <p class=""><?= $WEB_DESKRIPSI;?></p>
+        <!-- Countdown -->
+        <div class="js-countdown row mb-1"
+             data-hs-countdown-options='{
+               "endDate": "2021/10/24"
+             }'>
+          <div class="col-2">
+            <?php
+            if ($days > 31): ?>
+              <span class="font-size-4 text-primary font-weight-bold mb-0"><?= $days;?></span>
+            <?php else:?>
+              <span class="js-cd-days font-size-4 text-primary font-weight-bold mb-0"></span>
+            <?php endif;?>
+            <span class="h4 d-block mb-0">Days</span>
+          </div>
+          <div class="col-2">
+            <span class="js-cd-hours font-size-4 text-primary font-weight-bold mb-0"></span>
+            <span class="h4 d-block mb-0">Hours</span>
+          </div>
+          <div class="col-2">
+            <span class="js-cd-minutes font-size-4 text-primary font-weight-bold mb-0"></span>
+            <span class="h4 d-block mb-0">Mins</span>
+          </div>
+          <div class="col-2">
+            <span class="js-cd-seconds font-size-4 text-primary font-weight-bold mb-0"></span>
+            <span class="h4 d-block mb-0">Secs</span>
+          </div>
+        </div>
+        <!-- End Countdown -->
+        <p>Batas waktu pendaftaran dan unggah karya</p>
       </div>
+    </div>
+
+    <div class="col-sm-10 col-lg-6 mb-7 mb-lg-0">
+      <img class="img-fluid" src="<?= base_url();?>assets/illustration_teamwork.png" alt="<?= $WEB_JUDUL;?>">
     </div>
   </div>
 </div>
@@ -37,19 +56,97 @@
 </figure>
 <!-- End SVG Bottom Shape -->
 
+<!-- Description Section -->
+<div class="container w-lg-80 space-2">
+  <div class="row center-flext">
+    <?php if ($bidangLomba != false) : ?>
+      <?php $no=1; foreach ($bidangLomba as $value) :?>
+      <div class="col-6 col-md-3 px-2 mb-3">
+        <a href="<?= site_url('detail-lomba/'.$value->ID_BIDANG);?>" class="custom-control custom-radio custom-control-inline checkbox-outline checkbox-icon text-center w-100 h-100">
+          <label class="checkbox-outline-label w-100 rounded py-3 px-1 mb-0">
+            <img class="img-fluid w-50 mb-3" src="<?= base_url();?><?= $value->POSTER == null ? 'assets/frontend/svg/illustrations/discussion-scene.svg' : 'berkas/kompetisi/bidang-lomba/'.$value->POSTER;?>" alt="SVG">
+            <span class="d-block text-muted">(<?= $value->BIDANG_LOMBA;?>)</span>
+          </label>
+        </a>
+      </div>
+      <?php $no++; endforeach;?>
+    <?php endif;?>
+  </div>
+</div>
+
+<!-- Title -->
+<div class="w-md-75 w-lg-50 space-top-1 text-center mx-md-auto mb-5 mb-md-9">
+  <p class="text-primary mb-0">INFORMASI</p>
+  <h2 class="h2">Pusat informasi <?= $WEB_JUDUL;?> <?= date("Y");?></h2>
+</div>
+<!-- End Title -->
+  
+<div class="container w-lg-80 space-bottom-2">
+  <div class="row justify-content-sm-center text-center center-flext">
+
+    <div class="col-sm-6 col-lg-3">
+      <!-- Icon Blocks -->
+      <a class="card h-100 transition-3d-hover" href="<?= site_url('hubungi-kami');?>">
+        <div class="card-body">
+          <figure class="w-100 max-w-8rem mb-4">
+            <img class="img-fluid" src="<?= base_url();?>assets/frontend/svg/icons/icon-18.svg" alt="SVG">
+          </figure>
+          <h4>Hubungi Kami</h4>
+          <p class="font-size-1 text-body mb-0">Cari tau lebih lanjut di media sosial atau hubungi ADMIN kami</p>
+        </div>
+        <div class="card-footer border-0 pt-0">
+          <span class="font-size-1">Labih lanjut <i class="fas fa-angle-right fa-sm ml-1"></i></span>
+        </div>
+      </a>
+      <!-- End Icon Blocks -->
+    </div>
+
+    <div class="col-sm-6 col-lg-3">
+      <!-- Icon Blocks -->
+      <a class="card h-100 transition-3d-hover" href="<?= site_url('unduhan');?>">
+        <div class="card-body">
+          <figure class="w-100 max-w-8rem mb-4">
+            <img class="img-fluid" src="<?= base_url();?>assets/frontend/svg/icons/icon-43.svg" alt="SVG">
+          </figure>
+          <h4>Unduh berkas</h4>
+          <p class="font-size-1 text-body mb-0">Unduh berkas kebutuhan lomba <?= $WEB_JUDUL;?> <?= date("Y");?></p>
+        </div>
+        <div class="card-footer border-0 pt-0">
+          <span class="font-size-1">Lebih lanjut <i class="fas fa-angle-right fa-sm ml-1"></i></span>
+        </div>
+      </a>
+      <!-- End Icon Blocks -->
+    </div>
+
+    <div class="col-sm-6 col-lg-3">
+      <!-- Icon Blocks -->
+      <a class="card h-100 transition-3d-hover" href="<?= site_url('pusat-bantuan');?>">
+        <div class="card-body">
+          <figure class="w-100 max-w-8rem mb-4">
+            <img class="img-fluid" src="<?= base_url();?>assets/frontend/svg/icons/icon-18.svg" alt="SVG">
+          </figure>
+          <h4>Pusat bantuan</h4>
+          <p class="font-size-1 text-body mb-0">Kunjungi pusat bantuan jika anda mengalami kesulitan</p>
+        </div>
+        <div class="card-footer border-0 pt-0">
+          <span class="font-size-1">Lebih lanjut <i class="fas fa-angle-right fa-sm ml-1"></i></span>
+        </div>
+      </a>
+      <!-- End Icon Blocks -->
+    </div>
+  </div>
+
+</div>
 
 <?php if($kegiatan != false):?>
   <!-- Popular Categories Section -->
-  <div class="space-bottom-2" style="background: url(<?= base_url();?>assets/frontend/svg/components/abstract-shapes-9.svg) center no-repeat;">
+  <div class="space-bottom-3" style="background: url(<?= base_url();?>assets/frontend/svg/components/abstract-shapes-9.svg) center no-repeat;">
     <div class="position-relative">
       <div class="container space-2">
         <!-- Title -->
-        <div class="row align-items-md-center mb-7">
-          <div class="col-md-6 mb-4 mb-md-0">
-            <h2>Daftar kegiatan.</h2>
-          </div>
-          <div class="col-md-6 text-md-right">
-          </div>
+        <div class="w-md-75 w-lg-50 text-center mx-md-auto mb-5 mb-md-9">
+          <p class="text-primary mb-0">KEGIATAN</p>
+          <h2 class="h2">Kegiatan <?= $WEB_JUDUL;?> <?= date("Y");?></h2>
         </div>
         <!-- End Title -->
 
@@ -107,53 +204,18 @@
 <?php endif;?>
 
 <!-- Clients Section -->
-<div class="container space-2">
+<div class="container space-top-3">
   <!-- Title -->
-  <div class="w-md-80 w-lg-60 text-center mx-md-auto mb-6">
-    <h2>Co-Host</h2>
-  </div>
-  <!-- End Title -->
-
-  <!-- Clients -->
-  <div class="row justify-content-sm-center text-center">
-    <div class="col-4 col-sm-2 mb-7">
-      <img class="max-w-11rem max-w-md-13rem mx-auto" src="<?= base_url();?>assets/frontend/svg/clients-logo/slack.svg" alt="Image Description">
+  <div class="w-md-75 w-lg-50 text-center mx-md-auto mb-5 mb-md-9">
+      <p class="text-primary mb-0">SPONSOR</p>
+      <h2 class="h2">Sponsor pendukung <?= $WEB_JUDUL;?> <?= date("Y");?></h2>
     </div>
-  </div>
-  <!-- End Clients -->
-</div>
-<!-- End Clients Section -->
-
-<!-- Clients Section -->
-<div class="container space-2">
-  <!-- Title -->
-  <div class="w-md-80 w-lg-60 text-center mx-md-auto mb-6">
-    <h2>Media Partners</h2>
-  </div>
   <!-- End Title -->
 
   <!-- Clients -->
   <div class="row justify-content-sm-center text-center">
     <div class="col-4 col-sm-2 mb-7">
-      <img class="max-w-11rem max-w-md-13rem mx-auto" src="<?= base_url();?>assets/frontend/svg/clients-logo/slack.svg" alt="Image Description">
-    </div>
-  </div>
-  <!-- End Clients -->
-</div>
-<!-- End Clients Section -->
-
-<!-- Clients Section -->
-<div class="container space-2 space-bottom-2">
-  <!-- Title -->
-  <div class="w-md-80 w-lg-60 text-center mx-md-auto mb-6">
-    <h2>Industry Partners</h2>
-  </div>
-  <!-- End Title -->
-
-  <!-- Clients -->
-  <div class="row justify-content-sm-center text-center">
-    <div class="col-4 col-sm-2 mb-7">
-      <img class="max-w-11rem max-w-md-13rem mx-auto" src="<?= base_url();?>assets/frontend/svg/clients-logo/slack.svg" alt="Image Description">
+      - belum ada -
     </div>
   </div>
   <!-- End Clients -->
@@ -164,7 +226,7 @@
 <figure>
   <svg preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="100%" height="64px"
   viewBox="0 0 1921 273" style="margin-bottom: -8px; enable-background:new 0 0 1921 273;" xml:space="preserve">
-  <polygon fill="#f9fbff" points="0,273 1921,273 1921,0 "/>
-</svg>
+    <polygon fill="#f9fbff" points="0,273 1921,273 1921,0 "/>
+  </svg>
 </figure>
 <!-- End SVG Top Shape -->

@@ -15,6 +15,14 @@ class Home extends MX_Controller{
 		$data['kegiatan']			= $this->M_home->get_kegiatanAll();
 		$data['bidangLomba']		= $this->M_home->get_bidangLomba();
 		
+		$date1  = "2021-10-24";
+		$date2  = date("Y-m-d");
+
+		$diff   = abs(strtotime($date2) - strtotime($date1));
+
+		$days   = floor($diff/(60*60*24));
+		$data['days']		= $days;
+
 		$data['CI']			= $this;
 
 		$data['module'] 	= "home";
