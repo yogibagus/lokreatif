@@ -8,7 +8,7 @@
           </div>
 
           <div class="row">
-            <div class="col-md-4 mb-3 mb-md-0 mb-md-n11">
+            <div class="col-md-4 mb-3 mb-md-0">
               <!-- Card -->
               <a class="card text-center h-100 transition-3d-hover" href="mailto:<?= $WEB_EMAIL;?>">
                 <div class="card-body p-lg-5">
@@ -25,7 +25,7 @@
               <!-- End Card -->
             </div>
 
-            <div class="col-md-4 mb-3 mb-md-0 mb-md-n11">
+            <div class="col-md-4 mb-3 mb-md-0">
               <!-- Card -->
               <a class="card text-center h-100 transition-3d-hover" href="https://api.whatsapp.com/send?text=Hai&phone=<?= $WEB_WA;?>">
                 <div class="card-body p-lg-5">
@@ -42,7 +42,7 @@
               <!-- End Card -->
             </div>
 
-            <div class="col-md-4 mb-md-n11">
+            <div class="col-md-4">
               <!-- Card -->
               <a class="card text-center h-100 transition-3d-hover" href="<?= site_url('pusat-bantuan');?>">
                 <div class="card-body p-lg-5">
@@ -59,6 +59,53 @@
               <!-- End Card -->
             </div>
           </div>
+
+          <div class="row mt-5">
+            <div class="col-md mb-5">
+              <!-- Card -->
+              <div class="card card-bordered transition-3d-hover h-100">
+                <div class="card-body">
+                  <h6 class="font-weight-normal mb-1">Facebook</h6>
+                  <h4 class="card-title"><?= $WEB_JUDUL;?> <?= date("Y");?></h4>
+                </div>
+              </div>
+              <!-- End Card -->
+            </div>
+
+            <div class="col-md mb-5">
+              <!-- Card -->
+              <div class="card card-bordered transition-3d-hover h-100">
+                <div class="card-body">
+                  <h6 class="font-weight-normal mb-1">Instagram</h6>
+                  <h4 class="card-title"><?= $WEB_JUDUL;?> <?= date("Y");?></h4>
+                </div>
+              </div>
+              <!-- End Card -->
+            </div>
+
+            <div class="col-md mb-5">
+              <!-- Card -->
+              <div class="card card-bordered transition-3d-hover h-100">
+                <div class="card-body">
+                  <h6 class="font-weight-normal mb-1">Twitter</h6>
+                  <h4 class="card-title"><?= $WEB_JUDUL;?> <?= date("Y");?></h4>
+                </div>
+              </div>
+              <!-- End Card -->
+            </div>
+
+            <div class="col-md mb-5">
+              <!-- Card -->
+              <div class="card card-bordered transition-3d-hover h-100">
+                <div class="card-body">
+                  <h6 class="font-weight-normal mb-1">Youtube</h6>
+                  <h4 class="card-title"><?= $WEB_JUDUL;?> <?= date("Y");?></h4>
+                </div>
+              </div>
+              <!-- End Card -->
+            </div>
+          </div>
+          <!-- End Row -->
         </div>
       </div>
 

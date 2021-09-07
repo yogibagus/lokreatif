@@ -11,49 +11,33 @@
 
 <!-- FAQ Topics Section -->
 <div class="container space-2">
-  <div class="row justify-content-lg-center">
-    <div class="col-lg-8">
-      <div id="basics" class="space-bottom-1">
-        <!-- Basics Accordion -->
-        <div id="basicsAccordion">
-          <?php if ($unduhan == false) :?>
-              <!-- Card -->
-              <div class="card shadow-none mb-3">
-                <div class="card-header card-collapse">
-                  <a class="btn btn-link btn-block d-flex justify-content-between card-btn bg-white px-0">
-                    belum ada berkas yang ditambahkan
-                  </a>
-                </div>
-              </div>
-              <!-- End Card -->
-          <?php else:?>
-            <?php $no=1; foreach ($unduhan as $key) :?>
-              <!-- Card -->
-              <div class="card shadow-none mb-3">
-                <div class="card-header card-collapse" id="unduhanHeading<?= $no;?>">
-                  <a class="btn btn-link btn-block d-flex justify-content-between card-btn collapsed bg-white px-0" href="javascript:;" role="button" data-toggle="collapse" data-target="#unduhanCollapse<?= $no;?>" aria-expanded="false" aria-controls="unduhanCollapse<?= $no;?>">
-                    <?= $key->JUDUL;?>
-
-                    <span class="card-btn-toggle">
-                      <span class="card-btn-toggle-default">&plus;</span>
-                      <span class="card-btn-toggle-active">&minus;</span>
-                    </span>
-                  </a>
-                </div>
-                <div id="unduhanCollapse<?= $no;?>" class="collapse" aria-labelledby="unduhanHeading<?= $no;?>" data-parent="#basicsAccordion">
-                  <div class="card-body px-0">
-                    <p><?= $key->KETERANGAN;?></p>
-                    <a href="<?= site_url('unduh/'.$key->JUDUL.'/'.$key->LINK);?>" target="_blank" class="btn btn-primary btn-sm btn-rounded float-right"><i class="fas fa-download mr-2"></i> unduh berkas</a>
-                  </div>
-                </div>
-              </div>
-              <!-- End Card -->
-            <?php $no++; endforeach;?>
-          <?php endif;?>
+  <div class="row center-flext justify-content-lg-center">
+    <?php if ($unduhan == false) :?>
+      <!-- Card -->
+      <div class="card shadow-none mb-3">
+        <div class="card-header card-collapse">
+          <a class="btn btn-link btn-block d-flex justify-content-between card-btn bg-white px-0">
+            belum ada berkas yang ditambahkan
+          </a>
         </div>
-        <!-- End Basics Accordion -->
       </div>
-    </div>
+      <!-- End Card -->
+    <?php else:?>
+      <?php $no=1; foreach ($unduhan as $key) :?>
+
+      <div class="col-lg-4 pt-7 pt-lg-0">
+        <!-- Card -->
+        <div class="card shadow-secondary-lg mt-lg-n11 p-4 p-lg-7">
+          <div class="text-center mb-7">
+            <h2 class="font-size-2 text-primary"><?= $key->JUDUL;?></h2>
+            <span class="d-block small text-secondary font-weight-bold text-cap mb-2"><?= $key->KETERANGAN;?></span>
+          </div>
+          <a class="btn btn-block btn-sm btn-primary transition-3d-hover" href="<?= site_url('unduh/'.$key->JUDUL.'/'.$key->LINK);?>"><i class="fas fa-download mr-2"></i> unduh berkas</a>
+        </div>
+        <!-- End Card -->
+      </div>
+      <?php $no++; endforeach;?>
+    <?php endif;?>
   </div>
 </div>
 <!-- End FAQ Topics Section -->

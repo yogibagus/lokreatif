@@ -112,7 +112,7 @@
             <?php if ($LN_GITHUB != null) :?>
               <li class="list-inline-item">
                 <a class="btn btn-xs btn-icon btn-soft-light" href="<?php prep_url($LN_GITHUB);?>">
-                  <i class="fab fa-github"></i>
+                  <i class="fab fa-youtube"></i>
                 </a>
               </li>
             <?php endif;?>
