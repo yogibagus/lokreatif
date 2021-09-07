@@ -56,9 +56,9 @@
                 </tbody>
             </table>
             <div style="margin-bottom: 8px">
-                <span style="font-size: 20px;">
-                    <br>Tim Anda dapat melanjutkan proses pendaftaran.
-                </span>
+                <center>
+                    <a target="_blank" style="color: #F8F8F8;" class="button" href="<?= base_url('payment/invoice/' . $payment->KODE_TRANS) ?>">INVOICE PEMBAYARAN</a>
+                </center>
             </div>
             <br><br><br>
             <span class='text-muted'>Regards,<br>LO Kreatif</span>
