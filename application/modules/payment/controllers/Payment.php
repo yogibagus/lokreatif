@@ -494,15 +494,6 @@ class Payment extends MX_Controller
         }
     }
 
-    public function test()
-    {
-        $data['to'] = "yogibaguskarunia@gmail.com";
-        $data['subject'] = "Pembayaran Sukses - Pendaftaran LO-KREATIF";
-        $data['message'] = "test";
-        $this->mailer->send_invoice($data);
-        // $data['attachment'] = ""
-    }
-
 
     public function get_payment_stat($param = "")
     {
