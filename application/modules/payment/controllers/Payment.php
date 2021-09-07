@@ -172,7 +172,61 @@ class Payment extends MX_Controller
         }
     }
 
+    public function invoice($param)
+    {
+        $transaksi = $this->M_payment->get_transaksi_by_id($param);
+        if ($transaksi != false) {
+            if ($transaksi->KODE_USER_BILL == $this->kode_user) {
+                if ($transaksi->STAT_BAYAR == 3) { // if payment  complete
+                    if ($this->role == 1) {
+                        $redirect_url = base_url('peserta/riwayat-pembayaran');
+                    } else {
+                        $redirect_url = base_url('transaksi-pts');
+                    }
 
+                    if ($transaksi->ROLE_USER_BILL == 3) {
+                        $user = $this->M_payment->get_univ_by_id($transaksi->KODE_USER_BILL);
+                        $nama = $user->namapt;
+                    } else {
+                        $user = $this->General->get_akun($transaksi->KODE_USER_BILL);
+                        $nama = $user->NAMA;
+                    }
+                    $data['payment'] = $this->M_payment->get_payment_by_kode_trans($transaksi->KODE_TRANS);
+                    $data['user'] = $user;
+                    $data['nama'] = $nama;
+                    $data['kode_trans'] = $transaksi->KODE_TRANS;
+                    $data['total_bayar'] = $this->M_payment->get_total_bayar($transaksi->KODE_TRANS);
+                    $data['total_team'] = $this->M_payment->get_total_team_and_biaya($transaksi->KODE_TRANS);
+                    $data['tim']        = $this->M_payment->get_tim($transaksi->KODE_TRANS);
+                    $data['redirect_url'] = $redirect_url;
+                    $data['CI']                = $this;
+                    $data['module']         = "payment";
+                    $data['fileview']         = "invoice";
+
+                    if ($this->role == "1") {
+                        echo Modules::run('template/frontend_payment', $data);
+                    } else if ($this->role == "3") {
+                        echo Modules::run('template/frontend_payment', $data);
+                    }
+                } else {
+                    $this->session->set_flashdata('warning', "Pembayaran belum diselesaikan!");
+                    if ($this->role == 1) {
+                        redirect('peserta/riwayat-pembayaran');
+                    } elseif ($this->role = 3) {
+                        redirect('transaksi-pts');
+                    } else {
+                        redirect();
+                    }
+                }
+            } else {
+                $this->session->set_flashdata('error', "Anda tidak diizinkan !");
+                redirect($this->agent->referrer());
+            }
+        } else {
+            $this->session->set_flashdata('error', "Transaction ID Not Found");
+            redirect($this->agent->referrer());
+        }
+    }
     // ================================ UP = VIEW | DOWN = PROCESS ==================================
 
     public function pay()
@@ -440,12 +494,13 @@ class Payment extends MX_Controller
         }
     }
 
-    public function test($param = "TRAN_a8daf0")
+    public function test()
     {
-        $payment = $this->M_payment->get_payment_by_kode_trans($param);
-        // send invoice 
-        $get_user = $this->M_payment->get_user_by_order_id($payment->ORDER_ID); //get user
-        $this->send_invoice($get_user->EMAIL, $payment->KODE_TRANS);
+        $data['to'] = "yogibaguskarunia@gmail.com";
+        $data['subject'] = "Pembayaran Sukses - Pendaftaran LO-KREATIF";
+        $data['message'] = "test";
+        $this->mailer->send_invoice($data);
+        // $data['attachment'] = ""
     }
 
 
