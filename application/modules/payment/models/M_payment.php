@@ -42,9 +42,12 @@ class M_payment extends CI_Model
     function get_tim($param)
     {
         $query = $this->db->query("
-            SELECT pk.NAMA_TIM 
-            FROM tb_transaksi tt , tb_order to2 , pendaftaran_kompetisi pk 
-            WHERE tt.KODE_TRANS = to2.KODE_TRANS AND to2.KODE_PENDAFTARAN = pk.KODE_PENDAFTARAN AND tt.KODE_TRANS = '$param'
+            SELECT pk.NAMA_TIM, bl.BIDANG_LOMBA 
+            FROM tb_transaksi tt , tb_order to2 , pendaftaran_kompetisi pk, bidang_lomba bl 
+            WHERE tt.KODE_TRANS = to2.KODE_TRANS 
+            AND to2.KODE_PENDAFTARAN = pk.KODE_PENDAFTARAN 
+            AND pk.BIDANG_LOMBA = bl.ID_BIDANG 
+            AND tt.KODE_TRANS = '$param'
         ");
         return $query->result();
     }
@@ -122,7 +125,10 @@ class M_payment extends CI_Model
     function get_payment_by_id($kode_pay)
     {
         $kode_pay   = $this->db->escape($kode_pay);
-        $query = $this->db->query("SELECT * FROM tb_payment AS a, tb_status_payment AS b WHERE a.`KODE_PAY` = $kode_pay AND a.`STAT_PAY` = b.`ID_STAT_PAY`");
+        $query = $this->db->query("SELECT * FROM tb_payment AS a, tb_status_payment AS b, tb_payment_method AS c 
+        WHERE a.`KODE_PAY` = $kode_pay
+        AND a.`STAT_PAY` = b.`ID_STAT_PAY`
+        AND a.`ID_PAY_METHOD` = c.`ID_PAY_METHOD`");
         if ($query->num_rows() > 0) {
             return $query->row();
         } else {
@@ -177,7 +183,10 @@ class M_payment extends CI_Model
     function get_payment_by_kode_trans($kode_trans)
     {
         $kode_trans   = $this->db->escape($kode_trans);
-        $query = $this->db->query("SELECT * FROM tb_payment WHERE KODE_TRANS = $kode_trans");
+        $query = $this->db->query("SELECT * FROM tb_payment AS a, tb_status_payment AS b, tb_payment_method AS c 
+        WHERE a.`KODE_TRANS` = $kode_trans
+        AND a.`STAT_PAY` = b.`ID_STAT_PAY`
+        AND a.`ID_PAY_METHOD` = c.`ID_PAY_METHOD`");
         if ($query->num_rows() > 0) {
             return $query->row();
         } else {
