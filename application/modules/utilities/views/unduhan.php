@@ -27,7 +27,7 @@
 
       <div class="col-lg-4 pt-7 pt-lg-0">
         <!-- Card -->
-        <div class="card shadow-secondary-lg mt-lg-n11 p-4 p-lg-7">
+        <div class="card shadow-secondary-lg p-4 p-lg-7">
           <div class="text-center mb-7">
             <h2 class="font-size-2 text-primary"><?= $key->JUDUL;?></h2>
             <span class="d-block small text-secondary font-weight-bold text-cap mb-2"><?= $key->KETERANGAN;?></span>
