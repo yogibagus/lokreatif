@@ -1,7 +1,48 @@
 <!-- Hero Section -->
 <div class="container space-top-1">
   <div class="row justify-content-lg-between align-items-lg-center">
-
+    <?php if ($this->agent->is_mobile()) :?>
+    <div class="col-sm-12 mb-0">
+      <img class="img-fluid" src="<?= base_url();?>assets/illustration_teamwork.png" alt="<?= $WEB_JUDUL;?>">
+    </div>
+    <div class="col-sm-12 text-center">
+      <div class="mb-4">
+        <small class="h5 font-weight-normal">BERBAGI INOVASI ANAK BANGSA UNTUK INDONESIA PADA KENORMALAN BARU</small>
+        <h1 class="display-4 font-weight-bold mb-2 mt-3">
+          <?= $WEB_JUDUL;?> <?= date("Y");?>
+        </h1>
+        <!-- Countdown -->
+        <div class="js-countdown text-center justify-content-center row mb-1"
+             data-hs-countdown-options='{
+               "endDate": "2021/10/24"
+             }'>
+          <div class="col-2">
+            <?php
+            if ($days > 31): ?>
+              <span class="font-size-3 text-primary font-weight-bold mb-0"><?= $days;?></span>
+            <?php else:?>
+              <span class="js-cd-days font-size-3 text-primary font-weight-bold mb-0"></span>
+            <?php endif;?>
+            <span class="h5 d-block mb-0">Days</span>
+          </div>
+          <div class="col-2">
+            <span class="js-cd-hours font-size-3 text-primary font-weight-bold mb-0"></span>
+            <span class="h5 d-block mb-0">Hours</span>
+          </div>
+          <div class="col-2">
+            <span class="js-cd-minutes font-size-3 text-primary font-weight-bold mb-0"></span>
+            <span class="h5 d-block mb-0">Mins</span>
+          </div>
+          <div class="col-2">
+            <span class="js-cd-seconds font-size-3 text-primary font-weight-bold mb-0"></span>
+            <span class="h5 d-block mb-0">Secs</span>
+          </div>
+        </div>
+        <!-- End Countdown -->
+        <p>Batas waktu pendaftaran dan unggah karya</p>
+      </div>
+    </div>
+    <?php else:?>
     <div class="col-lg-6">
       <div class="mb-4">
         <small class="h5 font-weight-normal">BERBAGI INOVASI ANAK BANGSA UNTUK INDONESIA PADA KENORMALAN BARU</small>
@@ -43,6 +84,7 @@
     <div class="col-sm-10 col-lg-6 mb-7 mb-lg-0">
       <img class="img-fluid" src="<?= base_url();?>assets/illustration_teamwork.png" alt="<?= $WEB_JUDUL;?>">
     </div>
+  <?php endif;?>
   </div>
 </div>
 <!-- End Hero Section -->
