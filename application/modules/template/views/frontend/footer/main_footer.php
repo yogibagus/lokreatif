@@ -21,9 +21,8 @@
                   <span class="media-body">
                     <div class="row">
                       <div class="col-md-8">
-                        <?= $WEB_DESKRIPSI;?></br>
-                        Kota Malang, Jawa Timur - Indonesia
-                      </div>
+                        <?= $WEB_DESKRIPSI;?><hr class="my-2">
+                        Jl. Arief Rahman Hakim 103, Surabaya - Jawa Timur
                     </div>
                   </span>
                 </span>
