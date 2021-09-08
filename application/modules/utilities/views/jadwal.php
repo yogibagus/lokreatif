@@ -12,7 +12,7 @@
           <li class="step-item">
             <div class="step-content-wrapper">
               <span class="step-icon step-icon-soft-dark">
-                <i class="fas fa-pencil-square"></i>
+                <i class="fas fa-clipboard"></i>
               </span>
               <div class="step-content mb-4">
                 <h5>Pendaftaran Peserta</h5>
@@ -28,7 +28,7 @@
               </span>
               <div class="step-content mb-4">
                 <h5>Webinar Sosialisasi</h5>
-                <p class="text-body mb-0">8 September 2021. Info lebih lanjut kunjungi instagram kami di @LO Kreatif 2021</p>
+                <p class="text-body mb-0">13 September 2021. Info lebih lanjut kunjungi instagram kami di @LO Kreatif 2021</p>
               </div>
             </div>
           </li>
@@ -60,7 +60,7 @@
           <li class="step-item">
             <div class="step-content-wrapper">
               <span class="step-icon step-icon-soft-dark">
-                <i class="fas fa-flag-0"></i>
+                <i class="fas fa-flag"></i>
               </span>
               <div class="step-content mb-4">
                 <h5>Technical Meeting - Finalis</h5>
@@ -72,7 +72,7 @@
           <li class="step-item">
             <div class="step-content-wrapper">
               <span class="step-icon step-icon-soft-dark">
-                <i class="fas fa-legal"></i>
+                <i class="fas fa-clipboard"></i>
               </span>
               <div class="step-content mb-4">
                 <h5>Pelaksanaan Final <?= $WEB_JUDUL;?> <?= date("Y");?></h5>
