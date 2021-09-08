@@ -3,7 +3,7 @@
 	<div class="card mb-4">
 		<div class="card-header">
 			<h5 class="card-header-title">Riwayat Pembayaran - <?= $dataPendaftaran->NAMA_TIM; ?></h5>
-			<?php if ($sudahBayar == false) : ?><?php if ($payments != false):?><a href="<?= site_url('payment/checkout/'.$KODE_TRANS);?>" class="btn btn-xs btn-success float-right">Pilih metode pembayaran baru</a><?php endif ?><?php endif ?>
+			<?php if ($sudahBayar == false) : ?><?php if ($payments != false):?><a href="<?= site_url('payment/checkout/'.$KODE_TRANS);?>" class="btn btn-xs btn-success float-right">Pilih metode pembayaran baru</a><?php endif ?><?php endif ?><?php if ($sudahBayar != false) : ?><a href="<?= site_url('payment/invoice/'.$KODE_TRANS);?>" class="btn btn-xs btn-secondary float-right">Invoice</a><?php endif ?>
 		</div>
 		<div class="card-body">
 			<?php if ($sudahBayar != false) : ?>

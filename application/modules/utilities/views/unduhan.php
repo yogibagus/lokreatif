@@ -25,14 +25,14 @@
     <?php else:?>
       <?php $no=1; foreach ($unduhan as $key) :?>
 
-      <div class="col-lg-4 pt-7 pt-lg-0">
+      <div class="col-lg-4 pt-7 mb-4 pt-lg-0">
         <!-- Card -->
         <div class="card shadow-secondary-lg p-4 p-lg-7">
           <div class="text-center mb-7">
             <h2 class="font-size-2 text-primary"><?= $key->JUDUL;?></h2>
             <span class="d-block small text-secondary font-weight-bold text-cap mb-2"><?= $key->KETERANGAN;?></span>
           </div>
-          <a class="btn btn-block btn-sm btn-primary transition-3d-hover" href="<?= site_url('unduh/'.$key->JUDUL.'/'.$key->LINK);?>"><i class="fas fa-download mr-2"></i> unduh berkas</a>
+          <a class="btn btn-block btn-sm btn-primary transition-3d-hover" target="_blank" href="<?= base_url();?>berkas/kebutuhan/<?= $key->LINK;?>"><i class="fas fa-download mr-2"></i> unduh berkas</a>
         </div>
         <!-- End Card -->
       </div>

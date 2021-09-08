@@ -98,6 +98,36 @@
 </figure>
 <!-- End SVG Bottom Shape -->
 
+
+<!-- Title -->
+<div class="w-md-75 w-lg-50 space-top-1 text-center mx-md-auto mb-5 mb-md-9">
+  <p class="text-primary mb-0">PROMOTION VIDEO</p>
+  <h2 class="h2">Promotion video <?= $WEB_JUDUL;?> <?= date("Y");?></h2>
+</div>
+<!-- End Title -->
+
+<div class="<?php if ($this->agent->is_mobile()):?>w-60<?php else:?>w-25<?php endif;?> mx-auto justify-content-sm-center text-center">
+  <!-- Fancybox -->
+  <a class="js-fancybox video-player video-player-btn media align-items-center text-dark" href="javascript:;"
+     data-hs-fancybox-options='{
+       "src": "//youtu.be/HyGFrCKRGKM",
+       "caption": "Promotion video LO Kreatif 2021",
+       "speed": 700,
+       "buttons": ["fullScreen", "close"],
+       "youtube": {
+         "autoplay": 1
+       }
+     }'>
+    <span class="video-player-icon shadow-soft mr-3">
+      <i class="fa fa-play"></i>
+    </span>
+    <span class="media-body">
+      See promotion video
+    </span>
+  </a>
+  <!-- End Fancybox -->
+</div>
+
 <!-- Description Section -->
 <div class="container w-lg-80 space-2">
   <div class="row center-flext">
@@ -128,10 +158,10 @@
 
     <div class="col-sm-6 col-lg-3">
       <!-- Icon Blocks -->
-      <a class="card h-100 transition-3d-hover" href="<?= site_url('hubungi-kami');?>">
+      <a class="card h-100 mb-4 transition-3d-hover" href="<?= site_url('hubungi-kami');?>">
         <div class="card-body">
-          <figure class="w-100 max-w-8rem mb-4">
-            <img class="img-fluid" src="<?= base_url();?>assets/frontend/svg/icons/icon-18.svg" alt="SVG">
+          <figure class="w-100 mb-4">
+            <img class="img-fluid max-w-8rem" src="<?= base_url();?>assets/frontend/svg/icons/icon-18.svg" alt="SVG">
           </figure>
           <h4>Hubungi Kami</h4>
           <p class="font-size-1 text-body mb-0">Cari tau lebih lanjut di media sosial atau hubungi ADMIN kami</p>
@@ -145,10 +175,10 @@
 
     <div class="col-sm-6 col-lg-3">
       <!-- Icon Blocks -->
-      <a class="card h-100 transition-3d-hover" href="<?= site_url('unduhan');?>">
+      <a class="card h-100 mb-4 transition-3d-hover" href="<?= site_url('unduhan');?>">
         <div class="card-body">
-          <figure class="w-100 max-w-8rem mb-4">
-            <img class="img-fluid" src="<?= base_url();?>assets/frontend/svg/icons/icon-43.svg" alt="SVG">
+          <figure class="w-100 mb-4">
+            <img class="img-fluid max-w-8rem" src="<?= base_url();?>assets/frontend/svg/icons/icon-43.svg" alt="SVG">
           </figure>
           <h4>Unduh berkas</h4>
           <p class="font-size-1 text-body mb-0">Unduh berkas kebutuhan lomba <?= $WEB_JUDUL;?> <?= date("Y");?></p>
@@ -162,10 +192,10 @@
 
     <div class="col-sm-6 col-lg-3">
       <!-- Icon Blocks -->
-      <a class="card h-100 transition-3d-hover" href="<?= site_url('pusat-bantuan');?>">
+      <a class="card h-100 mb-4 transition-3d-hover" href="<?= site_url('pusat-bantuan');?>">
         <div class="card-body">
-          <figure class="w-100 max-w-8rem mb-4">
-            <img class="img-fluid" src="<?= base_url();?>assets/frontend/svg/icons/icon-18.svg" alt="SVG">
+          <figure class="w-100 mb-4">
+            <img class="img-fluid max-w-8rem" src="<?= base_url();?>assets/frontend/svg/icons/icon-67.svg" alt="SVG">
           </figure>
           <h4>Pusat bantuan</h4>
           <p class="font-size-1 text-body mb-0">Kunjungi pusat bantuan jika anda mengalami kesulitan</p>
