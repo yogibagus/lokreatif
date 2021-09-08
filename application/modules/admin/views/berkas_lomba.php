@@ -51,7 +51,8 @@
                   <span id="unggahJudul">Tambahkan file</span>
                   <input id="unggahTombol" name="LINK" type="file" class="js-file-attach  custom-file-btn-input"
                     data-hs-file-attach-options='{
-                    "textTarget": "#unggahJudul"
+                    "textTarget": "#unggahJudul",
+                    "maxFileSize": 10240
                   }'>
                 </label>
                 <!-- End File Attachment Button -->
@@ -149,7 +150,8 @@
                               <span id="customFileExample<?= $no;?>"><?= $key->LINK;?></span>
                               <input id="fileAttachmentBtn<?= $no;?>" name="NEW_LINK" type="file" class="js-file-attach  custom-file-btn-input"
                                 data-hs-file-attach-options='{
-                                "textTarget": "#customFileExample<?= $no;?>"
+                                "textTarget": "#customFileExample<?= $no;?>",
+                                "maxFileSize": 10240
                               }'>
                               <input type="hidden" name="LINK_FILE" value="<?= $key->LINK;?>">
                             </label>
