@@ -25,7 +25,7 @@
                     <td class="columnDist"><?= $payment->METHOD ?> / <?= $type ?></td>
                 </tr>
                 <tr style="line-height: 16px;">
-                    <td>Paid On :</td>
+                    <td>Time of Payment :</td>
                     <?php
                     $time = strtotime($payment->LOG_TIME);
 
