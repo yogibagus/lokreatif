@@ -10,35 +10,45 @@
     <div class="d-flex justify-content-center">
         <div class="col-lg-10">
             <div class="card">
-                <div class="card-header">
-                    <h4>Invoice</h4>
+                <div class=" card-header">
+                    <h4>INVOICE</h4>
                     <button type="button" class="btn btn-xs btn-primary" onclick="printDiv('printableArea')"><i class="fa fa-print" aria-hidden="true"></i> Cetak Invoice</button>
                 </div>
                 <div class="card-body">
+                    <center>
+                        <img src="<?= base_url('assets/logo-ts.png') ?>" style="max-width: 300px;" class="img-fluid mb-1" alt="">
+                        <p class="col-11">
+                            Kompetisi Nasional Mahasiswa Perguruan Tinggi Swasta seluruh Indonesia <br> Diselenggarakan oleh APTISI 7 JATIM<br>
+                            Jl. Arief Rahman Hakim 103, Surabaya - Jawa Timur
+                        </p>
+                    </center>
+                    <hr>
                     <div class="row text-center">
-                        <div class="col-lg-6 col-6">
-                            <span><strong>#<?= $kode_trans ?></strong></span><br>
-                            <span><?= $nama ?></span><br>
+                        <div class="col-5">
+                            <span>Kepada Yth:</Span><br>
+                            <span><strong><?= $nama ?></strong></span><br>
                             <span><?= $user->EMAIL ?></span><br>
+                            <span>+62<?= $user->HP ?></span><br>
                         </div>
-                        <div class="col-lg-6  col-6">
-                            <img src="<?= base_url('assets/logo-ts.png') ?>" style="max-width: 200px;" class="img-fluid" alt="">
-                            <p>
-                                APTISI 7 JATIM <br>
-                                Kota Malang, Jawa Timur - Indonesia</p>
+                        <div class="col-2"></div>
+                        <div class="col-5">
+                            <span>Nomor Invoice:</span> <br>
+                            <span><strong>ID #<?= $kode_trans ?></strong></span><br>
+                            <span>Tanggal:</span><br>
+                            <?php
+                            $time = strtotime($payment->LOG_TIME);
+                            $paid_on = date('d M Y H:i:s', $time);
+                            ?>
+                            <span><strong><?= $paid_on; ?></strong></span><br>
                         </div>
                     </div>
                     <hr>
-                    <p class="mt-3">Pembayaran Anda menggunakan <?= $payment->NAMA_PAY_METHOD ?> berhasil. Berikut rincian pembayaran Anda:</p>
-                    <div class="mt-4">
+                    <center>
+                        <span class="mt-3 col-10">Berikut rincian pembayaran Anda:</span>
+                    </center>
+                    <div class="">
                         <table class="table table-sm table-borderless col-8">
                             <tbody>
-                                <tr>
-                                    <td>Total Bayar</td>
-                                    <td>:</td>
-                                    <td><strong>Rp <?= number_format($total_bayar->total_bayar, 0, ',', '.')  ?></strong></td>
-                                </tr>
-                                <br>
                                 <tr>
                                     <td>Metode Pembayaran</td>
                                     <td>:</td>
@@ -48,7 +58,13 @@
                                 <tr>
                                     <td>Waktu Pembayaran</td>
                                     <td>:</td>
-                                    <td><strong><?= $payment->LOG_TIME ?></strong></td>
+                                    <td><strong><?= $paid_on ?></strong></td>
+                                </tr>
+                                <br>
+                                <tr>
+                                    <td>Status Pembayaran</td>
+                                    <td>:</td>
+                                    <td><strong class="text-<?= $payment->COLOR_STAT_PAY ?>"><?= $payment->ALIAS_STAT_PAY ?></strong></td>
                                 </tr>
                             </tbody>
                         </table>
@@ -71,22 +87,22 @@
                                 <tr>
                                     <td></td>
                                     <td class="text-right">
-                                        <h4>Total Biaya</h4>
+                                        <h4>Total Pembayaran</h4>
                                     </td>
                                     <td>
-                                        <h4>
+                                        <h3>
                                             Rp <?= number_format($total_bayar->total_bayar, 0, ',', '.') ?>
-                                        </h4>
+                                        </h3>
                                     </td>
                                 </tr>
                             </tbody>
                         </table>
                         <br><br>
                         Best Regards,<br>
-                        <strong>LO-KREATIF</strong>
+                        <strong>LO-KREATIF TEAM</strong>
                         <div class="mt-4">
                             <center>
-                                <span class="d-none d-print-block">Tgl cetak: <?= date('d-M-Y h:i:s'); ?></span>
+                                <span class="d-none d-print-block">Tanggal cetak: <?= date('d M Y h:i:s'); ?></span>
                             </center>
                         </div>
                     </div>
