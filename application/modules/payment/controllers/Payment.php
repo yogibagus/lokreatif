@@ -630,8 +630,8 @@ class Payment extends MX_Controller
                     ';
                     if ($item->STAT_PAY == 3) {
                         $aksi = '
-                            <a href="' . site_url('payment/details/' . $item->KODE_PAY) . '" class="btn btn-xs btn-info" data-bs-toggle="tooltip" data-bs-placement="top" title="Detail Pembayaran" target="_blank">
-                                <i class="tio-info-outined"></i>
+                            <a href="' . site_url('payment/invoice/' . $item->KODE_TRANS) . '" class="btn btn-xs btn-success" data-bs-toggle="tooltip" data-bs-placement="top" title="Invoice" target="_blank">
+                                <i class="tio-receipt-outlined"></i>
                             </a>
                         ';
                     }
