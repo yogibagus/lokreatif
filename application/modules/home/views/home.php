@@ -1,5 +1,5 @@
 <!-- Hero Section -->
-<div class="container space-top-1">
+<div class="container space-top-1" style="background: url(<?= base_url();?>assets/frontend/svg/components/abstract-shapes-9.svg) center no-repeat;">
   <div class="row justify-content-lg-between align-items-lg-center">
     <?php if ($this->agent->is_mobile()) :?>
     <div class="col-sm-12 mb-0">
@@ -129,12 +129,12 @@
 </div>
 
 <!-- Description Section -->
-<div class="container w-lg-80 space-2">
+<div class="container w-lg-80 space-2" style="background: url(<?= base_url();?>assets/frontend/svg/components/abstract-shapes-19.svg) center no-repeat;">
   <div class="row center-flext">
     <?php if ($bidangLomba != false) : ?>
       <?php $no=1; foreach ($bidangLomba as $value) :?>
       <div class="col-6 col-md-3 px-2 mb-3">
-        <a href="<?= site_url('detail-lomba/'.$value->ID_BIDANG);?>" class="custom-control custom-radio custom-control-inline checkbox-outline checkbox-icon text-center w-100 h-100">
+        <a href="<?= site_url('detail-lomba/'.$value->ID_BIDANG);?>" class="custom-control bg-white custom-radio custom-control-inline checkbox-outline checkbox-icon text-center w-100 h-100">
           <label class="checkbox-outline-label w-100 rounded py-3 px-1 mb-0">
             <img class="img-fluid w-50 mb-3" src="<?= base_url();?><?= $value->POSTER == null ? 'assets/frontend/svg/illustrations/discussion-scene.svg' : 'berkas/kompetisi/bidang-lomba/'.$value->POSTER;?>" alt="SVG">
             <span class="d-block text-muted">(<?= $value->BIDANG_LOMBA;?>)</span>
@@ -153,7 +153,7 @@
 </div>
 <!-- End Title -->
   
-<div class="container w-lg-80 space-bottom-2">
+<div class="container w-lg-80 space-bottom-2" style="background: url(<?= base_url();?>assets/frontend/svg/components/abstract-shapes-9.svg) center no-repeat;">
   <div class="row justify-content-sm-center text-center center-flext">
 
     <div class="col-sm-6 col-lg-3">
@@ -212,7 +212,7 @@
 
 <?php if($kegiatan != false):?>
   <!-- Popular Categories Section -->
-  <div class="space-bottom-3" style="background: url(<?= base_url();?>assets/frontend/svg/components/abstract-shapes-9.svg) center no-repeat;">
+  <div class="space-bottom-3" style="background: url(<?= base_url();?>assets/frontend/svg/components/abstract-shapes-19.svg) center no-repeat;">
     <div class="position-relative">
       <div class="container space-2">
         <!-- Title -->
@@ -276,7 +276,7 @@
 <?php endif;?>
 
 <!-- Clients Section -->
-<div class="container space-top-3">
+<div class="container space-top-3" style="background: url(<?= base_url();?>assets/frontend/svg/components/abstract-shapes-9.svg) center no-repeat;">
   <!-- Title -->
   <div class="w-md-75 w-lg-50 text-center mx-md-auto mb-5 mb-md-9">
       <p class="text-primary mb-0">SPONSOR</p>

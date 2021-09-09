@@ -1,4 +1,4 @@
-<div class="container" style="margin-bottom:150px;margin-top: 75px;">
+<div class="container" style="margin-bottom:150px;margin-top: 75px; background: url(<?= base_url();?>assets/frontend/svg/components/abstract-shapes-9.svg) center no-repeat;">
     <!-- Jumlah data verifikasi -->
     <div class="h2 text-primary" style="text-align: center;">Statistik</div>
     <div class="row" style="margin-top: 25px;">

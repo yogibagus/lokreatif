@@ -10,7 +10,7 @@
 <!-- End Hero Section -->
 
 <!-- FAQ Topics Section -->
-<div class="container space-2">
+<div class="container space-2" style="background: url(<?= base_url();?>assets/frontend/svg/components/abstract-shapes-9.svg) center no-repeat;">
   <div class="row center-flext justify-content-lg-center">
     <?php if ($unduhan == false) :?>
       <!-- Card -->
