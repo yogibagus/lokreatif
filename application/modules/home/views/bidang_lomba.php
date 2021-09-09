@@ -15,12 +15,12 @@
 <!-- End CTA Section -->
 
 <!-- Description Section -->
-<div class="container w-lg-80 space-2">
+<div class="container w-lg-80 space-2" style="background: url(<?= base_url();?>assets/frontend/svg/components/abstract-shapes-9.svg) center no-repeat;">
   <div class="row center-flext">
     <?php if ($bidangLomba != false) : ?>
       <?php $no=1; foreach ($bidangLomba as $value) :?>
       <div class="col-6 col-md-3 px-2 mb-3">
-        <a href="<?= site_url('detail-lomba/'.$value->ID_BIDANG);?>" class="custom-control custom-radio custom-control-inline checkbox-outline checkbox-icon text-center w-100 h-100">
+        <a href="<?= site_url('detail-lomba/'.$value->ID_BIDANG);?>" class="custom-control bg-white custom-radio custom-control-inline checkbox-outline checkbox-icon text-center w-100 h-100">
           <label class="checkbox-outline-label w-100 rounded py-3 px-1 mb-0">
             <img class="img-fluid w-50 mb-3" src="<?= base_url();?><?= $value->POSTER == null ? 'assets/frontend/svg/illustrations/discussion-scene.svg' : 'berkas/kompetisi/bidang-lomba/'.$value->POSTER;?>" alt="SVG">
             <span class="d-block text-muted"><?= $value->BIDANG_LOMBA;?></span>

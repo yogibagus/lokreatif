@@ -1,5 +1,5 @@
 <!-- Team Section -->
-<div class="container space-2">
+<div class="container space-2" style="background: url(<?= base_url();?>assets/frontend/svg/components/abstract-shapes-9.svg) center no-repeat;">
 
   <?php if ($bidangLomba != false) :?>
     <?php foreach ($bidangLomba as $key) :?>
