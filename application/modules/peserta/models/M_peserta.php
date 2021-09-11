@@ -157,6 +157,17 @@ class M_peserta extends CI_Model {
 		}
 	}
 
+	// KARYA
+
+	function get_dataKarya($KODE_PENDAFTARAN){
+		$query = $this->db->query("SELECT * FROM tb_karya a LEFT JOIN pendaftaran_kompetisi b ON a.KODE_PENDAFTARAN = b.KODE_PENDAFTARAN WHERE a.KODE_PENDAFTARAN = '$KODE_PENDAFTARAN'");
+		if ($query->num_rows() > 0) {
+			return $query->row();
+		}else{
+			return false;
+		}
+	}
+
 
 	// PROSES
 

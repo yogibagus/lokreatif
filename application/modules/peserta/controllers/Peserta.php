@@ -196,6 +196,30 @@ class Peserta extends MX_Controller
 
 	}
 
+	public function data_karya()
+	{
+		if ($this->M_peserta->cek_daftarKompetisi($this->session->userdata("kode_user")) == false) {
+			$this->session->set_flashdata('warning', "Anda belum melakukan pendaftaran kompetisi !!");
+			redirect($this->agent->referrer());
+		} else {
+			$dataPeserta 			= $this->General->get_detailDaftarKompetisi($this->session->userdata("kode_user"));
+
+			// if ($this->General->cek_statBayar($dataPeserta->KODE_PENDAFTARAN) != false AND $this->General->cek_statBayarFailed($dataPeserta->KODE_PENDAFTARAN) == false) {
+				$data['dataPendaftaran'] 	= $dataPeserta;
+				$data['dataKarya']			= $this->M_peserta->get_dataKarya($dataPeserta->KODE_PENDAFTARAN);
+
+				$data['CI']					= $this;
+
+				$data['module'] 		= "peserta";
+				$data['fileview'] 		= "pendaftaran_karya";
+				echo Modules::run('template/frontend_user', $data);
+			// } else {
+			// 	$this->session->set_flashdata('warning', "Anda belum menyelesaikan pembayaran biaya pendaftaran !!");
+			// 	redirect($this->agent->referrer());
+			// }
+		}
+	}
+
 	public function data_anggota()
 	{
 		if ($this->M_peserta->cek_daftarKompetisi($this->session->userdata("kode_user")) == false) {
