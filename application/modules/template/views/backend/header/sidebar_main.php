@@ -115,6 +115,15 @@
             <small class="tio-more-horizontal nav-subtitle-replacer"></small>
           </li>
 
+          <!-- Pengguna -->
+          <li class="nav-item">
+            <a class="nav-link <?= ($this->uri->segment(1) == 'pengajuan-pts' ? 'active' : '') ?>" href="<?= site_url('pengajuan-pts') ?>" title="Pengajuan PTS baru">
+              <span class="tio-briefcase nav-icon"></span>
+              <span class="text-truncate">Pengajuan PTS Baru</span>
+            </a>
+          </li>
+          <!-- End Pengguna -->
+
           <li class="nav-item ">
             <a class="js-nav-tooltip-link nav-link <?= ($this->uri->segment(1) == 'berkas-lomba' ? 'active' : '') ?>" href="<?= site_url('berkas-lomba') ?>" title="Berkas Lomba" data-placement="left">
               <i class="tio-albums nav-icon"></i>

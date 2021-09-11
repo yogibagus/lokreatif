@@ -11,7 +11,7 @@
         <ol class="breadcrumb breadcrumb-light breadcrumb-no-gutter mb-0">
           <li class="breadcrumb-item">Pengguna</li>
           <li class="breadcrumb-item <?= (empty($this->uri->segment(2)) ? "active" : "") ?>">Dashboard</li>
-          <?php if(empty($this->uri->segment(2))): ?>
+          <?php if(!empty($this->uri->segment(2))): ?>
             <li class="breadcrumb-item active" aria-current="page"><?= ($this->uri->segment(2) ? ucwords(str_replace('-', ' ', $this->uri->segment(2))) : '');?></li>
           <?php endif; ?>
         </ol>

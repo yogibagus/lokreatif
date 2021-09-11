@@ -90,7 +90,8 @@ $route['data-peserta']               	= 'admin/data_peserta';
 $route['berkas-lomba']               	= 'admin/berkas_lomba';
 
 $route['data-kegiatan']    	  			= 'admin/data_kegiatan';
-$route['data-kompetisi']    	  		= 'admin/data_kompetisi';
+$route['data-kegiatan']    	  			= 'admin/data_kegiatan';
+$route['pengajuan-pts']    	  			= 'admin/pengajuan_pts';
 
 
 $route['pengaturan-admin']				= 'admin/pengaturan';

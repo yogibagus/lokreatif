@@ -45,7 +45,7 @@
   <?php $this->load->view('header/user_header.php') ?>
 
   <main id="content" role="main">
-    <?php $this->session->userdata('role') == 3 ? $this->load->view('header/main_sidebar_univ.php') : $this->load->view('header/main_sidebar.php')?>
+    <?php $this->session->userdata('role') == 3 ? $this->load->view('header/main_sidebar_univ.php') : ($this->uri->segment(2) == 'data-anggota' ? '' : $this->load->view('header/main_sidebar.php'))?>
     <?php $this->load->view($module.'/'.$fileview); ?>
   </div>
   <!-- End Row -->

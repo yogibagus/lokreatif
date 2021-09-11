@@ -272,6 +272,31 @@ class M_admin extends CI_Model {
 
 	}
 
+	// PTS BARU
+
+	public function cek_kodePTSbaru($kodept){
+		$query = $this->db->get_where('pt', array('kodept' => $kodept));
+		if ($query->num_rows() > 0) {
+			return true;
+		}else{
+			return false;
+		}
+
+	}
+
+	public function get_ptsBaru(){
+		$this->db->select('*');
+		$this->db->from('pt_raw');
+		$this->db->order_by('STATUS ASC', 'kodept ASC');
+		$query = $this->db->get();
+		if ($query->num_rows() > 0) {
+			return $query->result();
+		}else{
+			return false;
+		}
+
+	}
+
 
 	// PROSES
 
@@ -509,6 +534,69 @@ class M_admin extends CI_Model {
 			$this->db->delete('tb_kegiatan', array('KODE_KEGIATAN', $KODE_KEGIATAN));
 			return false;
 		}
+	}
+
+
+	// PTS BARU
+
+
+	public function terima_pts($id){
+		//TIKET
+		$KOPERTIS 		= $this->input->post('KOPERTIS', true);
+		$WILAYAH 		= $this->input->post('WILAYAH', true);
+		$AGAMA 			= $this->input->post('AGAMA', true);
+
+		$this->db->where('id', $id);
+		$this->db->update('pt_raw', array('STATUS' => 1));
+		$cek = ($this->db->affected_rows() != 1) ? false : true;
+
+		if ($cek == true) {
+			$ptsBaru = $this->db->get_where('pt_raw', array('id' => $id))->row();
+
+			$data = array(
+				'kodept' 	=> $ptsBaru->kodept,
+				'namapt' 	=> $ptsBaru->namapt,
+				'kopertis' 	=> $KOPERTIS,
+				'wilayah' 	=> $WILAYAH,
+				'jenis' 	=> $ptsBaru->jenis,
+				'agama' 	=> $AGAMA,
+				'statuspt' 	=> 'AKTIF',
+				'provinsi'	=> $ptsBaru->provinsi,
+			);
+
+			$this->db->insert('pt', $data);
+			return ($this->db->affected_rows() != 1) ? false : true;
+
+		}else{
+
+			$this->db->where('id', $id);
+			$this->db->update('pt_raw', array('STATUS' => 0));
+			return false;
+		}
+
+	}
+
+
+	public function tolak_pts($id){
+
+		$this->db->where('id', $id);
+		$this->db->update('pt_raw', array('STATUS' => 0));
+		$cek = ($this->db->affected_rows() != 1) ? false : true;
+
+		if ($cek == true) {
+			$ptsBaru = $this->db->get_where('pt_raw', array('id' => $id))->row();
+
+			$this->db->where('kodept', $ptsBaru->kodept);
+			$this->db->delete('pt');
+			return ($this->db->affected_rows() != 1) ? false : true;
+
+		}else{
+
+			$this->db->where('id', $id);
+			$this->db->update('pt_raw', array('STATUS' => 1));
+			return false;
+		}
+
 	}
 
 }
