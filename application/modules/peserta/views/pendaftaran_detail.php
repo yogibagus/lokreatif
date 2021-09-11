@@ -143,11 +143,9 @@
 						<span class="d-block font-size-1 mr-3">Unggah Karya</span>
 						<div class="media-body text-right">
 							<?php if ($bayarGagal == false && $statBayar != false) :?>
-								<a href="<?= site_url('peserta/Unggah-karya');?>" class="badge badge-success">unggah karya</a>
+								<a href="<?= site_url('peserta/data-karya');?>" class="badge badge-success">unggah karya</a>
 							<?php else:?>
-								<a class="badge badge-danger">
-									selesaikan pembayaran terlebih dahulu
-								</a>
+								<a href="<?= site_url('peserta/data-karya');?>" class="badge badge-success">unggah karya</a>
 							<?php endif;?>
 						</div>
 					</div>
