@@ -28,34 +28,36 @@
 <?php else:?>
   <div class="card">
     <div class="card-body">
-      <table id="myTable" class="table table-bordered table-hover">
-        <thead>
-          <tr>
-            <th>No</th>
-            <th></th>
-            <th>NAMA</th>
-            <?php foreach ($get_form as $key) :?>
-              <th><?= $key->PERTANYAAN;?></th>
-            <?php endforeach;?>
-          </tr>
-        </thead>
-        <tbody>
-          <?php if ($get_pendaftaran == false) :?>
-            <td colspan="<?= 3+count($get_form);?>"><center>belum ada data pendaftaran</center></td>
-          <?php else:?>
-            <?php $no = 1; foreach ($get_pendaftaran as $data) :?>
-              <tr>
-                <td><?= $no++;?></td>
-                <td></td>
-                <td><?= $data->NAMA;?></td>
-                <?php foreach ($get_form as $key) :?>
-                  <td><?= $CI->M_manage->get_formData($data->KODE_PENDAFTARAN, $key->ID_FORM);?></td>
-                <?php endforeach;?>
-              </tr>
-            <?php endforeach;?>
-          <?php endif;?>
-        </tbody>
-      </table>
+      <div class="table-responsive">
+        <table id="myTable" class="table table-bordered table-hover">
+          <thead>
+            <tr>
+              <th>No</th>
+              <th></th>
+              <th>NAMA</th>
+              <?php foreach ($get_form as $key) :?>
+                <th><?= $key->PERTANYAAN;?></th>
+              <?php endforeach;?>
+            </tr>
+          </thead>
+          <tbody>
+            <?php if ($get_pendaftaran == false) :?>
+              <td colspan="<?= 3+count($get_form);?>"><center>belum ada data pendaftaran</center></td>
+            <?php else:?>
+              <?php $no = 1; foreach ($get_pendaftaran as $data) :?>
+                <tr>
+                  <td><?= $no++;?></td>
+                  <td></td>
+                  <td><?= $data->NAMA;?></td>
+                  <?php foreach ($get_form as $key) :?>
+                    <td><?= $CI->M_manage->get_formData($data->KODE_PENDAFTARAN, $key->ID_FORM);?></td>
+                  <?php endforeach;?>
+                </tr>
+              <?php endforeach;?>
+            <?php endif;?>
+          </tbody>
+        </table>
+      </div>
     </div>
   </div>
 <?php endif;?>

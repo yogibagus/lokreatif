@@ -158,6 +158,7 @@
 
   <!-- Table -->
   <div class="table-responsive datatable-custom">
+    <div class="table-responsive">
     <table id="datatable" class="table table-lg table-borderless table-thead-bordered table-nowrap table-align-middle card-table"
     data-hs-datatables-options='{
       "columnDefs": [{
@@ -365,6 +366,7 @@
     <?php endif; ?>
   </tbody>
   </table>
+  </div>
   </div>
   <!-- End Table -->
 

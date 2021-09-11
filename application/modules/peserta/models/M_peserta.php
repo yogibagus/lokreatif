@@ -246,12 +246,14 @@ class M_peserta extends CI_Model {
 		$NAMA_KETUA			= $this->input->post('NAMA_KETUA');
 		$NIM_KETUA			= $this->input->post('NIM_KETUA');
 		$EMAIL_KETUA		= $this->input->post('EMAIL_KETUA');
+		$HP_KETUA			= $this->input->post('HP_KETUA');
 
 		$ketua = array(
 			'KODE_PENDAFTARAN'  => $KODE_PENDAFTARAN,
 			'NAMA'  			=> $NAMA_KETUA,
 			'NIM'  				=> $NIM_KETUA,
 			'EMAIL'  			=> $EMAIL_KETUA,
+			'HP'  				=> $HP_KETUA,
 			'PERAN'				=> 1
 		);
 
@@ -259,12 +261,14 @@ class M_peserta extends CI_Model {
 		$NAMA_DOSPEM		= $this->input->post('NAMA_DOSPEM');
 		$NIM_DOSPEM			= $this->input->post('NIM_DOSPEM');
 		$EMAIL_DOSPEM		= $this->input->post('EMAIL_DOSPEM');
+		$HP_DOSPEM			= $this->input->post('HP_DOSPEM');
 
 		$dospem = array(
 			'KODE_PENDAFTARAN'  => $KODE_PENDAFTARAN,
 			'NAMA'  			=> $NAMA_DOSPEM,
 			'NIM'  				=> $NIM_DOSPEM,
 			'EMAIL'  			=> $EMAIL_DOSPEM,
+			'HP'  				=> $HP_DOSPEM,
 			'PERAN'				=> 2
 		);
 		$this->db->insert('tb_anggota', $dospem);
@@ -275,6 +279,7 @@ class M_peserta extends CI_Model {
 		$NAMA_ANGGOTA 		= $this->input->post('NAMA_ANGGOTA', true);
 		$NIM_ANGGOTA 		= $this->input->post('NIM_ANGGOTA', true);
 		$EMAIL_ANGGOTA 		= $this->input->post('EMAIL_ANGGOTA', true);
+		$HP_ANGGOTA 		= $this->input->post('HP_ANGGOTA', true);
 
 		// cek data anggota redundant
 		foreach ($NIM_ANGGOTA as $i) {
@@ -290,6 +295,7 @@ class M_peserta extends CI_Model {
 				'NAMA' 				=> isset($NAMA_ANGGOTA[$i]) ? $NAMA_ANGGOTA[$i] : '',
 				'NIM'				=> isset($NIM_ANGGOTA[$i]) ? $NIM_ANGGOTA[$i] : '',
 				'EMAIL'				=> isset($EMAIL_ANGGOTA[$i]) ? $EMAIL_ANGGOTA[$i] : '',
+				'HP'				=> isset($HP_ANGGOTA[$i]) ? $HP_ANGGOTA[$i] : '',
 				'PERAN'				=> 3
 			);
 
