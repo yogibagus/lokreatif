@@ -267,6 +267,17 @@ class Admin extends MX_Controller {
 		echo Modules::run('template/backend_main', $data);
 	}
 
+	  // REFUND
+	public function data_refund(){
+		$data['countRefund']		  	= $this->M_admin->countRefund();
+		$data['countSudahRefund']		= $this->M_admin->countSudahRefund();
+		// $data['refund']					= $this->M_admin->get_refund();
+
+		$data['module']     = "admin";
+		$data['fileview']   = "data_refund";
+		echo Modules::run('template/backend_main', $data);
+	}
+
 	// DATA AKTIVITAS SISTEM
 	public function aktivitas(){
 		$this->load->library('pagination');
@@ -341,27 +352,41 @@ class Admin extends MX_Controller {
 		echo Modules::run('template/backend_main', $data);
 	}
 
+	// DATA PTS BARU
+	public function pengajuan_pts(){
+		$data['ptsBaru']  	  	= $this->M_admin->get_ptsBaru();
+
+		$data['module'] 		= "admin";
+		$data['fileview'] 		= "pengajuan_pts";
+		echo Modules::run('template/backend_main', $data);
+	}
+
 
 	// PROSES
 
-	function terimaPenyelenggara(){
-		if ($this->M_admin->terimaPenyelenggara() == TRUE)  {
+	function terima_pts($id){
+		if ($this->M_admin->cek_kodePTSbaru($this->input->post('kodept')) == TRUE) {
+				$this->session->set_flashdata('warning', "KODE PTS telah ada !!");
+				redirect($this->agent->referrer());
+		}else{
+			if ($this->M_admin->terima_pts($id) == TRUE)  {
 
-			$this->session->set_flashdata('success', "Berhasil menerima permintaan pengajuan AKSES K-Panel !!");
-			redirect($this->agent->referrer());
-		}else {
-			$this->session->set_flashdata('error', "Terjadi kesalahan saat menerima permintaan pengajuan AKSES K-Panel!");
-			redirect($this->agent->referrer());
+				$this->session->set_flashdata('success', "Berhasil menerima dan menambahkan data PTS !!");
+				redirect($this->agent->referrer());
+			}else {
+				$this->session->set_flashdata('error', "Terjadi kesalahan saat menerima dan menambahkan data PTS !!");
+				redirect($this->agent->referrer());
+			}
 		}
 	}
 
-	function tolakPenyelenggara(){
-		if ($this->M_admin->tolakPenyelenggara() == TRUE) {
+	function tolak_pts($id){
+		if ($this->M_admin->tolak_pts($id) == TRUE) {
 
-			$this->session->set_flashdata('success', "Berhasil menolak permintaan pengajuan AKSES K-Panel !!");
+			$this->session->set_flashdata('success', "Berhasil menolak pengajuan data PTS !!");
 			redirect($this->agent->referrer());
 		}else {
-			$this->session->set_flashdata('error', "Terjadi kesalahan saat menolak permintaan pengajuan AKSES K-Panel !!");
+			$this->session->set_flashdata('error', "Terjadi kesalahan saat menolak pengajuan data PTS !!");
 			redirect($this->agent->referrer());
 		}
 	}

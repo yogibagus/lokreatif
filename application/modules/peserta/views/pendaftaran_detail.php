@@ -82,7 +82,7 @@
 						<span class="d-block font-size-1 mr-3">Data PTS</span>
 						<div class="media-body text-right">
 							<?php if ($dataPendaftaran->ASAL_PTS == null || $dataPendaftaran->ALAMAT_PTS == null || $dataPendaftaran->ALAMAT_PTS == null):?>
-								<span class="badge badge-danger" type="button" data-toggle="modal" data-target="#data-pts">belum lengkap</span>
+								<span class="badge badge-danger" type="button" data-toggle="modal" data-target="#data-pts">lengkapi data</span>
 							<?php else:?>
 								<span class="badge badge-success" type="button" data-toggle="modal" data-target="#data-pts">lengkap</span>
 							<?php endif;?>
@@ -92,7 +92,7 @@
 						<span class="d-block font-size-1 mr-3">Data anggota</span>
 						<div class="media-body text-right">
 							<?php if ($dataAnggota == false) :?>
-								<a href="<?= site_url('peserta/data-anggota');?>" class="badge badge-danger">belum lengkap</a>
+								<a href="<?= site_url('peserta/data-anggota');?>" class="badge badge-danger">lengkapi data</a>
 							<?php else:?>
 								<a href="<?= site_url('peserta/data-anggota');?>" class="badge badge-success">lengkap</a>
 							<?php endif;?>
@@ -102,7 +102,7 @@
 						<span class="d-block font-size-1 mr-3">Berkas TIM</span>
 						<div class="media-body text-right">
 							<?php if ($cekBerkas == false) :?>
-								<a href="<?= site_url('peserta/berkas-kompetisi');?>" class="badge badge-danger">belum lengkap</a>
+								<a href="<?= site_url('peserta/berkas-kompetisi');?>" class="badge badge-danger">lengkapi data</a>
 							<?php else:?>
 								<a href="<?= site_url('peserta/berkas-kompetisi');?>" class="badge badge-success">lengkap</a>
 							<?php endif;?>
@@ -143,10 +143,14 @@
 						<span class="d-block font-size-1 mr-3">Unggah Karya</span>
 						<div class="media-body text-right">
 							<?php if ($bayarGagal == false && $statBayar != false) :?>
-								<a href="<?= site_url('peserta/Unggah-karya');?>" class="badge badge-success">unggah karya</a>
+								<?php if ($cek_Karya == true) :?>
+									<a href="<?= site_url('peserta/data-karya');?>" class="badge badge-success">kelola karya</a>
+								<?php else:?>
+									<a href="<?= site_url('peserta/data-karya');?>" class="badge badge-danger">unggah karya</a>
+								<?php endif;?>
 							<?php else:?>
 								<a class="badge badge-danger">
-									selesaikan pembayaran terlebih dahulu
+									Bayar biaya pendaftaran
 								</a>
 							<?php endif;?>
 						</div>

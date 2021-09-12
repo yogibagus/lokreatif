@@ -90,7 +90,8 @@ $route['data-peserta']               	= 'admin/data_peserta';
 $route['berkas-lomba']               	= 'admin/berkas_lomba';
 
 $route['data-kegiatan']    	  			= 'admin/data_kegiatan';
-$route['data-kompetisi']    	  		= 'admin/data_kompetisi';
+$route['data-refund']    	  			= 'admin/data_refund';
+$route['pengajuan-pts']    	  			= 'admin/pengajuan_pts';
 
 
 $route['pengaturan-admin']				= 'admin/pengaturan';
@@ -108,6 +109,7 @@ $route['notifikasi-sistem/(:num)']    	= 'admin/notifikasi';
 
 $route['peserta/data-pendaftaran'] 		= 'peserta/data_pendaftaran';
 $route['peserta/data-anggota'] 			= 'peserta/data_anggota';
+$route['peserta/data-karya'] 			= 'peserta/data_karya';
 $route['peserta/berkas-kompetisi'] 		= 'peserta/berkas_kompetisi';
 $route['peserta/riwayat-pembayaran'] 	= 'peserta/daftar_payment';
 

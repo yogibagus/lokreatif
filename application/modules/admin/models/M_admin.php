@@ -56,6 +56,16 @@ class M_admin extends CI_Model {
 		return $this->db->get('pendaftaran_kegiatan')->num_rows();
 	}
 
+	// REFUND
+
+	public function countRefund(){
+		return $this->db->get('tb_refund')->num_rows();
+	}
+
+	public function countSudahRefund(){
+		return $this->db->get_where('tb_refund', array('STAT_REFUND' => 1))->num_rows();
+	}
+
 
 	// PESERTA
 	function countPeserta(){
@@ -101,6 +111,13 @@ class M_admin extends CI_Model {
 	}
 
 	// END COUNTING
+
+	// REFUND
+
+	// function get_refund(){
+	// 	$query 	= $this->db->query("SELECT * FROM tb_refund a JOIN tb_transaksi b ON a.KODE_USER = b.KODE_USER WHERE a.ROLE = 1");
+	// 	return $query->result();
+	// }
 
 	// PESERTA
 
@@ -263,6 +280,31 @@ class M_admin extends CI_Model {
 	public function get_berkasLomba(){
 		$this->db->select('*');
 		$this->db->from('berkas_kebutuhan');
+		$query = $this->db->get();
+		if ($query->num_rows() > 0) {
+			return $query->result();
+		}else{
+			return false;
+		}
+
+	}
+
+	// PTS BARU
+
+	public function cek_kodePTSbaru($kodept){
+		$query = $this->db->get_where('pt', array('kodept' => $kodept));
+		if ($query->num_rows() > 0) {
+			return true;
+		}else{
+			return false;
+		}
+
+	}
+
+	public function get_ptsBaru(){
+		$this->db->select('*');
+		$this->db->from('pt_raw');
+		$this->db->order_by('STATUS ASC', 'kodept ASC');
 		$query = $this->db->get();
 		if ($query->num_rows() > 0) {
 			return $query->result();
@@ -509,6 +551,69 @@ class M_admin extends CI_Model {
 			$this->db->delete('tb_kegiatan', array('KODE_KEGIATAN', $KODE_KEGIATAN));
 			return false;
 		}
+	}
+
+
+	// PTS BARU
+
+
+	public function terima_pts($id){
+		//TIKET
+		$KOPERTIS 		= $this->input->post('KOPERTIS', true);
+		$WILAYAH 		= $this->input->post('WILAYAH', true);
+		$AGAMA 			= $this->input->post('AGAMA', true);
+
+		$this->db->where('id', $id);
+		$this->db->update('pt_raw', array('STATUS' => 1));
+		$cek = ($this->db->affected_rows() != 1) ? false : true;
+
+		if ($cek == true) {
+			$ptsBaru = $this->db->get_where('pt_raw', array('id' => $id))->row();
+
+			$data = array(
+				'kodept' 	=> $ptsBaru->kodept,
+				'namapt' 	=> $ptsBaru->namapt,
+				'kopertis' 	=> $KOPERTIS,
+				'wilayah' 	=> $WILAYAH,
+				'jenis' 	=> $ptsBaru->jenis,
+				'agama' 	=> $AGAMA,
+				'statuspt' 	=> 'AKTIF',
+				'provinsi'	=> $ptsBaru->provinsi,
+			);
+
+			$this->db->insert('pt', $data);
+			return ($this->db->affected_rows() != 1) ? false : true;
+
+		}else{
+
+			$this->db->where('id', $id);
+			$this->db->update('pt_raw', array('STATUS' => 0));
+			return false;
+		}
+
+	}
+
+
+	public function tolak_pts($id){
+
+		$this->db->where('id', $id);
+		$this->db->update('pt_raw', array('STATUS' => 0));
+		$cek = ($this->db->affected_rows() != 1) ? false : true;
+
+		if ($cek == true) {
+			$ptsBaru = $this->db->get_where('pt_raw', array('id' => $id))->row();
+
+			$this->db->where('kodept', $ptsBaru->kodept);
+			$this->db->delete('pt');
+			return ($this->db->affected_rows() != 1) ? false : true;
+
+		}else{
+
+			$this->db->where('id', $id);
+			$this->db->update('pt_raw', array('STATUS' => 1));
+			return false;
+		}
+
 	}
 
 }

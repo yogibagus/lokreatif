@@ -105,7 +105,22 @@
             "hasOverlay": "rgba(55, 125, 255, 0.1)",
             "smartPositionOff": true
           }'>
-            <i class="fas fa-user-circle mr-2"></i> Daftar
+            Daftar
+          </a>
+        </div>
+      </li>
+      <li class="list-inline-item d-none d-sm-block ml-2">
+        <div class="hs-unfold">
+          <a class="js-hs-unfold-invoker btn btn-xs btn-outline-primary" href="javascript:;"
+          data-hs-unfold-options='{
+            "target": "#sidebarContentLogin",
+            "type": "css-animation",
+            "animationIn": "fadeInRight",
+            "animationOut": "fadeOutRight",
+            "hasOverlay": "rgba(55, 125, 255, 0.1)",
+            "smartPositionOff": true
+          }'>
+            Masuk
           </a>
         </div>
       </li>

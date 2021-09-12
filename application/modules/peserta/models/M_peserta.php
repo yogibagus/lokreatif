@@ -157,6 +157,17 @@ class M_peserta extends CI_Model {
 		}
 	}
 
+	// KARYA
+
+	function get_dataKarya($KODE_PENDAFTARAN){
+		$query = $this->db->query("SELECT * FROM tb_karya a LEFT JOIN pendaftaran_kompetisi b ON a.KODE_PENDAFTARAN = b.KODE_PENDAFTARAN WHERE a.KODE_PENDAFTARAN = '$KODE_PENDAFTARAN'");
+		if ($query->num_rows() > 0) {
+			return $query->row();
+		}else{
+			return false;
+		}
+	}
+
 
 	// PROSES
 
@@ -246,12 +257,14 @@ class M_peserta extends CI_Model {
 		$NAMA_KETUA			= $this->input->post('NAMA_KETUA');
 		$NIM_KETUA			= $this->input->post('NIM_KETUA');
 		$EMAIL_KETUA		= $this->input->post('EMAIL_KETUA');
+		$HP_KETUA			= $this->input->post('HP_KETUA');
 
 		$ketua = array(
 			'KODE_PENDAFTARAN'  => $KODE_PENDAFTARAN,
 			'NAMA'  			=> $NAMA_KETUA,
 			'NIM'  				=> $NIM_KETUA,
 			'EMAIL'  			=> $EMAIL_KETUA,
+			'HP'  				=> $HP_KETUA,
 			'PERAN'				=> 1
 		);
 
@@ -259,12 +272,14 @@ class M_peserta extends CI_Model {
 		$NAMA_DOSPEM		= $this->input->post('NAMA_DOSPEM');
 		$NIM_DOSPEM			= $this->input->post('NIM_DOSPEM');
 		$EMAIL_DOSPEM		= $this->input->post('EMAIL_DOSPEM');
+		$HP_DOSPEM			= $this->input->post('HP_DOSPEM');
 
 		$dospem = array(
 			'KODE_PENDAFTARAN'  => $KODE_PENDAFTARAN,
 			'NAMA'  			=> $NAMA_DOSPEM,
 			'NIM'  				=> $NIM_DOSPEM,
 			'EMAIL'  			=> $EMAIL_DOSPEM,
+			'HP'  				=> $HP_DOSPEM,
 			'PERAN'				=> 2
 		);
 		$this->db->insert('tb_anggota', $dospem);
@@ -275,6 +290,7 @@ class M_peserta extends CI_Model {
 		$NAMA_ANGGOTA 		= $this->input->post('NAMA_ANGGOTA', true);
 		$NIM_ANGGOTA 		= $this->input->post('NIM_ANGGOTA', true);
 		$EMAIL_ANGGOTA 		= $this->input->post('EMAIL_ANGGOTA', true);
+		$HP_ANGGOTA 		= $this->input->post('HP_ANGGOTA', true);
 
 		// cek data anggota redundant
 		foreach ($NIM_ANGGOTA as $i) {
@@ -290,6 +306,7 @@ class M_peserta extends CI_Model {
 				'NAMA' 				=> isset($NAMA_ANGGOTA[$i]) ? $NAMA_ANGGOTA[$i] : '',
 				'NIM'				=> isset($NIM_ANGGOTA[$i]) ? $NIM_ANGGOTA[$i] : '',
 				'EMAIL'				=> isset($EMAIL_ANGGOTA[$i]) ? $EMAIL_ANGGOTA[$i] : '',
+				'HP'				=> isset($HP_ANGGOTA[$i]) ? $HP_ANGGOTA[$i] : '',
 				'PERAN'				=> 3
 			);
 
@@ -373,6 +390,51 @@ class M_peserta extends CI_Model {
 
 			$this->db->where(array('KODE_PENDAFTARAN' => $KODE_PENDAFTARAN, 'ID_FORM' => $ID_FORM));
 			$this->db->update('pendaftaran_data', $data);
+			return ($this->db->affected_rows() != 1) ? false : true;
+		}
+	}
+
+	// KARYA
+
+	function cek_Karya($KODE_PENDAFTARAN){
+		$query = $this->db->get_where('tb_karya', array('KODE_PENDAFTARAN' => $KODE_PENDAFTARAN));
+		if ($query->num_rows() > 0) {
+			return true;
+		}else{
+			return false;
+		}
+	}
+
+	function kelola_karya($FILE){
+
+		$KODE_PENDAFTARAN	= $this->input->post('KODE_PENDAFTARAN');
+		$JUDUL				= htmlspecialchars($this->input->post('JUDUL'), true);
+		$KETERANGAN			= $this->input->post('KETERANGAN');
+		$LINK				= $this->input->post('LINK');
+
+		if ($FILE == null) {
+			$data = array(
+				'KODE_PENDAFTARAN' 	=> $KODE_PENDAFTARAN,
+				'JUDUL' 			=> $JUDUL,
+				'KETERANGAN' 		=> $KETERANGAN,
+				'LINK' 				=> $LINK,
+			);
+		}else{
+			$data = array(
+				'KODE_PENDAFTARAN' 	=> $KODE_PENDAFTARAN,
+				'JUDUL' 			=> $JUDUL,
+				'KETERANGAN' 		=> $KETERANGAN,
+				'FILE' 				=> $FILE,
+				'LINK' 				=> $LINK,
+			);
+		}
+
+		if ($this->cek_Karya($KODE_PENDAFTARAN) == true) {
+			$this->db->where('KODE_PENDAFTARAN', $KODE_PENDAFTARAN);
+			$this->db->update('tb_karya', $data);
+			return ($this->db->affected_rows() != 1) ? false : true;
+		}else{
+			$this->db->insert('tb_karya', $data);
 			return ($this->db->affected_rows() != 1) ? false : true;
 		}
 	}

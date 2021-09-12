@@ -36,6 +36,7 @@
 
   <script type="text/javascript" src="<?=base_url();?>assets/frontend/plugin/tinymce/jquery.tinymce.min.js"></script>
   <script type="text/javascript" src="<?=base_url();?>assets/frontend/plugin/tinymce/tinymce.min.js"></script>
+  <script type="text/javascript" src="<?=base_url();?>assets/frontend/plugin/tinymce-textarea.js"></script>
 
   <!-- JS Plugins Init. -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.lazyload/1.9.1/jquery.lazyload.min.js" integrity="sha512-jNDtFf7qgU0eH/+Z42FG4fw3w7DM/9zbgNPe3wfJlCylVDTT3IgKW5r92Vy9IHa6U50vyMz5gRByIu4YIXFtaQ==" crossorigin="anonymous"></script>
@@ -45,7 +46,7 @@
   <?php $this->load->view('header/user_header.php') ?>
 
   <main id="content" role="main">
-    <?php $this->session->userdata('role') == 3 ? $this->load->view('header/main_sidebar_univ.php') : $this->load->view('header/main_sidebar.php')?>
+    <?php $this->session->userdata('role') == 3 ? $this->load->view('header/main_sidebar_univ.php') : ($this->uri->segment(2) == 'data-anggota' ? '' : $this->load->view('header/main_sidebar.php'))?>
     <?php $this->load->view($module.'/'.$fileview); ?>
   </div>
   <!-- End Row -->
