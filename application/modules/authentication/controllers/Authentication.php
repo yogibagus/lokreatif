@@ -24,6 +24,16 @@ class Authentication extends MX_Controller {
 		parent::__construct();
 		$this->load->model('M_authentication', 'M_auth');
 
+		if ($this->session->userdata('logged_in') == TRUE || $this->session->userdata('logged_in')) {
+			if (!empty($_SERVER['QUERY_STRING'])) {
+				$uri = uri_string() . '?' . $_SERVER['QUERY_STRING'];
+			} else {
+				$uri = uri_string();
+			}
+			$this->session->set_flashdata('success', "Anda telah login");
+			redirect(base_url());
+		}
+
 	}
 
 	// MAILER SENDER
