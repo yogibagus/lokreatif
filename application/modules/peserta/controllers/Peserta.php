@@ -178,6 +178,7 @@ class Peserta extends MX_Controller
 			$data['dataDospem']		= $this->General->get_dataDospem($dataPeserta->KODE_PENDAFTARAN);
 			$data['cekBerkas']		= $this->General->cek_kelengkapanBerkas($dataPeserta->KODE_PENDAFTARAN);
 			$data['pts']			= $this->General->get_pts();
+			$data['cek_Karya']		= $this->M_peserta->cek_Karya($dataPeserta->KODE_PENDAFTARAN);
 
 			$data['CI']				= $this;
 
@@ -205,14 +206,14 @@ class Peserta extends MX_Controller
 			$dataPeserta 			= $this->General->get_detailDaftarKompetisi($this->session->userdata("kode_user"));
 
 			// if ($this->General->cek_statBayar($dataPeserta->KODE_PENDAFTARAN) != false AND $this->General->cek_statBayarFailed($dataPeserta->KODE_PENDAFTARAN) == false) {
-				$data['dataPendaftaran'] 	= $dataPeserta;
-				$data['dataKarya']			= $this->M_peserta->get_dataKarya($dataPeserta->KODE_PENDAFTARAN);
+			$data['dataPendaftaran'] 	= $dataPeserta;
+			$data['dataKarya']			= $this->M_peserta->get_dataKarya($dataPeserta->KODE_PENDAFTARAN);
 
-				$data['CI']					= $this;
+			$data['CI']					= $this;
 
-				$data['module'] 		= "peserta";
-				$data['fileview'] 		= "pendaftaran_karya";
-				echo Modules::run('template/frontend_user', $data);
+			$data['module'] 		= "peserta";
+			$data['fileview'] 		= "pendaftaran_karya";
+			echo Modules::run('template/frontend_user', $data);
 			// } else {
 			// 	$this->session->set_flashdata('warning', "Anda belum menyelesaikan pembayaran biaya pendaftaran !!");
 			// 	redirect($this->agent->referrer());
@@ -628,6 +629,58 @@ class Peserta extends MX_Controller
 		}else{
 			$this->session->set_flashdata('error', "Terjadi kesalahan saat mencari data pendaftaran kompetisi anda !!");
 			redirect($this->agent->referrer());
+		}
+	}
+
+	// KARYA
+
+	function kelola_karya(){
+		$kode_user 		= $this->session->userdata('kode_user');
+		$bidang_lomba 	= $this->input->post('BIDANG_LOMBA');
+		$nama_tim 		= $this->input->post('NAMA_TIM');
+
+		$bidang_lomba   = preg_replace("/[^a-zA-Z]+/", "_", $bidang_lomba);
+		$nama_tim  	 	= preg_replace("/[^a-zA-Z]+/", "_", $nama_tim);
+
+		if (!empty($_FILES['KARYA']['name'])) {
+
+			$folder		= "berkas/kompetisi/karya/{$bidang_lomba}/{$kode_user}_{$nama_tim}/";
+
+			if (!is_dir($folder)) {
+				mkdir($folder, 0755, true);
+			}
+
+			// UPLOAD FILE
+			$config['upload_path']          = $folder;
+			$config['allowed_types']        = '*';
+			$config['max_size']             = 10048;
+			$config['overwrite']			= TRUE;
+
+			$this->load->library('upload', $config);
+
+			if (!$this->upload->do_upload('KARYA')) {
+				$this->session->set_flashdata('error', 'Terjadi kesalahan saat menunggah Karya anda!!');
+				redirect($this->agent->referrer());
+			} else {
+				$upload_data 	= $this->upload->data();
+
+				if ($this->M_peserta->kelola_karya($upload_data['file_name']) == TRUE) {
+					$this->session->set_flashdata('success', "Berhasil mengatur data karya anda !!");
+					redirect(site_url('peserta/data-pendaftaran'));
+				} else {
+					$this->session->set_flashdata('error', "Terjadi kesalahan saat mengatur data karya anda !!");
+					redirect($this->agent->referrer());
+				}
+			}
+		} else {
+
+			if ($this->M_peserta->kelola_karya(null) == TRUE) {
+				$this->session->set_flashdata('success', "Berhasil mengatur data karya anda !!");
+				redirect(site_url('peserta/data-pendaftaran'));
+			} else {
+				$this->session->set_flashdata('error', "Terjadi kesalahan saat mengatur data karya anda !!");
+				redirect($this->agent->referrer());
+			}
 		}
 	}
 }

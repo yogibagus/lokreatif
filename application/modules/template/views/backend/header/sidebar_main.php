@@ -105,7 +105,7 @@
           <li class="nav-item">
             <a class="nav-link <?= ($this->uri->segment(1) == 'data-peserta' ? 'active' : '') ?>" href="<?= site_url('data-peserta') ?>" title="Data Peserta">
               <span class="tio-group-junior nav-icon"></span>
-              <span class="text-truncate">Data Akun Peserta</span>
+              <span class="text-truncate">Data Akun</span>
             </a>
           </li>
           <!-- End Pengguna -->
@@ -158,7 +158,7 @@
 
           <li class="nav-item ">
             <a class="js-nav-tooltip-link nav-link <?= ($this->uri->segment(2) == 'atur-pendaftaran' ? 'active' : '') ?>" href="<?= site_url('kompetisi/atur-pendaftaran') ?>" title="Atur Berkas Pendaftaran" data-placement="left">
-              <i class="tio-category-outlined nav-icon"></i>
+              <i class="tio-artboard-outlined nav-icon"></i>
               <span class="navbar-vertical-aside-mini-mode-hidden-elements text-truncate">Atur Berkas Pendaftaran</span>
             </a>
           </li>

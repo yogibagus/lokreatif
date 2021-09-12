@@ -56,6 +56,16 @@ class M_admin extends CI_Model {
 		return $this->db->get('pendaftaran_kegiatan')->num_rows();
 	}
 
+	// REFUND
+
+	public function countRefund(){
+		return $this->db->get('tb_refund')->num_rows();
+	}
+
+	public function countSudahRefund(){
+		return $this->db->get_where('tb_refund', array('STAT_REFUND' => 1))->num_rows();
+	}
+
 
 	// PESERTA
 	function countPeserta(){
@@ -101,6 +111,13 @@ class M_admin extends CI_Model {
 	}
 
 	// END COUNTING
+
+	// REFUND
+
+	// function get_refund(){
+	// 	$query 	= $this->db->query("SELECT * FROM tb_refund a JOIN tb_transaksi b ON a.KODE_USER = b.KODE_USER WHERE a.ROLE = 1");
+	// 	return $query->result();
+	// }
 
 	// PESERTA
 

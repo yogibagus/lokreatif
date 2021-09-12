@@ -292,9 +292,9 @@
         </div>
         <div class="col-3">
           <div class="sticky-top">
-            <button type="submit" class="btn btn-sm btn-primary btn-block"><?= $cek_form == true ? 'Delete' : 'Atur';?> formulir</button>
+            <button type="submit" class="btn btn-sm btn-primary btn-block"><?= $cek_form == true ? 'Reset' : 'Atur';?> formulir</button>
             <?php if($cek_form == true):?>
-              <a href="" target="_blank" class="btn btn-sm btn-info btn-block">Lihat formulir</a>
+              <!-- <a href="" target="_blank" class="btn btn-sm btn-info btn-block">Lihat formulir</a> -->
             <?php endif;?>
             <hr>
             <div class="card">
