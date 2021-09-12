@@ -267,6 +267,17 @@ class Admin extends MX_Controller {
 		echo Modules::run('template/backend_main', $data);
 	}
 
+	  // REFUND
+	public function data_refund(){
+		$data['countRefund']		  	= $this->M_admin->countRefund();
+		$data['countSudahRefund']		= $this->M_admin->countSudahRefund();
+		// $data['refund']					= $this->M_admin->get_refund();
+
+		$data['module']     = "admin";
+		$data['fileview']   = "data_refund";
+		echo Modules::run('template/backend_main', $data);
+	}
+
 	// DATA AKTIVITAS SISTEM
 	public function aktivitas(){
 		$this->load->library('pagination');

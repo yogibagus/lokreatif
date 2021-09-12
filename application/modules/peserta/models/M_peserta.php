@@ -393,4 +393,49 @@ class M_peserta extends CI_Model {
 			return ($this->db->affected_rows() != 1) ? false : true;
 		}
 	}
+
+	// KARYA
+
+	function cek_Karya($KODE_PENDAFTARAN){
+		$query = $this->db->get_where('tb_karya', array('KODE_PENDAFTARAN' => $KODE_PENDAFTARAN));
+		if ($query->num_rows() > 0) {
+			return true;
+		}else{
+			return false;
+		}
+	}
+
+	function kelola_karya($FILE){
+
+		$KODE_PENDAFTARAN	= $this->input->post('KODE_PENDAFTARAN');
+		$JUDUL				= htmlspecialchars($this->input->post('JUDUL'), true);
+		$KETERANGAN			= $this->input->post('KETERANGAN');
+		$LINK				= $this->input->post('LINK');
+
+		if ($FILE == null) {
+			$data = array(
+				'KODE_PENDAFTARAN' 	=> $KODE_PENDAFTARAN,
+				'JUDUL' 			=> $JUDUL,
+				'KETERANGAN' 		=> $KETERANGAN,
+				'LINK' 				=> $LINK,
+			);
+		}else{
+			$data = array(
+				'KODE_PENDAFTARAN' 	=> $KODE_PENDAFTARAN,
+				'JUDUL' 			=> $JUDUL,
+				'KETERANGAN' 		=> $KETERANGAN,
+				'FILE' 				=> $FILE,
+				'LINK' 				=> $LINK,
+			);
+		}
+
+		if ($this->cek_Karya($KODE_PENDAFTARAN) == true) {
+			$this->db->where('KODE_PENDAFTARAN', $KODE_PENDAFTARAN);
+			$this->db->update('tb_karya', $data);
+			return ($this->db->affected_rows() != 1) ? false : true;
+		}else{
+			$this->db->insert('tb_karya', $data);
+			return ($this->db->affected_rows() != 1) ? false : true;
+		}
+	}
 }
