@@ -194,8 +194,9 @@ class Payment extends MX_Controller
                     $data['payment'] = $this->M_payment->get_payment_by_kode_trans($transaksi->KODE_TRANS);
                     $data['user'] = $user;
                     $data['nama'] = $nama;
+                    $data['fee'] = $transaksi->TOT_BAYAR - $transaksi->BAYAR;
                     $data['kode_trans'] = $transaksi->KODE_TRANS;
-                    $data['total_bayar'] = $this->M_payment->get_total_bayar($transaksi->KODE_TRANS);
+                    $data['total_bayar'] = $transaksi->TOT_BAYAR;
                     $data['total_team'] = $this->M_payment->get_total_team_and_biaya($transaksi->KODE_TRANS);
                     $data['tim']        = $this->M_payment->get_tim($transaksi->KODE_TRANS);
                     $data['redirect_url'] = $redirect_url;

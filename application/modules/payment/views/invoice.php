@@ -33,7 +33,7 @@
                         <div class="col-2"></div>
                         <div class="col-5">
                             <span>Nomor Invoice:</span> <br>
-                            <span><strong>ID #<?= $kode_trans ?></strong></span><br>
+                            <span><strong>#<?= $kode_trans ?></strong></span><br>
                             <span>Tanggal:</span><br>
                             <?php
                             $time = strtotime($payment->LOG_TIME);
@@ -87,19 +87,28 @@
                                 <tr>
                                     <td></td>
                                     <td class="text-right">
+                                        <strong>Fee</strong>
+                                    </td>
+                                    <td>Rp <?= number_format($fee, 0, ',', '.') ?></td>
+                                </tr>
+                                <tr>
+                                    <td></td>
+                                    <td class="text-right">
                                         <h4>Total Pembayaran</h4>
                                     </td>
                                     <td>
                                         <h3>
-                                            Rp <?= number_format($total_bayar->total_bayar, 0, ',', '.') ?>
+                                            Rp <?= number_format($total_bayar, 0, ',', '.') ?>
                                         </h3>
                                     </td>
                                 </tr>
                             </tbody>
                         </table>
                         <br><br>
-                        Best Regards,<br>
-                        <strong>LO-KREATIF TEAM</strong>
+                        <div class="text-right mr-10">
+                            Best Regards,<br>
+                            <strong>LO-KREATIF TEAM</strong>
+                        </div>
                         <div class="mt-4">
                             <center>
                                 <span class="d-none d-print-block">Tanggal cetak: <?= date('d M Y h:i:s'); ?></span>
