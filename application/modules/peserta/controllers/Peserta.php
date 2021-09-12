@@ -236,7 +236,12 @@ class Peserta extends MX_Controller
 			$data['CI']				= $this;
 
 			$data['module'] 		= "peserta";
-			$data['fileview'] 		= "pendaftaran_anggota";
+			
+			if ($dataPeserta->ID_BIDANG == 13) {
+				$data['fileview'] 		= "URGENT_pendaftaran_anggota-unjuk";
+			}else{
+				$data['fileview'] 		= "pendaftaran_anggota";
+			}
 			echo Modules::run('template/frontend_user', $data);
 		}
 	}
