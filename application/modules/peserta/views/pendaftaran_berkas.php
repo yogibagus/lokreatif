@@ -79,7 +79,7 @@
 				<div class="card card-frame card-body mb-4">
 					<label class="input-label"><?= $key->PERTANYAAN;?> <span class="text-danger">*</span></label>
 					<div>
-
+						<a href="<?= base_url();?>berkas/pendaftaran/kompetisi/lokreatif/<?= $this->session->userdata('kode_user');?>/<?= $CI->General->get_formData($dataPendaftaran->KODE_PENDAFTARAN, $key->ID_FORM);?>" class="btn btn-sm btn-primary" target="_blank">cek berkas</a>
 						<label class="btn btn-sm btn-primary transition-3d-hover file-attachment-btn" for="fileAttachmentBtn<?= $no;?>">
 							<span id="customFileUpload<?= $no;?>"><?= empty($CI->General->get_formData($dataPendaftaran->KODE_PENDAFTARAN, $key->ID_FORM)) ? 'Tambahkan file' : $CI->General->get_formData($dataPendaftaran->KODE_PENDAFTARAN, $key->ID_FORM);?></span>
 							<input id="fileAttachmentBtn<?= $no;?>" name="JAWABAN[]" type="file" class="js-file-attach file-attachment-btn-label" accept=".pdf"

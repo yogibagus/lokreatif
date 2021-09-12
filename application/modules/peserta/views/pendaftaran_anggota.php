@@ -79,14 +79,14 @@
 						<div class="col-md-2">
 							<div class="form-group">
 								<label for="NimDospem" class="input-label font-weight-bold">NIDN <small class="text-muted">(jika ada)</small></label>
-								<input type="text" class="form-control form-control-sm" name="NIM_DOSPEM" id="NimDospem" value="<?= $dataDospem != false ? $dataDospem->NIM : '' ;?>">
+								<input type="number" class="form-control form-control-sm" name="NIM_DOSPEM" id="NimDospem" value="<?= $dataDospem != false ? $dataDospem->NIM : '' ;?>">
 							</div>
 						</div>
 						<div class="col-md-2">
 							<div class="form-group">
 								<label for="HPDospem" class="input-label font-weight-bold">No. Telp <small class="text-danger">*</small></label>
 								<div class="d-flex">
-									<input type="tel" class="form-control form-control-sm" name="HP_DOSPEM" id="HPDospem" value="<?= $dataDospem != false ? $dataDospem->HP : '' ;?>" required>
+									<input type="number" class="form-control form-control-sm" name="HP_DOSPEM" id="HPDospem" value="<?= $dataDospem != false ? $dataDospem->HP : '' ;?>" required>
 								</div>
 							</div>
 						</div>
@@ -110,14 +110,14 @@
 						<div class="col-md-2">
 							<div class="form-group">
 								<label for="NimKetua" class="input-label font-weight-bold">NIM <small class="text-danger">*</small></label>
-								<input type="text" class="form-control form-control-sm" name="NIM_KETUA" id="NimKetua" value="<?= $dataKetua != false ? $dataKetua->NIM : '';?>" required>
+								<input type="number" class="form-control form-control-sm" name="NIM_KETUA" id="NimKetua" value="<?= $dataKetua != false ? $dataKetua->NIM : '';?>" required>
 							</div>
 						</div>
 						<div class="col-md-2">
 							<div class="form-group">
 								<label for="HPKetua" class="input-label font-weight-bold">No. Telp <small class="text-danger">*</small></label>
 								<div class="d-flex">
-									<input type="tel" class="form-control form-control-sm" name="HP_KETUA" id="HPKetua" value="<?= $dataKetua != false ? $dataKetua->HP : '';?>" required>
+									<input type="number" class="form-control form-control-sm" name="HP_KETUA" id="HPKetua" value="<?= $dataKetua != false ? $dataKetua->HP : '';?>" required>
 								</div>
 							</div>
 						</div>
@@ -146,14 +146,14 @@
 							<div class="col-md-2">
 								<div class="form-group">
 									<label for="NimAnggota<?= $no;?>" class="input-label font-weight-bold">NRP/NIM <small class="text-danger">*</small></label>
-									<input type="text" class="form-control form-control-sm" name="NIM_ANGGOTA[]" id="NimAnggota" value="<?= $anggota->NIM;?>" required>
+									<input type="number" class="form-control form-control-sm" name="NIM_ANGGOTA[]" id="NimAnggota" value="<?= $anggota->NIM;?>" required>
 								</div>
 							</div>
 							<div class="col-md-2">
 								<div class="form-group">
 									<label for="HPAnggota<?= $no;?>" class="input-label font-weight-bold">No. Telp <small class="text-danger">*</small></label>
 									<div class="d-flex">
-										<input type="tel" class="form-control form-control-sm" name="HP_ANGGOTA[]" id="HPAnggota<?= $no;?>" value="<?=$anggota->HP;?>" required>
+										<input type="number" class="form-control form-control-sm" name="HP_ANGGOTA[]" id="HPAnggota<?= $no;?>" value="<?=$anggota->HP;?>" required>
 										<a href="<?php echo site_url('peserta/hapus_anggota/'.$anggota->ID_ANGGOTA);?>" class="btn btn-soft-danger ml-2 btn-sm"><i class="fas fa-trash"></i></a>
 									</div>
 								</div>
@@ -186,7 +186,7 @@
 									<div class="form-group">
 										<label for="HPAnggota" class="input-label font-weight-bold">No. Telp <small class="text-danger">*</small></label>
 										<div class="d-flex">
-											<input type="tel" class="form-control form-control-sm" name="HP_ANGGOTA[]" id="HPAnggota" placeholder="Email" required>
+											<input type="tel" class="form-control form-control-sm" name="HP_ANGGOTA[]" id="HPAnggota" placeholder="No. Telp" required>
 										</div>
 									</div>
 								</div>
@@ -208,14 +208,14 @@
 									<div class="col-md-2">
 										<div class="form-group">
 											<label for="NimAnggota" class="input-label font-weight-bold">NIM <small class="text-danger">*</small></label>
-											<input type="text" class="form-control form-control-sm" name="NIM_ANGGOTA[]" id="NimAnggota" placeholder="NIM" required>
+											<input type="number" class="form-control form-control-sm" name="NIM_ANGGOTA[]" id="NimAnggota" placeholder="NIM" required>
 										</div>
 									</div>
 									<div class="col-md-2">
 										<div class="form-group">
 											<label for="HPAnggota" class="input-label font-weight-bold">No. Telp <small class="text-danger">*</small></label>
 											<div class="d-flex">
-												<input type="tel" class="form-control form-control-sm" name="HP_ANGGOTA[]" id="HPAnggota" placeholder="Email" required>
+												<input type="number" class="form-control form-control-sm" name="HP_ANGGOTA[]" id="HPAnggota" placeholder="No. Telp" required>
 											</div>
 										</div>
 									</div>
@@ -240,7 +240,7 @@
 					}else{
 						$('#add').removeClass('d-none'); 
 					}
-					$('#add_anggota').append('<div class="row" id="row'+i+'"> <div class="col-md-4"> <div class="form-group"> <label for="NamaAngota" class="input-label font-weight-bold">Nama <small class="text-danger">*</small></label> <input type="text" class="form-control form-control-sm" name="NAMA_ANGGOTA[]" id="NamaAngota" placeholder="Masukkan Nama anggota" required/> </div></div><div class="col-md-4"> <div class="form-group"> <label for="EmailAnggota" class="input-label font-weight-bold">EMAIL <small class="text-danger">*</small></label> <input type="email" class="form-control form-control-sm" name="EMAIL_ANGGOTA[]" id="EmailAnggota" placeholder="Masukkan Email" required/> </div></div><div class="col-md-2"> <div class="form-group"> <label for="NimAnggota" class="input-label font-weight-bold">NIM <small class="text-danger">*</small></label> <input type="text" class="form-control form-control-sm" name="NIM_ANGGOTA[]" id="NimAnggota" placeholder="NIM" required/> </div></div><div class="col-md-2"> <div class="form-group"> <label for="HPAnggota" class="input-label font-weight-bold">No. Telp <small class="text-danger">*</small></label> <div class="d-flex"> <input type="tel" class="form-control form-control-sm" name="HP_ANGGOTA[]" id="HPAnggota" placeholder="HP" required/> <button type="button" class="btn btn-soft-danger ml-2 btn-sm btn_remove" id="'+i+'"><i class="fas fa-trash"></i></button> </div></div></div></div>');
+					$('#add_anggota').append('<div class="row" id="row'+i+'"> <div class="col-md-4"> <div class="form-group"> <label for="NamaAngota" class="input-label font-weight-bold">Nama <small class="text-danger">*</small></label> <input type="text" class="form-control form-control-sm" name="NAMA_ANGGOTA[]" id="NamaAngota" placeholder="Masukkan Nama anggota" required/> </div></div><div class="col-md-4"> <div class="form-group"> <label for="EmailAnggota" class="input-label font-weight-bold">EMAIL <small class="text-danger">*</small></label> <input type="email" class="form-control form-control-sm" name="EMAIL_ANGGOTA[]" id="EmailAnggota" placeholder="Masukkan Email" required/> </div></div><div class="col-md-2"> <div class="form-group"> <label for="NimAnggota" class="input-label font-weight-bold">NIM <small class="text-danger">*</small></label> <input type="number" class="form-control form-control-sm" name="NIM_ANGGOTA[]" id="NimAnggota" placeholder="NIM" required/> </div></div><div class="col-md-2"> <div class="form-group"> <label for="HPAnggota" class="input-label font-weight-bold">No. Telp <small class="text-danger">*</small></label> <div class="d-flex"> <input type="number" class="form-control form-control-sm" name="HP_ANGGOTA[]" id="HPAnggota" placeholder="No. Telp" required/> <button type="button" class="btn btn-soft-danger ml-2 btn-sm btn_remove" id="'+i+'"><i class="fas fa-trash"></i></button> </div></div></div></div>');
 				});
 				$(document).on('click', '.btn_remove', function(){
 					var button_id = $(this).attr("id");
@@ -275,7 +275,7 @@
 							has_close_btn:true,
 							stack: true,
 							fullscreen:false,
-							timeout:8000,
+							timeout:5000,
 							sticky:false,
 							has_progress:true,
 							rtl:false,

@@ -21,7 +21,7 @@
                   <span class="media-body">
                     <div class="row">
                       <div class="col-md-8">
-                        <?= $WEB_DESKRIPSI;?><hr class="my-2">
+                        <?= $WEB_DESKRIPSI;?>
                         Jl. Arief Rahman Hakim 103, Surabaya - Jawa Timur
                     </div>
                   </span>
@@ -29,9 +29,9 @@
               </a>
             </li>
             <li class="nav-item">
-              <a class="nav-link media" href="tel:+62<?= $WEB_WA;?>">
+              <a class="nav-link media" href="https://api.whatsapp.com/send?text=Hai&phone=<?= $WEB_WA;?>">
                 <span class="media">
-                  <span class="fas fa-whatsapp mt-1 mr-2"></span>
+                  <span class="fab fa-whatsapp mt-1 mr-2"></span>
                   <span class="media-body">
                     +62<?= $WEB_WA;?>
                   </span>
