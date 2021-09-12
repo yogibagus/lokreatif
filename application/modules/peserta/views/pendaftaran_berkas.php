@@ -97,7 +97,7 @@
 					});
 				</script>
 				<?php if (isset($key->KETERANGAN) || $key->KETERANGAN != null):?>
-					<small class="text-muted mt-2">Ukuran file <?= $key->FILE_SIZE;?> MB. <?= $key->KETERANGAN;?></small>
+					<small class="text-muted mt-2">Ukuran file <?= $key->FILE_SIZE;?>0 MB. <?= $key->KETERANGAN;?></small>
 				<?php endif;?>
 			</div>
 
