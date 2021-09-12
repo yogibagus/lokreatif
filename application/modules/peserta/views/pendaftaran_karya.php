@@ -19,10 +19,6 @@
 			<!-- Tab Content -->
 			<div class="form-group">
 				<label class="input-label">File Karya (dokumen) <small class="text-danger">*</small> <i class="far fa-question-circle text-body font-size-1 ml-1" data-container="body" data-toggle="popover" data-placement="top" data-trigger="hover" title="Jika karya anda dalam bentuk dokumen seperti PDF, Word, Gambar atau sebagainya"></i></label>
-				<?php if ($dataKarya != false) :?>
-					<a href="<?= base_url();?>berkas/kompetisi/karya/<?= preg_replace("/[^a-zA-Z]+/", "_", $dataPendaftaran->BIDANG_LOMBA
-					);?>/<?= $this->session->userdata('kode_user');?>/<?= $dataKarya->FILE;?>" class="btn btn-sm btn-primary" target="_blank">cek berkas</a>
-				<?php endif;?>
 				<label class="btn btn-sm btn-primary transition-3d-hover file-attachment-btn" for="fileAttachmentBtn">
 					<span id="customFileUpload"><?= $dataKarya != false ? $dataKarya->FILE != null ? $dataKarya->FILE : 'Tambahkan dokumen karya' : 'Tambahkan dokumen karya' ;?></span>
 					<input id="fileAttachmentBtn" name="KARYA" type="file" class="js-file-attach file-attachment-btn-label" accept=".pdf,image/*"
