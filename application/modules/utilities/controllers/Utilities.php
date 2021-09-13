@@ -26,6 +26,28 @@ class Utilities extends MX_Controller{
 	}
 
 	public function statistik(){
+		$data['jmlPesertaVerif'] 	 = $this->M_uti->get_jmlPesertaVerif();
+		$data['jmlPesertaBelum'] 	 = $this->M_uti->get_jmlPesertaBelum();
+		$data['jmlPeserta'] 	 	 = $this->M_uti->get_jmlPeserta();
+		$data['listPTDetail'] 	 	 = $this->M_uti->get_listPTDetail();
+		$data['jmlPesertaPerLomba']	 = array();
+		$data['jmlVerifPerLomba']	 = array();
+		$data['jmlBelumPerLomba']	 = array();
+		$data['jmlTolakPerLomba']	 = array();
+		$data['bidangLomba']		 = array();
+		$data['posterLomba']	 	 = array();
+
+		$bidangLomba = $this->M_uti->get_bidangLomba();
+		foreach ($bidangLomba as $item) {
+			$data['bidangLomba'][] 	= '"'.$item->BIDANG_LOMBA.'"';
+			$data['posterLomba'][]	= $item->POSTER != null ? '"'.base_url('berkas/kompetisi/bidang-lomba/'.$item->POSTER).'"' : '"'.base_url('assets/frontend/svg/illustrations/discussion-scene.svg').'"';
+			
+			$detailTotal = $this->M_uti->get_pesertaLombaDetail($item->ID_BIDANG);
+			$data['jmlPesertaPerLomba'][]	= $detailTotal['TOTAL_PESERTA'];
+			$data['jmlVerifPerLomba'][]		= $detailTotal['JML_VERIF'];
+			$data['jmlBelumPerLomba'][]		= $detailTotal['JML_BELUM'];
+			$data['jmlTolakPerLomba'][]		= $detailTotal['JML_TOLAK'];
+		}
 
 		$data['module'] 	= "utilities";
 		$data['fileview'] 	= "statistik";
