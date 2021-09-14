@@ -26,5 +26,53 @@ class M_utilities extends CI_Model {
 			return false;
 		}
 	}
+	function get_bidangLomba(){
+		return $this->db->get('bidang_lomba')->result();
+	}
+	function get_jmlPesertaVerif(){
+		return $this->db->query("SELECT COUNT(*) AS JML FROM pendaftaran_kompetisi WHERE STATUS = '1'")->row();
+	}
+	function get_jmlPesertaBelum(){
+		return $this->db->query("SELECT COUNT(*) AS JML FROM pendaftaran_kompetisi WHERE STATUS = '0'")->row();
+	}
+	function get_jmlPeserta(){
+		return $this->db->query("SELECT COUNT(*) AS JML FROM pendaftaran_kompetisi")->row();
+	}
+	function get_pesertaLombaDetail($idBidangLomba){
+		$tot = $this->db->query("
+			SELECT COUNT(*) AS JML
+			FROM pendaftaran_kompetisi pk 
+			WHERE pk.BIDANG_LOMBA = '$idBidangLomba'
+		")->row();
+		$verif = $this->db->query("
+			SELECT COUNT(*) AS JML
+			FROM pendaftaran_kompetisi pk 
+			WHERE pk.BIDANG_LOMBA = '$idBidangLomba' AND pk.STATUS = '1'
+		")->row();
+		$belum = $this->db->query("
+			SELECT COUNT(*) AS JML
+			FROM pendaftaran_kompetisi pk 
+			WHERE pk.BIDANG_LOMBA = '$idBidangLomba' AND pk.STATUS = '0'
+		")->row();
+		$tolak = $this->db->query("
+			SELECT COUNT(*) AS JML
+			FROM pendaftaran_kompetisi pk 
+			WHERE pk.BIDANG_LOMBA = '$idBidangLomba' AND pk.STATUS = '2'
+		")->row();
 
+		return ['TOTAL_PESERTA' => $tot->JML, 'JML_VERIF' => $verif->JML, 'JML_BELUM' => $belum->JML, 'JML_TOLAK' => $tolak->JML];
+	}
+	function get_listPTDetail(){
+		return $this->db->query("
+			SELECT 
+				p.kodept ,
+				p.namapt ,
+				(SELECT COUNT(*) FROM pendaftaran_kompetisi pk2 WHERE STATUS = '1') AS JML_TERVERIFIKASI,
+				COUNT(pk.ASAL_PTS) AS JML_PESERTA
+			FROM pendaftaran_kompetisi pk , pt p 
+			WHERE pk.ASAL_PTS = p.kodept 
+			GROUP BY pk.ASAL_PTS 
+			ORDER BY (SELECT COUNT(*) FROM pendaftaran_kompetisi pk2 WHERE STATUS = '1') DESC
+		")->result();
+	}
 }
