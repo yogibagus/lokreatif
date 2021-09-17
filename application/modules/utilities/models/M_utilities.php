@@ -67,4 +67,36 @@ class M_utilities extends CI_Model {
 			ORDER BY p.kopertis ASC
 		")->result();
 	}
+	function get_timPTS(){
+		return $this->db->query("
+			SELECT 
+				p.kodept , 
+				p.namapt ,
+				COUNT(pk.ASAL_PTS) AS JML_TIM
+			FROM pendaftaran_kompetisi pk, pt p 
+			WHERE pk.ASAL_PTS = p.kodept 
+			GROUP BY pk.ASAL_PTS 
+			ORDER BY COUNT(pk.ASAL_PTS) DESC, p.kodept ASC
+		")->result();
+	}
+	function get_detStatTim(){
+		return $this->db->query("
+			SELECT 
+				pk2.NAMA_TIM ,
+				bl.BIDANG_LOMBA ,
+				p.namapt AS NAMA_PTS,
+				tt.STAT_BAYAR ,
+				tk.ID_KARYA 
+			FROM pendaftaran_kompetisi pk2 
+				JOIN bidang_lomba bl ON bl.ID_BIDANG = pk2.BIDANG_LOMBA 
+				JOIN pt p ON p.kodept = pk2.ASAL_PTS 
+				LEFT JOIN tb_order to2 ON to2.KODE_PENDAFTARAN = pk2.KODE_PENDAFTARAN 
+				LEFT JOIN tb_transaksi tt ON tt.KODE_TRANS = to2.KODE_TRANS 
+				LEFT JOIN tb_karya tk ON tk.KODE_PENDAFTARAN = pk2.KODE_PENDAFTARAN 
+			GROUP BY pk2.KODE_PENDAFTARAN 
+			ORDER BY 
+				tk.ID_KARYA IS NOT NULL DESC ,
+				tt.STAT_BAYAR IS NOT NULL DESC 	
+		")->result();
+	}
 }

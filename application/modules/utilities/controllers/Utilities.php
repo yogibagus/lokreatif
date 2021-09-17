@@ -46,7 +46,8 @@ class Utilities extends MX_Controller{
 			$data['timLLDIKTI']['jmlTim'][]	  = $item->JML_TIM;
 		}
 		
-		
+		$data['timPTS'] 	= $this->M_uti->get_timPTS();
+		$data['detStatTim'] = $this->M_uti->get_detStatTim();
 
 		$data['module'] 	= "utilities";
 		$data['fileview'] 	= "statistik";

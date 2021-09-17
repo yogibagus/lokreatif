@@ -73,7 +73,84 @@
                 <div class="card-body">
                     <h5 style="text-align: center;">Jumlah Tim Berdasarkan PTS Asal</h5>
                     <hr>
-                    <div id=""></div>
+                    <table id="tblTimPTS" class="table table-borderless table-thead-bordered dt-responsive display nowrap">
+                        <thead class="thead-light">
+                            <tr>
+                                <th>No</th>
+                                <th>Kode</th>
+                                <th>Institusi</th>
+                                <th>Jumlah Tim</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <?php
+                                $no = 1;
+                                foreach ($timPTS as $item) {
+                                    echo '
+                                        <tr>
+                                            <td>'.$no.'</td>
+                                            <td>'.$item->kodept.'</td>
+                                            <td>'.$item->namapt.'</td>
+                                            <td>'.number_format($item->JML_TIM,0,",",".").'</td>
+                                        </tr>
+                                    ';
+                                    $no++;
+                                }
+                            ?>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- End Jumlah Tim Berdasarkan PTS Asal -->
+
+    <!-- Jumlah Tim Berdasarkan PTS Asal -->
+    <div class="row">
+        <div class="col-md-12 com-sm-12" style="margin-top: 25px;">
+            <div class="card">
+                <div class="card-body">
+                    <h5 style="text-align: center;">Detail Status Tim</h5>
+                    <hr>
+                    <table id="tblDetailTimPTS" class="table table-borderless table-thead-bordered dt-responsive display nowrap">
+                        <thead class="thead-light">
+                            <tr>
+                                <th>No</th>
+                                <th>Nama Tim</th>
+                                <th>PTS</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <?php
+                                $no = 1; 
+                                foreach ($detStatTim as $item) {
+                                    $status = "";
+                                    if($item->ID_KARYA != null){
+                                        $status = '<span class="badge bg-success text-white">Sudah Unggah Karya</span>';
+                                    }else if($item->STAT_BAYAR != null){
+                                        if($item->STAT_BAYAR == "3"){
+                                            $status = '<span class="badge bg-info text-white">Bayar</span>';
+                                        }else{
+                                            $status = '<span class="badge bg-warning text-white">Belum Bayar</span>';
+                                        }
+                                    }else{
+                                        $status = '<span class="badge bg-primary text-white">Daftar Kompetisi</span>';
+                                    }
+
+                                    echo '
+                                        <tr>
+                                            <th>'.$no.'</th>
+                                            <th>'.$item->NAMA_TIM.'</th>
+                                            <th>'.$item->NAMA_PTS.'</th>
+                                            <th>'.$status.'</th>
+                                        </tr>
+                                    ';
+                                    $no++;
+                                }
+                            ?>
+                        </tbody>
+                    </table>
                 </div>
             </div>
         </div>
@@ -82,6 +159,8 @@
 </div>
 <script>
     $(document).ready(function(){
+        $('#tblTimPTS').DataTable();
+        $('#tblDetailTimPTS').DataTable();
         var optChartKategori = {   
             chart: {
                 type: 'bar',
