@@ -161,17 +161,22 @@ class M_manageKompetisi extends CI_Model {
 		$KODE_USER 		= htmlspecialchars($this->input->post('KODE_USER'), true);
 
 		$NAMA_JURI 		= htmlspecialchars($this->input->post('NAMA_JURI'), true);
-		$PEKERJAAN 		= htmlspecialchars($this->input->post('PEKERJAAN'), true);
+		$PEKERJAAN 		= $this->input->post('PEKERJAAN');
 		$EMAIL 			= htmlspecialchars($this->input->post('EMAIL'), true);
 		$HP 			= htmlspecialchars($this->input->post('HP'), true);
 		$PASSWORD 		= htmlspecialchars($this->input->post('PASSWORD'), true);
 		$BIDANG_JURI 	= htmlspecialchars($this->input->post('BIDANG_JURI'), true);
 
-
-		$data = array(
-			'EMAIL'			=> $EMAIL,
-			'PASSWORD'		=> password_hash($PASSWORD, PASSWORD_DEFAULT),
-		);
+		if (isset($PASSWORD)) {
+			$data = array(
+				'EMAIL'			=> $EMAIL,
+				'PASSWORD'		=> password_hash($PASSWORD, PASSWORD_DEFAULT),
+			);
+		}else{
+			$data = array(
+				'EMAIL'			=> $EMAIL,
+			);
+		}
 
 		$this->db->where('KODE_USER', $KODE_USER);
 		$this->db->update('tb_auth', $data);
@@ -187,7 +192,7 @@ class M_manageKompetisi extends CI_Model {
 
 		$bidang = array(
 			'ID_BIDANG'  		=> $BIDANG_JURI,
-			'PEKERJAAN'  			=> $PEKERJAAN,
+			'PEKERJAAN'  		=> $PEKERJAAN,
 		);
 
 		$this->db->where('ID', $ID);
@@ -359,7 +364,7 @@ class M_manageKompetisi extends CI_Model {
 	}
 
 	function get_dataPendaftaran(){
-		$this->db->select("a.*, b.NAMA");
+		$this->db->select("*");
 		$this->db->from("pendaftaran_kompetisi a");
 		$this->db->join("tb_peserta b", "a.KODE_USER = b.KODE_USER");
 		$query = $this->db->get();
@@ -477,6 +482,23 @@ class M_manageKompetisi extends CI_Model {
 		$this->db->where('KODE', 'lokreatif');
 		$this->db->delete('form_meta');
 		return true;
+	}
+
+
+	function terima_pendaftaran(){
+		$KODE_USER = $this->input->post('KODE_USER');
+
+		$this->db->where('KODE_USER', $KODE_USER);
+		$this->db->update('pendaftaran_kompetisi', array('STATUS' => 1));
+		return ($this->db->affected_rows() != 1) ? false : true;
+	}
+
+	function tolak_pendaftaran(){
+		$KODE_USER = $this->input->post('KODE_USER');
+
+		$this->db->where('KODE_USER', $KODE_USER);
+		$this->db->update('pendaftaran_kompetisi', array('STATUS' => 2));
+		return ($this->db->affected_rows() != 1) ? false : true;
 	}
 
 }

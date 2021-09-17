@@ -126,6 +126,26 @@ class M_admin extends CI_Model {
 		return $query->result();
 	}
 
+	function get_pesertaPendaftaran($KODE_USER){
+		$query 	= $this->db->query("SELECT *, c.BIDANG_LOMBA as LOMBA FROM pendaftaran_kompetisi a LEFT JOIN pt b ON a.ASAL_PTS = b.kodept LEFT JOIN bidang_lomba c ON a.BIDANG_LOMBA = c.ID_BIDANG WHERE a.KODE_USER = '$KODE_USER'");
+		if ($query->num_rows() > 0) {
+			return $query->row();	
+		}else{
+			return false;
+		}
+	}
+
+	// KOLEKTIF PTS
+
+	function get_akunPTS(){
+		$query 	= $this->db->query("SELECT * FROM tb_auth a JOIN tb_univ b ON a.KODE_USER = b.KODE_UNIV LEFT JOIN pt c ON b.KODE_PT = c.kodept WHERE a.ROLE = 3");
+		if ($query->num_rows() > 0) {
+			return $query->result();
+		}else{
+			return false;
+		}
+	}
+
 	// AKTIVITAS & NOTIFIKASI
 
 	public function count_aktivitasAdmin(){

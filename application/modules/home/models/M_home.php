@@ -28,8 +28,7 @@ class M_home extends CI_Model {
 	}
 
 	public function get_bidangLomba(){
-		$this->db->select('*');
-		$query = $this->db->get('bidang_lomba');
+		$query = $this->db->query("SELECT * FROM bidang_lomba WHERE ID_BIDANG != 13");
 
 		if ($query->num_rows() > 0) {
 			return $query->result();

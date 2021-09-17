@@ -538,8 +538,6 @@ class Peserta extends MX_Controller
 
 				$files = $_FILES['JAWABAN'];
 
-				echo var_dump($_FILES['JAWABAN']['name'][$j]);
-
 				$_FILES['BERKAS[]']['name']		= $files['name'][$j];
 				$_FILES['BERKAS[]']['type']		= $files['type'][$j];
 				$_FILES['BERKAS[]']['tmp_name']	= $files['tmp_name'][$j];
@@ -568,18 +566,13 @@ class Peserta extends MX_Controller
 						'JAWABAN' 			=> $upload_data['file_name']
 					);
 					if ($this->M_peserta->update_jawaban($KODE_PENDAFTARAN, $ID_FORM_FILE[$j], $data) == false) {
-						break;
+						// break;
 						// echo "a";
 						$this->session->set_flashdata('error', "Terjadi kesalahan saat mengubah jawaban anda !!");
 						redirect($this->agent->referrer());
 					} else {
 						$prosesJawaban = true;
 					}
-				} else {
-					break;
-					// echo "b";
-					$this->session->set_flashdata('error', "Terjadi kesalahan saat mengubah berkas anda !!");
-					redirect($this->agent->referrer());
 				}
 			}
 		}
@@ -614,21 +607,28 @@ class Peserta extends MX_Controller
 				$this->session->set_flashdata('success', "Anda memiliki pembayaran yang belum diselesaikan !!");
 				redirect(site_url('payment/checkout/' . $KODE_TRANS));
 			} else {
-				$dataPeserta 			= $this->General->get_detailDaftarKompetisi($this->session->userdata("kode_user"));
-				$JML_TIM				= $this->General->get_jmlPTSbayar($dataPeserta->ASAL_PTS);
-				$BIAYA_TIM				= $this->General->get_biayaDaftar($JML_TIM);
-
-				// GENERATE KODE_TRANS
-				$KODE_TRANS				= $this->transaksi->gen_kodeTrans();
-
-				// INSERT INTO DB WHEN DONT HAVE ANY PENDING TRANSACTION
-				if ($this->M_peserta->bayar_pendaftaran($KODE_TRANS, $KODE_PENDAFTARAN, $BIAYA_TIM) == TRUE) {
-					$this->General->log_aktivitas($this->session->userdata('kode_user'), $this->session->userdata('kode_user'), 15);
+				if ($this->General->get_kodeTrans($KODE_PENDAFTARAN) != false) {
+					$KODE_TRANS			= $this->General->get_kodeTrans($KODE_PENDAFTARAN);
+					// REDIRECT WHEN HAVE PENDING TRANSACTION
 					$this->session->set_flashdata('success', "Harap lanjutkan proses pembayaran !!");
 					redirect(site_url('payment/checkout/' . $KODE_TRANS));
-				} else {
-					$this->session->set_flashdata('error', "Terjadi kesalahan saat melakukan proses pembayaran!!");
-					redirect($this->agent->referrer());
+				}else{
+					$dataPeserta 			= $this->General->get_detailDaftarKompetisi($this->session->userdata("kode_user"));
+					$JML_TIM				= $this->General->get_jmlPTSbayar($dataPeserta->ASAL_PTS);
+					$BIAYA_TIM				= $this->General->get_biayaDaftar($JML_TIM);
+
+					// GENERATE KODE_TRANS
+					$KODE_TRANS				= $this->transaksi->gen_kodeTrans();
+
+					// INSERT INTO DB WHEN DONT HAVE ANY PENDING TRANSACTION
+					if ($this->M_peserta->bayar_pendaftaran($KODE_TRANS, $KODE_PENDAFTARAN, $BIAYA_TIM) == TRUE) {
+						$this->General->log_aktivitas($this->session->userdata('kode_user'), $this->session->userdata('kode_user'), 15);
+						$this->session->set_flashdata('success', "Harap lanjutkan proses pembayaran !!");
+						redirect(site_url('payment/checkout/' . $KODE_TRANS));
+					} else {
+						$this->session->set_flashdata('error', "Terjadi kesalahan saat melakukan proses pembayaran!!");
+						redirect($this->agent->referrer());
+					}
 				}
 			}
 		}else{
@@ -649,7 +649,7 @@ class Peserta extends MX_Controller
 
 		if (!empty($_FILES['KARYA']['name'])) {
 
-			$folder		= "berkas/kompetisi/karya/{$bidang_lomba}/{$kode_user}_{$nama_tim}/";
+			$folder		= "berkas/kompetisi/karya/{$bidang_lomba}/{$nama_tim}_{$kode_user}/";
 
 			if (!is_dir($folder)) {
 				mkdir($folder, 0755, true);
@@ -683,7 +683,7 @@ class Peserta extends MX_Controller
 				$this->session->set_flashdata('success', "Berhasil mengatur data karya anda !!");
 				redirect(site_url('peserta/data-pendaftaran'));
 			} else {
-				$this->session->set_flashdata('error', "Terjadi kesalahan saat mengatur data karya anda !!");
+				$this->session->set_flashdata('warning', "Tidak ada perubahan pada data karya anda !!");
 				redirect($this->agent->referrer());
 			}
 		}

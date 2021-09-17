@@ -79,13 +79,16 @@
 				<div class="card card-frame card-body mb-4">
 					<label class="input-label"><?= $key->PERTANYAAN;?> <span class="text-danger">*</span></label>
 					<div>
+						<?php if(!empty($CI->General->get_formData($dataPendaftaran->KODE_PENDAFTARAN, $key->ID_FORM))):?>
+							<a href="<?= base_url();?>berkas/pendaftaran/kompetisi/lokreatif/<?= $this->session->userdata('kode_user');?>/<?= $CI->General->get_formData($dataPendaftaran->KODE_PENDAFTARAN, $key->ID_FORM);?>" class="btn btn-sm btn-primary transition-3d-hover" target="_blank">Cek Berkas</a>
+						<?php endif;?>
 						<label class="btn btn-sm btn-primary transition-3d-hover file-attachment-btn" for="fileAttachmentBtn<?= $no;?>">
 							<span id="customFileUpload<?= $no;?>"><?= empty($CI->General->get_formData($dataPendaftaran->KODE_PENDAFTARAN, $key->ID_FORM)) ? 'Tambahkan file' : $CI->General->get_formData($dataPendaftaran->KODE_PENDAFTARAN, $key->ID_FORM);?></span>
 							<input id="fileAttachmentBtn<?= $no;?>" name="JAWABAN[]" type="file" class="js-file-attach file-attachment-btn-label" accept=".pdf"
 							data-hs-file-attach-options='{
 							"textTarget": "#customFileUpload<?= $no;?>",
 		                    "maxFileSize": 10240
-						}'  <?= ($key->REQUIRED == 1) ? "required" : "";?>>
+						}' <?= empty($CI->General->get_formData($dataPendaftaran->KODE_PENDAFTARAN, $key->ID_FORM)) ? (($key->REQUIRED == 1) ? "required" : "") : '';?>>
 					</label>
 					
 				</div>
@@ -96,7 +99,7 @@
 					});
 				</script>
 				<?php if (isset($key->KETERANGAN) || $key->KETERANGAN != null):?>
-					<small class="text-muted mt-2">Ukuran file <?= $key->FILE_SIZE;?>0 MB. <?= $key->KETERANGAN;?></small>
+					<small class="text-muted mt-2">Ukuran file 10 MB. <?= $key->KETERANGAN;?></small>
 				<?php endif;?>
 			</div>
 
