@@ -1,9 +1,8 @@
-<div style="background: url(<?= base_url();?>assets/frontend/svg/components/abstract-shapes-19.svg) center no-repeat;">
-  <!-- Team Section -->
-  <div class="container space-2">
-
-    <?php if ($bidangLomba != false) :?>
-      <?php foreach ($bidangLomba as $key) :?>
+<!-- Team Section -->
+<div class="container space-2">
+  <?php if ($bidangLomba != false) :?>
+    <?php $no = 1; foreach ($bidangLomba as $key) :?>
+      <div style="background: url(<?= base_url();?>assets/frontend/svg/components/abstract-shapes-<?= $no % 2 == 0 ? '19' : '9';?>.svg) center no-repeat;">
 
         <div class="w-md-80 w-lg-50 text-center mx-md-auto mb-5 mb-md-9">
           <span class="d-block small font-weight-bold text-cap mb-2">Juri</span>
@@ -68,9 +67,8 @@
         </div>
         <!-- End Team Carousel -->
         <hr>
-
-      <?php endforeach;?>
-    <?php endif;?>
-  </div>
-  <!-- End Team Section -->
+      </div>
+    <?php $no++; endforeach;?>
+  <?php endif;?>
 </div>
+<!-- End Team Section -->

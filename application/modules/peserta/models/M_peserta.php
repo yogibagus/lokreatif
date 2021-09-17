@@ -411,6 +411,7 @@ class M_peserta extends CI_Model {
 		$JUDUL				= htmlspecialchars($this->input->post('JUDUL'), true);
 		$KETERANGAN			= $this->input->post('KETERANGAN');
 		$LINK				= $this->input->post('LINK');
+		$LINK_DRIVE			= $this->input->post('LINK_DRIVE');
 
 		if ($FILE == null) {
 			$data = array(
@@ -418,6 +419,7 @@ class M_peserta extends CI_Model {
 				'JUDUL' 			=> $JUDUL,
 				'KETERANGAN' 		=> $KETERANGAN,
 				'LINK' 				=> $LINK,
+				'LINK_DRIVE' 		=> $LINK_DRIVE,
 			);
 		}else{
 			$data = array(
@@ -426,6 +428,7 @@ class M_peserta extends CI_Model {
 				'KETERANGAN' 		=> $KETERANGAN,
 				'FILE' 				=> $FILE,
 				'LINK' 				=> $LINK,
+				'LINK_DRIVE' 		=> $LINK_DRIVE,
 			);
 		}
 

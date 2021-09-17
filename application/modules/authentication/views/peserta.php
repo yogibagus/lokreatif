@@ -156,7 +156,7 @@
         <button type="button" class="close alcs" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
-        <h2><strong>Terms and Conditions</strong></h2>
+        <h2><strong>Syarat dan Kondisi</strong></h2>
 
         <p><?= $TERM_CONDITION;?></p>
       </div>

@@ -86,6 +86,7 @@ $route['ajx-data-pts-all']                  = 'authentication/ajx_dataPtsAll';
 // END LOGIN
 
 // ADMIN
+$route['data-kolektif-pts']				= 'admin/data_kolektifPts';
 $route['data-peserta']               	= 'admin/data_peserta';
 $route['berkas-lomba']               	= 'admin/berkas_lomba';
 

@@ -181,6 +181,15 @@ class Pendaftaran extends MX_Controller {
 
 		if ($this->M_daftar->insert_pendaftaran($daftar, $tabel) == true) {
 
+			$this->db->where('KODE_PENDAFTARAN', $KODE_PENDAFTARAN);
+			$this->db->delete('tb_anggota');
+
+			$ketua = array(
+				'KODE_PENDAFTARAN' 	=> $KODE_PENDAFTARAN,
+				'NAMA'  			=> $this->session->userdata('nama'),
+			);
+			$this->M_daftar->insert_pendaftaran($ketua, 'tb_anggota');
+			
 			$prosesJawaban = false;
 
 			$cpt = count($_FILES['JAWABAN']['name']);

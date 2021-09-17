@@ -24,6 +24,8 @@ class Authentication extends MX_Controller {
 		parent::__construct();
 		$this->load->model('M_authentication', 'M_auth');
 
+
+
 	}
 
 	// MAILER SENDER
@@ -68,10 +70,9 @@ class Authentication extends MX_Controller {
 	}
 
 	public function index(){
-
-		$data['module'] 		= "authentication";
-		$data['fileview'] 		= "login";
-		echo Modules::run('template/frontend_auth', $data);
+			$data['module'] 		= "authentication";
+			$data['fileview'] 		= "login";
+			echo Modules::run('template/frontend_auth', $data);
 	}
 
 	public function daftar(){

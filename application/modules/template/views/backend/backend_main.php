@@ -28,6 +28,8 @@
   <!-- CSS Front Template -->
   <link rel="stylesheet" href="<?= base_url();?>assets/backend/css/theme.minc619.css?v=1.0">
   <link rel="stylesheet" href="<?= base_url();?>assets/backend/css/custom.css?<?= time() ?>">
+  <!-- dataTables -->
+  <link rel="stylesheet" href="https://cdn.datatables.net/1.10.24/css/dataTables.bootstrap4.min.css">
 
   <!-- JS Implementing Plugins -->
   <script src="<?= base_url();?>assets/backend/js/vendor.min.js"></script>
@@ -38,6 +40,9 @@
   <script type="text/javascript" src="<?=base_url();?>assets/frontend/plugin/tinymce/jquery.tinymce.min.js"></script>
   <script type="text/javascript" src="<?=base_url();?>assets/frontend/plugin/tinymce/tinymce.min.js"></script>
   <script type="text/javascript" src="<?=base_url();?>assets/frontend/plugin/tinymce-textarea.js"></script>
+
+  <script src="https://cdn.datatables.net/1.10.24/js/jquery.dataTables.min.js"></script>
+  <script src="https://cdn.datatables.net/1.10.24/js/dataTables.bootstrap4.min.js"></script>
 </head>
 
 <body class="footer-offset">
@@ -172,7 +177,11 @@
 
 <!-- JS Plugins Init. -->
 <script>
+
   $(document).on('ready', function () {
+
+    
+    $('#myTable').DataTable();
 
 
   // INITIALIZATION OF MEGA MENU
