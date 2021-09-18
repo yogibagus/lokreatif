@@ -23,7 +23,7 @@ class Admin extends MX_Controller {
 			redirect('peserta');
 		}
 		$this->load->model('M_admin');
-
+		$this->load->model('General');
 	}
 
 	function time_elapsed($datetime, $full = false) {
@@ -649,5 +649,44 @@ class Admin extends MX_Controller {
 	}
 
 	// END PROSES
+
+
+	// TRANSAKSI GOES HERE
+	public function data_transaksi($param = ""){
+
+		if($param == "tim"){
+			$data['transaksi'] = $this->M_admin->data_transaksi_tim();
+			$data['ci'] = $this;
+
+			$data['module'] 	= "admin";
+			$data['fileview'] 	= "data_transaksi_pertim";
+		}else{
+			$data['transaksi'] = $this->M_admin->data_transaksi();
+			$data['ci'] = $this;
+
+			$data['module'] 	= "admin";
+			$data['fileview'] 	= "data_transaksi";
+		}
+ 
+		echo Modules::run('template/backend_main', $data);
+	}
+
+	public function get_details_tim_payment($param = "")
+	{
+		if ($param != "") {
+			$this->load->model('payment/M_payment');
+			$transaksi = $this->M_payment->get_transaksi_by_id($param);
+			if ($transaksi != false) {
+				$data['fee'] = $transaksi->TOT_BAYAR - $transaksi->BAYAR;
+				$data['total_bayar'] = $transaksi->TOT_BAYAR;
+				$data['total_team'] = $this->M_payment->get_total_team_and_biaya($transaksi->KODE_TRANS);
+				$data['tim']        = $this->M_payment->get_tim($transaksi->KODE_TRANS);
+
+				$data['module'] 	= "admin";
+				$data['fileview'] 	= "detail_payment";
+				echo Modules::run('template/blank_template', $data);
+			}
+		}
+	}
 
 }?>

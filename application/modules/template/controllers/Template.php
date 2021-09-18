@@ -261,4 +261,10 @@ class Template extends MX_Controller
 		$data['CI']					= $this;
 		$this->load->view('mail/mail_template', $data);
 	}
+
+	public function blank_template($data)
+	{
+		$data['CI']					= $this;
+		$this->load->view('backend/blank', $data);
+	}
 }
