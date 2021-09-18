@@ -126,7 +126,7 @@
     </div>
   </div>
   <div class="card-body">
-    <table id="myTable" class="table table-bordered table-nowrap table-align-middle table-hover" width="100%">
+    <table id="myTable" class="table table-stripped table-nowrap table-align-middle table-hover" width="100%">
       <thead class="thead-light">
         <tr>
           <th>No</th>

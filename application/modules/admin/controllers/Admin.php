@@ -217,6 +217,16 @@ class Admin extends MX_Controller {
 		echo Modules::run('template/backend_main', $data);
 	}
 
+	// DATA AKUN KOLEKTIF PTS
+	public function data_kolektifPts(){
+		$data['pts']			= $this->M_admin->get_akunPTS();
+
+		$data['CI']				= $this;
+		$data['module'] 		= "admin";
+		$data['fileview'] 		= "data_kolektifPts";
+		echo Modules::run('template/backend_main', $data);
+	}
+
 	// DATA PENGGUNA
 	public function data_peserta(){
 		$data['peserta']				= $this->M_admin->get_peserta();
@@ -226,6 +236,7 @@ class Admin extends MX_Controller {
 		$data['diffNonPeserta']  		= $this->M_admin->countDiffNonPeserta();
 		$data['NewPeserta']  	  		= $this->M_admin->countNewPeserta();
 
+		$data['CI']				= $this;
 		$data['module'] 		= "admin";
 		$data['fileview'] 		= "data_peserta";
 		echo Modules::run('template/backend_main', $data);

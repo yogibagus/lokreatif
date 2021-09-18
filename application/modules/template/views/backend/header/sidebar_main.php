@@ -102,13 +102,13 @@
           <!-- End Dashboards -->
 
           <!-- Pengguna -->
-          <li class="nav-item">
-            <a class="nav-link <?= ($this->uri->segment(1) == 'data-peserta' ? 'active' : '') ?>" href="<?= site_url('data-peserta') ?>" title="Data Peserta">
-              <span class="tio-group-junior nav-icon"></span>
-              <span class="text-truncate">Data Akun</span>
+          <li class="nav-item ">
+            <a class="js-nav-tooltip-link nav-link <?= ($this->uri->segment(1) == 'data-kolektif-pts' ? 'active' : '') ?>" href="<?= site_url('data-kolektif-pts') ?>" title="Data Kolektif PTS" data-placement="left">
+              <i class="tio-user nav-icon"></i>
+              <span class="navbar-vertical-aside-mini-mode-hidden-elements text-truncate">Data Kolektif PTS</span>
             </a>
           </li>
-          <!-- End Pengguna -->
+          <!-- End Dashboards -->
 
           <li class="nav-item">
             <small class="nav-subtitle" title="Pages">Data Master</small>
@@ -165,6 +165,36 @@
           <!-- End Dashboards -->
 
           <li class="nav-item">
+            <small class="nav-subtitle" title="Pages">Kompetisi</small>
+            <small class="tio-more-horizontal nav-subtitle-replacer"></small>
+          </li>
+
+          <!-- Pengguna -->
+          <li class="nav-item">
+            <a class="nav-link <?= ($this->uri->segment(1) == 'data-peserta' ? 'active' : '') ?>" href="<?= site_url('data-peserta') ?>" title="Data Peserta">
+              <span class="tio-group-junior nav-icon"></span>
+              <span class="text-truncate">Data Peserta</span>
+            </a>
+          </li>
+          <!-- End Pengguna -->
+
+          <li class="nav-item ">
+            <a class="js-nav-tooltip-link nav-link <?= ($this->uri->segment(2) == 'verifikasi-berkas' ? 'active' : '') ?>" href="<?= site_url('kompetisi/verifikasi-berkas') ?>" title="Verifikasi Berkas" data-placement="left">
+              <i class="tio-files nav-icon"></i>
+              <span class="navbar-vertical-aside-mini-mode-hidden-elements text-truncate">Verifikasi Berkas</span>
+            </a>
+          </li>
+          <!-- End Dashboards -->
+
+          <li class="nav-item ">
+            <a class="js-nav-tooltip-link nav-link <?= ($this->uri->segment(2) == 'hasil-penilaian' ? 'active' : '') ?>" href="<?= site_url('kompetisi/hasil-penilaian') ?>" title="Hasil Penilaian" data-placement="left">
+              <i class="tio-medal nav-icon"></i>
+              <span class="navbar-vertical-aside-mini-mode-hidden-elements text-truncate">Hasil Penilaian</span>
+            </a>
+          </li>
+          <!-- End Dashboards -->
+
+          <li class="nav-item">
             <small class="nav-subtitle" title="Pages">Kegiatan</small>
             <small class="tio-more-horizontal nav-subtitle-replacer"></small>
           </li>
@@ -196,36 +226,6 @@
             </ul>
           </li>
           <!-- End Pengguna -->
-
-          <li class="nav-item">
-            <small class="nav-subtitle" title="Pages">Kompetisi</small>
-            <small class="tio-more-horizontal nav-subtitle-replacer"></small>
-          </li>
-
-          <!-- Pengguna -->
-          <li class="nav-item">
-            <a class="nav-link <?= ($this->uri->segment(2) == 'data-peserta' ? 'active' : '') ?>" href="<?= site_url('kompetisi/data-peserta') ?>" title="Data Peserta">
-              <span class="tio-group-junior nav-icon"></span>
-              <span class="text-truncate">Data Peserta</span>
-            </a>
-          </li>
-          <!-- End Pengguna -->
-
-          <li class="nav-item ">
-            <a class="js-nav-tooltip-link nav-link <?= ($this->uri->segment(2) == 'verifikasi-berkas' ? 'active' : '') ?>" href="<?= site_url('kompetisi/verifikasi-berkas') ?>" title="Verifikasi Berkas" data-placement="left">
-              <i class="tio-files nav-icon"></i>
-              <span class="navbar-vertical-aside-mini-mode-hidden-elements text-truncate">Verifikasi Berkas</span>
-            </a>
-          </li>
-          <!-- End Dashboards -->
-
-          <li class="nav-item ">
-            <a class="js-nav-tooltip-link nav-link <?= ($this->uri->segment(2) == 'hasil-penilaian' ? 'active' : '') ?>" href="<?= site_url('kompetisi/hasil-penilaian') ?>" title="Hasil Penilaian" data-placement="left">
-              <i class="tio-medal nav-icon"></i>
-              <span class="navbar-vertical-aside-mini-mode-hidden-elements text-truncate">Hasil Penilaian</span>
-            </a>
-          </li>
-          <!-- End Dashboards -->
           <?php endif;?>
           <li class="nav-item">
             <small class="tio-more-horizontal nav-subtitle-replacer"></small>

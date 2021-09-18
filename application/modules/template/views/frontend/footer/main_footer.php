@@ -15,7 +15,7 @@
           <!-- Nav Link -->
           <ul class="nav nav-sm nav-x-0 nav-white flex-column">
             <li class="nav-item">
-              <a class="nav-link media" href="javascript:;">
+              <a class="nav-link media">
                 <span class="media">
                   <span class="fas fa-location-arrow mt-1 mr-2"></span>
                   <span class="media-body">
@@ -71,17 +71,6 @@
     <div class="space-1">
       <div class="row align-items-md-center mb-7">
         <div class="col-md-6 mb-4 mb-md-0">
-          <!-- Nav Link -->
-          <ul class="nav nav-sm nav-white nav-x-sm align-items-center">
-            <li class="nav-item">
-              <a class="nav-link" href="<?= site_url('privacy-policy') ?>">Privacy &amp; Policy</a>
-            </li>
-            <li class="nav-item opacity mx-3">&#47;</li>
-            <li class="nav-item">
-              <a class="nav-link" href="<?= site_url('term-of-service') ?>">Terms of Service</a>
-            </li>
-          </ul>
-          <!-- End Nav Link -->
         </div>
 
         <div class="col-md-6 text-md-right">

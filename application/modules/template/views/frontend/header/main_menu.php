@@ -24,6 +24,50 @@
       </li>
       <!-- End Informasi -->
 
+      <!-- Kegiatan -->
+      <li class="hs-has-mega-menu navbar-nav-item"
+          data-hs-mega-menu-item-options='{
+            "desktop": {
+              "position": "right",
+              "maxWidth": "260px"
+            }
+          }'>
+        <a id="docsMegaMenua" class="hs-mega-menu-invoker nav-link nav-link-toggle" href="javascript:;" aria-haspopup="true" aria-expanded="false">Kegiatan</a>
+
+        <!-- Kegiatan - Submenu -->
+        <div class="hs-mega-menu dropdown-menu" aria-labelledby="docsMegaMenua" style="min-width: 330px;">
+          <!-- Promo Item -->
+          <div class="navbar-promo-item">
+            <a class="navbar-promo-link" href="<?= site_url('kegiatan');?>">
+              <div class="media align-items-center">
+                <img class="navbar-promo-icon" src="<?= base_url();?>assets/frontend/svg/icons/icon-7.svg" alt="SVG">
+                <div class="media-body">
+                  <span class="navbar-promo-title">Webinar</span>
+                  <small class="navbar-promo-text">Webinar LO Kreatif</small>
+                </div>
+              </div>
+            </a>
+          </div>
+          <!-- End Promo Item -->
+
+          <!-- Promo Item -->
+          <div class="navbar-promo-item">
+            <a class="navbar-promo-link" href="<?= prep_url('http://lokreatif.aptisi7jatim.org');?>" target="_blank">
+              <div class="media align-items-center">
+                <img class="navbar-promo-icon" src="<?= base_url();?>assets/frontend/svg/icons/icon-12.svg" alt="SVG">
+                <div class="media-body">
+                  <span class="navbar-promo-title">LO-Kreatif 2020</span>
+                  <small class="navbar-promo-text">Arsip kegiatan</small>
+                </div>
+              </div>
+            </a>
+          </div>
+          <!-- End Promo Item -->
+        </div>
+        <!-- End Kegiatan - Submenu -->
+      </li>
+      <!-- End Kegiatan -->
+
       <!-- Layanan -->
       <li class="hs-has-mega-menu navbar-nav-item"
           data-hs-mega-menu-item-options='{
@@ -86,12 +130,6 @@
         <!-- End Layanan - Submenu -->
       </li>
       <!-- End Layanan -->
-
-      <!-- Kegiatan -->
-      <li class="navbar-nav-item">
-        <a class="nav-link" href="<?= site_url('kegiatan') ?>">Kegiatan</a>
-      </li>
-      <!-- End Kegiatan -->
 
       <?php if ($this->session->userdata('logged_in') == false || !$this->session->userdata('logged_in')):?>
       <li class="list-inline-item d-none d-sm-block ml-2">

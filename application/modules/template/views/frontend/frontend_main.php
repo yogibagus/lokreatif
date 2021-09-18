@@ -1,6 +1,18 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-179522066-1"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'UA-179522066-1');
+  </script>
+
+
   <!-- Title -->
   <title>
     <?= ($this->uri->segment(1) ? ucwords(str_replace('-', ' ', $this->uri->segment(1)).' - '.$WEB_JUDUL) : $WEB_JUDUL);?>
@@ -69,7 +81,7 @@
         has_close_btn:true,
         stack: true,
         fullscreen:false,
-        timeout:8000,
+        timeout:4000,
         sticky:false,
         has_progress:true,
         rtl:false,
@@ -84,7 +96,7 @@
         has_close_btn:true,
         stack: true,
         fullscreen:false,
-        timeout:5000,
+        timeout:4000,
         sticky:false,
         has_progress:true,
         rtl:false,
@@ -99,7 +111,7 @@
         has_close_btn:true,
         stack: true,
         fullscreen:false,
-        timeout:5000,
+        timeout:4000,
         sticky:false,
         has_progress:true,
         rtl:false,

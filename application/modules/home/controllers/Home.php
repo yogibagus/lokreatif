@@ -32,7 +32,7 @@ class Home extends MX_Controller{
 	}
 
 	public function bidang_lomba(){
-		$data['bidangLomba']		= $this->M_home->get_bidangLomba();
+		$data['bidangLomba']		= $this->M_home->get_bidangLombaAll();
 		$data['tahapPenilaian']		= $this->M_home->get_tahapPenilaian();
 		
 		$data['CI']			= $this;
@@ -43,7 +43,7 @@ class Home extends MX_Controller{
 	}
 
 	public function detail_lomba($id_bidang){
-		if ($this->M_home->get_bidangLomba($id_bidang) != false) {
+		if ($this->M_home->get_bidangLombaAll($id_bidang) != false) {
 			$data['bidangLomba']		= $this->M_home->get_detailLomba($id_bidang);
 			$data['tahapPenilaian']		= $this->M_home->get_tahapPenilaian($id_bidang);
 

@@ -56,19 +56,19 @@
 						</div>
 						<div class="col-sm-12 col-md-6 border-left">
 							<div class="media align-items-center mb-3">
-								<span class="d-block font-size-1 mr-3">TIM dari PTS anda <i class="far fa-question-circle text-body ml-1" data-container="body" data-toggle="popover" data-placement="top" data-trigger="hover" title="Apa ini?" data-content="Jumlah tim dari PTS anda yang mengikuti kompetisi LO Kreatif, lihat pendoman untuk info lebih lanjut."></i></span>
+								<span class="d-block font-size-1 mr-3">TIM dari PTS anda <i class="fa fa-question-circle text-muted" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="Jumlah tim dari PTS anda yang mengikuti kompetisi LO Kreatif, lihat pendoman untuk info lebih lanjut."></i></span>
 								<div class="media-body text-right">
 									<span class="text-dark font-weight-bold" id="display"><?= $JML_TIM;?> TIM</span>
 								</div>
 							</div>
 							<div class="media align-items-center mb-3">
-								<span class="d-block font-size-1 mr-3">TIM dari PTS anda, yang telah membayar <i class="far fa-question-circle text-body ml-1" data-container="body" data-toggle="popover" data-placement="top" data-trigger="hover" title="Apa ini?" data-content="Jumlah tim dari PTS anda yang mengikuti kompetisi LO Kreatif dan telah membayar, lihat pendoman untuk info lebih lanjut."></i></span>
+								<span class="d-block font-size-1 mr-3">TIM dari PTS anda, yang telah membayar <i class="fa fa-question-circle text-muted" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="Jumlah tim dari PTS anda yang mengikuti kompetisi LO Kreatif dan telah membayar, lihat pendoman untuk info lebih lanjut."></i></span>
 								<div class="media-body text-right">
 									<span class="text-dark font-weight-bold" id="display"><?= $JML_TIM_BAYAR;?> TIM</span>
 								</div>
 							</div>
 							<div class="media align-items-center badge-secondary px-1 py-2 mb-3">
-								<span class="d-block font-size-1 mr-3">Biaya pendaftaran saat ini <i class="far fa-question-circle text-body ml-1" data-container="body" data-toggle="popover" data-placement="top" data-trigger="hover" title="Apa ini?" data-content="Dihitung sesuai dengan jumlah TIM dari masing-masing PTS yang dianggap valid, lihat pedoman untuk info lebih lanjut."></i></span>
+								<span class="d-block font-size-1 mr-3">Biaya pendaftaran saat ini <i class="fa fa-question-circle text-white" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="Dihitung sesuai dengan jumlah TIM dari masing-masing PTS yang telah mendaftar dan membayar, lihat pedoman untuk info lebih lanjut."></i></span>
 								<div class="media-body text-right">
 									<span class="text-white font-weight-bold">Rp.<?= number_format($totBayar,0,",",".");?></span>
 								</div>
@@ -77,7 +77,7 @@
 					</div>
 				</div>
 				<div class="border-bottom mb-4">
-					<label class="input-label">Status berkas keperluan <i class="far fa-question-circle text-body ml-1" data-container="body" data-toggle="popover" data-placement="top" data-trigger="hover" title="Keterangan" data-content="Keterangan mengenai, status semua berkas keperluan anda"></i></label>
+					<label class="input-label">Status berkas keperluan <i class="fa fa-question-circle text-muted" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="Keterangan mengenai, status semua berkas keperluan anda"></i></label>
 					<div class="media align-items-center mb-3">
 						<span class="d-block font-size-1 mr-3">Data PTS</span>
 						<div class="media-body text-right">
