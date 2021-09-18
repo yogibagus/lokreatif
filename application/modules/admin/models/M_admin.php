@@ -636,4 +636,36 @@ class M_admin extends CI_Model {
 
 	}
 
+	// TRANSAKSI
+
+	
+	public function data_transaksi_tim()
+	{
+		$query = $this->db->query("
+		SELECT *, c.`KODE_TRANS` AS KODE_TRANSAKSI 
+		FROM pendaftaran_kompetisi a
+		LEFT JOIN tb_order b ON a.`KODE_PENDAFTARAN` = b.`KODE_PENDAFTARAN`
+		LEFT JOIN tb_transaksi c ON  b.`KODE_TRANS` = c.`KODE_TRANS`
+		");
+		if ($query->num_rows() > 0) {
+			return $query->result();
+		} else {
+			return false;
+		}
+	}
+
+	public function data_transaksi()
+	{
+		$query = $this->db->query("
+		SELECT * FROM tb_transaksi AS a, tb_payment AS b , tb_payment_method AS c, tb_status_payment AS d
+		WHERE a.`KODE_TRANS` = b.`KODE_TRANS`
+		AND b.`ID_PAY_METHOD` = c.`ID_PAY_METHOD`
+		AND a.`STAT_BAYAR` = d.`ID_STAT_PAY`
+		");
+		if ($query->num_rows() > 0) {
+			return $query->result();
+		} else {
+			return false;
+		}
+	}
 }

@@ -104,6 +104,9 @@ $route['aktivitas-sistem']            	= 'admin/aktivitas';
 $route['aktivitas-sistem/(:num)']     	= 'admin/aktivitas';
 $route['notifikasi-sistem']           	= 'admin/notifikasi';
 $route['notifikasi-sistem/(:num)']    	= 'admin/notifikasi';
+
+$route['data-transaksi']                = 'admin/data_transaksi';
+$route['data-transaksi/(:any)']         = 'admin/data_transaksi/$1';
 // END ADMIN
 
 // PESERTA

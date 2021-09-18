@@ -348,4 +348,19 @@ class General extends CI_Model {
 
         return $query->result();
     }
+
+    // get akun univ berdasarkan kode_user
+    function get_univ_by_id($param)
+    {
+        $param   = $this->db->escape($param);
+        $query = $this->db->query("SELECT * FROM tb_univ AS a, pt AS b, tb_auth AS c 
+        WHERE a.`KODE_PT` = b.`kodept` 
+        AND c.`KODE_USER` = a.`KODE_UNIV` 
+        AND c.`KODE_USER` = $param");
+        if ($query->num_rows() > 0) {
+            return $query->row();
+        } else {
+            return false;
+        }
+    }
 }
