@@ -48,6 +48,7 @@ class Payment extends MX_Controller
     // param kode_trans
     public function checkout($param = "")
     {
+        file_get_contents(base_url('cronjob/cek_refund'));
         $transaksi = $this->M_payment->get_transaksi_by_id($param);
         if ($transaksi != false) {
             if ($transaksi->KODE_USER_BILL == $this->kode_user) {
