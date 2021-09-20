@@ -60,7 +60,7 @@
                                 <span class="badge badge-<?= $row->COLOR_STAT_PAY ?>"><?= $row->ALIAS_STAT_PAY ?></span>
                             <?php } else { ?>
                                 <span class="badge badge-secondary">Belum pilih metode bayar</span>
-                            <?php } ?>s
+                            <?php } ?>
                         </td>
                         <td>
                             <!-- Button trigger modal -->
