@@ -111,6 +111,18 @@
             <!-- End Dashboards -->
 
             <li class="nav-item">
+              <small class="nav-subtitle" title="Pages">Transaksi</small>
+              <small class="tio-more-horizontal nav-subtitle-replacer"></small>
+            </li>
+
+            <li class="nav-item ">
+              <a class="js-nav-tooltip-link nav-link <?= ($this->uri->segment(2) == 'data-transaksi' ? 'active' : '') ?>" href="<?= site_url('data-transaksi') ?>" title="Data Transaksi" data-placement="left">
+                <i class="tio-table nav-icon"></i>
+                <span class="navbar-vertical-aside-mini-mode-hidden-elements text-truncate">Data Transaksi</span>
+              </a>
+            </li>
+
+            <li class="nav-item">
               <small class="nav-subtitle" title="Pages">Data Master</small>
               <small class="tio-more-horizontal nav-subtitle-replacer"></small>
             </li>
@@ -224,18 +236,6 @@
                   </li>
                 <?php endif; ?>
               </ul>
-            </li>
-
-            <li class="nav-item">
-              <small class="nav-subtitle" title="Pages">Transaksi</small>
-              <small class="tio-more-horizontal nav-subtitle-replacer"></small>
-            </li>
-
-            <li class="nav-item ">
-              <a class="js-nav-tooltip-link nav-link <?= ($this->uri->segment(2) == 'data-transaksi' ? 'active' : '') ?>" href="<?= site_url('data-transaksi') ?>" title="Data Transaksi" data-placement="left">
-                <i class="tio-table nav-icon"></i>
-                <span class="navbar-vertical-aside-mini-mode-hidden-elements text-truncate">Data Transaksi</span>
-              </a>
             </li>
             <!-- End Pengguna -->
           <?php endif; ?>
