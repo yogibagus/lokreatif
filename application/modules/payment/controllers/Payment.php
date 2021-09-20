@@ -355,7 +355,7 @@ class Payment extends MX_Controller
                 'PAID_AMOUNT' => $pay->data->response->paid_amount,
                 'CHECKOUT_URL' => $pay->data->response->checkout_url,
                 'WEB_URL' => $pay->data->response->web_url,
-                'STAT_PAY' => 2,
+                'STAT_PAY' => 1,
                 'EXP_TIME' => $exp_time,
             ];
         } elseif ($pay->data->type == "VA") {
@@ -369,7 +369,7 @@ class Payment extends MX_Controller
                 'METHOD' => $pay_method->KODE_PAY_METHOD,
                 'ACC_NUMBER' => $pay->data->response->account_number,
                 'PAID_AMOUNT' =>  $pay->data->response->paid_amount,
-                'STAT_PAY' => 2,
+                'STAT_PAY' => 1,
                 'EXP_TIME' => $exp_time,
             ];
         } else {

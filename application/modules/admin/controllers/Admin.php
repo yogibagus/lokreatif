@@ -656,12 +656,14 @@ class Admin extends MX_Controller {
 
 		if($param == "tim"){
 			$data['transaksi'] = $this->M_admin->data_transaksi_tim();
+			$data['stat_pay'] = $this->M_admin->get_all_status_payment();
 			$data['ci'] = $this;
 
 			$data['module'] 	= "admin";
 			$data['fileview'] 	= "data_transaksi_pertim";
 		}else{
 			$data['transaksi'] = $this->M_admin->data_transaksi();
+			$data['stat_pay'] = $this->M_admin->get_all_status_payment();
 			$data['ci'] = $this;
 
 			$data['module'] 	= "admin";
@@ -686,6 +688,56 @@ class Admin extends MX_Controller {
 				$data['fileview'] 	= "detail_payment";
 				echo Modules::run('template/blank_template', $data);
 			}
+		}
+	}
+
+	public function update_status_transaksi($kode_trans = "")
+	{
+		if ($kode_trans != "") {
+			$this->load->model('payment/M_payment');
+			$transaksi = $this->M_payment->get_transaksi_by_id($kode_trans);
+			if ($transaksi != false) {
+				$kode_trans = $transaksi->KODE_TRANS;
+				// update tb transaksi
+				$data_payment['STAT_PAY'] = $this->input->post('status_transaksi');
+				$this->M_payment->update_pay_by_kode_trans($kode_trans, $data_payment);
+
+				// update tb payment
+				$data_transaksi['STAT_BAYAR'] = $this->input->post('status_transaksi');
+				$this->M_payment->update_transaksi($kode_trans, $data_transaksi);
+
+				$this->session->set_flashdata('success', "Status pembayaran #". $kode_trans ." berhasil diperbarui!");
+				redirect($this->agent->referrer());
+			}else{
+				$this->session->set_flashdata('error', "Kode Transaksi tidak ditemukan!!");
+				redirect($this->agent->referrer());
+			}
+		} else {
+			redirect($this->agent->referrer());
+		}
+	}
+
+	public function delete_transaksi($kode_trans = "")
+	{
+		if ($kode_trans != "") {
+			$this->load->model('payment/M_payment');
+			$transaksi = $this->M_payment->get_transaksi_by_id($kode_trans);
+			if ($transaksi != false) {
+				$delete_transaksi = $this->M_payment->delete_transaksi($kode_trans);
+				if ($delete_transaksi == true) {
+					$this->session->set_flashdata('success', "Berhasil menghapus Transaksi # " . $kode_trans);
+					redirect($this->agent->referrer());
+				} else {
+					$this->session->set_flashdata('error', "Terjadi kesalahan, gagal menghapus transaksi!");
+					redirect($this->agent->referrer());
+				}
+			} else {
+				$this->session->set_flashdata('error', "Kode Transaksi tidak ditemukan!!");
+				redirect($this->agent->referrer());
+			}
+		} else {
+			$this->session->set_flashdata('error', "Kode Transaksi tidak ditemukan!!");
+			redirect($this->agent->referrer());
 		}
 	}
 
