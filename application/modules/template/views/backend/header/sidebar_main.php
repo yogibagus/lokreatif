@@ -103,6 +103,15 @@
 
             <!-- Pengguna -->
             <li class="nav-item ">
+              <a class="js-nav-tooltip-link nav-link <?= ($this->uri->segment(1) == 'data-koordinator' ? 'active' : '') ?>" href="<?= site_url('data-koordinator') ?>" title="Data Koordinator" data-placement="left">
+                <i class="tio-user nav-icon"></i>
+                <span class="navbar-vertical-aside-mini-mode-hidden-elements text-truncate">Data Koordinator</span>
+              </a>
+            </li>
+            <!-- End Dashboards -->
+
+            <!-- Pengguna -->
+            <li class="nav-item ">
               <a class="js-nav-tooltip-link nav-link <?= ($this->uri->segment(1) == 'data-kolektif-pts' ? 'active' : '') ?>" href="<?= site_url('data-kolektif-pts') ?>" title="Data Kolektif PTS" data-placement="left">
                 <i class="tio-user nav-icon"></i>
                 <span class="navbar-vertical-aside-mini-mode-hidden-elements text-truncate">Data Kolektif PTS</span>

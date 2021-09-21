@@ -61,6 +61,11 @@ class Admin extends MX_Controller {
 		$data['countKegiatan']			= $this->M_admin->countKegiatan();
 		$data['diffKegiatan']			= $this->M_admin->countDiffKegiatan();
 		$data['newKegiatan']			= $this->M_admin->countNewKegiatan();
+
+		$data['c_peserta']				= $this->M_admin->countAnggota();
+		$data['c_juri']					= $this->M_admin->countJuri();
+		$data['c_koordinator']			= $this->M_admin->countKoordinator();
+
 		$data['CI']						= $this;
 
 		$data['kegiatan']				= $this->M_admin->get_kegiatanAllD();
@@ -216,6 +221,72 @@ class Admin extends MX_Controller {
 		$data['fileview'] 	= "pengaturan/website";
 		echo Modules::run('template/backend_main', $data);
 	}
+
+  // DATA KOORDINATOR
+
+	public function data_koordinator(){
+
+		$data['bidang_lomba'] = $this->M_admin->get_bidangLomba();
+		$data['data_koordinator']    = $this->M_admin->get_dataKoordinator();
+		$data['CI']           = $this;
+
+		$data['module']     = "admin";
+		$data['fileview']   = "data_koordinator";
+		echo Modules::run('template/backend_main', $data);
+	}
+
+  //PROSES
+
+	function tambah_koordinator(){
+		if ($this->input->post('PASSWORD') == $this->input->post('CONFIRM_PASSWORD')) {
+
+      		// CREATE UNIQ NAME KODE USER
+			$string = preg_replace('/[^a-z]/i', '', $NAMA_KOORDINATOR);
+
+			$vocal  = array("a", "e", "i", "o", "u", "A", "E", "I", "O", "U", " ");
+			$scrap  = str_replace($vocal, "", $string);
+			$begin  = substr($scrap, 0, 4);
+			$uniqid = strtoupper($begin);
+
+		    // CREATE KODE USER
+			do {
+				$KODE_USER      = "KOR_".$uniqid.substr(md5(time()), 0, 3);
+			} while ($this->M_admin->cek_kodeUser($KODE_USER) > 0);
+
+			if ($this->M_admin->tambah_koordinator($KODE_USER) == TRUE) {
+				$this->session->set_flashdata('success', "Berhasil menambahkan data koordinator !!");
+				redirect($this->agent->referrer());
+			}else{
+				$this->session->set_flashdata('error', "Terjadi kesalahan saat menambahkan data koordinator !!");
+				redirect($this->agent->referrer());
+			}
+		}else{
+			$this->session->set_flashdata('error', "Password yang anda masukkan tidak sama !!");
+			redirect($this->agent->referrer());
+		}
+	}
+
+	function edit_koordinator(){
+		if ($this->M_admin->edit_koordinator() == TRUE) {
+			$this->session->set_flashdata('success', "Berhasil mengubah data koordinator !!");
+			redirect($this->agent->referrer());
+		}else{
+			$this->session->set_flashdata('error', "Terjadi kesalahan saat mengubah data koordinator !!");
+			redirect($this->agent->referrer());
+		}
+	}
+
+	function hapus_koordinator(){
+		if ($this->M_admin->hapus_koordinator() == TRUE) {
+			$this->session->set_flashdata('success', "Berhasil menghapus data koordinator !!");
+			redirect($this->agent->referrer());
+		}else{
+			$this->session->set_flashdata('error', "Terjadi kesalahan saat menghapus data koordinator !!");
+			redirect($this->agent->referrer());
+		}
+	}
+
+  // END DATA KOORDINATOR
 
 	// DATA AKUN KOLEKTIF PTS
 	public function data_kolektifPts(){
@@ -377,8 +448,8 @@ class Admin extends MX_Controller {
 
 	function terima_pts($id){
 		if ($this->M_admin->cek_kodePTSbaru($this->input->post('kodept')) == TRUE) {
-				$this->session->set_flashdata('warning', "KODE PTS telah ada !!");
-				redirect($this->agent->referrer());
+			$this->session->set_flashdata('warning', "KODE PTS telah ada !!");
+			redirect($this->agent->referrer());
 		}else{
 			if ($this->M_admin->terima_pts($id) == TRUE)  {
 
@@ -667,7 +738,7 @@ class Admin extends MX_Controller {
 			$data['module'] 	= "admin";
 			$data['fileview'] 	= "data_transaksi";
 		}
- 
+
 		echo Modules::run('template/backend_main', $data);
 	}
 

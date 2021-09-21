@@ -39,6 +39,42 @@ class Template extends MX_Controller
 		return $string ? implode(', ', $string) . ' ago' : 'just now';
 	}
 
+	public function aktivitas_ajax(){
+		$aktivitas	= $this->M_template->get_aktivitasAdmin();
+
+		if ($aktivitas == FALSE):
+
+			echo '<li class="step-item">
+			<center>Tidak ada aktivitas terbaru</center>
+			</li>';
+
+		else:
+			foreach ($aktivitas as $key):
+				$sender = explode(" ", $this->M_template->get_sender($key->SENDER));
+				echo '<li class="step-item">
+				<div class="step-content-wrapper">';
+
+				if ($this->M_template->get_profil($key->SENDER) == FALSE):
+					echo '<span class="step-icon step-icon-soft-dark">'.substr($this->M_template->get_sender($key->SENDER), 0, 1).'</span>';
+				else:
+					echo '<div class="step-avatar">
+					<img class="step-avatar-img" src="'.base_url().'berkas/peserta/'.$key->SENDER.'/foto/'.$this->M_template->get_profil($key->SENDER).'" alt="Image Description">
+					</div>';
+				endif;
+
+				echo '<div class="step-content">
+				<h5 class="mb-1">'.$sender[0].'</h5>
+
+				<p class="font-size-sm mb-1">'.$key->MESSAGE.'</p>
+
+				<small class="text-muted text-uppercase">'.$this->time_elapsed($key->CREATED_AT).'</small>
+				</div>
+				</div>
+				</li>';
+			endforeach;
+		endif;
+	}
+
 	public function backend_main($data)
 	{
 

@@ -17,7 +17,7 @@
     <!-- Card -->
     <a class="card card-hover-shadow h-100" href="<?= site_url('data-peserta') ?>">
       <div class="card-body">
-        <h6 class="card-subtitle">Total Peserta</h6>
+        <h6 class="card-subtitle">Total TIM</h6>
 
         <div class="row align-items-center gx-2 mb-1">
           <div class="col-8">
@@ -37,22 +37,48 @@
   </div>
   <div class="col-sm-6 col-lg-3 mb-3 mb-lg-5">
     <!-- Card -->
-    <a class="card card-hover-shadow h-100" href="<?= site_url('k-panel/data-kegiatan') ?>">
+    <a class="card card-hover-shadow h-100" href="<?= site_url('data-peserta') ?>">
       <div class="card-body">
-        <h6 class="card-subtitle">Total Kegiatan</h6>
+        <h6 class="card-subtitle">Total Peserta</h6>
 
         <div class="row align-items-center gx-2 mb-1">
           <div class="col-8">
-            <span class="card-title h2"><?= number_format($countKegiatan,0,",",".");?></span>
+            <span class="card-title h2"><?= number_format($c_peserta,0,",",".");?></span>
           </div>
         </div>
         <!-- End Row -->
+      </div>
+    </a>
+    <!-- End Card -->
+  </div>
+  <div class="col-sm-6 col-lg-3 mb-3 mb-lg-5">
+    <!-- Card -->
+    <a class="card card-hover-shadow h-100" href="<?= site_url('manage-kompetisi/data-juri') ?>">
+      <div class="card-body">
+        <h6 class="card-subtitle">Total Juri</h6>
 
-        <span class="badge badge-soft-<?= ($diffKegiatan == $countKegiatan ? 'secondary' : ($diffKegiatan < $countKegiatan ? 'success' : 'danger'));?>">
-          <i class="<?= ($diffKegiatan == $countKegiatan ? 'tio-voice-line' : ($diffKegiatan < $countKegiatan ? 'tio-trending-up' : 'tio-trending-down'));?>"></i>
-          <?= ($countKegiatan == 0 ? '0' : round(((($countKegiatan-$diffKegiatan) / $countKegiatan) * 100), 1)) ?>%
-        </span>
-        <span class="text-body font-size-sm ml-1">dari <?= number_format($diffKegiatan,0,",",".");?></span>
+        <div class="row align-items-center gx-2 mb-1">
+          <div class="col-8">
+            <span class="card-title h2"><?= number_format($c_juri,0,",",".");?></span>
+          </div>
+        </div>
+        <!-- End Row -->
+      </div>
+    </a>
+    <!-- End Card -->
+  </div>
+  <div class="col-sm-6 col-lg-3 mb-3 mb-lg-5">
+    <!-- Card -->
+    <a class="card card-hover-shadow h-100" href="<?= site_url('data-koordinator') ?>">
+      <div class="card-body">
+        <h6 class="card-subtitle">Total Koordinator</h6>
+
+        <div class="row align-items-center gx-2 mb-1">
+          <div class="col-8">
+            <span class="card-title h2"><?= number_format($c_koordinator,0,",",".");?></span>
+          </div>
+        </div>
+        <!-- End Row -->
       </div>
     </a>
     <!-- End Card -->
