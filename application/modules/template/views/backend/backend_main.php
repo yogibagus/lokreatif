@@ -74,7 +74,7 @@
   <div id="activitySidebar" class="hs-unfold-content sidebar sidebar-bordered sidebar-box-shadow">
     <div class="card card-lg sidebar-card">
       <div class="card-header">
-        <h4 class="card-header-title">Activity</h4>
+        <h4 class="card-header-title">Aktivitas</h4>
 
         <!-- Toggle Button -->
         <a class="js-hs-unfold-invoker btn btn-icon btn-xs btn-ghost-dark ml-2" href="javascript:;"
@@ -94,70 +94,52 @@
   <!-- Body -->
   <div class="card-body sidebar-body sidebar-scrollbar">
     <!-- Step -->
-    <ul class="step step-icon-sm step-avatar-sm">
-      <?php if ($aktivitas == FALSE): ?>
-        <!-- Step Item -->
-        <li class="step-item">
-          <center>Tidak ada aktivitas terbaru</center>
-        </li>
-        <!-- End Step Item -->
-        <?php else: ?>
-          <?php foreach ($aktivitas as $key): ?>
-            <!-- Step Item -->
-            <li class="step-item">
-              <div class="step-content-wrapper">
+    <ul class="step step-icon-sm step-avatar-sm" id="aktivitas_ajax">
 
-                <?php if ($CI->M_template->get_profil($key->SENDER) == FALSE): ?>
-                  <span class="step-icon step-icon-soft-dark"><?= substr($CI->M_template->get_sender($key->SENDER), 0, 1)?></span>
-                  <?php else: ?>
-                    <div class="step-avatar">
-                      <img class="step-avatar-img" src="<?= base_url() ?>berkas/peserta/<?= $key->SENDER ?>/foto/<?= $CI->M_template->get_profil($key->SENDER) ?>" alt="Image Description">
-                    </div>
-                  <?php endif; ?>
+    </ul>
+    <!-- End Step -->
+    <?php if ($c_aktivitas > 8): ?>
+      <a class="btn btn-block btn-white" href="<?= site_url('aktivitas-sistem') ?>">Lihat semua <i class="tio-chevron-right"></i></a>
+    <?php endif; ?>
+  </div>
+  <!-- End Body -->
+  <script>
+    $(document).on('ready', function () {
+      setInterval( function () {
+        $.ajax({
+          url: "<?= base_url('template/aktivitas_ajax') ?>",
+          method: 'post',
+          success: function(data){
+            $("#aktivitas_ajax").html(data);
+          }
+        })
+      }, 5000 );
+    });
+  </script>
+</div>
+</div>
+<!-- End Activity -->
+<!-- ========== END SECONDARY CONTENTS ========== -->
 
-                  <div class="step-content">
-                    <h5 class="mb-1"><?php $sender = explode(" ", $CI->M_template->get_sender($key->SENDER)); echo $sender[0];?></h5>
-
-                    <p class="font-size-sm mb-1"><?= $key->MESSAGE ?></p>
-
-                    <small class="text-muted text-uppercase"><?= $CI->time_elapsed($key->CREATED_AT) ?></small>
-                  </div>
-                </div>
-              </li>
-              <!-- End Step Item -->
-            <?php endforeach; ?>
-          <?php endif; ?>
-        </ul>
-        <!-- End Step -->
-        <?php if ($c_aktivitas > 8): ?>
-          <a class="btn btn-block btn-white" href="<?= site_url('aktivitas-sistem') ?>">Lihat semua <i class="tio-chevron-right"></i></a>
-        <?php endif; ?>
-      </div>
-      <!-- End Body -->
+<?php if ($this->session->flashdata('warning') || $this->session->flashdata('error') || $this->session->flashdata('success')) { ?>
+  <!-- Toast -->
+  <div id="toast" class="toast" role="alert" aria-live="assertive" aria-atomic="true" style="position: fixed; top: 20px; right: 20px; z-index: 9999;">
+    <div class="toast-header">
+      <h5 class="mb-0">
+        <?= ($this->session->flashdata('success') ? "Berhasil !!" : ($this->session->flashdata('warning') ? "Perhatian !!" : "Terjadi Kesalahan !!"))?>
+      </h5>
+      <small class="ml-auto">just now</small>
+      <button type="button" class="close ml-3" data-dismiss="toast" aria-label="Close">
+        <i class="tio-clear" aria-hidden="true"></i>
+      </button>
+    </div>
+    <div class="toast-body">
+      <?= ($this->session->flashdata('success') ? $this->session->flashdata('success') : ($this->session->flashdata('warning') ? $this->session->flashdata('warning') : $this->session->flashdata('error')))?>
     </div>
   </div>
-  <!-- End Activity -->
-  <!-- ========== END SECONDARY CONTENTS ========== -->
-
-  <?php if ($this->session->flashdata('warning') || $this->session->flashdata('error') || $this->session->flashdata('success')) { ?>
-    <!-- Toast -->
-    <div id="toast" class="toast" role="alert" aria-live="assertive" aria-atomic="true" style="position: fixed; top: 20px; right: 20px; z-index: 9999;">
-      <div class="toast-header">
-        <h5 class="mb-0">
-          <?= ($this->session->flashdata('success') ? "Berhasil !!" : ($this->session->flashdata('warning') ? "Perhatian !!" : "Terjadi Kesalahan !!"))?>
-        </h5>
-        <small class="ml-auto">just now</small>
-        <button type="button" class="close ml-3" data-dismiss="toast" aria-label="Close">
-          <i class="tio-clear" aria-hidden="true"></i>
-        </button>
-      </div>
-      <div class="toast-body">
-        <?= ($this->session->flashdata('success') ? $this->session->flashdata('success') : ($this->session->flashdata('warning') ? $this->session->flashdata('warning') : $this->session->flashdata('error')))?>
-      </div>
-    </div>
-    <!-- End Toast -->
-    <script>
-      $(document).on('ready', function () {
+  <!-- End Toast -->
+  <script>
+    $(document).on('ready', function () {
     // INITIALIZATION OF TOASTS
     // =======================================================
     $('.toast-show').toast({
@@ -180,7 +162,7 @@
 
   $(document).on('ready', function () {
 
-    
+
     $('#myTable').DataTable();
 
 

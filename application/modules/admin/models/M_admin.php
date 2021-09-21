@@ -56,6 +56,18 @@ class M_admin extends CI_Model {
 		return $this->db->get('pendaftaran_kegiatan')->num_rows();
 	}
 
+	public function countAnggota(){
+		return $this->db->get_where('tb_anggota', array('PERAN !=' => 3))->num_rows();
+	}
+
+	public function countJuri(){
+		return $this->db->get('bidang_juri')->num_rows();
+	}
+
+	public function countKoordinator(){
+		return $this->db->get('bidang_koordinator')->num_rows();
+	}
+
 	// REFUND
 
 	public function countRefund(){
@@ -78,6 +90,11 @@ class M_admin extends CI_Model {
 		return $query->num_rows();
 	}
 
+	function countNewPeserta(){
+		$query 	= $this->db->query("SELECT * FROM tb_auth WHERE ROLE = 1 AND JOIN_DATE >= now() - INTERVAL 1 DAY");
+		return $query->num_rows();
+	}
+
 	function countNonPeserta(){
 		$query 	= $this->db->query("SELECT * FROM tb_auth WHERE ROLE = 1 AND NONAKTIF = 1");
 		return $query->num_rows();
@@ -85,11 +102,6 @@ class M_admin extends CI_Model {
 
 	function countDiffNonPeserta(){
 		$query 	= $this->db->query("SELECT * FROM tb_auth WHERE ROLE = 1 AND NONAKTIF = 1 AND JOIN_DATE <= now() - INTERVAL 8 DAY");
-		return $query->num_rows();
-	}
-
-	function countNewPeserta(){
-		$query 	= $this->db->query("SELECT * FROM tb_auth WHERE ROLE = 1 AND JOIN_DATE >= now() - INTERVAL 1 DAY");
 		return $query->num_rows();
 	}
 
@@ -676,6 +688,146 @@ class M_admin extends CI_Model {
 		}
 	}
 
+
+	// JURI
+	function get_bidangLomba(){
+		$query	= $this->db->get('bidang_lomba');
+		if ($query->num_rows() > 0) {
+			return $query->result();
+		}else{
+			return false;
+		}
+	}
+	function get_dataKoordinator(){
+		$query = $this->db->query("SELECT * FROM tb_auth a JOIN tb_peserta b ON a.KODE_USER = b.KODE_USER LEFT JOIN bidang_koordinator c ON a.KODE_USER = c.KODE_USER WHERE a.ROLE = 4 AND a.KODE_USER IN (SELECT KODE_USER FROM bidang_koordinator WHERE ID_BIDANG IN (SELECT ID_BIDANG FROM bidang_lomba))");
+		if ($query->num_rows() > 0) {
+			return $query->result();
+		}else{
+			return false;
+		}
+	}
+
+	function get_bidangKoordinator($kode_user){
+		$this->db->select('a.ID, a.ID_BIDANG, b.BIDANG_LOMBA');
+		$this->db->from('bidang_koordinator a');
+		$this->db->join('bidang_lomba b', 'a.ID_BIDANG = b.ID_BIDANG');
+		$query = $this->db->get_where('bidang_koordinator', array('a.KODE_USER' => $kode_user));
+		if ($query->num_rows() > 0) {
+			return $query->row();
+		}else{
+			return false;
+		}
+	}
+
+	public function cek_kodeUser($kode_user){
+		$kode_user 	= $this->db->escape($kode_user);
+		$query 		= $this->db->query("SELECT * FROM tb_auth WHERE KODE_USER = $kode_user");
+		return $query->num_rows();
+	}
+
+	public function del_user($kode_user){
+		$kode_user 			= $this->db->escape($kode_user);
+		$this->db->where('KODE_USER', $kode_user);
+		$this->db->delete('tb_auth');
+	}
+
+
+	function tambah_koordinator($KODE_USER){
+		$NAMA_KOORDINATOR 		= htmlspecialchars($this->input->post('NAMA_KOORDINATOR'), true);
+		$EMAIL 					= htmlspecialchars($this->input->post('EMAIL'), true);
+		$PASSWORD 				= htmlspecialchars($this->input->post('PASSWORD'), true);
+		$BIDANG_KOORDINATOR 	= htmlspecialchars($this->input->post('BIDANG_KOORDINATOR'), true);
+
+		$data = array(
+			'KODE_USER'		=> $KODE_USER,
+			'EMAIL'			=> $EMAIL,
+			'PASSWORD'		=> password_hash($PASSWORD, PASSWORD_DEFAULT),
+			'ROLE'			=> 4,
+		);
+		$this->db->insert('tb_auth', $data);
+
+		if ($this->db->affected_rows() == true) {
+
+			$koordinator = array(
+				'KODE_USER' 		=> $KODE_USER,
+				'NAMA'  			=> $NAMA_KOORDINATOR,
+			);
+
+			$this->db->insert('tb_peserta', $koordinator);
+
+			if ($this->db->affected_rows() == true) {
+
+				$bidang = array(
+					'KODE_USER' 		=> $KODE_USER,
+					'ID_BIDANG'  		=> $BIDANG_KOORDINATOR,
+				);
+
+				$this->db->insert('bidang_koordinator', $bidang);
+				return ($this->db->affected_rows() != 1) ? false : true;
+
+			}else{
+				$this->del_user($KODE_USER);
+				return false;
+			}
+			
+		}else{
+			$this->del_user($KODE_USER);
+			return false;
+		}
+	}
+
+	function edit_koordinator(){
+		$ID 			= htmlspecialchars($this->input->post('ID'), true);
+		$KODE_USER 		= htmlspecialchars($this->input->post('KODE_USER'), true);
+
+		$NAMA_KOORDINATOR 		= htmlspecialchars($this->input->post('NAMA_KOORDINATOR'), true);
+		$EMAIL 					= htmlspecialchars($this->input->post('EMAIL'), true);
+		$PASSWORD 				= htmlspecialchars($this->input->post('PASSWORD'), true);
+		$BIDANG_KOORDINATOR 	= htmlspecialchars($this->input->post('BIDANG_KOORDINATOR'), true);
+
+		if (isset($PASSWORD) || !empty($PASSWORD) || $PASSWORD != null || $PASSWORD != "") {
+			$data = array(
+				'EMAIL'			=> $EMAIL,
+				'PASSWORD'		=> password_hash($PASSWORD, PASSWORD_DEFAULT),
+			);
+		}else{
+			$data = array(
+				'EMAIL'			=> $EMAIL,
+			);
+		}
+
+		$this->db->where('KODE_USER', $KODE_USER);
+		$this->db->update('tb_auth', $data);
+
+		$peserta = array(
+			'NAMA'  			=> $NAMA_KOORDINATOR,
+		);
+
+		$this->db->where('KODE_USER', $KODE_USER);
+		$this->db->update('tb_peserta', $peserta);
+
+		$bidang = array(
+			'ID_BIDANG'  		=> $BIDANG_KOORDINATOR,
+		);
+
+		$this->db->where('ID', $ID);
+		$this->db->update('bidang_koordinator', $bidang);
+		return true;
+	}
+
+	function hapus_koordinator(){
+		$ID 			= $this->input->post('ID');
+		$KODE_USER 		= $this->input->post('KODE_USER');
+
+		$this->db->where('ID', $ID);
+		$this->db->delete('bidang_koordinator');
+
+		$this->db->where('KODE_USER', $KODE_USER);
+		$this->db->delete('tb_auth');
+		return ($this->db->affected_rows() != 1) ? false : true;
+
+	}
+  
 	public function get_all_status_payment()
 	{
 		$query = $this->db->get('tb_status_payment');
