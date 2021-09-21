@@ -668,11 +668,18 @@ class M_admin extends CI_Model {
 
 	public function data_transaksi()
 	{
-		$query = $this->db->query("
-		SELECT * FROM tb_transaksi AS a, tb_payment AS b , tb_payment_method AS c, tb_status_payment AS d
-		WHERE a.`KODE_TRANS` = b.`KODE_TRANS`
-		AND b.`ID_PAY_METHOD` = c.`ID_PAY_METHOD`
-		AND a.`STAT_BAYAR` = d.`ID_STAT_PAY`
+		$query = $this->db->query("		
+		SELECT 
+		a.`KODE_TRANS`, a.`STAT_BAYAR` ,a.`KODE_USER_BILL`, a.`ROLE_USER_BILL`, a.`BAYAR`, a.`TOT_BAYAR`,
+		b.`KODE_PAY`, b.`ORDER_ID`, b.`PAYMENT_ID`, b.`ID_PAY_METHOD`, b.`LOG_TIME`,
+		c.`NAMA_PAY_METHOD`, c.`IMG_PAY_METHOD`, 
+		d.`ID_STAT_PAY`, d.`NAMA_STAT_PAY`, d.`COLOR_STAT_PAY`, d.`ALIAS_STAT_PAY`,
+		e.`NAMA_STAT_PAY` AS NAMA_STATUS_PAYMENT, e.`COLOR_STAT_PAY` AS COLOR_STATUS_PAYMENT, e.`ALIAS_STAT_PAY` AS ALIAS_STATUS_PAYMENT
+		FROM tb_transaksi a
+		LEFT JOIN tb_payment b ON a.`KODE_TRANS` = b.`KODE_TRANS`
+		LEFT JOIN tb_payment_method c ON b.`ID_PAY_METHOD` = c.`ID_PAY_METHOD`
+		LEFT JOIN tb_status_payment d ON a.`STAT_BAYAR` = d.`ID_STAT_PAY`
+		LEFT JOIN tb_status_payment e ON b.`STAT_PAY` = e.`ID_STAT_PAY`
 		");
 		if ($query->num_rows() > 0) {
 			return $query->result();
@@ -819,5 +826,15 @@ class M_admin extends CI_Model {
 		$this->db->delete('tb_auth');
 		return ($this->db->affected_rows() != 1) ? false : true;
 
+	}
+  
+	public function get_all_status_payment()
+	{
+		$query = $this->db->get('tb_status_payment');
+		if ($query->num_rows() > 0) {
+			return $query->result();
+		} else {
+			return false;
+		}
 	}
 }
