@@ -167,7 +167,7 @@ class M_manageKompetisi extends CI_Model {
 		$PASSWORD 		= htmlspecialchars($this->input->post('PASSWORD'), true);
 		$BIDANG_JURI 	= htmlspecialchars($this->input->post('BIDANG_JURI'), true);
 
-		if (isset($PASSWORD)) {
+		if (isset($PASSWORD) || !empty($PASSWORD) || $PASSWORD != null || $PASSWORD != "") {
 			$data = array(
 				'EMAIL'			=> $EMAIL,
 				'PASSWORD'		=> password_hash($PASSWORD, PASSWORD_DEFAULT),

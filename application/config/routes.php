@@ -61,15 +61,15 @@ $route['refund-pts/(:any)']     = 'refund/pts/$1';
 
 // LOGIN
 
-$route['login']         		= 'authentication';
-$route['logout']        		= 'authentication/logout';
+$route['login']         				= 'authentication';
+$route['logout']        				= 'authentication/logout';
 
-$route['pendaftaran']        	  = 'authentication/daftar';
-$route['pendaftaran-pts']         = 'authentication/daftar_univ';
-$route['tambah-pts']              = 'authentication/tambah_univ';
+$route['pendaftaran']        	  		= 'authentication/daftar';
+$route['pendaftaran-pts']         		= 'authentication/daftar_univ';
+$route['tambah-pts']              		= 'authentication/tambah_univ';
 
 
-$route['pendaftaran']       		= 'authentication/daftar/1';
+$route['pendaftaran']       			= 'authentication/daftar/1';
 $route['pengajuan-penyelenggara']     	= 'authentication/daftar/2';
 
 $route['aktivasi/(:any)']             	= 'authentication/aktivasi/$1';
@@ -81,11 +81,12 @@ $route['recovery-password/(:any)']    	= 'authentication/ubah_pass/$1';
 
 $route['ubah-password']         		= 'authentication/ubah_password';
 $route['ajx-data-pts']                  = 'authentication/ajx_dataPts';     
-$route['ajx-data-pts-all']                  = 'authentication/ajx_dataPtsAll';      
+$route['ajx-data-pts-all']              = 'authentication/ajx_dataPtsAll';      
 
 // END LOGIN
 
 // ADMIN
+$route['data-koordinator']              = 'admin/data_koordinator';
 $route['data-kolektif-pts']				= 'admin/data_kolektifPts';
 $route['data-peserta']               	= 'admin/data_peserta';
 $route['berkas-lomba']               	= 'admin/berkas_lomba';
