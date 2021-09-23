@@ -13,7 +13,7 @@ class Home extends MX_Controller{
 
 	public function index(){
 		$data['kegiatan']			= $this->M_home->get_kegiatanAll();
-		$data['bidangLomba']		= $this->M_home->get_bidangLomba();
+		$data['bidangLomba']		= $this->M_home->get_bidangLombaAll();
 		
 		$date1  = "2021-10-24";
 		$date2  = date("Y-m-d");
