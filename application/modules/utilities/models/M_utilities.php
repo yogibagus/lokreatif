@@ -39,6 +39,16 @@ class M_utilities extends CI_Model {
 			FROM pendaftaran_kompetisi pk
 		")->row();
 	}
+	function get_countTimBayar(){
+		return $this->db->query("
+			SELECT COUNT(pk.KODE_PENDAFTARAN) AS JML_TIM
+			FROM pendaftaran_kompetisi pk
+			JOIN tb_order td ON pk.KODE_PENDAFTARAN = td.KODE_PENDAFTARAN
+			JOIN tb_transaksi tt ON td.KODE_TRANS = tt.KODE_TRANS
+			WHERE tt.STAT_BAYAR = 3;
+			
+		")->row();
+	}
 	function get_countPTS(){
 		return $this->db->query("
 			SELECT COUNT(pk.ASAL_PTS) AS JML_PTS
@@ -95,6 +105,7 @@ class M_utilities extends CI_Model {
 				LEFT JOIN tb_karya tk ON tk.KODE_PENDAFTARAN = pk2.KODE_PENDAFTARAN 
 			GROUP BY pk2.KODE_PENDAFTARAN 
 			ORDER BY 
+				tt.STAT_BAYAR DESC ,
 				tk.ID_KARYA IS NOT NULL DESC ,
 				tt.STAT_BAYAR IS NOT NULL DESC 	
 		")->result();

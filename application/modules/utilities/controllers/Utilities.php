@@ -26,9 +26,10 @@ class Utilities extends MX_Controller{
 	}
 
 	public function statistik(){
-		$data['jmlMhs'] = $this->M_uti->get_countMhs();
-		$data['jmlTim'] = $this->M_uti->get_countTim();
-		$data['jmlPTS'] = count($this->M_uti->get_countPTS());
+		$data['jmlMhs'] 		= $this->M_uti->get_countMhs();
+		$data['jmlTim'] 		= $this->M_uti->get_countTim();
+		$data['jmlTimBayar'] 	= $this->M_uti->get_countTimBayar();
+		$data['jmlPTS'] 		= count($this->M_uti->get_countPTS());
 
 		$timKategori 					= $this->M_uti->get_timKategori();
 		$data['timKategori']['lomba'] 	= array();
