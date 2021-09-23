@@ -17,12 +17,7 @@
                "endDate": "2021/10/24"
              }'>
           <div class="col-2">
-            <?php
-            if ($days > 31): ?>
-              <span class="font-size-3 text-primary font-weight-bold mb-0"><?= $days;?></span>
-            <?php else:?>
-              <span class="js-cd-days font-size-3 text-primary font-weight-bold mb-0"></span>
-            <?php endif;?>
+            <span class="font-size-3 text-primary font-weight-bold mb-0"><?= $days;?></span>
             <span class="h5 d-block mb-0">Days</span>
           </div>
           <div class="col-2">
@@ -55,12 +50,7 @@
                "endDate": "2021/10/24"
              }'>
           <div class="col-2">
-            <?php
-            if ($days > 31): ?>
-              <span class="font-size-4 text-primary font-weight-bold mb-0"><?= $days;?></span>
-            <?php else:?>
-              <span class="js-cd-days font-size-4 text-primary font-weight-bold mb-0"></span>
-            <?php endif;?>
+            <span class="font-size-4 text-primary font-weight-bold mb-0"><?= $days;?></span>
             <span class="h4 d-block mb-0">Days</span>
           </div>
           <div class="col-2">
