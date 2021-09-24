@@ -36,7 +36,7 @@ class M_utilities extends CI_Model {
 	function get_countTim(){
 		return $this->db->query("
 			SELECT COUNT(pk.KODE_PENDAFTARAN) AS JML_TIM
-			FROM pendaftaran_kompetisi pk
+			FROM pendaftaran_kompetisi pk WHERE pk.KODE_USER != 'USR_MHNDad2'
 		")->row();
 	}
 	function get_countTimBayar(){
@@ -45,14 +45,14 @@ class M_utilities extends CI_Model {
 			FROM pendaftaran_kompetisi pk
 			JOIN tb_order td ON pk.KODE_PENDAFTARAN = td.KODE_PENDAFTARAN
 			JOIN tb_transaksi tt ON td.KODE_TRANS = tt.KODE_TRANS
-			WHERE tt.STAT_BAYAR = 3;
+			WHERE tt.STAT_BAYAR = 3 AND pk.KODE_USER != 'USR_MHNDad2';
 			
 		")->row();
 	}
 	function get_countPTS(){
 		return $this->db->query("
 			SELECT COUNT(pk.ASAL_PTS) AS JML_PTS
-			FROM pendaftaran_kompetisi pk
+			FROM pendaftaran_kompetisi pk WHERE pk.ASAL_PTS != 000001
 			GROUP BY pk.ASAL_PTS 
 		")->result();
 	}
@@ -84,7 +84,7 @@ class M_utilities extends CI_Model {
 				p.namapt ,
 				COUNT(pk.ASAL_PTS) AS JML_TIM
 			FROM pendaftaran_kompetisi pk, pt p 
-			WHERE pk.ASAL_PTS = p.kodept 
+			WHERE pk.ASAL_PTS = p.kodept AND pk.KODE_USER != 'USR_MHNDad2'
 			GROUP BY pk.ASAL_PTS 
 			ORDER BY COUNT(pk.ASAL_PTS) DESC, p.kodept ASC
 		")->result();
@@ -103,6 +103,7 @@ class M_utilities extends CI_Model {
 				LEFT JOIN tb_order to2 ON to2.KODE_PENDAFTARAN = pk2.KODE_PENDAFTARAN 
 				LEFT JOIN tb_transaksi tt ON tt.KODE_TRANS = to2.KODE_TRANS 
 				LEFT JOIN tb_karya tk ON tk.KODE_PENDAFTARAN = pk2.KODE_PENDAFTARAN 
+			WHERE pk2.KODE_USER != 'USR_MHNDad2'
 			GROUP BY pk2.KODE_PENDAFTARAN 
 			ORDER BY 
 				tt.STAT_BAYAR DESC ,
