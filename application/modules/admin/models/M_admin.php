@@ -837,4 +837,22 @@ class M_admin extends CI_Model {
 			return false;
 		}
 	}
+
+	public function sum_total_uang_masuk(){
+		$query = $this->db->query("SELECT SUM(a.TOT_BAYAR) AS total_uang_masuk FROM tb_transaksi AS a WHERE a.STAT_BAYAR = 3");
+		return $query->row();
+	}
+
+	public function count_jumlah_transaksi()
+	{
+		$query = $this->db->query("SELECT COUNT(tb_transaksi.KODE_TRANS) as jumlah_transaksi FROM tb_transaksi");
+		return $query->row();
+	}
+
+	public function count_jumlah_pembyaran_sukses()
+	{
+		$query = $this->db->query("SELECT COUNT(tb_transaksi.KODE_TRANS) as jumlah_pembayaran_sukses FROM tb_transaksi WHERE tb_transaksi.STAT_BAYAR = 3");
+		return $query->row();
+	}
+	
 }
