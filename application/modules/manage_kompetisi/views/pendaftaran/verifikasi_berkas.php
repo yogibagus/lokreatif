@@ -31,29 +31,27 @@
         <div class="table-responsive">
           <table id="myTable" class="table table-stripped table-nowrap table-align-middle table-hover" width="100%">
             <thead class="thead-light">
-              <tr>
-                <th>No</th>
-                <th></th>
-                <th>Status</th>
-                <th>NAMA TIM</th>
-                <th>KETUA</th>
-                <?php foreach ($get_form as $key) :?>
-                  <th><?= $key->PERTANYAAN;?></th>
-                <?php endforeach;?>
-              </tr>
-            </thead>
-            <tbody>
-              <?php if ($get_pendaftaran == false) :?>
-                <td colspan="<?= 3+count($get_form);?>"><center>belum ada data pendaftaran</center></td>
-                <?php else:?>
-                  <?php $no = 1; foreach ($get_pendaftaran as $data) :?>
-                  <tr>
-                    <td><?= $no++;?></td>
-                    <td>
-                      <?php if ($data->STATUS == 0) :?>
-                        <button type="button" class="btn btn-xs btn-success" data-toggle="modal" data-target="#verif<?= $no;?>">verif</button>
-                        <button type="button" class="btn btn-xs btn-danger" data-toggle="modal" data-target="#tolak<?= $no;?>">tolak</button>
-                        <?php elseif($data->STATUS == 1):?>
+                <tr>
+                  <th>No</th>
+                  <th></th>
+                  <th>Status</th>
+                  <th>NAMA TIM</th>
+                  <th>KETUA</th>
+                  <?php foreach ($get_form as $key) :?>
+                    <th><?= $key->PERTANYAAN;?></th>
+                  <?php endforeach;?>
+                </tr>
+              </thead>
+              <tbody>
+                <?php if ($get_pendaftaran == false) :?>
+                  <td colspan="<?= 3+count($get_form);?>"><center>belum ada data pendaftaran</center></td>
+                  <?php else:?>
+                    <?php $no = 1; foreach ($get_pendaftaran as $data) :?>
+                    <tr>
+                      <td><?= $no++;?></td>
+                      <td>
+                        <?php if ($data->STATUS == 0) :?>
+                          <button type="button" class="btn btn-xs btn-success" data-toggle="modal" data-target="#verif<?= $no;?>">verif</button>
                           <button type="button" class="btn btn-xs btn-danger" data-toggle="modal" data-target="#tolak<?= $no;?>">tolak</button>
                           <?php elseif($data->STATUS == 2):?>
                             <button type="button" class="btn btn-xs btn-success" data-toggle="modal" data-target="#verif<?= $no;?>">verif</button>

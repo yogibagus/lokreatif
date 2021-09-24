@@ -177,6 +177,10 @@ $route['bidang-lomba']			= 'home/bidang_lomba';
 $route['detail-lomba/(:any)']   = 'home/detail_lomba/$1';
 $route['tentang-juri']			= 'home/tentang_juri';
 
+// KORDINATOR
+$route['kordinator/verifikasi-berkas']          = 'kordinator/verifikasi_berkas';
+$route['kordinator/verifikasi-berkas/(:any)']   = 'kordinator/verifikasi_berkas/$1';
+
 // END ETC
 
 // UTIL PAGE
