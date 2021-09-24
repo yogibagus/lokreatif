@@ -1,4 +1,4 @@
-<div class="<?php if ($this->agent->is_mobile()):?>w-60<?php else:?>w-25<?php endif;?> mx-auto justify-content-sm-center text-center">
+<div class="<?php if ($this->agent->is_mobile()):?>w-60<?php else:?>w-25<?php endif;?> mx-auto space-top-2 justify-content-sm-center text-center">
   <!-- Fancybox -->
   <a class="js-fancybox video-player video-player-btn media align-items-center text-dark" href="javascript:;"
      data-hs-fancybox-options='{
