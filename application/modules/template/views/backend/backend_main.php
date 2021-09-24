@@ -163,7 +163,9 @@
   $(document).on('ready', function () {
 
 
-    $('#myTable').DataTable();
+    $('#myTable').DataTable( {
+      "scrollX": true
+    } );
 
 
   // INITIALIZATION OF MEGA MENU
