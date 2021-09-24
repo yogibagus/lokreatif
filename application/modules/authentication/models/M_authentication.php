@@ -22,7 +22,7 @@ class M_authentication extends CI_Model {
 	public function get_pts($search = null){
 		$querSearch = "";
 		if($search != null){
-			$querSearch = " AND namapt LIKE '%$search%' OR kodept LIKE '%$search%'";
+			$querSearch = " AND namapt LIKE '%$search%' OR kodept LIKE '%$search%' AND kodept != 000001";
 		}
 
         $query  = $this->db->query("SELECT kodept,namapt FROM pt WHERE kodept NOT IN (SELECT KODE_PT FROM tb_univ) $querSearch LIMIT 20");
@@ -33,7 +33,7 @@ class M_authentication extends CI_Model {
 	public function get_ptsAll($search = null){
 		$querSearch = "";
 		if($search != null){
-			$querSearch = "WHERE namapt LIKE '%$search%' OR kodept LIKE '%$search%'";
+			$querSearch = "WHERE namapt LIKE '%$search%' OR kodept LIKE '%$search%' AND kodept != 000001";
 		}
 
         $query  = $this->db->query("SELECT kodept,namapt FROM pt $querSearch LIMIT 20");

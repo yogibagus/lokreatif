@@ -20,7 +20,7 @@
 				<?php else:?>
 				<thead class="thead-light">
 					<tr>
-						<th>No</th>
+						<th>Kode Transaksi</th>
 						<th>Tanggal Exp.</th>
 						<th>Metode</th>
 						<th>Nominal</th>
@@ -34,8 +34,8 @@
 					<?php $no = 1;
 					foreach ($payments as $value) : ?>
 						<tr>
-							<td><?= $no++; ?></td>
-							<td><?= date('d F Y H:i:s', strtotime($value->EXP_TIME)); ?></td>
+							<td><span class="text-primary"><?= $value->KODE_TRANS; ?></span></td>
+							<td><?= date('d F Y - H:i:s', strtotime($value->EXP_TIME)); ?></td>
 							<td><img style="max-width: 50px;" class="img-fluid w-90 fit-image" src="<?= $value->IMG_PAY_METHOD ?>"></td>
 							<td>Rp.<?= number_format($value->PAID_AMOUNT,0,",","."); ?></td>
 							<?php if ($sudahBayar == false) : ?>

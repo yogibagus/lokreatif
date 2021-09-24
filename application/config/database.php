@@ -81,7 +81,7 @@ $db['default'] = array(
 	// 'database' => 'nestive7_cms',
 	'username' => 'lokreatif',
 	'password' => '1sampailo',
-	'database' => 'lokreatif_test',
+	'database' => 'lokreatif_prod',
 
 	'dbdriver' => 'mysqli',
 	'dbprefix' => '',
