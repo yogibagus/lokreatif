@@ -39,8 +39,6 @@
 
             <!-- Rating List -->
             <div class="d-flex align-items-center">
-              <span class="font-weight-bold text-dark ml-1">0</span>
-              <span class="font-size-1 ml-1">Peserta</span>
               <span class="font-size-1 ml-2 pl-2 border-left font-weight-bold"><?= ($kegiatan->JENIS == 0 ? 'SEMINAR / WEBINAR' : ($kegiatan->JENIS == 1 ? 'KULIAH TAMU' : 'WORKSHOP'));?></span>
             </div>
             <!-- End Rating List -->
