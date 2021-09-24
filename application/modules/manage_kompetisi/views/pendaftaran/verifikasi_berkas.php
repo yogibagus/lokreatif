@@ -31,7 +31,6 @@
         <div class="table-responsive">
           <table id="myTable" class="table table-stripped table-nowrap table-align-middle table-hover" width="100%">
             <thead class="thead-light">
-              <thead>
                 <tr>
                   <th>No</th>
                   <th></th>
