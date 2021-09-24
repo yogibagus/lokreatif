@@ -183,7 +183,7 @@
 								<label class="input-label font-weight-bold">Asal PTS <small class="text-danger">*</small></label>
 							      <select id="select-pts" class="custom-select" name="ASAL_PTS" data-select="listPts" size="1" style="width: 100%;"
 							              data-hs-select2-options='{
-							                "placeholder": "Pilih PTS"
+							                "placeholder": "<?= $dataPendaftaran->namapt;?>"
 							              }'>
 							      </select>
 							</div>
@@ -230,7 +230,7 @@
         return {results: arrData}
       }
     },
-    placeholder: "Pilih PTS",
+    placeholder: "<?= $dataPendaftaran->namapt;?>",
     // selectionCssClass: 'selectcss-custom'
   });</script>
 

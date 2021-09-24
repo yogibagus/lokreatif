@@ -31,7 +31,6 @@
         <div class="table-responsive">
           <table id="myTable" class="table table-stripped table-nowrap table-align-middle table-hover" width="100%">
             <thead class="thead-light">
-              <thead>
                 <tr>
                   <th>No</th>
                   <th></th>
@@ -54,109 +53,107 @@
                         <?php if ($data->STATUS == 0) :?>
                           <button type="button" class="btn btn-xs btn-success" data-toggle="modal" data-target="#verif<?= $no;?>">verif</button>
                           <button type="button" class="btn btn-xs btn-danger" data-toggle="modal" data-target="#tolak<?= $no;?>">tolak</button>
-                          <?php elseif($data->STATUS == 1):?>
-                            <button type="button" class="btn btn-xs btn-danger" data-toggle="modal" data-target="#tolak<?= $no;?>">tolak</button>
-                            <?php elseif($data->STATUS == 2):?>
-                              <button type="button" class="btn btn-xs btn-success" data-toggle="modal" data-target="#verif<?= $no;?>">verif</button>
-                            <?php endif;?>
-                          </td>
+                          <?php elseif($data->STATUS == 2):?>
+                            <button type="button" class="btn btn-xs btn-success" data-toggle="modal" data-target="#verif<?= $no;?>">verif</button>
+                          <?php endif;?>
+                        </td>
+                        <td>
+                          <?php switch ($data->STATUS) {
+                            case 0:
+                            echo '<span class="badge badge-secondary">Menunggu proses verifikasi</span>';
+                            break;
+
+                            case 1:
+                            echo '<span class="badge badge-success">Berkas telah diverifikasi</span>';
+                            break;
+
+                            case 2:
+                            echo '<span class="badge badge-danger">Berkas ditolak</span>';
+                            break;
+
+                            case 3:
+                            echo '<span class="badge badge-warning">Masuk ke babak Final</span>';
+                            break;
+
+                            default:
+                            echo '<span class="badge badge-secondary">Menunggu proses verifikasi</span>';
+                            break;
+                          };?>
+
+                        </td>
+                        <td><?= $data->NAMA_TIM;?></td>
+                        <td><?= $data->NAMA;?></td>
+                        <?php foreach ($get_form as $key) :?>
                           <td>
-                            <?php switch ($data->STATUS) {
-                              case 0:
-                              echo '<span class="badge badge-secondary">Menunggu proses verifikasi</span>';
-                              break;
+                            <?php if ($CI->M_manage->get_formData($data->KODE_PENDAFTARAN, $key->ID_FORM) == false) :?>
+                              <button type="button" class="btn btn-xs btn-secondary" >belum melengkapi</button>
+                              <?php else:?>
+                                <a href="<?= base_url();?>berkas/pendaftaran/kompetisi/lokreatif/<?= $data->KODE_USER;?>/<?= $CI->M_manage->get_formData($data->KODE_PENDAFTARAN, $key->ID_FORM);?>" class="btn btn-xs btn-warning" target="_blank">cek berkas</a>
+                              <?php endif;?>
+                            </td>
+                          <?php endforeach;?>
+                        </tr>
+                        <div class="modal fade" id="verif<?= $no;?>" tabindex="-1" role="dialog" aria-labelledby="detailUserModalTitle" aria-hidden="true">
+                          <div class="modal-dialog modal-dialog-centered modal-sm" role="document">
+                            <div class="modal-content">
+                              <!-- Header -->
+                              <div class="modal-header">
+                                <h4 id="detailUserModalTitle" class="modal-title">Verifikasi berkas peserta</h4>
+                              </div>
+                              <!-- End Header -->
 
-                              case 1:
-                              echo '<span class="badge badge-success">Berkas telah diverifikasi</span>';
-                              break;
+                              <!-- Body -->
+                              <div class="modal-body">
+                                <p class="mb-0">Verifikasi berkas peserta, <b><?= $data->NAMA_TIM;?></b></p>
+                              </div>
 
-                              case 2:
-                              echo '<span class="badge badge-danger">Berkas ditolak</span>';
-                              break;
+                              <!-- Body -->
+                              <div class="modal-footer">
+                                <form action="<?= site_url('manage_kompetisi/terima_pendaftaran');?>" method="post">
+                                  <input type="hidden" name="KODE_USER" value="<?= $data->KODE_USER;?>">
+                                  <input type="hidden" name="NAMA_TIM" value="<?= $data->NAMA_TIM;?>">
+                                  <button type="button" class="btn btn-sm btn-light" data-dismiss="modal" aria-label="Close">Batal</button>
+                                  <button type="submit" class="btn btn-sm btn-success">Verifikasi</button>
+                                </form>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="modal fade" id="tolak<?= $no;?>" tabindex="-1" role="dialog" aria-labelledby="detailUserModalTitle" aria-hidden="true">
+                          <div class="modal-dialog modal-dialog-centered modal-sm" role="document">
+                            <div class="modal-content">
+                              <!-- Header -->
+                              <div class="modal-header">
+                                <h4 id="detailUserModalTitle" class="modal-title">Tolak berkas peserta</h4>
+                              </div>
+                              <!-- End Header -->
 
-                              case 3:
-                              echo '<span class="badge badge-warning">Masuk ke babak Final</span>';
-                              break;
-
-                              default:
-                              echo '<span class="badge badge-secondary">Menunggu proses verifikasi</span>';
-                              break;
-                            };?>
-
-                          </td>
-                          <td><?= $data->NAMA_TIM;?></td>
-                          <td><?= $data->NAMA;?></td>
-                          <?php foreach ($get_form as $key) :?>
-                            <td>
-                              <?php if ($CI->M_manage->get_formData($data->KODE_PENDAFTARAN, $key->ID_FORM) == false) :?>
-                                <button type="button" class="btn btn-xs btn-secondary" >belum melengkapi</button>
-                                <?php else:?>
-                                  <a href="<?= base_url();?>berkas/pendaftaran/kompetisi/lokreatif/<?= $data->KODE_USER;?>/<?= $CI->M_manage->get_formData($data->KODE_PENDAFTARAN, $key->ID_FORM);?>" class="btn btn-xs btn-warning" target="_blank">cek berkas</a>
-                                <?php endif;?>
-                              </td>
-                            <?php endforeach;?>
-                          </tr>
-                          <div class="modal fade" id="verif<?= $no;?>" tabindex="-1" role="dialog" aria-labelledby="detailUserModalTitle" aria-hidden="true">
-                            <div class="modal-dialog modal-dialog-centered modal-sm" role="document">
-                              <div class="modal-content">
-                                <!-- Header -->
-                                <div class="modal-header">
-                                  <h4 id="detailUserModalTitle" class="modal-title">Verifikasi berkas peserta</h4>
-                                </div>
-                                <!-- End Header -->
-
-                                <!-- Body -->
-                                <div class="modal-body">
-                                  <p class="mb-0">Verifikasi berkas peserta, <b><?= $data->NAMA_TIM;?></b></p>
+                              <!-- Body -->
+                              <div class="modal-body">
+                                <p class="mb-0">Tolak berkas peserta, <b><?= $data->NAMA_TIM;?></b></p>
+                                <hr class="my-1">
+                                <p class="mb-0">Hubungi ketua tim, untuk konfirmasi berkas sebelum menolak pendaftaran ini?
+                                  <a href="https://api.whatsapp.com/send?text=Hai&phone=+62<?= $data->HP;?>" target="_blank" class="text-success"><i class="tio-whatsapp"></i> hubungi sekarang</a></p>
                                 </div>
 
                                 <!-- Body -->
                                 <div class="modal-footer">
-                                  <form action="<?= site_url('manage_kompetisi/terima_pendaftaran');?>" method="post">
+                                  <form action="<?= site_url('manage_kompetisi/tolak_pendaftaran');?>" method="post">
                                     <input type="hidden" name="KODE_USER" value="<?= $data->KODE_USER;?>">
                                     <input type="hidden" name="NAMA_TIM" value="<?= $data->NAMA_TIM;?>">
                                     <button type="button" class="btn btn-sm btn-light" data-dismiss="modal" aria-label="Close">Batal</button>
-                                    <button type="submit" class="btn btn-sm btn-success">Verifikasi</button>
+                                    <button type="submit" class="btn btn-sm btn-danger">Tolak</button>
                                   </form>
                                 </div>
                               </div>
                             </div>
                           </div>
-                          <div class="modal fade" id="tolak<?= $no;?>" tabindex="-1" role="dialog" aria-labelledby="detailUserModalTitle" aria-hidden="true">
-                            <div class="modal-dialog modal-dialog-centered modal-sm" role="document">
-                              <div class="modal-content">
-                                <!-- Header -->
-                                <div class="modal-header">
-                                  <h4 id="detailUserModalTitle" class="modal-title">Tolak berkas peserta</h4>
-                                </div>
-                                <!-- End Header -->
-
-                                <!-- Body -->
-                                <div class="modal-body">
-                                  <p class="mb-0">Tolak berkas peserta, <b><?= $data->NAMA_TIM;?></b></p>
-                                  <hr class="my-1">
-                                  <p class="mb-0">Hubungi ketua tim, untuk konfirmasi berkas sebelum menolak pendaftaran ini?
-                                    <a href="https://api.whatsapp.com/send?text=Hai&phone=+62<?= $data->HP;?>" target="_blank" class="text-success"><i class="tio-whatsapp"></i> hubungi sekarang</a></p>
-                                  </div>
-
-                                  <!-- Body -->
-                                  <div class="modal-footer">
-                                    <form action="<?= site_url('manage_kompetisi/tolak_pendaftaran');?>" method="post">
-                                      <input type="hidden" name="KODE_USER" value="<?= $data->KODE_USER;?>">
-                                      <input type="hidden" name="NAMA_TIM" value="<?= $data->NAMA_TIM;?>">
-                                      <button type="button" class="btn btn-sm btn-light" data-dismiss="modal" aria-label="Close">Batal</button>
-                                      <button type="submit" class="btn btn-sm btn-danger">Tolak</button>
-                                    </form>
-                                  </div>
-                                </div>
-                              </div>
-                            </div>
-                          <?php endforeach;?>
-                        <?php endif;?>
-                      </tbody>
-                    </table>
-                  </div>
+                        <?php endforeach;?>
+                      <?php endif;?>
+                    </tbody>
+                  </table>
                 </div>
               </div>
-            <?php endif;?>
+            </div>
+          <?php endif;?>
 <!-- End Card -->

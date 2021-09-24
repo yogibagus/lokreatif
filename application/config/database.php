@@ -1,5 +1,5 @@
 <?php
-defined('BASEPATH') OR exit('No direct script access allowed');
+defined('BASEPATH') or exit('No direct script access allowed');
 
 /*
 | -------------------------------------------------------------------
@@ -81,7 +81,7 @@ $db['default'] = array(
 	// 'database' => 'nestive7_cms',
 	'username' => 'lokreatif',
 	'password' => '1sampailo',
-	'database' => 'lokreatif_prod',
+	'database' => 'lokreatif_test',
 
 	'dbdriver' => 'mysqli',
 	'dbprefix' => '',

@@ -9,8 +9,60 @@
                     <li class="breadcrumb-item active" aria-current="page">Data Transaksi</li>
                 </ol>
             </nav>
+            <h1 class="page-header-title mt-3">Data Transaksi</h1>
 
-            <h1 class="page-header-title">Data Transaksi</h1>
+            <!-- Stats -->
+            <div class="row gx-2 gx-lg-3 mt-3">
+                <div class="col-sm-12 col-lg-4 mb-3 mb-lg-5">
+                    <!-- Card -->
+                    <a class="card card-hover-shadow h-100" href="#">
+                        <div class="card-body">
+                            <h6 class="card-subtitle">Jumlah Transaksi</h6>
+
+                            <div class="row align-items-center gx-2 mb-1">
+                                <div class="col-8">
+                                    <span class="card-title h1"> <?= $jumlah_transaksi ?> </span>
+                                </div>
+                            </div>
+                            <!-- End Row -->
+                        </div>
+                    </a>
+                    <!-- End Card -->
+                </div>
+                <div class="col-sm-12 col-lg-4 mb-3 mb-lg-5">
+                    <!-- Card -->
+                    <a class="card card-hover-shadow h-100" href="#">
+                        <div class="card-body">
+                            <h6 class="card-subtitle">Total Uang Masuk</h6>
+
+                            <div class="row align-items-center gx-2 mb-1">
+                                <div class="col-8">
+                                    <span class="card-title h1">Rp <?= number_format($total_uang_masuk, 0, ',', '.') ?></span>
+                                </div>
+                            </div>
+                            <!-- End Row -->
+                        </div>
+                    </a>
+                    <!-- End Card -->
+                </div>
+                <div class="col-sm-12 col-lg-4 mb-3 mb-lg-5">
+                    <!-- Card -->
+                    <a class="card card-hover-shadow h-100" href="#">
+                        <div class="card-body">
+                            <h6 class="card-subtitle">Pembayaran Sukses</h6>
+
+                            <div class="row align-items-center gx-2 mb-1">
+                                <div class="col-8">
+                                    <span class="card-title h1"> <?= $jumlah_pembayaran_sukses ?></span>
+                                </div>
+                            </div>
+                            <!-- End Row -->
+                        </div>
+                    </a>
+                    <!-- End Card -->
+                </div>
+            </div>
+            <!-- End Stats -->
         </div>
 
         <div class="col-sm-auto">
@@ -23,7 +75,7 @@
 <div class="card">
     <div class="card-header">Data Transaksi</div>
     <div class="card-body">
-        <table class="table table-stripped table-nowrap table-align-middle table-hover" width="100%" id="datatable">
+        <table class="table table-stripped table-nowrap table-align-middle table-hover" width="100%" id="myTable">
             <thead>
                 <tr>
                     <th>No</th>

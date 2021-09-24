@@ -1,14 +1,16 @@
 <?php
-defined('BASEPATH') OR exit('No direct script access allowed');
+defined('BASEPATH') or exit('No direct script access allowed');
 
-class Admin extends MX_Controller {
-	public function __construct(){
+class Admin extends MX_Controller
+{
+	public function __construct()
+	{
 		parent::__construct();
 		if ($this->agent->is_mobile()) {
 			$this->session->set_flashdata('error', "ADMIN PANEL HANYA DAPAT DIAKSES MELALUI BROWSER");
 			redirect(base_url());
 		}
-		if ($this->session->userdata('logged_in') == FALSE || !$this->session->userdata('logged_in')){
+		if ($this->session->userdata('logged_in') == FALSE || !$this->session->userdata('logged_in')) {
 			if (!empty($_SERVER['QUERY_STRING'])) {
 				$uri = uri_string() . '?' . $_SERVER['QUERY_STRING'];
 			} else {
@@ -24,6 +26,23 @@ class Admin extends MX_Controller {
 		}
 		$this->load->model('M_admin');
 		$this->load->model('General');
+	}
+
+
+	// MAILER SENDER
+	function send_email($email, $subject, $message){
+
+		$mail = array(
+			'to' 			=> $email,
+			'subject'		=> $subject,
+			'message'		=> $this->body_html($message)
+		);
+
+		if ($this->mailer->send($mail) == TRUE) {
+			return true;
+		}else {
+			return false;
+		}
 	}
 
 	function time_elapsed($datetime, $full = false) {
@@ -55,7 +74,8 @@ class Admin extends MX_Controller {
 		return $string ? implode(', ', $string) . ' ago' : 'just now';
 	}
 
-	public function index(){
+	public function index()
+	{
 		$data['peserta']		  		= $this->M_admin->countPeserta();
 		$data['diffPeserta']		  	= $this->M_admin->countDiffPeserta();
 		$data['countKegiatan']			= $this->M_admin->countKegiatan();
@@ -77,7 +97,8 @@ class Admin extends MX_Controller {
 	}
 
 	// DATA BERKAS LOMBA
-	public function berkas_lomba(){
+	public function berkas_lomba()
+	{
 		$data['berkas_lomba']		  	= $this->M_admin->get_berkasLomba();
 
 		$data['module'] 	= "admin";
@@ -85,7 +106,8 @@ class Admin extends MX_Controller {
 		echo Modules::run('template/backend_main', $data);
 	}
 
-	function tambahBerkas(){
+	function tambahBerkas()
+	{
 
 		// UPLOAD
 		if (!empty($_FILES['LINK']['name'])) {
@@ -96,99 +118,103 @@ class Admin extends MX_Controller {
 				mkdir($folder, 0755, true);
 			}
 
-      		// UPLOAD FILE
+			// UPLOAD FILE
 			$config['upload_path']    		= $folder;
 			$config['allowed_types']        = '*';
-			$config['max_size']             = 10*1024;
+			$config['max_size']             = 10 * 1024;
 			$config['overwrite']			= TRUE;
 
 			$this->load->library('upload', $config);
 
-			if (!$this->upload->do_upload('LINK')){
+			if (!$this->upload->do_upload('LINK')) {
 				$this->session->set_flashdata('error', 'Terjadi kesalahan saat mengunggah berkas!!');
 				redirect($this->agent->referrer());
-			}else {
+			} else {
 				$upload_data = $this->upload->data();
 
 				if ($this->M_admin->tambahBerkas($upload_data['file_name']) == TRUE) {
 
 					$this->session->set_flashdata('success', "Berhasil menambahkan berkas kebutuhan !!");
 					redirect($this->agent->referrer());
-				}else {
+				} else {
 					$this->session->set_flashdata('error', "Terjadi kesalahan saat menambahkan berkas kebutuhan !!");
 					redirect($this->agent->referrer());
 				}
 			}
-		}else {
+		} else {
 			$this->session->set_flashdata('warning', 'Anda tidak memilih file untuk diunggah!!');
 			redirect($this->agent->referrer());
 		}
 	}
 
-	function editBerkas(){
+	function editBerkas()
+	{
 
 		// UPLOAD
 		if (!empty($_FILES['NEW_LINK']['name'])) {
-			
+
 			$folder   = "berkas/kebutuhan/";
 
 			if (!is_dir($folder)) {
 				mkdir($folder, 0755, true);
 			}
 
-      		// UPLOAD FILE
+			// UPLOAD FILE
 			$config['upload_path']    		= $folder;
 			$config['allowed_types']        = '*';
-			$config['max_size']             = 10*1024;
+			$config['max_size']             = 10 * 1024;
 			$config['overwrite']			= TRUE;
 
 			$this->load->library('upload', $config);
 
-			if (!$this->upload->do_upload('NEW_LINK')){
+			if (!$this->upload->do_upload('NEW_LINK')) {
 				$this->session->set_flashdata('error', 'Terjadi kesalahan saat mengunggah berkas!!');
 				redirect($this->agent->referrer());
-			}else {
+			} else {
 				$upload_data = $this->upload->data();
 				if ($this->M_admin->editBerkas($upload_data['file_name']) == TRUE) {
 
 					$this->session->set_flashdata('success', "Berhasil mengubah berkas kebutuhan !!");
 					redirect($this->agent->referrer());
-				}else {
+				} else {
 					$this->session->set_flashdata('error', "Terjadi kesalahan saat mengubah berkas kebutuhan !!");
 					redirect($this->agent->referrer());
 				}
 			}
-		}else {
+		} else {
 			if ($this->M_admin->editBerkas($this->input->post('LINK')) == TRUE) {
 
 				$this->session->set_flashdata('success', "Berhasil mengubah berkas kebutuhan !!");
 				redirect($this->agent->referrer());
-			}else {
+			} else {
 				$this->session->set_flashdata('error', "Terjadi kesalahan saat mengubah berkas kebutuhan !!");
 				redirect($this->agent->referrer());
 			}
 		}
 	}
 
-	function hapusBerkas(){
+	function hapusBerkas()
+	{
 		if ($this->M_admin->hapusBerkas() == TRUE) {
 
 			$this->session->set_flashdata('success', "Berhasil menghapus berkas kebutuhan !!");
 			redirect($this->agent->referrer());
-		}else {
+		} else {
 			$this->session->set_flashdata('error', "Terjadi kesalahan saat menghapus berkas kebutuhan !!");
 			redirect($this->agent->referrer());
 		}
 	}
 
 	// DATA PENGATURAN
-	public function pengaturan(){
+	public function pengaturan()
+	{
 
 		$data['module'] 	= "admin";
 		$data['fileview'] 	= "pengaturan/pengaturan";
 		echo Modules::run('template/backend_main', $data);
 	}
-	public function pengaturan_akunAdmin(){
+	public function pengaturan_akunAdmin()
+	{
 
 		// MAILER
 		$data['SMPT_GMAIL']		= $this->M_admin->get_mailerSmpt();
@@ -200,7 +226,8 @@ class Admin extends MX_Controller {
 		$data['fileview'] 	= "pengaturan/akun_admin";
 		echo Modules::run('template/backend_main', $data);
 	}
-	public function pengaturan_sistem(){
+	public function pengaturan_sistem()
+	{
 
 		// MAILER
 		$data['SMPT_GMAIL']		= $this->M_admin->get_mailerSmpt();
@@ -212,7 +239,8 @@ class Admin extends MX_Controller {
 		$data['fileview'] 	= "pengaturan/sistem";
 		echo Modules::run('template/backend_main', $data);
 	}
-	public function pengaturan_website(){
+	public function pengaturan_website()
+	{
 
 		// MEGA MENU PENYELENGGARA
 		$data['CI']					= $this;
@@ -222,9 +250,10 @@ class Admin extends MX_Controller {
 		echo Modules::run('template/backend_main', $data);
 	}
 
-  // DATA KOORDINATOR
+	// DATA KOORDINATOR
 
-	public function data_koordinator(){
+	public function data_koordinator()
+	{
 
 		$data['bidang_lomba'] = $this->M_admin->get_bidangLomba();
 		$data['data_koordinator']    = $this->M_admin->get_dataKoordinator();
@@ -235,61 +264,76 @@ class Admin extends MX_Controller {
 		echo Modules::run('template/backend_main', $data);
 	}
 
-  //PROSES
+	//PROSES
 
-	function tambah_koordinator(){
+	function tambah_koordinator()
+	{
 		if ($this->input->post('PASSWORD') == $this->input->post('CONFIRM_PASSWORD')) {
 
+
       		// CREATE UNIQ NAME KODE USER
-			$string = preg_replace('/[^a-z]/i', '', $NAMA_KOORDINATOR);
+			$string = preg_replace('/[^a-z]/i', '', $this->input->post('NAMA_KOORDINATOR'));
 
 			$vocal  = array("a", "e", "i", "o", "u", "A", "E", "I", "O", "U", " ");
 			$scrap  = str_replace($vocal, "", $string);
 			$begin  = substr($scrap, 0, 4);
 			$uniqid = strtoupper($begin);
 
-		    // CREATE KODE USER
+			// CREATE KODE USER
 			do {
-				$KODE_USER      = "KOR_".$uniqid.substr(md5(time()), 0, 3);
+				$KODE_USER      = "KOR_" . $uniqid . substr(md5(time()), 0, 3);
 			} while ($this->M_admin->cek_kodeUser($KODE_USER) > 0);
 
 			if ($this->M_admin->tambah_koordinator($KODE_USER) == TRUE) {
+
+				$BIDANG_LOMBA 		= $this->M_admin->get_bidangKoordinator($KODE_USER) != false ? $this->M_admin->get_bidangKoordinator($KODE_USER)->BIDANG_LOMBA : 'BIDANG TIDAK DITEMUKAN';
+				$NAMA_KOORDINATOR	= $this->input->post('NAMA_KOORDINATOR');
+				$EMAIL				= $this->input->post('EMAIL');
+				$PASSWORD			= $this->input->post('PASSWORD');
+
+				$subject	= "Akun koordinator LO Kreatif Bidang Lomba - {$BIDANG_LOMBA}";
+				$message 	= "Hai {$NAMA_KOORDINATOR}, kamu telah ditambahkan sebagai koordinator LO Kreatif bidang lomba <i>{$BIDANG_LOMBA}</i>. Berikut hak akses untuk masuk ke akun kamu:</br></br><table cellspacing='0' cellpadding='0' style='table{border:none}'><tr><td><b>Email</b></td><td>: {$EMAIL}</td></tr><tr><td><b>Password</b></td><td>: {$PASSWORD}</td></tr></table></br></br>";
+
+				$this->send_email($EMAIL, $subject, $message);
 				$this->session->set_flashdata('success', "Berhasil menambahkan data koordinator !!");
 				redirect($this->agent->referrer());
-			}else{
+			} else {
 				$this->session->set_flashdata('error', "Terjadi kesalahan saat menambahkan data koordinator !!");
 				redirect($this->agent->referrer());
 			}
-		}else{
+		} else {
 			$this->session->set_flashdata('error', "Password yang anda masukkan tidak sama !!");
 			redirect($this->agent->referrer());
 		}
 	}
 
-	function edit_koordinator(){
+	function edit_koordinator()
+	{
 		if ($this->M_admin->edit_koordinator() == TRUE) {
 			$this->session->set_flashdata('success', "Berhasil mengubah data koordinator !!");
 			redirect($this->agent->referrer());
-		}else{
+		} else {
 			$this->session->set_flashdata('error', "Terjadi kesalahan saat mengubah data koordinator !!");
 			redirect($this->agent->referrer());
 		}
 	}
 
-	function hapus_koordinator(){
+	function hapus_koordinator()
+	{
 		if ($this->M_admin->hapus_koordinator() == TRUE) {
 			$this->session->set_flashdata('success', "Berhasil menghapus data koordinator !!");
 			redirect($this->agent->referrer());
-		}else{
+		} else {
 			$this->session->set_flashdata('error', "Terjadi kesalahan saat menghapus data koordinator !!");
 			redirect($this->agent->referrer());
 		}
 	}
 
-  // END DATA KOORDINATOR
+	// END DATA KOORDINATOR
 
 	// DATA AKUN KOLEKTIF PTS
-	public function data_kolektifPts(){
+	public function data_kolektifPts()
+	{
 		$data['pts']			= $this->M_admin->get_akunPTS();
 
 		$data['CI']				= $this;
@@ -299,7 +343,8 @@ class Admin extends MX_Controller {
 	}
 
 	// DATA PENGGUNA
-	public function data_peserta(){
+	public function data_peserta()
+	{
 		$data['peserta']				= $this->M_admin->get_peserta();
 		$data['countPeserta']			= $this->M_admin->countPeserta();
 		$data['diffPeserta']		  	= $this->M_admin->countDiffPeserta();
@@ -313,8 +358,9 @@ class Admin extends MX_Controller {
 		echo Modules::run('template/backend_main', $data);
 	}
 
-	  // KEGIATAN
-	public function kegiatanku(){
+	// KEGIATAN
+	public function kegiatanku()
+	{
 		$data['peserta']		  		= $this->M_admin->countPeserta();
 		$data['diffPeserta']		  	= $this->M_admin->countDiffPeserta();
 		$data['countKegiatan']			= $this->M_admin->countKegiatan();
@@ -327,7 +373,8 @@ class Admin extends MX_Controller {
 		echo Modules::run('template/backend_main', $data);
 	}
 
-	public function buat_kegiatan(){
+	public function buat_kegiatan()
+	{
 
 		$data['module']     = "admin";
 		$data['fileview']   = "tambah_kegiatan";
@@ -335,12 +382,13 @@ class Admin extends MX_Controller {
 	}
 
 	// DATA KEGIATAN
-	public function data_kegiatan(){
+	public function data_kegiatan()
+	{
 		$data['countKegiatan']			= $this->M_admin->countKegiatan();
 		$data['diffKegiatan']			= $this->M_admin->countDiffKegiatan();
 		$data['newKegiatan']			= $this->M_admin->countNewKegiatan();
 		$data['peserta']				= $this->M_admin->count_pesertaKegiatanAll();
-		
+
 		$data['kegiatan']				= $this->M_admin->get_kegiatanAll();
 		$data['CI']						= $this;
 
@@ -349,8 +397,9 @@ class Admin extends MX_Controller {
 		echo Modules::run('template/backend_main', $data);
 	}
 
-	  // REFUND
-	public function data_refund(){
+	// REFUND
+	public function data_refund()
+	{
 		$data['countRefund']		  	= $this->M_admin->countRefund();
 		$data['countSudahRefund']		= $this->M_admin->countSudahRefund();
 		// $data['refund']					= $this->M_admin->get_refund();
@@ -361,10 +410,11 @@ class Admin extends MX_Controller {
 	}
 
 	// DATA AKTIVITAS SISTEM
-	public function aktivitas(){
+	public function aktivitas()
+	{
 		$this->load->library('pagination');
 
-		$config['base_url'] 				= base_url().'aktivitas-sistem';
+		$config['base_url'] 				= base_url() . 'aktivitas-sistem';
 		$config['total_rows'] 				= $this->M_admin->count_aktivitasAdmin();
 		$config['per_page'] 				= 5;
 
@@ -398,10 +448,11 @@ class Admin extends MX_Controller {
 	}
 
 	// DATA NOTIFIKASI SISTEM
-	public function notifikasi(){
+	public function notifikasi()
+	{
 		$this->load->library('pagination');
 
-		$config['base_url'] 				= base_url().'notifikasi-sistem';
+		$config['base_url'] 				= base_url() . 'notifikasi-sistem';
 		$config['total_rows'] 				= $this->M_admin->count_notifikasiAdmin();
 		$config['per_page'] 				= 5;
 
@@ -435,7 +486,8 @@ class Admin extends MX_Controller {
 	}
 
 	// DATA PTS BARU
-	public function pengajuan_pts(){
+	public function pengajuan_pts()
+	{
 		$data['ptsBaru']  	  	= $this->M_admin->get_ptsBaru();
 
 		$data['module'] 		= "admin";
@@ -446,88 +498,95 @@ class Admin extends MX_Controller {
 
 	// PROSES
 
-	function terima_pts($id){
+	function terima_pts($id)
+	{
 		if ($this->M_admin->cek_kodePTSbaru($this->input->post('kodept')) == TRUE) {
 			$this->session->set_flashdata('warning', "KODE PTS telah ada !!");
 			redirect($this->agent->referrer());
-		}else{
-			if ($this->M_admin->terima_pts($id) == TRUE)  {
+		} else {
+			if ($this->M_admin->terima_pts($id) == TRUE) {
 
 				$this->session->set_flashdata('success', "Berhasil menerima dan menambahkan data PTS !!");
 				redirect($this->agent->referrer());
-			}else {
+			} else {
 				$this->session->set_flashdata('error', "Terjadi kesalahan saat menerima dan menambahkan data PTS !!");
 				redirect($this->agent->referrer());
 			}
 		}
 	}
 
-	function tolak_pts($id){
+	function tolak_pts($id)
+	{
 		if ($this->M_admin->tolak_pts($id) == TRUE) {
 
 			$this->session->set_flashdata('success', "Berhasil menolak pengajuan data PTS !!");
 			redirect($this->agent->referrer());
-		}else {
+		} else {
 			$this->session->set_flashdata('error', "Terjadi kesalahan saat menolak pengajuan data PTS !!");
 			redirect($this->agent->referrer());
 		}
 	}
 
-	function ubah_passwordAdmin(){
+	function ubah_passwordAdmin()
+	{
 		if ($this->M_admin->cek_passAdmin($this->input->post("PASS_LAMA")) == TRUE) {
 			if ($this->input->post("PASS_BARU") == $this->input->post("CON_PASS")) {
 				if ($this->M_admin->ganti_passAdmin() == TRUE) {
 					$this->session->set_flashdata('success', "Berhasil mengubah password untuk akun admin !!");
 					redirect($this->agent->referrer());
-				}else {
+				} else {
 					$this->session->set_flashdata('error', "Terjadi kesalahan saat mengubah password untuk akun admin !!");
 					redirect($this->agent->referrer());
 				}
-			}else{
+			} else {
 				$this->session->set_flashdata('error', "Konfirmasi password baru tidak sama!!");
 				redirect($this->agent->referrer());
 			}
-		}else{
+		} else {
 			$this->session->set_flashdata('error', "Password lama anda salah !!");
 			redirect($this->agent->referrer());
 		}
 	}
 
-	function ubah_mailer(){
+	function ubah_mailer()
+	{
 		if ($this->M_admin->ubah_mailer() == TRUE) {
 			$this->session->set_flashdata('success', "Berhasil mengubah data !!");
 			redirect($this->agent->referrer());
-		}else {
+		} else {
 			$this->session->set_flashdata('error', "Terjadi kesalahan saat mengubah data !!");
 			redirect($this->agent->referrer());
 		}
 	}
 
-	function ubah_sosmed(){
+	function ubah_sosmed()
+	{
 		if ($this->M_admin->ubah_sosmed() == TRUE) {
 			$this->session->set_flashdata('success', "Berhasil mengubah data !!");
 			redirect($this->agent->referrer());
-		}else {
+		} else {
 			$this->session->set_flashdata('error', "Terjadi kesalahan saat mengubah data !!");
 			redirect($this->agent->referrer());
 		}
 	}
 
-	function ubah_websiteInfo(){
+	function ubah_websiteInfo()
+	{
 		if ($this->M_admin->ubah_websiteInfo() == TRUE) {
 			$this->session->set_flashdata('success', "Berhasil mengubah data !!");
 			redirect($this->agent->referrer());
-		}else {
+		} else {
 			$this->session->set_flashdata('error', "Terjadi kesalahan saat mengubah data !!");
 			redirect($this->agent->referrer());
 		}
 	}
 
-	function atur_daftarPenyelenggara(){
+	function atur_daftarPenyelenggara()
+	{
 		if ($this->M_admin->atur_daftarPenyelenggara() == TRUE) {
 			$this->session->set_flashdata('success', "Berhasil mengatur daftar menu penyelenggara !!");
 			redirect($this->agent->referrer());
-		}else {
+		} else {
 			$this->session->set_flashdata('error', "Terjadi kesalahan saat mengatur daftar menu penyelenggara !!");
 			redirect($this->agent->referrer());
 		}
@@ -535,7 +594,8 @@ class Admin extends MX_Controller {
 
 	// LOGO
 
-	function ubah_logoFav(){
+	function ubah_logoFav()
+	{
 		// UPLOAD
 		if (!empty($_FILES['LOGO_FAV']['name'])) {
 			// CREATE FILENAME
@@ -553,10 +613,10 @@ class Admin extends MX_Controller {
 
 			$this->load->library('upload', $config);
 
-			if (!$this->upload->do_upload('LOGO_FAV')){
+			if (!$this->upload->do_upload('LOGO_FAV')) {
 				$this->session->set_flashdata('error', 'Terjadi kesalahan saat meng-upload logo!!');
 				redirect($this->agent->referrer());
-			}else {
+			} else {
 
 				$this->db->where('KEY', 'LOGO_FAV');
 				$this->db->update('tb_pengaturan', array('VALUE' => $filename));
@@ -564,18 +624,19 @@ class Admin extends MX_Controller {
 				if ($cek == TRUE) {
 					$this->session->set_flashdata('success', 'Berhasil mengubah logo!!');
 					redirect($this->agent->referrer());
-				}else {
+				} else {
 					$this->session->set_flashdata('error', "Terjadi kesalahan saat mengubah logo!");
 					redirect($this->agent->referrer());
 				}
 			}
-		}else {
+		} else {
 			$this->session->set_flashdata('error', 'Harap pilih foto untuk dapat diupload!!');
 			redirect($this->agent->referrer());
 		}
 	}
 
-	function ubah_logoBlack(){
+	function ubah_logoBlack()
+	{
 		// UPLOAD
 		if (!empty($_FILES['LOGO_BLACK']['name'])) {
 			// CREATE FILENAME
@@ -593,10 +654,10 @@ class Admin extends MX_Controller {
 
 			$this->load->library('upload', $config);
 
-			if (!$this->upload->do_upload('LOGO_BLACK')){
+			if (!$this->upload->do_upload('LOGO_BLACK')) {
 				$this->session->set_flashdata('error', 'Terjadi kesalahan saat meng-upload logo!!');
 				redirect($this->agent->referrer());
-			}else {
+			} else {
 
 				$this->db->where('KEY', 'LOGO_BLACK');
 				$this->db->update('tb_pengaturan', array('VALUE' => $filename));
@@ -604,18 +665,19 @@ class Admin extends MX_Controller {
 				if ($cek == TRUE) {
 					$this->session->set_flashdata('success', 'Berhasil mengubah logo!!');
 					redirect($this->agent->referrer());
-				}else {
+				} else {
 					$this->session->set_flashdata('error', "Terjadi kesalahan saat mengubah logo!");
 					redirect($this->agent->referrer());
 				}
 			}
-		}else {
+		} else {
 			$this->session->set_flashdata('error', 'Harap pilih foto untuk dapat diupload!!');
 			redirect($this->agent->referrer());
 		}
 	}
 
-	function ubah_logoWhite(){
+	function ubah_logoWhite()
+	{
 		// UPLOAD
 		if (!empty($_FILES['LOGO_WHITE']['name'])) {
 			// CREATE FILENAME
@@ -633,10 +695,10 @@ class Admin extends MX_Controller {
 
 			$this->load->library('upload', $config);
 
-			if (!$this->upload->do_upload('LOGO_WHITE')){
+			if (!$this->upload->do_upload('LOGO_WHITE')) {
 				$this->session->set_flashdata('error', 'Terjadi kesalahan saat meng-upload logo!!');
 				redirect($this->agent->referrer());
-			}else {
+			} else {
 
 				$this->db->where('KEY', 'LOGO_WHITE');
 				$this->db->update('tb_pengaturan', array('VALUE' => $filename));
@@ -644,12 +706,12 @@ class Admin extends MX_Controller {
 				if ($cek == TRUE) {
 					$this->session->set_flashdata('success', 'Berhasil mengubah logo!!');
 					redirect($this->agent->referrer());
-				}else {
+				} else {
 					$this->session->set_flashdata('error', "Terjadi kesalahan saat mengubah logo!");
 					redirect($this->agent->referrer());
 				}
 			}
-		}else {
+		} else {
 			$this->session->set_flashdata('error', 'Harap pilih foto untuk dapat diupload!!');
 			redirect($this->agent->referrer());
 		}
@@ -658,13 +720,14 @@ class Admin extends MX_Controller {
 	// END LOGO
 
 	// PROSES BUAT KEGIATAN
-	function proses_buatKegiatan(){
+	function proses_buatKegiatan()
+	{
 		$filename             = null;
 		$JUDUL                = htmlspecialchars($this->input->post("JUDUL"), true);
 
-    // UPLOAD
+		// UPLOAD
 		if (!empty($_FILES['POSTER']['name'])) {
-      // CREATE FILENAME
+			// CREATE FILENAME
 			$path     	= $_FILES['POSTER']['name'];
 			$ext      	= pathinfo($path, PATHINFO_EXTENSION);
 
@@ -674,7 +737,7 @@ class Admin extends MX_Controller {
 			$uniqid 	= strtolower($uniqid);
 			$time 		= substr(md5(time()), 0, 3);
 
-     		 // CREATE KODE KEGIATAN
+			// CREATE KODE KEGIATAN
 			do {
 				$KODE_KEGIATAN      = "kegiatan-{$uniqid}-{$time}";
 			} while ($this->M_admin->cek_kodeKegiatan($KODE_KEGIATAN) > 0);
@@ -688,7 +751,7 @@ class Admin extends MX_Controller {
 				mkdir($folder, 0755, true);
 			}
 
-      		// UPLOAD FILE
+			// UPLOAD FILE
 			$config['upload_path']    = $folder;
 			$config['allowed_types']  = 'JPEG|jpeg|JPG|jpg|PNG|png';
 			$config['max_size']       = 2048;
@@ -697,23 +760,23 @@ class Admin extends MX_Controller {
 
 			$this->load->library('upload', $config);
 
-			if (!$this->upload->do_upload('POSTER')){
+			if (!$this->upload->do_upload('POSTER')) {
 				$this->session->set_flashdata('error', 'Terjadi kesalahan saat mengunggah Poster anda!!');
 				redirect($this->agent->referrer());
-			}else {
+			} else {
 				if ($this->M_admin->proses_buatKegiatan($KODE_KEGIATAN, $filename) == TRUE) {
 
-        			// SAVE LOG
+					// SAVE LOG
 					$this->M_admin->log_aktivitasKpanel($this->session->userdata("kode_user"), 11, 3);
 
 					$this->session->set_flashdata('success', 'Berhasil membuat kegiatan anda!!');
 					redirect('kegiatanku');
-				}else {
+				} else {
 					$this->session->set_flashdata('error', "Terjadi kesalahan saat membuat kegiatan anda!");
 					redirect($this->agent->referrer());
 				}
 			}
-		}else {
+		} else {
 			$this->session->set_flashdata('error', 'Harap pilih Poster untuk dapat diupload!!');
 			redirect($this->agent->referrer());
 		}
@@ -723,16 +786,24 @@ class Admin extends MX_Controller {
 
 
 	// TRANSAKSI GOES HERE
-	public function data_transaksi($param = ""){
-
-		if($param == "tim"){
+	public function data_transaksi($param = "")
+	{
+		// get total uang masuk
+		$total_uang_masuk = $this->M_admin->sum_total_uang_masuk();
+		$jumlah_transaksi = $this->M_admin->count_jumlah_transaksi();
+		$jumlah_pembayaran_sukses = $this->M_admin->count_jumlah_pembyaran_sukses();
+		
+		$data['total_uang_masuk'] = $total_uang_masuk->total_uang_masuk;
+		$data['jumlah_transaksi'] = $jumlah_transaksi->jumlah_transaksi;
+		$data['jumlah_pembayaran_sukses'] = $jumlah_pembayaran_sukses->jumlah_pembayaran_sukses;
+		if ($param == "tim") {
 			$data['transaksi'] = $this->M_admin->data_transaksi_tim();
 			$data['stat_pay'] = $this->M_admin->get_all_status_payment();
 			$data['ci'] = $this;
 
 			$data['module'] 	= "admin";
 			$data['fileview'] 	= "data_transaksi_pertim";
-		}else{
+		} else {
 			$data['transaksi'] = $this->M_admin->data_transaksi();
 			$data['stat_pay'] = $this->M_admin->get_all_status_payment();
 			$data['ci'] = $this;
@@ -744,7 +815,7 @@ class Admin extends MX_Controller {
 		echo Modules::run('template/backend_main', $data);
 	}
 
-	public function get_details_tim_payment($param = "")
+	public function get_details_tim_payment($param = "") // for ajax
 	{
 		if ($param != "") {
 			$this->load->model('payment/M_payment');
@@ -777,9 +848,9 @@ class Admin extends MX_Controller {
 				$data_transaksi['STAT_BAYAR'] = $this->input->post('status_transaksi');
 				$this->M_payment->update_transaksi($kode_trans, $data_transaksi);
 
-				$this->session->set_flashdata('success', "Status pembayaran #". $kode_trans ." berhasil diperbarui!");
+				$this->session->set_flashdata('success', "Status pembayaran #" . $kode_trans . " berhasil diperbarui!");
 				redirect($this->agent->referrer());
-			}else{
+			} else {
 				$this->session->set_flashdata('error', "Kode Transaksi tidak ditemukan!!");
 				redirect($this->agent->referrer());
 			}
@@ -812,4 +883,63 @@ class Admin extends MX_Controller {
 		}
 	}
 
+
+
+	function body_html($message){
+		return '
+		<html>
+
+		<head>
+		<title>Lo Kreatif</title>
+		</head>
+
+		<body style="
+		font-family: -webkit-pictograph;
+		color: #333333;
+		font-size: 16px;
+		background:#EEEEEE;">
+		<div style="margin: 0 auto 0 auto; width: 560px;">
+		<div style="padding-top: 55px; text-align : center;">
+		<div style="font-weight: 700;font-size: 32px;">
+		<span style="font-size: 32px; ">LO-KREATIF</span>
+		</div>
+		</div>
+		<div style="background: white">
+		<main><div style="margin-top: 32px;">
+		<div style="height: 12px; background: #0B4C8A;"></div>
+		<div style="margin: 32px 56px 0 56px">
+		<div>
+		<span style="font-size: 16px;">
+		'.$message.'
+		<br><br><br>
+		<span class="text-muted">Regards,<br>LO Kreatif</span>
+		</span>
+		</div>
+		</div>
+		</div>
+
+		</main>
+		<hr style="
+		width: 513px; 
+		margin-top: 34px;
+		border-top: 1px solid #cecece; 
+		border-bottom: none;" />
+		<div>
+		<div style="margin: 32px 56px 0 56px">
+		<div style="margin-top: 32px">
+		<img style="margin: auto;display: block;" src="https://i.ibb.co/XtvzJBX/icon-ts.png" width="75px" height="auto" alt="LO Kreatif logo">
+		<div style="text-align: center; font-size: 10px; margin-top:10px">LO-KREATIF 2021</div>
+		</div>
+		</div>
+		</div>
+		<hr style="border-top: 1px dashed #CECECE; margin-top: 24px; border-bottom: none;">
+		<div style="margin-top: 13px; text-align : center; font-size:10px;">This email has been generated
+		automatically, please do not reply.</div>
+		<div style="height: 12px; background: #0B4C8A; margin-top:10px;"></div>
+		</div>
+		</body>
+		';
+	}
+
 }?>
+
