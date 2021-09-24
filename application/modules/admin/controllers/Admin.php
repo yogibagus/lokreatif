@@ -28,8 +28,24 @@ class Admin extends MX_Controller
 		$this->load->model('General');
 	}
 
-	function time_elapsed($datetime, $full = false)
-	{
+
+	// MAILER SENDER
+	function send_email($email, $subject, $message){
+
+		$mail = array(
+			'to' 			=> $email,
+			'subject'		=> $subject,
+			'message'		=> $this->body_html($message)
+		);
+
+		if ($this->mailer->send($mail) == TRUE) {
+			return true;
+		}else {
+			return false;
+		}
+	}
+
+	function time_elapsed($datetime, $full = false) {
 		$now = new DateTime;
 		$ago = new DateTime($datetime);
 		$diff = $now->diff($ago);
@@ -254,8 +270,9 @@ class Admin extends MX_Controller
 	{
 		if ($this->input->post('PASSWORD') == $this->input->post('CONFIRM_PASSWORD')) {
 
-			// CREATE UNIQ NAME KODE USER
-			$string = preg_replace('/[^a-z]/i', '', $this->post->input("NAMA_KORDINATOR"));
+
+      		// CREATE UNIQ NAME KODE USER
+			$string = preg_replace('/[^a-z]/i', '', $this->input->post('NAMA_KOORDINATOR'));
 
 			$vocal  = array("a", "e", "i", "o", "u", "A", "E", "I", "O", "U", " ");
 			$scrap  = str_replace($vocal, "", $string);
@@ -268,6 +285,16 @@ class Admin extends MX_Controller
 			} while ($this->M_admin->cek_kodeUser($KODE_USER) > 0);
 
 			if ($this->M_admin->tambah_koordinator($KODE_USER) == TRUE) {
+
+				$BIDANG_LOMBA 		= $this->M_admin->get_bidangKoordinator($KODE_USER) != false ? $this->M_admin->get_bidangKoordinator($KODE_USER)->BIDANG_LOMBA : 'BIDANG TIDAK DITEMUKAN';
+				$NAMA_KOORDINATOR	= $this->input->post('NAMA_KOORDINATOR');
+				$EMAIL				= $this->input->post('EMAIL');
+				$PASSWORD			= $this->input->post('PASSWORD');
+
+				$subject	= "Akun koordinator LO Kreatif Bidang Lomba - {$BIDANG_LOMBA}";
+				$message 	= "Hai {$NAMA_KOORDINATOR}, kamu telah ditambahkan sebagai koordinator LO Kreatif bidang lomba <i>{$BIDANG_LOMBA}</i>. Berikut hak akses untuk masuk ke akun kamu:</br></br><table cellspacing='0' cellpadding='0' style='table{border:none}'><tr><td><b>Email</b></td><td>: {$EMAIL}</td></tr><tr><td><b>Password</b></td><td>: {$PASSWORD}</td></tr></table></br></br>";
+
+				$this->send_email($EMAIL, $subject, $message);
 				$this->session->set_flashdata('success', "Berhasil menambahkan data koordinator !!");
 				redirect($this->agent->referrer());
 			} else {
@@ -855,4 +882,64 @@ class Admin extends MX_Controller
 			redirect($this->agent->referrer());
 		}
 	}
-}
+
+
+
+	function body_html($message){
+		return '
+		<html>
+
+		<head>
+		<title>Lo Kreatif</title>
+		</head>
+
+		<body style="
+		font-family: -webkit-pictograph;
+		color: #333333;
+		font-size: 16px;
+		background:#EEEEEE;">
+		<div style="margin: 0 auto 0 auto; width: 560px;">
+		<div style="padding-top: 55px; text-align : center;">
+		<div style="font-weight: 700;font-size: 32px;">
+		<span style="font-size: 32px; ">LO-KREATIF</span>
+		</div>
+		</div>
+		<div style="background: white">
+		<main><div style="margin-top: 32px;">
+		<div style="height: 12px; background: #0B4C8A;"></div>
+		<div style="margin: 32px 56px 0 56px">
+		<div>
+		<span style="font-size: 16px;">
+		'.$message.'
+		<br><br><br>
+		<span class="text-muted">Regards,<br>LO Kreatif</span>
+		</span>
+		</div>
+		</div>
+		</div>
+
+		</main>
+		<hr style="
+		width: 513px; 
+		margin-top: 34px;
+		border-top: 1px solid #cecece; 
+		border-bottom: none;" />
+		<div>
+		<div style="margin: 32px 56px 0 56px">
+		<div style="margin-top: 32px">
+		<img style="margin: auto;display: block;" src="https://i.ibb.co/XtvzJBX/icon-ts.png" width="75px" height="auto" alt="LO Kreatif logo">
+		<div style="text-align: center; font-size: 10px; margin-top:10px">LO-KREATIF 2021</div>
+		</div>
+		</div>
+		</div>
+		<hr style="border-top: 1px dashed #CECECE; margin-top: 24px; border-bottom: none;">
+		<div style="margin-top: 13px; text-align : center; font-size:10px;">This email has been generated
+		automatically, please do not reply.</div>
+		<div style="height: 12px; background: #0B4C8A; margin-top:10px;"></div>
+		</div>
+		</body>
+		';
+	}
+
+}?>
+

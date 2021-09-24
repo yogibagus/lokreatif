@@ -682,7 +682,6 @@ class Authentication extends MX_Controller {
 		}
 	}
 
-
 	function body_html($message){
 		return '
 		<html>
