@@ -1,3 +1,24 @@
+<div class="<?php if ($this->agent->is_mobile()):?>w-60<?php else:?>w-25<?php endif;?> mx-auto justify-content-sm-center text-center">
+  <!-- Fancybox -->
+  <a class="js-fancybox video-player video-player-btn media align-items-center text-dark" href="javascript:;"
+     data-hs-fancybox-options='{
+       "src": "//youtu.be/ycJK86f7yUY",
+       "caption": "Video juri LO Kreatif 2021",
+       "speed": 700,
+       "buttons": ["fullScreen", "close"],
+       "youtube": {
+         "autoplay": 1
+       }
+     }'>
+    <span class="video-player-icon shadow-soft mr-3">
+      <i class="fa fa-play"></i>
+    </span>
+    <span class="media-body">
+      Lihat video juri
+    </span>
+  </a>
+  <!-- End Fancybox -->
+</div>
 <!-- Team Section -->
 <div class="container space-2">
   <?php if ($bidangLomba != false) :?>
