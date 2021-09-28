@@ -654,7 +654,7 @@ class M_admin extends CI_Model {
 	public function data_transaksi_tim()
 	{
 		$query = $this->db->query("
-		SELECT *, c.`KODE_TRANS` AS KODE_TRANSAKSI 
+		SELECT *, c.`KODE_TRANS` AS KODE_TRANSAKSI
 		FROM pendaftaran_kompetisi a
 		LEFT JOIN tb_order b ON a.`KODE_PENDAFTARAN` = b.`KODE_PENDAFTARAN`
 		LEFT JOIN tb_transaksi c ON  b.`KODE_TRANS` = c.`KODE_TRANS`
@@ -670,7 +670,7 @@ class M_admin extends CI_Model {
 	{
 		$query = $this->db->query("		
 		SELECT 
-		a.`KODE_TRANS`, a.`STAT_BAYAR` ,a.`KODE_USER_BILL`, a.`ROLE_USER_BILL`, a.`BAYAR`, a.`TOT_BAYAR`,
+		a.`KODE_TRANS`, a.`STAT_BAYAR` ,a.`KODE_USER_BILL`, a.`ROLE_USER_BILL`, a.`BAYAR`, a.`TOT_BAYAR`, a.LOG_TIME as TGL_TRANSAKSI,
 		b.`KODE_PAY`, b.`ORDER_ID`, b.`PAYMENT_ID`, b.`ID_PAY_METHOD`, b.`LOG_TIME`,
 		c.`NAMA_PAY_METHOD`, c.`IMG_PAY_METHOD`, 
 		d.`ID_STAT_PAY`, d.`NAMA_STAT_PAY`, d.`COLOR_STAT_PAY`, d.`ALIAS_STAT_PAY`,

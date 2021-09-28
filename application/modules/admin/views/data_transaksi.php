@@ -80,6 +80,7 @@
                 <tr>
                     <th>No</th>
                     <th>ID Transaksi</th>
+                    <th>Tgl. Transaksi</th>
                     <th>Dibayar Oleh</th>
                     <th>Status</th>
                     <th>Aksi</th>
@@ -98,6 +99,7 @@
                     <tr>
                         <td scope="row"><?= $no ?></td>
                         <td><?= $row->KODE_TRANS ?></td>
+                        <td><?= date("d M Y -H:i:s", strtotime($row->TGL_TRANSAKSI)) ?></td>
                         <td>
                             <?php
                             if ($row->ROLE_USER_BILL == 3) {

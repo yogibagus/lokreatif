@@ -200,7 +200,7 @@
             <!-- End Pengguna -->
 
             <li class="nav-item ">
-              <a class="js-nav-tooltip-link nav-link <?= ($this->uri->segment(2) == 'verifikasi-berkas' ? 'active' : '') ?>" href="<?= site_url('kordinator/verifikasi-berkas') ?>" title="Verifikasi Berkas" data-placement="left">
+              <a class="js-nav-tooltip-link nav-link <?= ($this->uri->segment(2) == 'verifikasi-berkas' ? 'active' : '') ?>" href="<?= site_url('koordinator/verifikasi-berkas') ?>" title="Verifikasi Berkas" data-placement="left">
                 <i class="tio-files nav-icon"></i>
                 <span class="navbar-vertical-aside-mini-mode-hidden-elements text-truncate">Verifikasi Berkas</span>
               </a>
@@ -245,6 +245,20 @@
                   </li>
                 <?php endif; ?>
               </ul>
+            </li>
+            <!-- End Pengguna -->
+          <?php elseif ($this->session->userdata('role') == 4) : ?>
+            <li class="nav-item">
+              <small class="nav-subtitle" title="Pages">Koordinator</small>
+              <small class="tio-more-horizontal nav-subtitle-replacer"></small>
+            </li>
+
+            <!-- Pengguna -->
+            <li class="nav-item">
+              <a class="nav-link <?= ($this->uri->segment(2) == 'verifikasi-berkas' ? 'active' : '') ?>" href="<?= site_url('koordinator/verifikasi-berkas') ?>" title="Data Peserta">
+                <i class="tio-files nav-icon"></i>
+                <span class="text-truncate"> Verifikai Berkas</span>
+              </a>
             </li>
             <!-- End Pengguna -->
           <?php endif; ?>
