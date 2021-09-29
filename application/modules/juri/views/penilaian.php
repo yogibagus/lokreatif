@@ -57,6 +57,13 @@
 			</div>
 		</div>
 		<div class="col-9">
+			    <div class="alert alert-soft-secondary alert-dismissible fade show mb-4" role="alert">
+		          <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+		              <span aria-hidden="true">&times;</span>
+		              <span class="sr-only">Close</span>
+		          </button>
+		          <strong>Perhatian!</strong> Harap matikan <strong>Internet Download Manager (IDM)</strong> untuk menghindari download secara otomatis.
+		      </div>
 			<div class="card mb-4">
 				<div class="card-header">
 					<h5 class="card-header-title" id="karya">Preview Karya</h5>

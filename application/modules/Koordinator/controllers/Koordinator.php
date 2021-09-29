@@ -77,7 +77,7 @@ class koordinator extends MX_Controller
         }
         $data['cek_form']         = $this->M_koordinator->cek_form();
         $data['get_form']         = $this->M_koordinator->get_formBerkas();
-
+        $data['CI']               = $this;
 
         $data['module']     = "koordinator";
         $data['fileview']   = "verifikasi_berkas";

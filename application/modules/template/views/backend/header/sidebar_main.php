@@ -201,14 +201,6 @@
                     <span class="navbar-vertical-aside-mini-mode-hidden-elements text-truncate">Kriteria Penilaian</span>
                   </a>
                 </li>
-                <!-- End Dashboards -->
-                <li class="nav-item ">
-                  <a class="js-nav-tooltip-link nav-link <?= ($this->uri->segment(2) == 'verifikasi-berkas' ? 'active' : '') ?>" href="<?= site_url('koordinator/verifikasi-berkas') ?>" title="Verifikasi Berkas" data-placement="left">
-                    <i class="tio-files nav-icon"></i>
-                    <span class="navbar-vertical-aside-mini-mode-hidden-elements text-truncate">Verifikasi Berkas</span>
-                  </a>
-                </li>
-                <!-- End Dashboards -->
 
                 <li class="nav-item ">
                   <a class="js-nav-tooltip-link nav-link <?= ($this->uri->segment(2) == 'atur-pendaftaran' ? 'active' : '') ?>" href="<?= site_url('kompetisi/atur-pendaftaran') ?>" title="Atur Berkas Pendaftaran" data-placement="left">
@@ -233,7 +225,7 @@
                 <!-- End Pengguna -->
 
                 <li class="nav-item ">
-                  <a class="js-nav-tooltip-link nav-link <?= ($this->uri->segment(2) == 'verifikasi-berkas' ? 'active' : '') ?>" href="<?= site_url('kompetisi/verifikasi-berkas') ?>" title="Verifikasi Berkas" data-placement="left">
+                  <a class="js-nav-tooltip-link nav-link <?= ($this->uri->segment(2) == 'verifikasi-berkas' ? 'active' : '') ?>" href="<?= site_url('koordinator/verifikasi-berkas') ?>" title="Verifikasi Berkas" data-placement="left">
                     <i class="tio-files nav-icon"></i>
                     <span class="navbar-vertical-aside-mini-mode-hidden-elements text-truncate">Verifikasi Berkas</span>
                   </a>
