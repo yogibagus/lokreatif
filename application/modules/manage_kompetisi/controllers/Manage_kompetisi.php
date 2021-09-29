@@ -191,6 +191,16 @@ class Manage_kompetisi extends MX_Controller {
 		}
 	}
 
+	function pass_juri(){
+		if ($this->M_manage->pass_juri() == TRUE) {
+			$this->session->set_flashdata('success', "Berhasil mengubah password juri !!");
+			redirect($this->agent->referrer());
+		}else{
+			$this->session->set_flashdata('error', "Terjadi kesalahan saat mengubah password juri !!");
+			redirect($this->agent->referrer());
+		}
+	}
+
 	function hapus_juri(){
 		if ($this->M_manage->hapus_juri() == TRUE) {
 			$this->session->set_flashdata('success', "Berhasil menghapus data juri !!");
