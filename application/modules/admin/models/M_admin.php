@@ -75,7 +75,39 @@ class M_admin extends CI_Model {
 	}
 
 	public function countSudahRefund(){
-		return $this->db->get_where('tb_refund', array('STAT_REFUND' => 1))->num_rows();
+		return $this->db->get_where('tb_refund', array('STAT_REFUND' => 2))->num_rows();
+	}
+
+	public function sumTotalRefundSukses()
+	{
+		$query = $this->db->query("SELECT SUM(a.`JML_REFUND`) AS total_refund FROM tb_refund AS a
+		WHERE a.`STAT_REFUND` = 2");
+		return $query->row();
+	}
+
+	public function get_refund()
+	{
+		$query = $this->db->query("SELECT a.*, b.`KODE_USER_BILL`, b.`ROLE_USER_BILL` FROM tb_refund AS a, tb_transaksi AS b
+		WHERE a.`KODE_TRANS` =  b.`KODE_TRANS`");
+		return $query->result();
+	}
+
+	public function get_refund_by_id($kode_refund)
+	{
+		$query = $this->db->query("SELECT * FROM tb_refund WHERE KODE_REFUND = '$kode_refund'");
+		if ($query->num_rows() > 0) {
+			return $query->row();
+		} else {
+			return false;
+		}
+	}
+
+	public function update_refund($data,$id)
+	{
+		$this->db->where('KODE_REFUND', $id);
+		$this->db->update('tb_refund', $data);
+		return ($this->db->affected_rows() != 1) ? false : true;
+
 	}
 
 

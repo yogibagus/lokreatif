@@ -41,6 +41,27 @@ body {
     height: 100%;
 }
 
+.responsive-iframe-ig {
+    position: relative;
+    padding-bottom: 56.25%;
+    /* 16:9 */
+    padding-top: 25px;
+    height: 0;
+}
+
+.responsive-iframe-ig iframe {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 750px;
+    height: 1000px;
+}
+
+.isResizable {
+    overflow: hidden;
+    resize: both;
+}
+
 .tox-notification {
     display: none !important;
 }

@@ -146,7 +146,7 @@
                 <!-- End Dashboards -->
 
                 <li class="nav-item">
-                  <small class="nav-subtitle" title="Pages">Transaksi</small>
+                  <small class="nav-subtitle" title="Pages">Pembayaran</small>
                   <small class="tio-more-horizontal nav-subtitle-replacer"></small>
                 </li>
 
@@ -156,6 +156,14 @@
                     <span class="navbar-vertical-aside-mini-mode-hidden-elements text-truncate">Data Transaksi</span>
                   </a>
                 </li>
+
+                <li class="nav-item ">
+                  <a class="js-nav-tooltip-link nav-link <?= ($this->uri->segment(2) == 'data-refund' ? 'active' : '') ?>" href="<?= site_url('data-refund') ?>" title="Kelola Refund" data-placement="left">
+                    <i class="tio-receipt-outlined nav-icon"></i>
+                    <span class="navbar-vertical-aside-mini-mode-hidden-elements text-truncate">Data Refund</span>
+                  </a>
+                </li>
+
 
                 <li class="nav-item">
                   <small class="nav-subtitle" title="Pages">Data Master</small>
