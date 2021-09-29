@@ -202,13 +202,13 @@
                   </a>
                 </li>
                 <!-- End Dashboards -->
-            <li class="nav-item ">
-              <a class="js-nav-tooltip-link nav-link <?= ($this->uri->segment(2) == 'verifikasi-berkas' ? 'active' : '') ?>" href="<?= site_url('koordinator/verifikasi-berkas') ?>" title="Verifikasi Berkas" data-placement="left">
-                <i class="tio-files nav-icon"></i>
-                <span class="navbar-vertical-aside-mini-mode-hidden-elements text-truncate">Verifikasi Berkas</span>
-              </a>
-            </li>
-            <!-- End Dashboards -->
+                <li class="nav-item ">
+                  <a class="js-nav-tooltip-link nav-link <?= ($this->uri->segment(2) == 'verifikasi-berkas' ? 'active' : '') ?>" href="<?= site_url('koordinator/verifikasi-berkas') ?>" title="Verifikasi Berkas" data-placement="left">
+                    <i class="tio-files nav-icon"></i>
+                    <span class="navbar-vertical-aside-mini-mode-hidden-elements text-truncate">Verifikasi Berkas</span>
+                  </a>
+                </li>
+                <!-- End Dashboards -->
 
                 <li class="nav-item ">
                   <a class="js-nav-tooltip-link nav-link <?= ($this->uri->segment(2) == 'atur-pendaftaran' ? 'active' : '') ?>" href="<?= site_url('kompetisi/atur-pendaftaran') ?>" title="Atur Berkas Pendaftaran" data-placement="left">
@@ -252,38 +252,6 @@
                   <small class="nav-subtitle" title="Pages">Kegiatan</small>
                   <small class="tio-more-horizontal nav-subtitle-replacer"></small>
                 </li>
-                <?php if ($this->session->userdata("role_akses") == 0) : ?>
-                  <li class="nav-item">
-                    <a class="nav-link <?= ($this->uri->segment(2) == 'buat-kegiatan' ? 'active' : '') ?>" href="<?= site_url('buat-kegiatan') ?>" title="Buat Kegiatan">
-                      <span class="tio-circle nav-indicator-icon"></span>
-                      <span class="text-truncate">Buat kegiatan</span>
-                    </a>
-                  </li>
-                <?php endif; ?>
-              </ul>
-            </li>
-            <!-- End Pengguna -->
-          <?php elseif ($this->session->userdata('role') == 4) : ?>
-            <li class="nav-item">
-              <small class="nav-subtitle" title="Pages">Koordinator</small>
-              <small class="tio-more-horizontal nav-subtitle-replacer"></small>
-            </li>
-
-            <!-- Pengguna -->
-            <li class="nav-item">
-              <a class="nav-link <?= ($this->uri->segment(2) == 'verifikasi-berkas' ? 'active' : '') ?>" href="<?= site_url('koordinator/verifikasi-berkas') ?>" title="Data Peserta">
-                <i class="tio-files nav-icon"></i>
-                <span class="text-truncate"> Verifikai Berkas</span>
-              </a>
-            </li>
-            <!-- End Pengguna -->
-          <?php endif; ?>
-          <li class="nav-item">
-            <small class="tio-more-horizontal nav-subtitle-replacer"></small>
-          </li>
-        </ul>
-      </div>
-      <!-- End Content -->
 
                 <!-- Pengguna -->
                 <li class="navbar-vertical-aside-has-menu <?= ($this->uri->segment(2) == 'kegiatanku' || $this->uri->segment(2) == 'buat-kegiatan' ? 'show' : '') ?>">
@@ -300,35 +268,49 @@
                         <span class="text-truncate">Kegiatanku</span>
                       </a>
                     </li>
-
-                    <?php if ($this->session->userdata("role_akses") == 0) : ?>
-                      <li class="nav-item">
-                        <a class="nav-link <?= ($this->uri->segment(2) == 'buat-kegiatan' ? 'active' : '') ?>" href="<?= site_url('buat-kegiatan') ?>" title="Buat Kegiatan">
-                          <span class="tio-circle nav-indicator-icon"></span>
-                          <span class="text-truncate">Buat kegiatan</span>
-                        </a>
-                      </li>
-                    <?php endif; ?>
+                    <li class="nav-item">
+                      <a class="nav-link <?= ($this->uri->segment(2) == 'buat-kegiatan' ? 'active' : '') ?>" href="<?= site_url('buat-kegiatan') ?>" title="Buat Kegiatan">
+                        <span class="tio-circle nav-indicator-icon"></span>
+                        <span class="text-truncate">Buat kegiatan</span>
+                      </a>
+                    </li>
                   </ul>
                 </li>
                 <!-- End Pengguna -->
-              <?php endif; ?>
-              <li class="nav-item">
-                <small class="tio-more-horizontal nav-subtitle-replacer"></small>
-              </li>
-            </ul>
-          </div>
-          <!-- End Content -->
+                <!-- End Pengguna -->
+                <?php elseif ($this->session->userdata('role') == 4) : ?>
+                  <li class="nav-item">
+                    <small class="nav-subtitle" title="Pages">Koordinator</small>
+                    <small class="tio-more-horizontal nav-subtitle-replacer"></small>
+                  </li>
 
-          <!-- Footer -->
-          <div class="navbar-vertical-footer">
-            <ul class="navbar-vertical-footer-list">
-
-              <li class="navbar-vertical-footer-list-item">
-              </li>
-            </ul>
-          </div>
-          <!-- End Footer -->
+                  <!-- Pengguna -->
+                  <li class="nav-item">
+                    <a class="nav-link <?= ($this->uri->segment(2) == 'verifikasi-berkas' ? 'active' : '') ?>" href="<?= site_url('koordinator/verifikasi-berkas') ?>" title="Data Peserta">
+                      <i class="tio-files nav-icon"></i>
+                      <span class="text-truncate"> Verifikai Berkas</span>
+                    </a>
+                  </li>
+                  <!-- End Pengguna -->
+                <?php endif; ?>
+                <li class="nav-item">
+                  <small class="tio-more-horizontal nav-subtitle-replacer"></small>
+                </li>
+              </ul>
+            </li>
+          </ul>
         </div>
+        <!-- End Content -->
+
+        <!-- Footer -->
+        <div class="navbar-vertical-footer">
+          <ul class="navbar-vertical-footer-list">
+
+            <li class="navbar-vertical-footer-list-item">
+            </li>
+          </ul>
+        </div>
+        <!-- End Footer -->
       </div>
-    </aside>
+    </div>
+  </aside>
