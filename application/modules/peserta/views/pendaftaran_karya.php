@@ -42,7 +42,7 @@
 			<div class="form-group">
 				<label class="input-label">Link Youtube <i class="fa fa-question-circle text-muted" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="Jika karya anda dalam bentuk video, maka harap unggah terlebih dahulu di akun youtube anda"></i></label>
 				<input type="link" name="LINK" class="form-control form-control-sm" id="link_youtube" value="<?= $dataKarya != false ? $dataKarya->LINK : '' ;?>">
-				<small class="text-muted">Jika karya anda berupa video, harap unggah ke youtube anda, kemudian salin link video tersebut (pastikan link dapat dibuka).</small>
+				<small class="text-muted">Jika karya anda berupa video, harap unggah ke youtube anda, kemudian salin link video tersebut (pastikan link dapat dibuka). Contoh: <span class="text-primary">https://www.youtube.com/watch?v=PCGhwLRHpMo</span></small>
 			</div>
 			<div class="form-group">
 				<label class="input-label">Link Drive <small class="text-danger">*</small> <i class="fa fa-question-circle text-muted" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="Link drive folder dari karya anda"></i></label>

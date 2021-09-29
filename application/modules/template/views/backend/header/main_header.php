@@ -22,7 +22,7 @@
 <!-- END USED SIDEBAR MENU -->
 
 <div id="sidebarCompact" class="d-none">
-  <aside class="js-navbar-vertical-aside navbar navbar-vertical-aside navbar-vertical navbar-vertical-fixed navbar-expand-xl navbar-bordered  "></aside>
+  <aside class="js-navbar-vertical-aside"></aside>
 </div>
 
 <script src="<?= base_url();?>assets/backend/js/demo.js"></script>

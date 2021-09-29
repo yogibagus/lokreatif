@@ -140,6 +140,19 @@
                     <i class="fas fa-power-off"></i>
                   </span> Log out
                 </a>
+              <?php elseif ($this->session->userdata('role') == 4) : ?>
+                <a class="dropdown-item px-0" href="<?= site_url('koordinator') ?>">
+                  <span class="dropdown-item-icon">
+                    <i class="fas fa-user"></i>
+                  </span> Koordinator
+                </a>
+
+                <div class="dropdown-divider"></div>
+                <a class="dropdown-item px-0" href="<?= site_url('logout') ?>">
+                  <span class="dropdown-item-icon">
+                    <i class="fas fa-power-off"></i>
+                  </span> Log out
+                </a>
                 <?php else: ?>
                   <a class="dropdown-item px-0" href="<?= site_url('juri') ?>">
                     <span class="dropdown-item-icon">

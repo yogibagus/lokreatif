@@ -11,7 +11,7 @@
 
     <div class="navbar-nav-wrap-content-left">
       <!-- Navbar Vertical Toggle -->
-      <button type="button" class="js-navbar-vertical-aside-toggle-invoker close mr-3">
+      <button type="button" class="js-navbar-vertical-aside-toggle-invoker close mr-3" id="fullscreen-juri">
         <i class="tio-first-page navbar-vertical-aside-toggle-short-align" data-toggle="tooltip" data-placement="right" title="Collapse"></i>
         <i class="tio-last-page navbar-vertical-aside-toggle-full-align" data-template='<div class="tooltip d-none d-sm-block" role="tooltip"><div class="arrow"></div><div class="tooltip-inner"></div></div>' data-toggle="tooltip" data-placement="right" title="Expand"></i>
       </button>
@@ -77,19 +77,19 @@
                               </div>
                             <?php endif; ?>
                             <div class="avatar avatar-sm avatar-soft-dark avatar-circle">
-                              <?php if ($CI->M_template->get_profil($key->SENDER) == FALSE): ?>
-                                <span class="avatar-initials"><?= substr($CI->M_template->get_sender($key->SENDER), 0, 1)?></span>
+                              <?php if ($controller->M_template->get_profil($key->SENDER) == FALSE): ?>
+                                <span class="avatar-initials"><?= substr($controller->M_template->get_sender($key->SENDER), 0, 1)?></span>
                               <?php else: ?>
-                                <img class="avatar-img" src="<?= base_url() ?>berkas/peserta/<?= $key->SENDER ?>/foto/<?= $CI->M_template->get_profil($key->SENDER) ?>" alt="Image Description">
+                                <img class="avatar-img" src="<?= base_url() ?>berkas/peserta/<?= $key->SENDER ?>/foto/<?= $controller->M_template->get_profil($key->SENDER) ?>" alt="Image Description">
                               <?php endif; ?>
                             </div>
                           </div>
                         </div>
                         <div class="col ml-n3">
-                          <span class="card-title h5"><?php $sender = explode(" ", $CI->M_template->get_sender($key->SENDER)); echo $sender[0];?></span>
+                          <span class="card-title h5"><?php $sender = explode(" ", $controller->M_template->get_sender($key->SENDER)); echo $sender[0];?></span>
                           <p class="card-text font-size-sm ellipsis-150"><?= $key->MESSAGE ?></p>
                         </div>
-                        <small class="col-auto text-muted text-cap"><?= $CI->time_elapsed($key->CREATED_AT) ?></small>
+                        <small class="col-auto text-muted text-cap"><?= $controller->time_elapsed($key->CREATED_AT) ?></small>
                       </a>
                     </li>
                     <!-- End Item -->
@@ -203,7 +203,7 @@
                 </div>
                 <div class="media-body">
                   <span class="card-title h5"><?php $nama = explode(" ", $this->session->userdata('nama')); echo $nama[0]; ?></span>
-                  <span class="card-text"><?= mb_substr($this->session->userdata('email'), 0, 3) ?>***@<?php $mail = explode("@", $this->session->userdata('email')); echo $mail[1]; ?></span>
+                  <span class="card-text"><?= mb_substr($this->session->userdata('email'), 0, 4) ?>***@<?php $mail = explode("@", $this->session->userdata('email')); echo mb_substr($mail[1], 0, 6) ?>...</span>
                 </div>
               </div>
             </div>
@@ -214,9 +214,20 @@
               <a class="dropdown-item" href="<?= site_url('pengaturan-admin'); ?>">
                 <span class="text-truncate pr-2" title="Pengaturan">Pengaturan</span>
               </a>
+            <?php elseif ($this->session->userdata('role') == 2) :?>
+              <a class="dropdown-item" href="<?= site_url('juri'); ?>">
+                <span class="text-truncate pr-2" title="Dashboard">Dashboard</span>
+              </a>
+              <a class="dropdown-item" href="<?= site_url('juri/penilaian'); ?>">
+                <span class="text-truncate pr-2" title="Penilaian">Penilaian</span>
+              </a>
             <?php elseif ($this->session->userdata('role') == 3) :?>
               <a class="dropdown-item" href="<?= site_url('pengaturan-pts'); ?>">
                 <span class="text-truncate pr-2" title="Pengaturan">Pengaturan</span>
+              </a>
+            <?php elseif ($this->session->userdata('role') == 4) :?>
+              <a class="dropdown-item" href="<?= site_url('koordinator'); ?>">
+                <span class="text-truncate pr-2" title="Dashboard">Dashboard</span>
               </a>
             <?php endif;?>
             <div class="dropdown-divider"></div>

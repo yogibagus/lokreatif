@@ -103,7 +103,7 @@ class Template extends MX_Controller
 		$data['c_notifikasi']		= $this->M_template->count_notifikasiAdmin();
 		$data['c_aktivitas']		= $this->M_template->count_aktivitasAdmin();
 
-		$data['CI']					= $this;
+		$data['controller']			= $this;
 
 		$this->load->view('backend/backend_main', $data);
 	}

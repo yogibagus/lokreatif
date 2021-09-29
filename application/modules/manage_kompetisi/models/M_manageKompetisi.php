@@ -164,22 +164,7 @@ class M_manageKompetisi extends CI_Model {
 		$PEKERJAAN 		= $this->input->post('PEKERJAAN');
 		$EMAIL 			= htmlspecialchars($this->input->post('EMAIL'), true);
 		$HP 			= htmlspecialchars($this->input->post('HP'), true);
-		$PASSWORD 		= htmlspecialchars($this->input->post('PASSWORD'), true);
-		$BIDANG_JURI 	= htmlspecialchars($this->input->post('BIDANG_JURI'), true);
-
-		if (isset($PASSWORD) || !empty($PASSWORD) || $PASSWORD != null || $PASSWORD != "") {
-			$data = array(
-				'EMAIL'			=> $EMAIL,
-				'PASSWORD'		=> password_hash($PASSWORD, PASSWORD_DEFAULT),
-			);
-		}else{
-			$data = array(
-				'EMAIL'			=> $EMAIL,
-			);
-		}
-
-		$this->db->where('KODE_USER', $KODE_USER);
-		$this->db->update('tb_auth', $data);
+		$BIDANG_JURI 	= $this->input->post('BIDANG_JURI');
 
 		$peserta = array(
 			'NAMA'  			=> $NAMA_JURI,
@@ -198,6 +183,22 @@ class M_manageKompetisi extends CI_Model {
 		$this->db->where('ID', $ID);
 		$this->db->update('bidang_juri', $bidang);
 		return true;
+	}
+
+	function pass_juri(){
+		$KODE_USER 		= $this->input->post('KODE_USER');
+		$PASSWORD 		= $this->input->post('PASSWORD');
+		$BIDANG_JURI 	= $this->input->post('BIDANG_JURI');
+
+		$data = array(
+			'PASSWORD'	=> password_hash($PASSWORD, PASSWORD_DEFAULT),
+		);
+
+		$this->db->where('KODE_USER', $KODE_USER);
+		$this->db->update('tb_auth', $data);
+		
+		return ($this->db->affected_rows() != 1) ? false : true;
+
 	}
 
 	function hapus_juri(){
