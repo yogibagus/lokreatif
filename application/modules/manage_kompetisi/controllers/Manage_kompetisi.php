@@ -90,7 +90,7 @@ class Manage_kompetisi extends MX_Controller {
 
       // CREATE UNIQ NAME KODE USER
 
-			$string = preg_replace('/[^a-z]/i', '', $NAMA_JURI);
+			$string = preg_replace('/[^a-z]/i', '', $this->input->post("NAMA_JURI"));
 
 			$vocal  = array("a", "e", "i", "o", "u", "A", "E", "I", "O", "U", " ");
 			$scrap  = str_replace($vocal, "", $string);
