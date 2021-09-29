@@ -402,11 +402,29 @@ class Admin extends MX_Controller
 	{
 		$data['countRefund']		  	= $this->M_admin->countRefund();
 		$data['countSudahRefund']		= $this->M_admin->countSudahRefund();
-		// $data['refund']					= $this->M_admin->get_refund();
+		$data['sumTotalRefundSukses']		= $this->M_admin->sumTotalRefundSukses()->total_refund;
+		$data['refund'] = $this->M_admin->get_refund();
 
+		$data['ci'] = $this;
 		$data['module']     = "admin";
 		$data['fileview']   = "data_refund";
 		echo Modules::run('template/backend_main', $data);
+	}
+
+	public function update_refund($id_refund, $stat_refund)
+	{
+		$refund = $this->M_admin->get_refund_by_id($id_refund);
+		if($refund != false){
+			$data['STAT_REFUND'] = $stat_refund;
+			$data['LOG_TIME'] = date("Y-m-d H:i:s");
+			if($this->M_admin->update_refund($data, $id_refund) != false){
+				$this->session->set_flashdata('success', "Status Refund ID " . $id_refund . " berhasil dirubah!");
+				redirect($this->agent->referrer());
+			}
+		}else{
+			$this->session->set_flashdata('warning', "Refund ID tidak ditemukan!");
+			redirect($this->agent->referrer());
+		}
 	}
 
 	// DATA AKTIVITAS SISTEM

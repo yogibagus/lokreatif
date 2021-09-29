@@ -237,17 +237,17 @@
                                       <?php $i=1; foreach ($get_form as $key) : ?>
                                           <td>
                                               <?php if ($CI->M_koordinator->get_formData($data->KODE_PENDAFTARAN, $key->ID_FORM) == false) : ?>
-                                                  <button type="button" id="btn-surat<?= $key->ID_FORM ?>" class="btn btn-xs btn-secondary" title="Belum Melengkapi" disabled><i class="tio-open-in-new" data-toggle="modal" data-target="#modalsurat<?= $key->ID_FORM ?>"></i> Belum Ada</button>
+                                                  <button type="button" id="btn-surat<?= $key->ID_FORM ?>" class="btn btn-xs btn-secondary" title="Belum Melengkapi" disabled><i class="tio-open-in-new" data-toggle="modal" data-target="#modalsurat<?= $key->ID_FORM . $data->KODE_PENDAFTARAN ?>"></i> Belum Ada</button>
                                               <?php else : ?>
-                                                  <?php if ($key->TYPE == "TEXT") : ?>
+                                                  <?php if ($i == 1) : ?>
                                                       <a href="<?= ($i == 1) ? "https://instagram.com/" . $CI->M_koordinator->get_formData($data->KODE_PENDAFTARAN, $key->ID_FORM) : $CI->M_koordinator->get_formData($data->KODE_PENDAFTARAN, $key->ID_FORM) ?>" class="btn btn-xs btn-primary" title="Instagram Content" target="_blank"><i class="tio-instagram"></i> <?= ($i == 1) ? $CI->M_koordinator->get_formData($data->KODE_PENDAFTARAN, $key->ID_FORM) : "Cek Feed" ?></a>
                                                   <?php else : ?>
-                                                      <a class="btn btn-xs btn-primary" id="btn-surat<?= $key->ID_FORM ?>" title="Cek berkas" data-toggle="modal" data-target="#modalsurat<?= $key->ID_FORM ?>"><i class="tio-open-in-new"></i> Cek Berkas</a>
+                                                      <a class="btn btn-xs btn-primary" id="btn-surat<?= $key->ID_FORM . $data->KODE_PENDAFTARAN?>" title="Cek berkas" data-toggle="modal" data-target="#modalsurat<?= $key->ID_FORM . $data->KODE_PENDAFTARAN?>"><i class="tio-open-in-new"></i> Cek Berkas</a>
                                                   <?php endif; ?>
                                               <?php endif; ?>
                                           </td>
                                           <!-- Modal Cek Berkas-->
-                                          <div class="modal fade modal-fullscreen" id="modalsurat<?= $key->ID_FORM ?>" tabindex="-1" role="dialog" aria-labelledby="modelTitleId" aria-hidden="true">
+                                          <div class="modal fade modal-fullscreen" id="modalsurat<?= $key->ID_FORM . $data->KODE_PENDAFTARAN?>" tabindex="-1" role="dialog" aria-labelledby="modelTitleId" aria-hidden="true">
                                               <div class="modal-dialog modal-xl" role="document">
                                                   <div class="modal-content">
                                                       <div class="modal-header">
@@ -257,25 +257,25 @@
                                                           </button>
                                                       </div>
                                                       <div class="modal-body">
-                                                          <div id="file_surat<?= $key->ID_FORM ?>"></div>
+                                                          <div id="file_surat<?= $key->ID_FORM . $data->KODE_PENDAFTARAN?>"></div>
                                                       </div>
                                                   </div>
                                               </div>
                                           </div>
                                           <!-- Get anggota -->
                                           <script>
-                                              $("#btn-surat<?= $key->ID_FORM ?>").click(function() {
-                                                  if ($(".surat_exists<?= $key->ID_FORM ?>")[0]) {
+                                              $("#btn-surat<?= $key->ID_FORM . $data->KODE_PENDAFTARAN ?>").click(function() {
+                                                  if ($(".surat_exists<?= $key->ID_FORM . $data->KODE_PENDAFTARAN ?>")[0]) {
                                                       // Do something if class exists
                                                   } else {
                                                       // Do something if class does not exist
-                                                      $("#file_surat<?= $key->ID_FORM ?>").html(`<center><span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Sedang memuat file karya...</center>`);
-                                                      $("#file_surat<?= $key->ID_FORM ?>").addClass('surat_exists<?= $key->ID_FORM ?>');
+                                                      $("#file_surat<?= $key->ID_FORM . $data->KODE_PENDAFTARAN ?>").html(`<center><span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Sedang memuat ...</center>`);
+                                                      $("#file_surat<?= $key->ID_FORM . $data->KODE_PENDAFTARAN ?>").addClass('surat_exists<?= $key->ID_FORM . $data->KODE_PENDAFTARAN ?>');
                                                       jQuery.ajax({
                                                           url: "<?= base_url('koordinator/tampil_surat/' . $data->KODE_PENDAFTARAN . '/' . $key->ID_FORM) ?>",
                                                           type: "GET",
                                                           success: function(data) {
-                                                              $("#file_surat<?= $key->ID_FORM ?>").html(data);
+                                                              $("#file_surat<?= $key->ID_FORM . $data->KODE_PENDAFTARAN ?>").html(data);
                                                           }
                                                       });
                                                   }
