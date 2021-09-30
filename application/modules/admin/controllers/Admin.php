@@ -25,6 +25,7 @@ class Admin extends MX_Controller
 			redirect('peserta');
 		}
 		$this->load->model('M_admin');
+		$this->load->model('Utilities/M_utilities');
 		$this->load->model('General');
 	}
 
