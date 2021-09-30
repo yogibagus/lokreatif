@@ -211,7 +211,7 @@ class Authentication extends MX_Controller {
 							redirect($this->session->userdata('redirect'));
 						} else {
 							$this->session->set_flashdata('success', "Selamat Datang, {$peserta->NAMA}");
-							redirect(base_url());
+							redirect(site_url('juri'));
 						}
 // 					ADMIN UNIV
 					}elseif ($peserta->ROLE == 3) {

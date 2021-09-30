@@ -66,7 +66,7 @@ class M_juri extends CI_Model {
 	}
 
 	function get_dataTIM($id_tahap, $id_bidang){
-		$query = $this->db->query("SELECT * FROM pendaftaran_kompetisi a JOIN tb_karya b ON a.KODE_PENDAFTARAN = b.KODE_PENDAFTARAN WHERE a.KODE_PENDAFTARAN NOT IN (SELECT KODE_PENDAFTARAN FROM tb_penilaian) AND a.BIDANG_LOMBA = {$id_bidang} AND a.STATUS_SELEKSI = {$id_tahap}");
+		$query = $this->db->query("SELECT * FROM pendaftaran_kompetisi a JOIN tb_karya b ON a.KODE_PENDAFTARAN = b.KODE_PENDAFTARAN WHERE a.KODE_PENDAFTARAN NOT IN (SELECT KODE_PENDAFTARAN FROM tb_penilaian)");
 		if ($query->num_rows() > 0) {
 			return $query->result();
 		}else{
