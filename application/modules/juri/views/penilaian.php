@@ -51,9 +51,9 @@
 
 						<?php else:?>
 							<tr class="text-body">
-								<td width="105%">
+								<td width="100%">
 									<div class="text-none cursor">
-										<div class="card-body text-right p-0">
+										<div class="card-body text-center p-0">
 											belum ada TIM
 										</div>
 									</div>
@@ -126,7 +126,8 @@
 						                    <td <?= (!empty($kriteria->KETERANGAN) ? 'rowspan="2"' : '');?>>
 						                    	<!-- Quantity Counter -->
 												<div class="js-quantity-counter input-group-quantity-counter">
-												  <input type="number" class="counter-<?=$no;?> form-control input-group-quantity-counter-control" value="1" min="1" max="5">
+						                    	  <input type="hidden" class="bobot_awal" value="<?= $kriteria->BOBOT;?>">
+												  <input type="number" class="counter-<?=$no;?> form-control input-group-quantity-counter-control nilai_juri" value="1" min="1" max="5">
 
 												  <div class="input-group-quantity-counter-toggle">
 												    <a class="decrement-<?=$no;?> input-group-quantity-counter-btn" href="javascript:;" id="<?=$no;?>">
@@ -156,6 +157,7 @@
 												  	}
 												  	nilai = (bobot/100)*value<?=$no;?>;
 												  	$('#count_nilai-'+<?= $no;?>).val(nilai);
+												  	$('#default').val(0);
 												});
 												$('.decrement-'+<?=$no;?>).on("click", function(){
 												  	if(value<?=$no;?> > 1){
@@ -167,6 +169,7 @@
 												  	}
 												  	nilai = (bobot/100)*value<?=$no;?>;
 												  	$('#count_nilai-'+<?= $no;?>).val(nilai);
+												  	$('#default').val(0);
 												});
 											</script>
 						                <?php endforeach; endif;?>
@@ -186,6 +189,7 @@
 						                  </button>
 						                </div>
 						                <div class="modal-body">
+						                	<input type="hidden" id="default" value="1">
 						                    <p>Yakin kirim hasil penilaian anda terhadap tim ini, dengan total nilai <b id="total_nilai">1</b> ?</p>
 						                    <div class="modal-footer px-0 pb-0">
 						                      <button type="button" class="btn btn-light btn-sm" data-dismiss="modal">Batal</button>
@@ -229,11 +233,20 @@
 		   maximumFractionDigits: 2,
 		});
 		$('#submit-nilai').click(function() {
-			var total = 0;
-			$('.total_nilai').each(function (index, element) {
-		        total = total + parseFloat($(element).val());
-		    });
-			$("#total_nilai").html(formatter.format(total));
+			if ($('#default').val() == 1) {
+				$("#total_nilai").html(formatter.format(1));
+			}else{
+				var total = 0;
+				var bobot = 0;
+				var nilai = 0;
+
+				$('.nilai_juri').each(function (index, element) {
+					bobot = $(this).closest('.nilai_juri').prev().find('.bobot_awal').val();
+					nilai = (bobot/100)*element;
+			        total = total + parseFloat(bobot);
+			    });
+				$("#total_nilai").html(formatter.format(total));
+			}
 		});
 	</script>
 <?php endif;?>

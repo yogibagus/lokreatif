@@ -151,6 +151,7 @@
           <ul>
             <li>Anda dapat mulai melakukan penilaian pada menu <b>Penilaian</b>.</li>
             <li><b>Harap</b> menyelesaikan penilaian <b>sebelum tanggal yang telah ditentukan</b> sesuai dengan Tahap Penilaian yang berlangsung.</li>
+            <li>Harap matikan <strong>Internet Download Manager (IDM)</strong> untuk menghindari download secara otomatis.</li>
           </ul>
           <small>Jika terdapat <i>kendala</i> atau <i>masalah</i>, anda dapat menghubungi masing-masing LO bidang lomba anda</small>
         </div>
