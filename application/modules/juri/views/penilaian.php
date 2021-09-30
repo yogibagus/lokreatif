@@ -50,7 +50,15 @@
 							<?php endforeach;?>
 
 						<?php else:?>
-							belum ada TIM
+							<tr class="text-body">
+								<td width="105%">
+									<div class="text-none cursor">
+										<div class="card-body text-right p-0">
+											belum ada TIM
+										</div>
+									</div>
+								</td>
+							</tr>
 						<?php endif;?>
 					</table>
 				</div>

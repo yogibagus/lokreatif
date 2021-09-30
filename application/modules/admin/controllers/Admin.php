@@ -76,20 +76,31 @@ class Admin extends MX_Controller
 
 	public function index()
 	{
-		$data['peserta']		  		= $this->M_admin->countPeserta();
-		$data['diffPeserta']		  	= $this->M_admin->countDiffPeserta();
-		$data['countKegiatan']			= $this->M_admin->countKegiatan();
-		$data['diffKegiatan']			= $this->M_admin->countDiffKegiatan();
-		$data['newKegiatan']			= $this->M_admin->countNewKegiatan();
+		$data['jmlMhs'] 		= $this->M_utilities->get_countMhs();
+		$data['jmlTim'] 		= $this->M_utilities->get_countTim();
+		$data['jmlTimBayar'] 	= $this->M_utilities->get_countTimBayar();
+		$data['jmlPTS'] 		= count($this->M_utilities->get_countPTS());
 
-		$data['c_peserta']				= $this->M_admin->countAnggota();
-		$data['c_juri']					= $this->M_admin->countJuri();
-		$data['c_koordinator']			= $this->M_admin->countKoordinator();
+		$timKategori 					= $this->M_utilities->get_timKategori();
+		$data['timKategori']['lomba'] 	= array();
+		$data['timKategori']['jmlTim'] 	= array();
+		foreach ($timKategori as $item) {
+			$data['timKategori']['lomba'][]  = "'".$item->BIDANG_LOMBA."'";
+			$data['timKategori']['jmlTim'][] = $item->JML_TIM;
+		}
+
+		$timLLDIKTI 					= $this->M_utilities->get_timLLDIKTI();
+		$data['timLLDIKTI']['lldikti']	= array();
+		$data['timLLDIKTI']['jmlTim'] 	= array();
+		foreach ($timLLDIKTI as $item) {
+			$data['timLLDIKTI']['lldikti'][]  = "'".$item->kopertis."'";
+			$data['timLLDIKTI']['jmlTim'][]	  = $item->JML_TIM;
+		}
+		
+		$data['timPTS'] 	= $this->M_utilities->get_timPTS();
+		$data['detStatTim'] = $this->M_utilities->get_detStatTim();
 
 		$data['CI']						= $this;
-
-		$data['kegiatan']				= $this->M_admin->get_kegiatanAllD();
-		$data['kompetisi']				= $this->M_admin->get_kompetisiAllD();
 
 		$data['module'] 		= "admin";
 		$data['fileview'] 		= "dashboard";
@@ -899,6 +910,17 @@ class Admin extends MX_Controller
 			$this->session->set_flashdata('error', "Kode Transaksi tidak ditemukan!!");
 			redirect($this->agent->referrer());
 		}
+	}
+	
+	public function seleksi(){
+
+		// MAILER
+		$data['tahap']		= $this->M_admin->get_tahapPenilaian();
+		$data['tim']		= $this->M_admin->get_daftarTIM($param = 1, $id_bidang = 0, $id_tahap = 0);
+
+		$data['module'] 	= "admin";
+		$data['fileview'] 	= "seleksi";
+		echo Modules::run('template/backend_main', $data);
 	}
 
 

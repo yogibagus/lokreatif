@@ -378,6 +378,57 @@ class M_admin extends CI_Model {
 
 	}
 
+	// SELEKSI
+
+	function get_tahapPenilaian(){
+		$query = $this->db->get('tahap_penilaian');
+		if ($query->num_rows() > 0 ){
+			return $query->result();
+		}else{
+			return false;
+		}
+	}
+
+	function get_daftarTIM($param, $id_bidang, $id_tahap){
+		// case
+		// 1. Seluruh TIM yang telah diverifikasi / STATUS = 1 (belum dinilai)
+		// 2. Berdasarkan nilai tertinggi (sudah ada data penilaian) / berdasarkan id tahap
+		$this->db->select('*');
+		switch ($param) {
+			case 1:
+				$this->db->from('v_tim');
+				
+				if ($id_bidang != 0) {
+					$this->db->where('ID_BIDANG', $id_bidang);
+				}
+				
+				if ($id_tahap != 0) {
+					$this->db->where('TAHAP', $id_tahap);
+				}
+
+				// $this->db->where('STATUS', 1);
+				break;
+			case 2:
+				$this->db->from('v_penilaian');
+				
+				if ($id_bidang != 0) {
+					$this->db->where('ID_BIDANG', $id_bidang);
+				}
+
+				$this->db->where('TAHAP', $id_tahap);
+			default:
+				$this->db->from('v_tim');
+				// $this->db->where('STATUS', 1);
+				break;
+		}
+		$query = $this->db->get();
+		if ($query->num_rows() > 0) {
+			return $query->result();
+		}else{
+			return false;
+		}
+	}
+
 
 	// PROSES
 
