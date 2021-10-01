@@ -241,7 +241,7 @@
                                             <div class="alert alert-soft-info" role="alert">
                                                 <strong>Perhatian! </strong>Gunakan informasi dibawah untuk melakukan refund<br>kepada pengguna.
                                             </div>
-                                            <table>
+                                            <table class="w-100">
                                                 <tr>
                                                     <td>Refund ID</td>
                                                     <td>:</td>

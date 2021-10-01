@@ -231,7 +231,7 @@
 			$("#lembar").removeClass('d-none');
 		});
 		$(".input-group-quantity-counter-control").on('keydown keyup change', function(e){
-		    if ($(this).val() > 5 
+		    if ($(this).val() > 5 || $(this).val() > 0
 		        && e.keyCode !== 46 // keycode for delete
 		        && e.keyCode !== 8 // keycode for backspace
 		       ) {
@@ -263,6 +263,7 @@
 	$(document).ready(function() {
 	    $('.pick-tim').click(function(e) {  
 		    var kode = $(this).attr('id');
+		    $(".input-group-quantity-counter-control").val(1);
 			$(".btn-tim").removeClass('bg-primary');
 			$(".btn-tim").removeClass('text-white');
 			$("input[name='KODE_PENDAFTARAN']").val(kode);

@@ -161,4 +161,26 @@ class M_juri extends CI_Model {
 			return ($this->db->affected_rows() != 1) ? false : true;
 		}
 	}
+
+	function edit_nilai(){
+		if($this->input->post('ID_PENILAIAN')){
+			$ID_PENILAIAN 		= $this->input->post('ID_PENILAIAN', true);
+
+			$KODE_PENDAFTARAN 	= $this->input->post('KODE_PENDAFTARAN', true);
+			$ID_KRITERIA 		= $this->input->post('ID_KRITERIA', true);
+			$BOBOT 				= $this->input->post('BOBOT', true);
+			$NILAI 				= $this->input->post('NILAI_OLAH', true);
+
+			foreach ($ID_PENILAIAN as $i => $a) {
+
+				$data = array(
+					'ID_KRITERIA'  		=> isset($ID_KRITERIA[$i]) ? $ID_KRITERIA[$i] : '',
+					'NILAI'  			=> number_format(isset($NILAI[$i]) ? $NILAI[$i] : '',2)
+  				);
+				$this->db->where('ID_PENILAIAN',$ID_PENILAIAN[$i]);
+				$this->db->update('tb_penilaian',$data);
+			}
+			return true;
+		}
+	}
 }

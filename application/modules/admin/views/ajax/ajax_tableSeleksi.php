@@ -8,7 +8,7 @@
 </div>
 <!-- Table -->
 <div class="card-body" id="table-tim">
-  <table id="myTable" class="table table-lg table-borderless table-thead-bordered table-nowrap table-align-middle card-table w-100">
+  <table id="myTable2" class="table table-lg table-borderless table-thead-bordered table-nowrap table-align-middle card-table w-100">
     <thead class="thead-light">
       <tr>
         <th>No</th>

@@ -12,6 +12,7 @@
               <tr>
                 <td <?= (!empty($kriteria->KETERANGAN) ? 'rowspan="2"' : '');?>>
                 	<?= $no++;?>
+                	<input type="hidden" name="ID_PENILAIAN[]" value="<?= $kriteria->ID_PENILAIAN;?>">
                 </td>
                 <td>
                 	<input type="hidden" name="ID_KRITERIA[]" value="<?= $kriteria->ID_KRITERIA;?>">
@@ -24,7 +25,7 @@
                 <td <?= (!empty($kriteria->KETERANGAN) ? 'rowspan="2"' : '');?>>
                 	<!-- Quantity Counter -->
 					<div class="js-quantity-counter input-group-quantity-counter">
-					  <input type="hidden" name="NILAI_OLAH[]" id="nilai-olah-<?= $no;?>" value="<?= ($kriteria->NILAI/($kriteria->BOBOT/100));?>">
+					  <input type="hidden" name="NILAI_OLAH[]" id="nilai-olah-<?= $no;?>" value="<?= $kriteria->NILAI;?>">
 					  <input type="number" name="NILAI[]" class="counter-<?=$no;?> form-control " value="<?= ($kriteria->NILAI/($kriteria->BOBOT/100));?>" min="1" max="5">
 
 					  <div class="input-group-quantity-counter-toggle">
@@ -45,8 +46,9 @@
                   </tr>
               <?php endif;?>
               	<script type="text/javascript">
+
               		$('counter-'+<?= $no;?>).val(<?= ($kriteria->NILAI/($kriteria->BOBOT/100));?>);
-					var value<?=$no;?> = <?= ($kriteria->NILAI/($kriteria->BOBOT/100));?>;
+					var value<?=$no;?> = 1;
 					var bobot = $('#bobot-'+<?= $no;?>).val();
 					var nilai_akhir = 1;
 					$('.increment-'+<?=$no;?>).on("click", function() {
@@ -54,7 +56,7 @@
 					    	value<?=$no;?> = parseInt(value<?=$no;?>+1);
 					    	$(".counter-"+<?=$no;?>).val(value<?=$no;?>);
 					    	nilai_akhir = ((bobot/100)*value<?=$no;?>);
-					    	$("#nilai-olah-"+<?=$no;?>).val(formatter.format(nilai_akhir));
+					    	$("#nilai-olah-"+<?=$no;?>).val(nilai_akhir);
 					  	}
 					});
 					$('.decrement-'+<?=$no;?>).on("click", function(){
@@ -62,12 +64,12 @@
 					    	value<?=$no;?> = parseInt(value<?=$no;?>-1);
 					    	$(".counter-"+<?=$no;?>).val(value<?=$no;?>);
 					    	nilai_akhir = (bobot/100)*value<?=$no;?>;
-					    	$("#nilai-olah-"+<?=$no;?>).val(formatter.format(nilai_akhir));
+					    	$("#nilai-olah-"+<?=$no;?>).val(nilai_akhir);
 					  	}else{
 					    	value<?=$no;?> = 1;
 					    	$(".counter-"+<?=$no;?>).val(value<?=$no;?>);
 					    	nilai_akhir = (bobot/100)*value<?=$no;?>;
-					    	$("#nilai-olah-"+<?=$no;?>).val(formatter.format(nilai_akhir));
+					    	$("#nilai-olah-"+<?=$no;?>).val(nilai_akhir);
 					  	}
 					});
 				</script>
@@ -80,7 +82,7 @@
         <div class="modal-dialog modal-sm" role="document">
           <div class="modal-content">
             <div class="modal-header">
-              <h5 class="modal-title" id="exampleModalLabel">Kirim nilai anda</h5>
+              <h5 class="modal-title" id="exampleModalLabel">Ubah nilai anda</h5>
               <button type="button" class="btn btn-xs btn-icon btn-soft-secondary" data-dismiss="modal" aria-label="Close">
                 <svg aria-hidden="true" width="10" height="10" viewBox="0 0 18 18" xmlns="http://www.w3.org/2000/svg">
                   <path fill="currentColor" d="M11.5,9.5l5-5c0.2-0.2,0.2-0.6-0.1-0.9l-1-1c-0.3-0.3-0.7-0.3-0.9-0.1l-5,5l-5-5C4.3,2.3,3.9,2.4,3.6,2.6l-1,1 C2.4,3.9,2.3,4.3,2.5,4.5l5,5l-5,5c-0.2,0.2-0.2,0.6,0.1,0.9l1,1c0.3,0.3,0.7,0.3,0.9,0.1l5-5l5,5c0.2,0.2,0.6,0.2,0.9-0.1l1-1 c0.3-0.3,0.3-0.7,0.1-0.9L11.5,9.5z"/>
@@ -88,10 +90,10 @@
               </button>
             </div>
             <div class="modal-body">
-                <p>Yakin kirim hasil penilaian anda terhadap tim ini, dengan total nilai <b id="total_nilai">1</b> ?</p>
+                <p>Yakin ubah hasil penilaian anda terhadap tim ini, dengan total nilai <b id="total_nilai">1</b> ?</p>
                 <div class="modal-footer px-0 pb-0">
                   <button type="button" class="btn btn-light btn-sm" data-dismiss="modal">Batal</button>
-                  <button type="submit" class="btn btn-success btn-sm">Yakin dan kirim</button>
+                  <button type="submit" class="btn btn-success btn-sm">Yakin dan ubah</button>
                 </div>
             </div>
           </div>
@@ -116,10 +118,6 @@
 	       $(this).val(5);
 	    }
 	});
-	const formatter = new Intl.NumberFormat('en-US', {
-	   minimumFractionDigits: 2,      
-	   maximumFractionDigits: 2,
-	});
 
 	$('#submit-nilai').click(function() {
 	    $("#total_nilai").html(`<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>Menghitung...`);
@@ -129,7 +127,7 @@
 			method: 'post',
 			dataType: 'json',
             success: function(data) {
-				$("#total_nilai").html(formatter.format(data));
+				$("#total_nilai").html(data);
             }
         });
 	});
