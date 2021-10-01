@@ -15,16 +15,14 @@
                 <label class="font-weight-bold" for="">Bidang Lomba:</label><br>
                 <p><?= $berkas->BIDANG_LOMBA ?></p>
             </div>
-            <div class="col-lg-6 mt-2">
-                <hr>
-                <label class="font-weight-bold" for="">Keterangan:</label><br>
-                <p><?= $berkas->KETERANGAN ?></p>
-            </div>
-            <div class="col-lg-6 mt-2 border-left">
-                <hr>
-                <label class="font-weight-bold" for="">Google Drive:</label><br>
-                <a class="btn btn-success btn-sm" target="_blank" href="<?= $berkas->LINK_DRIVE ?>" role="button"><i class="tio-google-drive"></i> Berkas Karya</a>
-            </div>
+            <!-- Only Show on Videio Pendek, unjuk talent, tiktok -->
+            <?php if ($berkas->ID_BIDANG == 3 || $berkas->ID_BIDANG == 13 || $berkas->ID_BIDANG == 11) { ?>
+                <div class="col-lg-12 mt-2">
+                    <hr>
+                    <label class="font-weight-bold" for="">Google Drive:</label><br>
+                    <a class="btn btn-success btn-sm mb-3" target="_blank" href="<?= $berkas->LINK_DRIVE ?>" role="button"><i class="tio-google-drive"></i> Berkas Karya</a>
+                </div>
+            <?php } ?>
         </div>
 
         <!-- PDF 1=Aplikasi, 8=Idebisnis, 10=game -->
@@ -51,9 +49,9 @@
 
         <!-- VIDEO GDRIVE 11=tiktok -->
         <?php if ($berkas->ID_BIDANG == 11) { ?>
-            <div class="d-flex justify-content-between">
-                <label class="font-weight-bold" for="">Preview Karya:</label>
-                <a class="btn btn-warning btn-sm" target="_blank" href="<?= $berkas->LINK_DRIVE ?>" role="button"><i class="tio-youtube"></i> Buka di Google Drive</a>
+            <div class="">
+                <label class="font-weight-bold" for="">Preview Karya:</label><br>
+                <a class="btn btn-primary btn-sm mt-2" target="_blank" href="<?= $berkas->LINK ?>" role="button"><i class="tio-slideshow-outlined"></i> Buka di Tiktok</a>
             </div>
         <?php } ?>
 
