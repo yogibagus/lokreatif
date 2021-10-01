@@ -425,7 +425,8 @@ class M_admin extends CI_Model {
 				}
 
 				$this->db->where('TAHAP', $id_tahap);
-				$this->db->where('STATUS', 1);
+				break;
+				
 			default:
 				$this->db->from('v_tim');
 				$this->db->where('STATUS', 1);
@@ -465,7 +466,8 @@ class M_admin extends CI_Model {
 					$this->db->where('ID_BIDANG', $id_bidang);
 				}
 
-				$this->db->where('TAHAP !=', $id_tahap);
+				$this->db->where('TAHAP', $id_tahap);
+				break;
 			default:
 				$this->db->from('v_tim');
 				$this->db->where('STATUS', 1);

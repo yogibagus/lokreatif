@@ -98,6 +98,28 @@ class Admin extends MX_Controller
 		echo json_encode(['tim' => ($tahap->TEAM == 0 ? 'tidak ada batasan' : $tahap->TEAM), 'status' => $status]);
 	}
 
+	function get_tahapDataTujuan(){
+		$tahap = $this->M_admin->get_tahapData($this->input->post('KE_TAHAP'));
+        switch ($tahap->STATUS) {
+          case 0:
+            $status = '<span class"badge badge-secondary">belum dimulai</span>';
+            break;
+
+          case 1:
+            $status = '<span class"badge badge-success">berlangsung</span>';
+            break;
+
+          case 2:
+            $status = '<span class"badge badge-warning">berakhir</span>';
+            break;
+          
+          default:
+            $status = '<span class"badge badge-secondary">belum dimulai</span>';
+            break;
+        }
+		echo json_encode(['tim' => ($tahap->TEAM == 0 ? 'tidak ada batasan' : $tahap->TEAM), 'status' => $status]);
+	}
+
 	public function index()
 	{
 		$data['jmlMhs'] 		= $this->M_utilities->get_countMhs();
@@ -937,23 +959,26 @@ class Admin extends MX_Controller
 	}
 	
 	public function get_seleksiTIM($id_bidang = 0, $tim = 0, $id_tahap = 0){
+		if ($id_tahap == 0) {
+			$this->load->view('ajax/ajax_seleksi404');
+		}else{
+	        $bidang_lomba = $this->M_koordinator->get_bidangLomba_by_id($id_bidang);
+	        if($bidang_lomba == false){
+	            $data['max_tim']	= $tim;
+	            $data['tahap']		= $id_tahap;
+				$data['tim']		= $this->M_admin->get_seleksiTIM($param = 1, $id_bidang, $id_tahap);
+	        }else{
+	            $data['id_bidang'] 	= $bidang_lomba->BIDANG_LOMBA;
+	            $data['max_tim']	= $tim;
+	            $data['tahap']		= $id_tahap;
+				$data['tim']		= $this->M_admin->get_seleksiTIM($param = 1, $bidang_lomba->ID_BIDANG, $id_tahap);
+	        }
 
-        $bidang_lomba = $this->M_koordinator->get_bidangLomba_by_id($id_bidang);
-        if($bidang_lomba == false){
-            $data['max_tim']	= $tim;
-            $data['tahap']		= $id_tahap;
-			$data['tim']		= $this->M_admin->get_seleksiTIM($param = 0, $id_bidang, $id_tahap);
-        }else{
-            $data['id_bidang'] 	= $bidang_lomba->BIDANG_LOMBA;
-            $data['max_tim']	= $tim;
-            $data['tahap']		= $id_tahap;
-			$data['tim']		= $this->M_admin->get_seleksiTIM($param = 0, $bidang_lomba->ID_BIDANG, $id_tahap);
-        }
-
-        $data['CI']			= $this;
-		$data['module'] 	= "admin";
-		$data['fileview'] 	= "ajax/ajax_tableSeleksi";
-		echo Modules::run('template/blank_template', $data);
+	        $data['CI']			= $this;
+			$data['module'] 	= "admin";
+			$data['fileview'] 	= "ajax/ajax_tableSeleksi";
+			echo Modules::run('template/blank_template', $data);
+		}
 	}
 	
 	public function hasil_seleksi($param = 0){
@@ -980,7 +1005,7 @@ class Admin extends MX_Controller
 		echo Modules::run('template/backend_main', $data);
 	}
 	
-	public function seleksi($param = 0){
+	public function seleksi($param = 1){
 
         $bidang_lomba = $this->M_koordinator->get_bidangLomba_by_id($param);
         if($bidang_lomba == false){
@@ -988,13 +1013,13 @@ class Admin extends MX_Controller
             $data['bidang_lomba'] 		= "Semua";
             $data['id_bidang'] 			= 0;
 			$data['tahap']		= $this->M_admin->get_tahapPenilaian();
-			$data['tim']		= $this->M_admin->get_daftarTIM($param = 0, $id_bidang = 0, $id_tahap = 0);
+			$data['tim']		= $this->M_admin->get_daftarTIM($param, $id_bidang = 0, $id_tahap = 1);
         }else{
             $data['all_bidang_lomba'] 	= $this->M_koordinator->get_bidangLomba();
             $data['bidang_lomba'] 		= $bidang_lomba->BIDANG_LOMBA;
             $data['id_bidang'] 			= $bidang_lomba->ID_BIDANG;
 			$data['tahap']		= $this->M_admin->get_tahapPenilaian();
-			$data['tim']		= $this->M_admin->get_daftarTIM($param = 0, $bidang_lomba->ID_BIDANG, $id_tahap = 0);
+			$data['tim']		= $this->M_admin->get_daftarTIM($param, $bidang_lomba->ID_BIDANG, $id_tahap = 1);
         }
 
 
@@ -1006,7 +1031,7 @@ class Admin extends MX_Controller
 
 	function seleksi_tim(){
 		$kodePendaftaran	= explode(',', $_POST['KODE_PENDAFTARAN']);
-		$tahap				= $_POST['TAHAP'];
+		$tahap				= $_POST['KE_TAHAP'];
 		$dataStoreOrd		= array();
 		
 		foreach ($kodePendaftaran as $item) {		

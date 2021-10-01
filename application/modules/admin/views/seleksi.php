@@ -12,10 +12,9 @@
 				<h1 class="page-header-title mt-3 mb-3">Seleksi TIM - Bidang Lomba <span class="badge badge-primary"><?= $bidang_lomba ?></span></h1>
 				<div class="dropdown mt-2">
 					<button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-						Bidang Lomba
+						<?= $bidang_lomba ?>
 					</button>
 					<div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-						<a class="dropdown-item" href="<?= site_url('admin/seleksi/') ?>">Semua Lomba</a>
 						<?php foreach ($all_bidang_lomba as $row) { ?>
 							<a class="dropdown-item" href="<?= site_url('admin/seleksi/' . $row->ID_BIDANG) ?>"><?= $row->BIDANG_LOMBA ?></a>
 						<?php } ?>
@@ -40,16 +39,15 @@
   				</div>
   				<div class="card-body">
   					<div class="form-group">
-  						<label class="input-label">Setting Tahap</label>
-  						<select class="js-select2-custom custom-select" name="TAHAP" size="1" id="tahap" 
+  						<label class="input-label">Pilih data dari tahap</label>
+  						<select class="js-select2-custom custom-select" size="1" name="TAHAP" id="tahap" 
 	  						data-hs-select2-options='{
 	  						"minimumResultsForSearch": "Infinity",
 	  						"placeholder": "Pilih Tahap"
 	  					}'>
 	  					<option value="0">Pilih Tahap</option>
 	  						<?php if ($tahap != false) :?>
-	  							<option value="0">Status Awal</option>
-		  						<?php foreach ($tahap as $key) :?>
+		  						<?php foreach ($tahap as $key):?>
 		  							<option value="<?= $key->ID_TAHAP;?>"><?= $key->NAMA_TAHAP;?></option>
 		  						<?php endforeach;?>
 	  						<?php else:?>
@@ -57,7 +55,24 @@
 	  						<?php endif;?>
 	  					</select>
 	  				</div>
-	  				<div class="form-group mb-0">
+  					<div class="form-group">
+  						<label class="input-label">Seleksi ke tahap</label>
+  						<select class="js-select2-custom custom-select" name="KE_TAHAP" size="1" id="ke_tahap" 
+	  						data-hs-select2-options='{
+	  						"minimumResultsForSearch": "Infinity",
+	  						"placeholder": "Pilih Tahap"
+	  					}' disabled>
+	  					<option value="0">Pilih Tahap</option>
+	  						<?php if ($tahap != false) :?>
+		  						<?php foreach ($tahap as $key): if($key->ID_TAHAP != 1):?>
+		  							<option value="<?= $key->ID_TAHAP;?>"><?= $key->NAMA_TAHAP;?></option>
+		  						<?php endif; endforeach;?>
+	  						<?php else:?>
+	  							<option value="0">Belum ada Tahap</option>
+	  						<?php endif;?>
+	  					</select>
+	  				</div>
+	  				<div class="form-group mb-0 d-none" id="info-tahap">
 	  					<div class="media align-items-center mb-2">
 	  						<span class="d-block font-size-1 mr-3">Max TIM</span>
 	  						<div class="media-body text-right">
@@ -87,23 +102,25 @@
 					      <th>No</th>
 					      <th>Tim</th>
 				          <th>Tahap TIM</th>
+				          <th>Nilai TIM</th>
 					    </tr>
 					  </thead>
 
 					  <tbody>
 					    <?php
 					    $no = 1;
-					    foreach ($tim as $item) {
+					    if($tim != false){ foreach ($tim as $item) {
 
 					      echo '
 					      <tr>
 					      <td>'.$no.'</td>
 					      <td>'.$item->NAMA_TIM.'</td>
 				          <td>'.($CI->M_admin->get_tahapData($item->TAHAP) == false ? "Menunggu seleksi" : $CI->M_admin->get_tahapData($item->TAHAP)->NAMA_TAHAP).'</td>
+					      <td>'.$item->TOT_NILAI.'</td>
 					      </tr>
 					      ';
 					      $no++;
-					    }
+					    }}
 					    ?>
 					  </tbody>
 					</table>
@@ -131,10 +148,12 @@
 				<ul class="mb-0">
 					<li>Anda dapat menggunakan fitur ini untuk memilih TIM dari setiap bidang lomba, agar dapat masuk kedalam proses tahap penilaian tertentu</li>
 					<li>Setiap tahap penilaian memiliki jumlah maksimal TIM yang dapat dipilih, anda dapat mengatur ini di menu <a href="<?= site_url('kompetisi/tahap-penilaian');?>">Tahap Penilaian</a></li>
-					<li>Terdapat 2 jenis mode seleksi:</li>
+					<li>Cara penggunaan fitur:</li>
 					<ul>
-						<li>A. Berdasarkan status verifikasi berkas yang telah di terima <small>(default)</small></li>
-						<li>B. Berdasarkan nilai TIM <small>(jika tahap yang dipilih telah dilakukan penilaian)</small></li>
+						<li>Pilih Bidang Lomba yang ingin diseleksi</li>
+						<li>Pilih tahap penilaian yang ingin diambil datanya untuk diseleksi ketahap selanjutnya,</li>
+						<li>Pilih tahap seleksi yang ingin dituju untuk tahap selanjutnya,</li>
+						<li>Setelah memilih asal data dan tahap tujuan, pilih TIM yang ingin diseleksi. Kemudian tekan tombol seleksi</li>
 					</ul>
 				</ul>
 			</div>
@@ -142,39 +161,17 @@
 	</div>
 </div>
 
-<div class="modal fade" id="seleksi-btn" tabindex="-1" aria-labelledby="mdlBayarMulti" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="mdlBayarMulti">Bayar Transaksi</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <p>
-                    Apakah anda yakin untuk membayar transaksi untuk <span id="mdlBayarMulti_count"></span> tim tersebut  ?
-                </p>
-            </div>
-
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
-                <form action="<?= site_url('pts/order') ?>" method="post">
-                    <input type="hidden" id="mdlBayarMulti_itemId" name="KODE_PENDAFTARAN" />
-                    <input type="hidden" id="" name="TOTAL_TIM" value="<?= $allTim?>" />
-                    <button type="submit" class="btn btn-success">Bayar</button>
-                </form>
-            </div>
-        </div>
-    </div>
-</div>
-
 <script type="text/javascript">
+  const buttonMultipleAvailable = () => {
+    const isChecked = $('.checkItem:checkbox:checked').prop('checked')
+    if (isChecked)
+        $('#bayarMultiple').attr('disabled', false)
+    else
+        $('#bayarMultiple').attr('disabled', true)
+  }
 	$(document).ready(function() {
 		$('#tahap').change(function(){
 			if ($('#tahap').val() == 0) {
-				$("#max-tim").html('Tidak terbatas');
-				$("#status-tahap").html('reset ke tahap awal');
 				$("#table-tim").html('<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>Memuat Data...');
 				jQuery.ajax({
 		            url: "<?= base_url('admin/get_seleksiTIM/'.$id_bidang.'/0/0') ?>",
@@ -184,8 +181,6 @@
 		            }
 		        });
 			}else{
-				$("#max-tim").html('<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>Memuat...');
-				$("#status-tahap").html('<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>Memuat...');
 				$("#table-tim").html('<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>Memuat Data...');
 				jQuery.ajax({
 					url: '<?= site_url('admin/get_tahapData')?>',
@@ -193,17 +188,33 @@
 					method: 'post',
 					dataType: 'json',
 					success: function(data) {
-						$("#info-tahap").removeClass('d-none');
-						$("#max-tim").html(data.tim);
-						$("#status-tahap").html(data.status);
 						var tahap = $('#tahap').val();
 						jQuery.ajax({
 				            url: "<?= base_url('admin/get_seleksiTIM/'.$id_bidang.'/') ?>"+data.tim+"/"+tahap,
 				            type: "GET",
 				            success: function(data) {
 				                $("#daftar-tim").html(data);
+								$("#ke_tahap").prop("disabled", false);
 				            }
 				        });
+					}
+				});
+			}
+		});
+		$('#ke_tahap').change(function(){
+			if ($('#ke_tahap').val() != 0) {
+				$("#max-tim").html('<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>Memuat...');
+				$("#status-tahap").html('<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>Memuat...');
+				jQuery.ajax({
+					url: '<?= site_url('admin/get_tahapDataTujuan')?>',
+					data: $('#form-seleksi').serialize(),
+					method: 'post',
+					dataType: 'json',
+					success: function(data) {
+						$("#info-tahap").removeClass('d-none');
+						$("#max-tim").html(data.tim);
+						$("#status-tahap").html(data.status);
+						$("#ke_tahap").prop("disabled", false);
 					}
 				});
 			}
