@@ -37,6 +37,8 @@ class koordinator extends MX_Controller
 
         $this->load->model('General');
         $this->load->model('M_koordinator');
+        $this->load->model('admin/M_admin');
+        $this->load->model('manage_kompetisi/M_manageKompetisi');
     }
 
     public function index(){
@@ -81,6 +83,35 @@ class koordinator extends MX_Controller
 
         $data['module']     = "koordinator";
         $data['fileview']   = "verifikasi_berkas";
+        echo Modules::run('template/backend_main', $data);
+    }
+
+    public function hasil_penilaian($tahap = 0){
+
+        $data['tahap']              = $this->M_admin->get_tahapPenilaian();
+        $koordinator                = $this->M_koordinator->get_koordinator_by_kode_user($this->kode_user);
+        $tahap_penilaian            = $this->M_manageKompetisi->get_tahapLomba_by_id($tahap);
+
+        if($tahap == false){
+            $data['tahap_penilaian']    = "Pilih Tahap";
+        }else{
+            $data['tahap_penilaian']    = $tahap_penilaian->NAMA_TAHAP;
+        }
+
+        if($koordinator->BIDANG_LOMBA == false){
+            $data['bidang_lomba']       = "Semua";
+        }else{
+            $data['bidang_lomba']       = $koordinator->BIDANG_LOMBA;
+        }
+        $data['id_tahap']   = $tahap;
+        $data['id_bidang']  = $koordinator->ID_BIDANG;
+
+        $data['tim']        = $this->M_manageKompetisi->get_hasilPenilaian($tahap, $koordinator->ID_BIDANG);
+
+        $data['CI']         = $this;
+
+        $data['module']     = "koordinator";
+        $data['fileview']   = "hasil_penilaian";
         echo Modules::run('template/backend_main', $data);
     }
 

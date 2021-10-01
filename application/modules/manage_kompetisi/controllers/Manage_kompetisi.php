@@ -22,6 +22,8 @@ class Manage_kompetisi extends MX_Controller {
 		}
 
 		$this->load->model('M_manageKompetisi', 'M_manage');
+		$this->load->model('admin/M_admin');
+		$this->load->model('koordinator/M_koordinator');
 	}
 
   // BIDANG LOMBA
@@ -245,6 +247,16 @@ class Manage_kompetisi extends MX_Controller {
 		}
 	}
 
+	function update_status_tahap(){
+		if ($this->M_manage->update_status_tahap() == TRUE) {
+			$this->session->set_flashdata('success', "Berhasil mengubah status tahap penilaian !!");
+			redirect($this->agent->referrer());
+		}else{
+			$this->session->set_flashdata('error', "Terjadi kesalahan saat mengubah status tahap penilaian !!");
+			redirect($this->agent->referrer());
+		}
+	}
+
 	function hapus_tahap(){
 		if ($this->M_manage->hapus_tahap() == TRUE) {
 			$this->session->set_flashdata('success', "Berhasil menghapus tahap penilaian !!");
@@ -349,7 +361,30 @@ class Manage_kompetisi extends MX_Controller {
 		echo Modules::run('template/backend_main', $data);
 	}
 
-	public function hasil_penilaian(){
+	public function hasil_penilaian($tahap = 0, $bidang = 0){
+
+		$data['tahap']				= $this->M_admin->get_tahapPenilaian();
+        $data['all_bidang_lomba'] 	= $this->M_koordinator->get_bidangLomba();
+        $bidang_lomba 				= $this->M_koordinator->get_bidangLomba_by_id($bidang);
+        $tahap_penilaian 			= $this->M_manage->get_tahapLomba_by_id($tahap);
+
+        if($tahap == false){
+            $data['tahap_penilaian'] 	= "Pilih Tahap";
+        }else{
+            $data['tahap_penilaian'] 	= $tahap_penilaian->NAMA_TAHAP;
+        }
+
+        if($bidang_lomba == false){
+            $data['bidang_lomba'] 		= "Semua";
+        }else{
+            $data['bidang_lomba'] 		= $bidang_lomba->BIDANG_LOMBA;
+        }
+        $data['id_tahap'] 	= $tahap;
+        $data['id_bidang'] 	= $bidang;
+
+		$data['tim']		= $this->M_manage->get_hasilPenilaian($tahap, $bidang);
+
+        $data['CI']			= $this;
 
 		$data['module']     = "manage_kompetisi";
 		$data['fileview']   = "kompetisi/hasil_penilaian";

@@ -389,13 +389,22 @@ class M_admin extends CI_Model {
 		}
 	}
 
+	function get_tahapData($id_tahap){
+		$query = $this->db->get_where('tahap_penilaian', array('ID_TAHAP' => $id_tahap));
+		if ($query->num_rows() > 0 ){
+			return $query->row();
+		}else{
+			return false;
+		}
+	}
+
 	function get_daftarTIM($param, $id_bidang, $id_tahap){
 		// case
-		// 1. Seluruh TIM yang telah diverifikasi / STATUS = 1 (belum dinilai)
-		// 2. Berdasarkan nilai tertinggi (sudah ada data penilaian) / berdasarkan id tahap
+		// 0. Seluruh TIM yang telah diverifikasi / STATUS = 1 (belum dinilai)
+		// 1. Berdasarkan nilai tertinggi (sudah ada data penilaian) / berdasarkan id tahap
 		$this->db->select('*');
 		switch ($param) {
-			case 1:
+			case 0:
 				$this->db->from('v_tim');
 				
 				if ($id_bidang != 0) {
@@ -406,9 +415,9 @@ class M_admin extends CI_Model {
 					$this->db->where('TAHAP', $id_tahap);
 				}
 
-				// $this->db->where('STATUS', 1);
+				$this->db->where('STATUS', 1);
 				break;
-			case 2:
+			case 1:
 				$this->db->from('v_penilaian');
 				
 				if ($id_bidang != 0) {
@@ -416,9 +425,10 @@ class M_admin extends CI_Model {
 				}
 
 				$this->db->where('TAHAP', $id_tahap);
+				$this->db->where('STATUS', 1);
 			default:
 				$this->db->from('v_tim');
-				// $this->db->where('STATUS', 1);
+				$this->db->where('STATUS', 1);
 				break;
 		}
 		$query = $this->db->get();
@@ -427,6 +437,52 @@ class M_admin extends CI_Model {
 		}else{
 			return false;
 		}
+	}
+
+	function get_seleksiTIM($param, $id_bidang, $id_tahap){
+		// case
+		// 0. Seluruh TIM yang telah diverifikasi / STATUS = 1 (belum dinilai)
+		// 1. Berdasarkan nilai tertinggi (sudah ada data penilaian) / berdasarkan id tahap
+		$this->db->select('*');
+		switch ($param) {
+			case 0:
+				$this->db->from('v_tim');
+				
+				if ($id_bidang != 0) {
+					$this->db->where('ID_BIDANG', $id_bidang);
+				}
+				
+				if ($id_tahap != 0) {
+					$this->db->where('TAHAP !=', $id_tahap);
+				}
+
+				$this->db->where('STATUS', 1);
+				break;
+			case 1:
+				$this->db->from('v_penilaian');
+				
+				if ($id_bidang != 0) {
+					$this->db->where('ID_BIDANG', $id_bidang);
+				}
+
+				$this->db->where('TAHAP !=', $id_tahap);
+			default:
+				$this->db->from('v_tim');
+				$this->db->where('STATUS', 1);
+				break;
+		}
+		$query = $this->db->get();
+		if ($query->num_rows() > 0) {
+			return $query->result();
+		}else{
+			return false;
+		}
+	}
+
+	public function seleksi_tim($kode, $tahap){
+		$this->db->where('KODE_PENDAFTARAN', $kode);
+		$this->db->update('pendaftaran_kompetisi', array('STATUS_SELEKSI' => $tahap));
+		
 	}
 
 

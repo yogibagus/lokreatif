@@ -156,6 +156,8 @@ $route['kompetisi/tahap-penilaian']					= 'manage_kompetisi/tahap_penilaian';
 $route['kompetisi/kriteria-penilaian']				= 'manage_kompetisi/kriteria_penilaian';
 $route['kompetisi/kriteria-penilaian/(:num)/(:num)']= 'manage_kompetisi/data_kriteria/$1/$2';
 $route['kompetisi/hasil-penilaian']					= 'manage_kompetisi/hasil_penilaian';
+$route['kompetisi/hasil-penilaian/(:num)']			= 'manage_kompetisi/hasil_penilaian/$1';
+$route['kompetisi/hasil-penilaian/(:num)/(:num)']	= 'manage_kompetisi/hasil_penilaian/$1/$2';
 
 // END MANAGE KOMPETISI
 
@@ -180,7 +182,16 @@ $route['tentang-juri']			= 'home/tentang_juri';
 // koordinator
 $route['koordinator/verifikasi-berkas']          = 'koordinator/verifikasi_berkas';
 $route['koordinator/verifikasi-berkas/(:any)']   = 'koordinator/verifikasi_berkas/$1';
+$route['koordinator/hasil-penilaian']					= 'koordinator/hasil_penilaian';
+$route['koordinator/hasil-penilaian/(:num)']			= 'koordinator/hasil_penilaian/$1';
 
+
+// JURI
+$route['juri/riwayat-penilaian']					= 'juri/riwayat_penilaian';
+$route['juri/riwayat-penilaian/(:num)']			= 'juri/riwayat_penilaian/$1';
+
+$route['juri/hasil-penilaian']					= 'juri/hasil_penilaian';
+$route['juri/hasil-penilaian/(:num)']			= 'juri/hasil_penilaian/$1';
 // END ETC
 
 // UTIL PAGE

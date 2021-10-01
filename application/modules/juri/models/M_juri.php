@@ -61,12 +61,12 @@ class M_juri extends CI_Model {
 
 	}
 
-	function get_countTIM($id_tahap, $id_bidang){
-		return $this->db->query("SELECT count(*) as semua, (SELECT count(*) FROM pendaftaran_kompetisi WHERE BIDANG_LOMBA = '$id_bidang' AND KODE_PENDAFTARAN IN (SELECT KODE_PENDAFTARAN FROM tb_penilaian)) as sudah_nilai FROM pendaftaran_kompetisi WHERE BIDANG_LOMBA = '$id_bidang' AND STATUS_SELEKSI = {$id_tahap}")->row();
+	function get_countTIM($id_tahap, $id_bidang, $kode_juri){
+		return $this->db->query("SELECT count(*) as semua, (SELECT count(*) FROM pendaftaran_kompetisi WHERE BIDANG_LOMBA = '$id_bidang' AND KODE_PENDAFTARAN IN (SELECT KODE_PENDAFTARAN FROM tb_penilaian WHERE KODE_JURI = '$kode_juri')) as sudah_nilai FROM pendaftaran_kompetisi WHERE BIDANG_LOMBA = '$id_bidang' AND STATUS_SELEKSI = {$id_tahap}")->row();
 	}
 
-	function get_dataTIM($id_tahap, $id_bidang){
-		$query = $this->db->query("SELECT * FROM pendaftaran_kompetisi a JOIN tb_karya b ON a.KODE_PENDAFTARAN = b.KODE_PENDAFTARAN WHERE a.KODE_PENDAFTARAN NOT IN (SELECT KODE_PENDAFTARAN FROM tb_penilaian)");
+	function get_dataTIM($id_tahap, $id_bidang, $kode_juri){
+		$query = $this->db->query("SELECT * FROM pendaftaran_kompetisi a JOIN tb_karya b ON a.KODE_PENDAFTARAN = b.KODE_PENDAFTARAN WHERE a.KODE_PENDAFTARAN NOT IN (SELECT KODE_PENDAFTARAN FROM tb_penilaian WHERE KODE_JURI = '$kode_juri') AND BIDANG_LOMBA = '$id_bidang' AND STATUS_SELEKSI = {$id_tahap}");
 		if ($query->num_rows() > 0) {
 			return $query->result();
 		}else{
@@ -74,14 +74,36 @@ class M_juri extends CI_Model {
 		}
 	}
 
-	function get_timJuri($id_tahap, $id_bidang){
-		$query = $this->db->query("SELECT * FROM pendaftaran_kompetisi a LEFT JOIN tb_penilaian b ON a.KODE_PENDAFTARAN = b.KODE_PENDAFTARAN JOIN pt c ON a.ASAL_PTS = c.kodept WHERE a.BIDANG_LOMBA = {$id_bidang} AND a.STATUS_SELEKSI = {$id_tahap}");
+	function get_timNilai($id_tahap, $id_bidang, $kode_juri){
+		$query = $this->db->query("SELECT * FROM pendaftaran_kompetisi a JOIN tb_karya b ON a.KODE_PENDAFTARAN = b.KODE_PENDAFTARAN WHERE a.KODE_PENDAFTARAN NOT IN (SELECT KODE_PENDAFTARAN FROM tb_penilaian WHERE KODE_JURI = '$kode_juri') AND BIDANG_LOMBA = '$id_bidang' AND STATUS_SELEKSI = {$id_tahap}");
 		if ($query->num_rows() > 0) {
 			return $query->result();
 		}else{
 			return false;
 		}
+	}
 
+	function get_timRiwayat($id_tahap, $id_bidang, $kode_juri){
+		$query = $this->db->query("SELECT * FROM pendaftaran_kompetisi a JOIN tb_karya b ON a.KODE_PENDAFTARAN = b.KODE_PENDAFTARAN WHERE a.KODE_PENDAFTARAN IN (SELECT KODE_PENDAFTARAN FROM tb_penilaian WHERE KODE_JURI = '$kode_juri' AND ID_TAHAP = {$id_tahap}) AND BIDANG_LOMBA = '$id_bidang'");
+		if ($query->num_rows() > 0) {
+			return $query->result();
+		}else{
+			return false;
+		}
+	}
+
+	function get_riwayatNilai($KODE_PENDAFTARAN){
+		$kode_juri = $this->session->userdata('kode_user');
+		$this->db->select('*');
+		$this->db->from('tb_penilaian a');
+		$this->db->join('kriteria_penilaian b', 'a.ID_KRITERIA = b.ID_KRITERIA');
+		$this->db->where(array('a.KODE_PENDAFTARAN' => $KODE_PENDAFTARAN, 'KODE_JURI' => $kode_juri));
+		$query = $this->db->get();
+		if ($query->num_rows() > 0) {
+			return $query->result();
+		}else{
+			return false;
+		}
 	}
 
 	function get_karyaTim($KODE_PENDAFTARAN){
@@ -117,7 +139,7 @@ class M_juri extends CI_Model {
 			$KODE_PENDAFTARAN 	= $this->input->post('KODE_PENDAFTARAN', true);
 			$ID_KRITERIA 		= $this->input->post('ID_KRITERIA', true);
 			$BOBOT 				= $this->input->post('BOBOT', true);
-			$NILAI 				= $this->input->post('NILAI', true);
+			$NILAI 				= $this->input->post('NILAI_OLAH', true);
 
 			foreach ($ID_KRITERIA as $i => $a) {
 
