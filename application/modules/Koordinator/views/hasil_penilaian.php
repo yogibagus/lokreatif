@@ -2,6 +2,13 @@
 <div class="page-header">
   <div class="row align-items-end">
     <div class="col-sm mb-2 mb-sm-0">
+      <nav aria-label="breadcrumb">
+        <ol class="breadcrumb breadcrumb-no-gutter">
+          <li class="breadcrumb-item"><a class="breadcrumb-link" href="<?= site_url('manage-kompetisi') ?>">Dashboard</a></li>
+          <li class="breadcrumb-item">Penilaian</li>
+          <li class="breadcrumb-item active" aria-current="page">Hasil Penilaian</li>
+        </ol>
+      </nav>
       <div class="d-flex justify-content-between">
         <h1 class="page-header-title mt-3 mb-3">Hasil Penilaian - Bidang lomba <span class="badge badge-primary"><?= $bidang_lomba ?></span></h1>
         <div class="d-flex">

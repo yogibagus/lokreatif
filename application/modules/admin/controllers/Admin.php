@@ -26,6 +26,7 @@ class Admin extends MX_Controller
 		}
 		$this->load->model('M_admin');
 		$this->load->model('Utilities/M_utilities');
+		$this->load->model('koordinator/M_koordinator');
 		$this->load->model('General');
 	}
 
@@ -73,6 +74,28 @@ class Admin extends MX_Controller
 
 		if (!$full) $string = array_slice($string, 0, 1);
 		return $string ? implode(', ', $string) . ' ago' : 'just now';
+	}
+
+	function get_tahapData(){
+		$tahap = $this->M_admin->get_tahapData($this->input->post('TAHAP'));
+        switch ($tahap->STATUS) {
+          case 0:
+            $status = '<span class"badge badge-secondary">belum dimulai</span>';
+            break;
+
+          case 1:
+            $status = '<span class"badge badge-success">berlangsung</span>';
+            break;
+
+          case 2:
+            $status = '<span class"badge badge-warning">berakhir</span>';
+            break;
+          
+          default:
+            $status = '<span class"badge badge-secondary">belum dimulai</span>';
+            break;
+        }
+		echo json_encode(['tim' => ($tahap->TEAM == 0 ? 'tidak ada batasan' : $tahap->TEAM), 'status' => $status]);
 	}
 
 	public function index()
@@ -913,18 +936,86 @@ class Admin extends MX_Controller
 		}
 	}
 	
-	public function seleksi(){
+	public function get_seleksiTIM($id_bidang = 0, $tim = 0, $id_tahap = 0){
 
-		// MAILER
-		$data['tahap']		= $this->M_admin->get_tahapPenilaian();
-		$data['tim']		= $this->M_admin->get_daftarTIM($param = 1, $id_bidang = 0, $id_tahap = 0);
+        $bidang_lomba = $this->M_koordinator->get_bidangLomba_by_id($id_bidang);
+        if($bidang_lomba == false){
+            $data['max_tim']	= $tim;
+            $data['tahap']		= $id_tahap;
+			$data['tim']		= $this->M_admin->get_seleksiTIM($param = 0, $id_bidang, $id_tahap);
+        }else{
+            $data['id_bidang'] 	= $bidang_lomba->BIDANG_LOMBA;
+            $data['max_tim']	= $tim;
+            $data['tahap']		= $id_tahap;
+			$data['tim']		= $this->M_admin->get_seleksiTIM($param = 0, $bidang_lomba->ID_BIDANG, $id_tahap);
+        }
 
+        $data['CI']			= $this;
+		$data['module'] 	= "admin";
+		$data['fileview'] 	= "ajax/ajax_tableSeleksi";
+		echo Modules::run('template/blank_template', $data);
+	}
+	
+	public function hasil_seleksi($param = 0){
+
+        $bidang_lomba = $this->M_koordinator->get_bidangLomba_by_id($param);
+        if($bidang_lomba == false){
+            $data['all_bidang_lomba'] 	= $this->M_koordinator->get_bidangLomba();
+            $data['bidang_lomba'] 		= "Semua";
+            $data['id_bidang'] 			= 0;
+			$data['tahap']		= $this->M_admin->get_tahapPenilaian();
+			$data['tim']		= $this->M_admin->get_daftarTIM($param = 0, $id_bidang = 0, $id_tahap = 0);
+        }else{
+            $data['all_bidang_lomba'] 	= $this->M_koordinator->get_bidangLomba();
+            $data['bidang_lomba'] 		= $bidang_lomba->BIDANG_LOMBA;
+            $data['id_bidang'] 			= $bidang_lomba->ID_BIDANG;
+			$data['tahap']		= $this->M_admin->get_tahapPenilaian();
+			$data['tim']		= $this->M_admin->get_daftarTIM($param = 0, $bidang_lomba->ID_BIDANG, $id_tahap = 0);
+        }
+
+
+        $data['CI']			= $this;
+		$data['module'] 	= "admin";
+		$data['fileview'] 	= "hasil_seleksi";
+		echo Modules::run('template/backend_main', $data);
+	}
+	
+	public function seleksi($param = 0){
+
+        $bidang_lomba = $this->M_koordinator->get_bidangLomba_by_id($param);
+        if($bidang_lomba == false){
+            $data['all_bidang_lomba'] 	= $this->M_koordinator->get_bidangLomba();
+            $data['bidang_lomba'] 		= "Semua";
+            $data['id_bidang'] 			= 0;
+			$data['tahap']		= $this->M_admin->get_tahapPenilaian();
+			$data['tim']		= $this->M_admin->get_daftarTIM($param = 0, $id_bidang = 0, $id_tahap = 0);
+        }else{
+            $data['all_bidang_lomba'] 	= $this->M_koordinator->get_bidangLomba();
+            $data['bidang_lomba'] 		= $bidang_lomba->BIDANG_LOMBA;
+            $data['id_bidang'] 			= $bidang_lomba->ID_BIDANG;
+			$data['tahap']		= $this->M_admin->get_tahapPenilaian();
+			$data['tim']		= $this->M_admin->get_daftarTIM($param = 0, $bidang_lomba->ID_BIDANG, $id_tahap = 0);
+        }
+
+
+        $data['CI']			= $this;
 		$data['module'] 	= "admin";
 		$data['fileview'] 	= "seleksi";
 		echo Modules::run('template/backend_main', $data);
 	}
 
+	function seleksi_tim(){
+		$kodePendaftaran	= explode(',', $_POST['KODE_PENDAFTARAN']);
+		$tahap				= $_POST['TAHAP'];
+		$dataStoreOrd		= array();
+		
+		foreach ($kodePendaftaran as $item) {		
+			$this->M_admin->seleksi_tim($item, $tahap);
+		}
 
+		$this->session->set_flashdata('success', "Berhasil menyeleksi tim kedalam tahap yang ditentukan!");
+		redirect(site_url('admin/seleksi'));
+	}
 
 	function body_html($message){
 		return '

@@ -8,7 +8,7 @@
 <div class="page-header mb-5 pb-0">
   <div class="row align-items-center">
     <div class="col-sm mb-2 mb-sm-0">
-      <h1 class="page-header-title">Dashboard</h1>
+      <h1 class="page-header-title">Dashboard </h1>
     </div>
 
     <div class="col-sm-auto">
@@ -143,7 +143,20 @@
       </div>
     </div>
     <div class="col-sm-12 col-lg-7 mb-3 mb-lg-5">
+      <?php if ($tim->semua == $tim->sudah_nilai) :?>
+        <!-- Alert -->
+        <div class="alert alert-soft-dark mb-5" role="alert">
+          <div class="media align-items-center">
+            <img class="avatar avatar-xl mr-3" src="<?= base_url();?>assets/backend/svg/illustrations/yelling-reverse.svg" alt="Image Description">
 
+            <div class="media-body">
+              <h3 class="alert-heading mb-1">Penilaian selesai!</h3>
+              <p class="mb-0">Terima kasih, anda telah menyelesaikan proses penilaian anda.</p>
+            </div>
+          </div>
+        </div>
+        <!-- End Alert -->
+      <?php endif;?>
       <div class="card card-shadow mb-5">
         <div class="card-body">
           <h6 class="card-header-title text-center">Hai, <i><?= $this->session->userdata('nama');?></i></h6>

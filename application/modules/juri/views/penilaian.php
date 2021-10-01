@@ -23,6 +23,19 @@
 		</div>
 	</div>
 
+<?php elseif ($tim->semua == $tim->sudah_nilai) :?>
+<!-- Alert -->
+<div class="alert alert-soft-dark mb-5" role="alert">
+  <div class="media align-items-center">
+    <img class="avatar avatar-xl mr-3" src="<?= base_url();?>assets/backend/svg/illustrations/yelling-reverse.svg" alt="Image Description">
+
+    <div class="media-body">
+      <h3 class="alert-heading mb-1">Penilaian selesai!</h3>
+      <p class="mb-0">Terima kasih, anda telah menyelesaikan proses penilaian anda.</p>
+    </div>
+  </div>
+</div>
+<!-- End Alert -->
 <?php else:?>
 
 	<div class="row">
@@ -99,7 +112,7 @@
 						</div>
 
 						<div class="tab-pane fade" id="lembar-penilaian" role="tabpanel" aria-labelledby="lembar-penilaian-tab">
-							<form action="<?= site_url('juri/submit_nilai');?>" method="POST">
+							<form action="<?= site_url('juri/submit_nilai');?>" method="POST" id="form-penilaian">
 								<input type="hidden" name="KODE_PENDAFTARAN" value="0">
 				               	<table class="table table-bordered">
 					                <thead class="thead-light">
@@ -113,7 +126,6 @@
 						                  <tr>
 						                    <td <?= (!empty($kriteria->KETERANGAN) ? 'rowspan="2"' : '');?>>
 						                    	<?= $no++;?>
-						                    	<input type="hidden" class="total_nilai" name="NILAI[]" value="1" id="count_nilai-<?= $no;?>">
 						                    </td>
 						                    <td>
 						                    	<input type="hidden" name="ID_KRITERIA[]" value="<?= $kriteria->ID_KRITERIA;?>">
@@ -126,14 +138,14 @@
 						                    <td <?= (!empty($kriteria->KETERANGAN) ? 'rowspan="2"' : '');?>>
 						                    	<!-- Quantity Counter -->
 												<div class="js-quantity-counter input-group-quantity-counter">
-						                    	  <input type="hidden" class="bobot_awal" value="<?= $kriteria->BOBOT;?>">
-												  <input type="number" class="counter-<?=$no;?> form-control input-group-quantity-counter-control nilai_juri" value="1" min="1" max="5">
+												  <input type="hidden" name="NILAI_OLAH[]" id="nilai-olah-<?= $no;?>" value="<?= (($kriteria->BOBOT/100)*1);?>">
+												  <input type="number" name="NILAI[]" class="counter-<?=$no;?> form-control input-group-quantity-counter-control" value="1" min="1" max="5">
 
 												  <div class="input-group-quantity-counter-toggle">
-												    <a class="decrement-<?=$no;?> input-group-quantity-counter-btn" href="javascript:;" id="<?=$no;?>">
+												    <a class="decrement-<?=$no;?> input-group-quantity-counter-btn" href="javascript:;">
 												      <i class="tio-remove"></i>
 												    </a>
-												    <a class="increment-<?=$no;?> input-group-quantity-counter-btn" href="javascript:;" id="<?=$no;?>">
+												    <a class="increment-<?=$no;?> input-group-quantity-counter-btn" href="javascript:;">
 												      <i class="tio-add"></i>
 												    </a>
 												  </div>
@@ -148,28 +160,28 @@
 							              <?php endif;?>
 						                  	<script type="text/javascript">
 												var value<?=$no;?> = 1
-												var bobot = $("#bobot-"+<?=$no;?>).val();
-												var nilai = 1;
+												var bobot = $('#bobot-'+<?= $no;?>).val();
+												var nilai_akhir = 1;
 												$('.increment-'+<?=$no;?>).on("click", function() {
 												  	if(value<?=$no;?> > 0 && value<?=$no;?> <5){
 												    	value<?=$no;?> = parseInt(value<?=$no;?>+1);
 												    	$(".counter-"+<?=$no;?>).val(value<?=$no;?>);
+												    	nilai_akhir = ((bobot/100)*value<?=$no;?>);
+												    	$("#nilai-olah-"+<?=$no;?>).val(formatter.format(nilai_akhir));
 												  	}
-												  	nilai = (bobot/100)*value<?=$no;?>;
-												  	$('#count_nilai-'+<?= $no;?>).val(nilai);
-												  	$('#default').val(0);
 												});
 												$('.decrement-'+<?=$no;?>).on("click", function(){
 												  	if(value<?=$no;?> > 1){
 												    	value<?=$no;?> = parseInt(value<?=$no;?>-1);
 												    	$(".counter-"+<?=$no;?>).val(value<?=$no;?>);
+												    	nilai_akhir = (bobot/100)*value<?=$no;?>;
+												    	$("#nilai-olah-"+<?=$no;?>).val(formatter.format(nilai_akhir));
 												  	}else{
 												    	value<?=$no;?> = 1;
 												    	$(".counter-"+<?=$no;?>).val(value<?=$no;?>);
+												    	nilai_akhir = (bobot/100)*value<?=$no;?>;
+												    	$("#nilai-olah-"+<?=$no;?>).val(formatter.format(nilai_akhir));
 												  	}
-												  	nilai = (bobot/100)*value<?=$no;?>;
-												  	$('#count_nilai-'+<?= $no;?>).val(nilai);
-												  	$('#default').val(0);
 												});
 											</script>
 						                <?php endforeach; endif;?>
@@ -189,7 +201,6 @@
 						                  </button>
 						                </div>
 						                <div class="modal-body">
-						                	<input type="hidden" id="default" value="1">
 						                    <p>Yakin kirim hasil penilaian anda terhadap tim ini, dengan total nilai <b id="total_nilai">1</b> ?</p>
 						                    <div class="modal-footer px-0 pb-0">
 						                      <button type="button" class="btn btn-light btn-sm" data-dismiss="modal">Batal</button>
@@ -232,21 +243,18 @@
 		   minimumFractionDigits: 2,      
 		   maximumFractionDigits: 2,
 		});
-		$('#submit-nilai').click(function() {
-			if ($('#default').val() == 1) {
-				$("#total_nilai").html(formatter.format(1));
-			}else{
-				var total = 0;
-				var bobot = 0;
-				var nilai = 0;
 
-				$('.nilai_juri').each(function (index, element) {
-					bobot = $(this).closest('.nilai_juri').prev().find('.bobot_awal').val();
-					nilai = (bobot/100)*element;
-			        total = total + parseFloat(bobot);
-			    });
-				$("#total_nilai").html(formatter.format(total));
-			}
+		$('#submit-nilai').click(function() {
+		    $("#total_nilai").html(`<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>Menghitung...`);
+			jQuery.ajax({
+				url: '<?= site_url('juri/count_totalNilai')?>',
+				data: $('#form-penilaian').serialize(),
+				method: 'post',
+				dataType: 'json',
+	            success: function(data) {
+					$("#total_nilai").html(formatter.format(data));
+	            }
+            });
 		});
 	</script>
 <?php endif;?>

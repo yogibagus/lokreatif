@@ -69,6 +69,14 @@
                   <span class="navbar-vertical-aside-mini-mode-hidden-elements text-truncate">Riwayat Penilaian</span>
                 </a>
               </li>
+
+              <li class="nav-item ">
+                <a class="js-nav-tooltip-link nav-link <?= ($this->uri->segment(2) == 'hasil-penilaian' ? 'active' : '') ?>" href="<?= site_url('juri/hasil-penilaian') ?>" title="Hasil Penilaian" data-placement="left">
+                  <i class="tio-medal nav-icon"></i>
+                  <span class="navbar-vertical-aside-mini-mode-hidden-elements text-truncate">Hasil Penilaian</span>
+                </a>
+              </li>
+              <!-- End Dashboards -->
               <?php elseif ($this->session->userdata('role') == 0) : ?>
                 <!-- Dashboards -->
 
@@ -241,6 +249,14 @@
                 <!-- End Dashboards -->
 
                 <li class="nav-item ">
+                  <a class="js-nav-tooltip-link nav-link <?= ($this->uri->segment(2) == 'seleksi' ? 'active' : '') ?>" href="<?= site_url('admin/seleksi') ?>" title="Verifikasi Berkas" data-placement="left">
+                    <i class="tio-files nav-icon"></i>
+                    <span class="navbar-vertical-aside-mini-mode-hidden-elements text-truncate">Seleksi</span>
+                  </a>
+                </li>
+                <!-- End Dashboards -->
+
+                <li class="nav-item ">
                   <a class="js-nav-tooltip-link nav-link <?= ($this->uri->segment(2) == 'hasil-penilaian' ? 'active' : '') ?>" href="<?= site_url('kompetisi/hasil-penilaian') ?>" title="Hasil Penilaian" data-placement="left">
                     <i class="tio-medal nav-icon"></i>
                     <span class="navbar-vertical-aside-mini-mode-hidden-elements text-truncate">Hasil Penilaian</span>
@@ -292,6 +308,13 @@
                     </a>
                   </li>
                   <!-- End Pengguna -->
+
+                  <li class="nav-item ">
+                    <a class="js-nav-tooltip-link nav-link <?= ($this->uri->segment(2) == 'hasil-penilaian' ? 'active' : '') ?>" href="<?= site_url('koordinator/hasil-penilaian') ?>" title="Hasil Penilaian" data-placement="left">
+                      <i class="tio-medal nav-icon"></i>
+                      <span class="navbar-vertical-aside-mini-mode-hidden-elements text-truncate">Hasil Penilaian</span>
+                    </a>
+                  </li>
                 <?php endif; ?>
                 <li class="nav-item">
                   <small class="tio-more-horizontal nav-subtitle-replacer"></small>

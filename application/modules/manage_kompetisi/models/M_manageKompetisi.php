@@ -214,6 +214,36 @@ class M_manageKompetisi extends CI_Model {
 
 	}
 
+	// HASIL PENILAIAN
+	function get_tahapLomba_by_id($id_tahap){
+		$query = $this->db->get_where('tahap_penilaian', array('ID_TAHAP' => $id_tahap));
+		if ($query->num_rows() > 0) {
+			return $query->row();
+		}else{
+			return false;
+		}
+	}
+	function get_hasilPenilaian($id_tahap, $id_bidang){
+		// case
+		// 1. Berdasarkan nilai tertinggi (sudah ada data penilaian) / berdasarkan id tahap
+		$this->db->select('*');
+		$this->db->from('v_penilaian');
+		
+		if ($id_bidang != 0) {
+			$this->db->where('ID_BIDANG', $id_bidang);
+		}
+		
+		if ($id_tahap != 0) {
+			$this->db->where('TAHAP', $id_tahap);
+		}
+		$query = $this->db->get();
+		if ($query->num_rows() > 0) {
+			return $query->result();
+		}else{
+			return false;
+		}
+	}
+
 	//TAHAP PENILAIAN
 	function get_tahapPenilaian(){
 		$query	= $this->db->get('tahap_penilaian');
@@ -265,6 +295,19 @@ class M_manageKompetisi extends CI_Model {
 			'DATE_END'			=> $TANGGAL_BERAKHIR,
 			'TIME_END'			=> $WAKTU_BERAKHIR,
 			'TEAM'				=> $TEAM,
+		);
+
+		$this->db->where('ID_TAHAP', $ID_TAHAP);
+		$this->db->update('tahap_penilaian', $data);
+		return ($this->db->affected_rows() != 1) ? false : true;
+	}
+
+	function update_status_tahap(){
+		$ID_TAHAP 		= $this->input->post('ID_TAHAP');
+		$STATUS 		= $this->input->post('STATUS');
+
+		$data = array(
+			'STATUS'			=> $STATUS
 		);
 
 		$this->db->where('ID_TAHAP', $ID_TAHAP);
