@@ -2,13 +2,13 @@
   <h5 class="card-header-title">Daftar Tim</h5>
   <div>
     <button type="button" class="btn btn-sm btn-block btn-success mb-2" id="seleksi" data-toggle="modal" data-target="#seleksi-btn">
-      <i class="tio-credit-card-outlined "></i> Seleksi
+      <i class="tio-cached"></i> Seleksi
     </button>
   </div>
 </div>
 <!-- Table -->
 <div class="card-body" id="table-tim">
-  <table id="myTable" class="table table-lg table-borderless table-thead-bordered table-nowrap table-align-middle card-table w-100">
+  <table id="myTable2" class="table table-lg table-borderless table-thead-bordered table-nowrap table-align-middle card-table w-100">
     <thead class="thead-light">
       <tr>
         <th>No</th>
@@ -20,6 +20,7 @@
         </th>
         <th>Tim</th>
         <th>Tahap TIM</th>
+        <th>Nilai TIM</th>
       </tr>
     </thead>
 
@@ -38,7 +39,7 @@
         }else{
           $checkbox = '
           <div class="custom-control custom-checkbox" style="text-align:center;">
-          <input type="checkbox" class="custom-control-input" checked disabled>
+          <input type="checkbox" class="custom-control-input" disabled>
           <label class="custom-control-label"></label>
           </div>
           ';
@@ -50,6 +51,7 @@
         <td>'.$checkbox.'</td>
         <td>'.$item->NAMA_TIM.'</td>
         <td>'.($CI->M_admin->get_tahapData($item->TAHAP) == false ? "Menunggu seleksi" : $CI->M_admin->get_tahapData($item->TAHAP)->NAMA_TAHAP).'</td>
+        <td>'.$item->TOT_NILAI.'</td>
         </tr>
         ';
         $no++;
@@ -76,11 +78,8 @@
 
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
-                <form action="<?= site_url('admin/seleksi_tim') ?>" method="post">
-                    <input type="hidden" name="TAHAP" value="<?= $tahap?>" />
                     <input type="hidden" id="mdlBayarMulti_itemId" name="KODE_PENDAFTARAN" />
                     <button type="submit" class="btn btn-success">Seleksi TIM</button>
-                </form>
             </div>
         </div>
     </div>
@@ -103,12 +102,5 @@
   })
   $('.checkItem').change(function() {
     buttonMultipleAvailable()
-  })
-  const buttonMultipleAvailable = () => {
-    const isChecked = $('.checkItem:checkbox:checked').prop('checked')
-    if (isChecked)
-        $('#bayarMultiple').attr('disabled', false)
-    else
-        $('#bayarMultiple').attr('disabled', true)
-  }
+  });
 </script>

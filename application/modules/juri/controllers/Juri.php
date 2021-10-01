@@ -108,7 +108,7 @@ class Juri extends MX_Controller {
 			foreach ($id_kriteria as $i => $a) {
 				$total = $total+($bobot[$i]*$nilai[$i]/100);
 			}
-			echo $total;
+			echo number_format($total,2);
 		}
 
 	}
@@ -213,6 +213,16 @@ class Juri extends MX_Controller {
 			redirect(site_url('juri/penilaian'));
 		} else {
 			$this->session->set_flashdata('error', "Terjadi kesalahan saat mengirim data nilai anda!!");
+			redirect($this->agent->referrer());
+		}
+	}
+
+	function edit_nilai(){
+		if ($this->M_juri->edit_nilai() == TRUE) {
+			$this->session->set_flashdata('success', "Berhasil mengubah data nilai anda !!");
+			redirect($this->agent->referrer());
+		} else {
+			$this->session->set_flashdata('error', "Terjadi kesalahan saat mengubah data nilai anda!!");
 			redirect($this->agent->referrer());
 		}
 	}

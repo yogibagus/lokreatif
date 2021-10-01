@@ -15,7 +15,7 @@
 	$(document).on('ready', function () {
 
 
-		$('#myTable').DataTable( {
+		$('#myTable2').DataTable( {
 			"language": {
 				"emptyTable": '<div class="text-center p-4">' +
 				'<img class="mb-3" src="<?= base_url() ?>assets/backend/svg/illustrations/sorry.svg" alt="Image Description" style="width: 7rem;">' +

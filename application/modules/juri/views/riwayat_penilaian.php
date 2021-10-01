@@ -5,7 +5,7 @@
       <div class="d-flex justify-content-between">
         <h1 class="page-header-title mt-3 mb-3">Riwayat Penilaian - Tahap <span class="badge badge-primary"><?= $tahap_penilaian ?></span></h1>
         <div class="d-flex">
-          <div class="dropdown mt-2 mr-2">
+          <div class="dropdown mt-2">
             <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
               <?php if ($id_tahap == 0) :?>
                 Tahap Penilaian
@@ -106,7 +106,7 @@
 
 					<!-- Tab Content -->
 					<div class="tab-content">
-						<div class="tab-pane fade show active" id="lembar-penilaian" role="tabpanel" aria-labelledby="lembar-penilaian-tab">
+						<div class="tab-pane fade show active" style="min-height: 250px" id="lembar-penilaian" role="tabpanel" aria-labelledby="lembar-penilaian-tab">
 							<div class="text-center mt-lg-5 my-auto mx-lg-10">
 								<img class="avatar avatar-xxl mb-3" src="<?= base_url();?>assets/backend/svg/illustrations/sorry.svg" alt="Image Description">
 								<p class="card-text">Tidak ada data penilaian yang dapat ditampilkan. Harap pilih salah satu TIM terlebih dahulu.</p>
