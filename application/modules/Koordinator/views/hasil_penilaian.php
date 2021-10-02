@@ -87,7 +87,7 @@
                     </div>
                   </td>
                   <td><?= $key->namapt;?></td>
-                  <td><i class="tio-star text-warning mr-1"></i> <?= $key->TOT_NILAI;?></td>
+                  <td><i class="tio-star text-warning mr-1"></i> <?= $CI->M_admin->get_TotNilai($key->KODE_PENDAFTARAN)->TOT_NILAI;?> dari (<?= $CI->M_admin->get_TotNilai($key->KODE_PENDAFTARAN)->JML_JURI;?> Juri)</td>
                 </tr>
               <?php $no++; endforeach; endif;?>
             </tbody>

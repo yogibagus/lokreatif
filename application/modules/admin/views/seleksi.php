@@ -116,7 +116,7 @@
 					      <td>'.$no.'</td>
 					      <td>'.$item->NAMA_TIM.'</td>
 				          <td>'.($CI->M_admin->get_tahapData($item->TAHAP) == false ? "Menunggu seleksi" : $CI->M_admin->get_tahapData($item->TAHAP)->NAMA_TAHAP).'</td>
-					      <td>'.$item->TOT_NILAI.'</td>
+					      <td><i class="tio-star text-warning mr-1"></i>'.$CI->M_admin->get_TotNilai($item->KODE_PENDAFTARAN)->TOT_NILAI.' dari ('.$CI->M_admin->get_TotNilai($item->KODE_PENDAFTARAN)->JML_JURI.' Juri)</td>
 					      </tr>
 					      ';
 					      $no++;

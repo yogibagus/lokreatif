@@ -380,6 +380,25 @@ class M_admin extends CI_Model {
 
 	// SELEKSI
 
+	public function get_TotNilai($KODE_PENDAFTARAN){
+		$query = $this->db->query("
+			SELECT KODE_PENDAFTARAN,
+			ROUND((SUM(NILAI) /
+			(SELECT COUNT(*)  AS JML_JURI FROM (SELECT COUNT(KODE_PENDAFTARAN)
+			FROM tb_penilaian WHERE KODE_PENDAFTARAN = '$KODE_PENDAFTARAN'
+			GROUP BY KODE_JURI) t)), 2) AS TOT_NILAI,
+			(SELECT COUNT(*)  AS JML_JURI FROM
+			(SELECT COUNT(KODE_PENDAFTARAN) FROM tb_penilaian
+			WHERE KODE_PENDAFTARAN = '$KODE_PENDAFTARAN' GROUP BY KODE_JURI) t) AS JML_JURI
+			FROM tb_penilaian WHERE KODE_PENDAFTARAN = '$KODE_PENDAFTARAN'
+			");
+		if ($query->num_rows() > 0) {
+			return $query->row();
+		}else{
+			return false;
+		}
+	}
+
 	function get_tahapPenilaian(){
 		$query = $this->db->get('tahap_penilaian');
 		if ($query->num_rows() > 0 ){
