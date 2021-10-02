@@ -15,7 +15,7 @@
                     <div class="" style="max-width:750px">
                         <div class="d-flex justify-content-between mb-3">
                             <span class="font-weight-bold h4">Preview Feed:</span>
-                            <a target="_blank" id="" class="btn btn-primary btn-xs" href="<?= $form[0] ?>" role=" button"><i class="tio-instagram"></i> Bukta di tab baru</a>
+                            <a target="_blank" id="" class="btn btn-primary btn-xs" href="<?= $form[0] ?>" role=" button"><i class="tio-instagram"></i> Buka di tab baru</a>
                         </div>
                         <div class="responsive-iframe-ig">
                             <iframe class="shadow-sm" src="<?= $form[0] . "embed" ?>" frameborder="0" allowfullscreen></iframe>
@@ -34,7 +34,7 @@
                     <div class="" style="max-width:750px">
                         <div class="d-flex justify-content-between mb-3">
                             <span class="font-weight-bold h4">Preview Feed:</span>
-                            <a target="_blank" id="" class="btn btn-primary btn-xs" href="<?= $form ?>" role=" button"><i class="tio-instagram"></i> Bukta di tab baru</a>
+                            <a target="_blank" id="" class="btn btn-primary btn-xs" href="<?= $form ?>" role=" button"><i class="tio-instagram"></i> Buka di tab baru</a>
                         </div>
                         <div class="responsive-iframe-ig">
                             <iframe class="shadow-sm" src="<?= $form . "$last_char" . "embed" ?> " frameborder="0" allowfullscreen></iframe>
@@ -47,7 +47,7 @@
         <?php } else { ?>
             <div class="d-flex justify-content-between mb-3">
                 <span class="font-weight-bold h4">Preview Berkas:</span>
-                <a target="_blank" id="" class="btn btn-primary btn-sm" href="<?= base_url(); ?>berkas/pendaftaran/kompetisi/lokreatif/<?= $pendaftaran->KODE_USER; ?>/<?= $form ?>" role=" button"><i class="tio-open-in-new"></i> Bukta di tab baru</a>
+                <a target="_blank" id="" class="btn btn-primary btn-sm" href="<?= base_url(); ?>berkas/pendaftaran/kompetisi/lokreatif/<?= $pendaftaran->KODE_USER; ?>/<?= $form ?>" role=" button"><i class="tio-open-in-new"></i> Buka di tab baru</a>
             </div>
             <div class="responsive-iframe">
                 <iframe src="<?= base_url(); ?>berkas/pendaftaran/kompetisi/lokreatif/<?= $pendaftaran->KODE_USER; ?>/<?= $form ?>" frameborder="0" allowfullscreen></iframe>
