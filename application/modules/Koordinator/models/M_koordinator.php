@@ -157,7 +157,7 @@ class M_koordinator extends CI_Model
         $KODE_USER = $this->input->post('KODE_USER');
 
         $this->db->where('KODE_USER', $KODE_USER);
-        $this->db->update('pendaftaran_kompetisi', array('STATUS' => 1));
+        $this->db->update('pendaftaran_kompetisi', array('STATUS' => 1, 'STATUS_SELEKSI' => 1));
         return ($this->db->affected_rows() != 1) ? false : true;
     }
 
@@ -166,7 +166,7 @@ class M_koordinator extends CI_Model
         $KODE_USER = $this->input->post('KODE_USER');
 
         $this->db->where('KODE_USER', $KODE_USER);
-        $this->db->update('pendaftaran_kompetisi', array('STATUS' => 2));
+        $this->db->update('pendaftaran_kompetisi', array('STATUS' => 2, 'STATUS_SELEKSI' => 0));
         return ($this->db->affected_rows() != 1) ? false : true;
     }
 

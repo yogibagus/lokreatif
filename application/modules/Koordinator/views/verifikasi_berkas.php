@@ -111,7 +111,7 @@
   <!-- Card -->
   <?php if ($cek_form == false) : ?>
       <div class="alert alert-info shadow">
-          <p class="mb-0"><b>PERINGATAN!!</b>Anda belum mengatur formulir pendaftaran!!, harap atur terlebih dahulu agar peserta dapat mulai mendaftarkan diri pada event anda.</p>
+          <p class="mb-0"><b>PERINGATAN!!</b>Anda belum mengatur formulir pendaftaran!!, harap atur terlebih dahulu agar Tim dapat mulai mendaftarkan diri pada event anda.</p>
       </div>
   <?php else : ?>
       <div class="card">
@@ -323,18 +323,21 @@
                                           <div class="modal-content">
                                               <!-- Header -->
                                               <div class="modal-header">
-                                                  <h4 id="detailUserModalTitle" class="modal-title">Verifikasi berkas peserta</h4>
+                                                  <h4 id="detailUserModalTitle" class="modal-title">Verifikasi berkas Tim</h4>
                                               </div>
                                               <!-- End Header -->
 
                                               <!-- Body -->
                                               <div class="modal-body">
-                                                  <p class="mb-0">Verifikasi berkas peserta, <b><?= $data->NAMA_TIM; ?></b></p>
+                                                  <div class="alert alert-soft-warning" role="alert">
+                                                      Pastikan berkas-berkas Tim telah sesuai dengan panduan lomba.
+                                                  </div>
+                                                  <p class="mb-0">Apakah yakin untuk verifikasi berkas Tim <b><?= $data->NAMA_TIM; ?></b>?</p>
                                               </div>
 
                                               <!-- Body -->
                                               <div class="modal-footer">
-                                                  <form action="<?= site_url('manage_kompetisi/terima_pendaftaran'); ?>" method="post">
+                                                  <form action="<?= site_url('koordinator/terima_pendaftaran'); ?>" method="post">
                                                       <input type="hidden" name="KODE_USER" value="<?= $data->KODE_USER; ?>">
                                                       <input type="hidden" name="NAMA_TIM" value="<?= $data->NAMA_TIM; ?>">
                                                       <button type="button" class="btn btn-sm btn-light" data-dismiss="modal" aria-label="Close">Batal</button>
@@ -351,13 +354,13 @@
                                           <div class="modal-content">
                                               <!-- Header -->
                                               <div class="modal-header">
-                                                  <h4 id="detailUserModalTitle" class="modal-title">Tolak berkas peserta</h4>
+                                                  <h4 id="detailUserModalTitle" class="modal-title">Tolak berkas Tim</h4>
                                               </div>
                                               <!-- End Header -->
 
                                               <!-- Body -->
                                               <div class="modal-body">
-                                                  <p class="mb-0">Tolak berkas peserta, <b><?= $data->NAMA_TIM; ?></b></p>
+                                                  <p class="mb-0">Tolak berkas Tim, <b><?= $data->NAMA_TIM; ?></b></p>
                                                   <hr class="my-1">
                                                   <p class="mb-0">Hubungi ketua tim, untuk konfirmasi berkas sebelum menolak pendaftaran ini?
                                                       <a href="https://api.whatsapp.com/send?text=Hai&phone=+62<?= $data->HP; ?>" target="_blank" class="text-success"><i class="tio-whatsapp"></i> hubungi sekarang</a>
@@ -366,7 +369,7 @@
 
                                               <!-- Body -->
                                               <div class="modal-footer">
-                                                  <form action="<?= site_url('manage_kompetisi/tolak_pendaftaran'); ?>" method="post">
+                                                  <form action="<?= site_url('koordinator/tolak_pendaftaran'); ?>" method="post">
                                                       <input type="hidden" name="KODE_USER" value="<?= $data->KODE_USER; ?>">
                                                       <input type="hidden" name="NAMA_TIM" value="<?= $data->NAMA_TIM; ?>">
                                                       <button type="button" class="btn btn-sm btn-light" data-dismiss="modal" aria-label="Close">Batal</button>

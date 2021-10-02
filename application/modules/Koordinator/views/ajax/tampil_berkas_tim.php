@@ -38,7 +38,7 @@
 
         <!-- VIDEO 3=videopendek, 13=unjuktalent -->
         <?php if ($berkas->ID_BIDANG == 3 || $berkas->ID_BIDANG == 13) { ?>
-            <div class="d-flex justify-content-between">
+            <div class="d-flex justify-content-between mb-2">
                 <label class="font-weight-bold" for="">Preview Karya:</label>
                 <a class="btn btn-danger btn-sm" target="_blank" href="<?= $berkas->LINK ?>" role="button"><i class="tio-youtube"></i> Buka di YouTube</a>
             </div>
@@ -49,15 +49,31 @@
 
         <!-- VIDEO GDRIVE 11=tiktok -->
         <?php if ($berkas->ID_BIDANG == 11) { ?>
-            <div class="">
+            <div class="d-flex justify-content-between mb-2">
                 <label class="font-weight-bold" for="">Preview Karya:</label><br>
-                <a class="btn btn-primary btn-sm mt-2" target="_blank" href="<?= $berkas->LINK ?>" role="button"><i class="tio-slideshow-outlined"></i> Buka di Tiktok</a>
+                <a class="btn btn-danger btn-sm" target="_blank" href="<?= $berkas->LINK ?>" role="button"><i class="tio-slideshow-outlined"></i> Buka di Tiktok</a>
             </div>
+            <div id="tiktok-embed"></div>
+            <script>
+                $(document).ready(function() {
+                    $('#tiktok-embed').html(
+                        `<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Memuat tiktok....`
+                    );
+                    jQuery.ajax({
+                        url: "https://www.tiktok.com/oembed?url=<?= $berkas->LINK ?>",
+                        type: "GET",
+                        success: function(data) {
+                            console.log(data);
+                            $("#tiktok-embed").html(data.html);
+                        }
+                    });
+                });
+            </script>
         <?php } ?>
 
         <!-- JPG 4=desainposter, 9=fotografi -->
         <?php if ($berkas->ID_BIDANG == 4 || $berkas->ID_BIDANG == 9) { ?>
-            <div class="d-flex justify-content-between">
+            <div class="d-flex justify-content-between mb-2">
                 <label class="font-weight-bold" for="">Preview Karya:</label>
                 <a class="btn btn-primary btn-sm" target="_blank" href="<?= base_url(); ?>berkas/kompetisi/karya/<?= preg_replace("/[^a-zA-Z]+/", "_", $berkas->BIDANG_LOMBA); ?>/<?= preg_replace("/[^a-zA-Z]+/", "_", $berkas->NAMA_TIM); ?>_<?= $berkas->KODE_USER ?>/<?= $berkas->FILE; ?>" role="button"><i class="tio-open-in-new"></i> Buka di tab baru</a>
             </div>
