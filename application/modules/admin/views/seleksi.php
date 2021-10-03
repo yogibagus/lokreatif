@@ -10,16 +10,16 @@
 			</nav>
 			<div class="d-flex justify-content-between">
 				<h1 class="page-header-title mt-3 mb-3">Seleksi TIM - Bidang Lomba <span class="badge badge-primary"><?= $bidang_lomba ?></span></h1>
-				<div class="dropdown mt-2">
-					<button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-						<?= $bidang_lomba ?>
-					</button>
-					<div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-						<?php foreach ($all_bidang_lomba as $row) { ?>
-							<a class="dropdown-item" href="<?= site_url('admin/seleksi/' . $row->ID_BIDANG) ?>"><?= $row->BIDANG_LOMBA ?></a>
-						<?php } ?>
-					</div>
-				</div>
+	            <div class="dropdown mt-2">
+	              <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+	                  <?= $bidang_lomba ?>
+	              </button>
+	              <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+	                <?php foreach ($all_bidang_lomba as $row) { ?>
+	                  <a class="dropdown-item" href="<?= site_url('admin/seleksi/'.$row->ID_BIDANG) ?>"><?= $row->BIDANG_LOMBA ?></a>
+	                <?php } ?>
+	              </div>
+	            </div>
 			</div>
 		</div>
 		<div class="col-sm-auto">
@@ -170,18 +170,17 @@
         $('#bayarMultiple').attr('disabled', true)
   }
 	$(document).ready(function() {
+		$("#daftar-tim").html('<div class="card-body"><span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>Memuat Data...</div>');
+		jQuery.ajax({
+            url: "<?= base_url('admin/get_seleksiTIM/'.$id_bidang.'/0/0') ?>",
+            type: "GET",
+            success: function(data) {
+                $("#daftar-tim").html(data);
+            }
+        });
 		$('#tahap').change(function(){
-			if ($('#tahap').val() == 0) {
-				$("#table-tim").html('<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>Memuat Data...');
-				jQuery.ajax({
-		            url: "<?= base_url('admin/get_seleksiTIM/'.$id_bidang.'/0/0') ?>",
-		            type: "GET",
-		            success: function(data) {
-		                $("#daftar-tim").html(data);
-		            }
-		        });
-			}else{
-				$("#table-tim").html('<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>Memuat Data...');
+			if ($('#tahap').val() != 0) {
+				$("#daftar-tim").html('<div class="card-body"><span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>Memuat Data...</div>');
 				jQuery.ajax({
 					url: '<?= site_url('admin/get_tahapData')?>',
 					data: $('#form-seleksi').serialize(),

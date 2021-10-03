@@ -2,3 +2,4 @@
 	<img class="avatar avatar-xxl" src="<?= base_url();?>assets/backend/svg/illustrations/sorry.svg" alt="Image Description">
 	<p class="card-text">Belum ada data.</p>
 </div>
+<br>

@@ -7,7 +7,7 @@
   </div>
 </div>
 <!-- Table -->
-<div class="card-body" id="table-tim">
+<div class="card-body">
   <table id="myTable2" class="table table-lg table-borderless table-thead-bordered table-nowrap table-align-middle card-table w-100">
     <thead class="thead-light">
       <tr>
@@ -71,15 +71,18 @@
                 </button>
             </div>
             <div class="modal-body">
-                <p>
+                <p id="belum">
+                    Harap pilih setidaknya 1 tim
+                </p>
+                <p id="siap" class="d-none">
                     Apakah anda yakin untuk menyeleksi sebanyak <span id="mdlBayarMulti_count"></span> tim ?
                 </p>
             </div>
 
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
-                    <input type="hidden" id="mdlBayarMulti_itemId" name="KODE_PENDAFTARAN" />
-                    <button type="submit" class="btn btn-success">Seleksi TIM</button>
+                <input type="hidden" id="mdlBayarMulti_itemId" name="KODE_PENDAFTARAN" />
+                <button type="submit" class="btn btn-success" id="submit" disabled>Seleksi TIM</button>
             </div>
         </div>
     </div>
@@ -89,6 +92,11 @@
         const kodePendaftaran = $('.checkItem:checkbox:checked').map((_, elm) => elm.value).get()
         $('#mdlBayarMulti_count').html(kodePendaftaran.length)
         $('#mdlBayarMulti_itemId').val(kodePendaftaran.toString())
+        if (kodePendaftaran.length > 0) {
+          $('#submit').prop('checked', false);
+          $('#siap').removeClass('d-none');
+          $('#belum').addClass('d-none');
+        }
 
     })
   $('#checkAll').change(function() {

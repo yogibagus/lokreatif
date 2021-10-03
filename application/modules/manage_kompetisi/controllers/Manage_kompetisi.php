@@ -380,6 +380,7 @@ class Manage_kompetisi extends MX_Controller {
         }else{
             $data['bidang_lomba'] 		= $bidang_lomba->BIDANG_LOMBA;
         }
+        
         $data['id_tahap'] 	= $tahap;
         $data['id_bidang'] 	= $bidang;
 
