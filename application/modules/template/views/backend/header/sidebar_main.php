@@ -227,7 +227,7 @@
                 <!-- End Dashboards -->
 
                 <li class="nav-item">
-                  <small class="nav-subtitle" title="Pages">Kompetisi</small>
+                  <small class="nav-subtitle" title="Pages">Lomba</small>
                   <small class="tio-more-horizontal nav-subtitle-replacer"></small>
                 </li>
 

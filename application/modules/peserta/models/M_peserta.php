@@ -329,15 +329,24 @@ class M_peserta extends CI_Model {
 	function update_pts(){
 
 		$KODE_PENDAFTARAN	= $this->input->post('KODE_PENDAFTARAN');
+		$NAMA_TIM			= $this->input->post('NAMA_TIM');
 		$PT					= $this->input->post('ASAL_PTS');
 		$PT 	    		= explode("-", $PT);
 		$ASAL_PTS			= $PT[0];
 		$ALAMAT_PTS			= $this->input->post('ALAMAT_PTS');
 
-		$data = array(
-			'ASAL_PTS'  		=> $ASAL_PTS,
-			'ALAMAT_PTS'  		=> $ALAMAT_PTS
-		);
+		if (empty($ASAL_PTS)) {
+			$data = array(
+				'NAMA_TIM'  		=> $NAMA_TIM,
+				'ALAMAT_PTS'  		=> $ALAMAT_PTS
+			);
+		}else{
+			$data = array(
+				'NAMA_TIM'  		=> $NAMA_TIM,
+				'ASAL_PTS'  		=> $ASAL_PTS,
+				'ALAMAT_PTS'  		=> $ALAMAT_PTS
+			);
+		}
 
 		$this->db->where('KODE_PENDAFTARAN', $KODE_PENDAFTARAN);
 		$this->db->update('pendaftaran_kompetisi', $data);

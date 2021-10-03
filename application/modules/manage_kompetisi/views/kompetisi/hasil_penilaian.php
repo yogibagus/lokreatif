@@ -72,6 +72,7 @@
             <thead class="thead-light">
               <tr>
                 <th scope="col" style="width: 2rem;">Peringkat</th>
+                <th scope="col" class="text-left">Bidang Lomba</th>
                 <th scope="col" class="text-left">Nama TIM</th>
                 <th scope="col">Asal PTS</th>
                 <th scope="col">Total Nilai</th>
@@ -98,10 +99,9 @@
                         break;
                     };?>
                   </td>
+                  <td class="text-left"><?= $key->BIDANG_LOMBA;?></td>
                   <td class="text-left">
-                    <div class="ml-3">
-                      <span class="d-block h5 text-hover-primary mb-0"><?= $key->NAMA_TIM;?></span>
-                    </div>
+                    <span class="d-block h5 text-hover-primary mb-0"><?= $key->NAMA_TIM;?></span>
                   </td>
                   <td><?= $key->namapt;?></td>
                   <td><i class="tio-star text-warning mr-1"></i> <?= $CI->M_admin->get_TotNilai($key->KODE_PENDAFTARAN)->TOT_NILAI;?> dari (<?= $CI->M_admin->get_TotNilai($key->KODE_PENDAFTARAN)->JML_JURI;?> Juri)</td>

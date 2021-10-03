@@ -17,7 +17,7 @@
                   <i class="fas fa-clipboard"></i>
                 </span>
                 <div class="step-content mb-4">
-                  <h5>Pendaftaran Peserta</h5>
+                  <h5>Pendaftaran Peserta dan Unggah Karya</h5>
                   <p class="text-body mb-0">8 September 2021 s/d 24 Oktober 2021</p>
                 </div>
               </div>

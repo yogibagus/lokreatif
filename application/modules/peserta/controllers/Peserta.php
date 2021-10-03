@@ -512,7 +512,6 @@ class Peserta extends MX_Controller
 
 		// STATIC FORM DEFAULT
 		$KODE_PENDAFTARAN	= $this->input->post('KODE_PENDAFTARAN');
-		$NAMA_TIM			= $this->input->post('NAMA_TIM');
 
 		// DYNAMIC FORM SECONDARY
 		$ID_FORM			= $this->input->post('ID_FORM', true);
@@ -521,13 +520,6 @@ class Peserta extends MX_Controller
 		$JAWABAN			= $this->input->post('JAWABAN');
 		$FILE_SIZE			= $this->input->post('FILE_SIZE', true);
 		$FILE_TYPE			= $this->input->post('FILE_TYPE', true);
-
-		$daftar = array(
-			// 'BIDANG_LOMBA' 		=> $BIDANG_LOMBA,
-			'NAMA_TIM' 			=> $NAMA_TIM,
-		);
-
-		$this->M_peserta->update_berkas($daftar, $KODE_PENDAFTARAN);
 
 		$prosesJawaban = false;
 
