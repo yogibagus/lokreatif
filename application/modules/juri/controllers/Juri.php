@@ -26,7 +26,7 @@ class Juri extends MX_Controller {
 		$this->load->model('General');
 		$this->load->model('Admin/M_admin');
 		$this->load->model('Koordinator/M_koordinator');
-		$this->load->model('Manage_kompetisi/M_manageKompetisi');
+		$this->load->model('manage_kompetisi/M_manageKompetisi');
 	}
 
 	function get_karyaTim($kode){
