@@ -283,4 +283,34 @@ class M_koordinator extends CI_Model
         }
     }
 
+    // HASIL PENILAIAN
+    function get_tahapLomba_by_id($id_tahap){
+        $query = $this->db->get_where('tahap_penilaian', array('ID_TAHAP' => $id_tahap));
+        if ($query->num_rows() > 0) {
+            return $query->row();
+        }else{
+            return false;
+        }
+    }
+    function get_hasilPenilaian($id_tahap, $id_bidang){
+        // case
+        // 1. Berdasarkan nilai tertinggi (sudah ada data penilaian) / berdasarkan id tahap
+        $this->db->select('*');
+        $this->db->from('v_penilaian');
+        
+        if ($id_bidang != 0) {
+            $this->db->where('ID_BIDANG', $id_bidang);
+        }
+        
+        if ($id_tahap != 0) {
+            $this->db->where('TAHAP', $id_tahap);
+        }
+        $query = $this->db->get();
+        if ($query->num_rows() > 0) {
+            return $query->result();
+        }else{
+            return false;
+        }
+    }
+
 }
