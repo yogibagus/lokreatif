@@ -1,7 +1,7 @@
 <?php
 defined('BASEPATH') or exit('No direct script access allowed');
 
-class koordinator extends MX_Controller
+class Koordinator extends MX_Controller
 {
     public function __construct()
     {
