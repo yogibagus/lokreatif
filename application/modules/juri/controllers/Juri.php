@@ -26,7 +26,6 @@ class Juri extends MX_Controller {
 		$this->load->model('General');
 		$this->load->model('Admin/M_admin');
 		$this->load->model('Koordinator/M_koordinator');
-		$this->load->model('manage_kompetisi/M_manageKompetisi');
 	}
 
 	function get_karyaTim($kode){
@@ -148,7 +147,7 @@ class Juri extends MX_Controller {
 
 		$data['tahap']				= $this->M_admin->get_tahapPenilaian();
         $bidang_lomba 				= $this->M_koordinator->get_bidangLomba_by_id($this->bidang_juri(1));
-        $tahap_penilaian 			= $this->M_manageKompetisi->get_tahapLomba_by_id($tahap);
+        $tahap_penilaian 			= $this->M_juri->get_tahapLomba_by_id($tahap);
 
         if($tahap == false){
             $data['tahap_penilaian'] 	= "Pilih Tahap";
@@ -164,7 +163,7 @@ class Juri extends MX_Controller {
         $data['id_tahap'] 	= $tahap;
         $data['id_bidang'] 	= $this->bidang_juri(1);
 
-		$data['tim']		= $this->M_manageKompetisi->get_hasilPenilaian($tahap, $this->bidang_juri(1));
+		$data['tim']		= $this->M_juri->get_hasilPenilaian($tahap, $this->bidang_juri(1));
 
         $data['CI']			= $this;
 
@@ -189,7 +188,7 @@ class Juri extends MX_Controller {
 
 			$data['tahap']				= $this->M_admin->get_tahapPenilaian();
 	        $bidang_lomba 				= $this->M_koordinator->get_bidangLomba_by_id($this->bidang_juri(1));
-	        $tahap_penilaian 			= $this->M_manageKompetisi->get_tahapLomba_by_id($param);
+	        $tahap_penilaian 			= $this->M_juri->get_tahapLomba_by_id($param);
 	        $data['id_tahap'] 	= $param;
 	        $data['id_bidang'] 	= $this->bidang_juri(1);
 
@@ -224,6 +223,36 @@ class Juri extends MX_Controller {
 		} else {
 			$this->session->set_flashdata('error', "Terjadi kesalahan saat mengubah data nilai anda!!");
 			redirect($this->agent->referrer());
+		}
+	}
+
+	// HASIL PENILAIAN
+	function get_tahapLomba_by_id($id_tahap){
+		$query = $this->db->get_where('tahap_penilaian', array('ID_TAHAP' => $id_tahap));
+		if ($query->num_rows() > 0) {
+			return $query->row();
+		}else{
+			return false;
+		}
+	}
+	function get_hasilPenilaian($id_tahap, $id_bidang){
+		// case
+		// 1. Berdasarkan nilai tertinggi (sudah ada data penilaian) / berdasarkan id tahap
+		$this->db->select('*');
+		$this->db->from('v_penilaian');
+		
+		if ($id_bidang != 0) {
+			$this->db->where('ID_BIDANG', $id_bidang);
+		}
+		
+		if ($id_tahap != 0) {
+			$this->db->where('TAHAP', $id_tahap);
+		}
+		$query = $this->db->get();
+		if ($query->num_rows() > 0) {
+			return $query->result();
+		}else{
+			return false;
 		}
 	}
 

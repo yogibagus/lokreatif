@@ -39,7 +39,6 @@ class Koordinator extends MX_Controller
         $this->load->model('M_koordinator');
         $this->load->model('Admin/M_admin');
         $this->load->model('Juri/M_juri');
-        $this->load->model('Manage_kompetisi/M_manageKompetisi');
     }
 
     public function index(){
@@ -91,7 +90,7 @@ class Koordinator extends MX_Controller
 
         $data['tahap']              = $this->M_admin->get_tahapPenilaian();
         $koordinator                = $this->M_koordinator->get_koordinator_by_kode_user($this->kode_user);
-        $tahap_penilaian            = $this->M_manageKompetisi->get_tahapLomba_by_id($tahap);
+        $tahap_penilaian            = $this->M_juri->get_tahapLomba_by_id($tahap);
 
         if($tahap == false){
             $data['tahap_penilaian']    = "Pilih Tahap";
@@ -107,7 +106,7 @@ class Koordinator extends MX_Controller
         $data['id_tahap']   = $tahap;
         $data['id_bidang']  = $koordinator->ID_BIDANG;
 
-        $data['tim']        = $this->M_manageKompetisi->get_hasilPenilaian($tahap, $koordinator->ID_BIDANG);
+        $data['tim']        = $this->M_juri->get_hasilPenilaian($tahap, $koordinator->ID_BIDANG);
 
         $data['CI']         = $this;
 
