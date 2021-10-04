@@ -26,7 +26,7 @@ class Admin extends MX_Controller
 		}
 		$this->load->model('M_admin');
 		$this->load->model('Utilities/M_utilities');
-		// $this->load->model('Koordinator/M_koordinator');
+		$this->load->model('Koordinator/M_koordinator');
 		$this->load->model('General');
 	}
 
