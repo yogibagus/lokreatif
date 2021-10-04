@@ -22,9 +22,9 @@ class Manage_kompetisi extends MX_Controller {
 		}
 
 		$this->load->model('M_manageKompetisi', 'M_manage');
-		$this->load->model('admin/M_admin');
-        $this->load->model('juri/M_juri');
-		$this->load->model('koordinator/M_koordinator');
+		$this->load->model('Admin/M_admin');
+        $this->load->model('Juri/M_juri');
+		$this->load->model('Koordinator/M_koordinator');
 	}
 
   // BIDANG LOMBA

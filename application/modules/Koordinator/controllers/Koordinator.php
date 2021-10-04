@@ -37,9 +37,9 @@ class koordinator extends MX_Controller
 
         $this->load->model('General');
         $this->load->model('M_koordinator');
-        $this->load->model('admin/M_admin');
-        $this->load->model('juri/M_juri');
-        $this->load->model('manage_kompetisi/M_manageKompetisi');
+        $this->load->model('Admin/M_admin');
+        $this->load->model('Juri/M_juri');
+        $this->load->model('Manage_kompetisi/M_manageKompetisi');
     }
 
     public function index(){
