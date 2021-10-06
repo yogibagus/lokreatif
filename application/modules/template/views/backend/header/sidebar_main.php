@@ -302,6 +302,15 @@
 
                   <!-- Pengguna -->
                   <li class="nav-item">
+                    <a class="nav-link <?= ($this->uri->segment(1) == 'data-peserta' ? 'active' : '') ?>" href="<?= site_url('data-peserta') ?>" title="Data Peserta">
+                      <span class="tio-group-junior nav-icon"></span>
+                      <span class="text-truncate">Data Peserta</span>
+                    </a>
+                  </li>
+                  <!-- End Pengguna -->
+
+                  <!-- Pengguna -->
+                  <li class="nav-item">
                     <a class="nav-link <?= ($this->uri->segment(2) == 'verifikasi-berkas' ? 'active' : '') ?>" href="<?= site_url('koordinator/verifikasi-berkas') ?>" title="Data Peserta">
                       <i class="tio-files nav-icon"></i>
                       <span class="text-truncate"> Verifikai Berkas</span>

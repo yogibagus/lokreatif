@@ -47,7 +47,7 @@
 
         echo '
         <tr>
-        <td>'.$no.'</td>
+        <td></td>
         <td>'.$checkbox.'</td>
         <td>'.$item->NAMA_TIM.'</td>
         <td>'.($CI->M_admin->get_tahapData($item->TAHAP) == false ? "Menunggu seleksi" : $CI->M_admin->get_tahapData($item->TAHAP)->NAMA_TAHAP).'</td>
@@ -93,7 +93,7 @@
         $('#mdlBayarMulti_count').html(kodePendaftaran.length)
         $('#mdlBayarMulti_itemId').val(kodePendaftaran.toString())
         if (kodePendaftaran.length > 0) {
-          $('#submit').prop('checked', false);
+          $('#submit').prop('disabled', false);
           $('#siap').removeClass('d-none');
           $('#belum').addClass('d-none');
         }

@@ -62,11 +62,11 @@ class M_juri extends CI_Model {
 	}
 
 	function get_countTIM($id_tahap, $id_bidang, $kode_juri){
-		return $this->db->query("SELECT count(*) as semua, (SELECT count(*) FROM pendaftaran_kompetisi WHERE BIDANG_LOMBA = '$id_bidang' AND KODE_PENDAFTARAN IN (SELECT KODE_PENDAFTARAN FROM tb_penilaian WHERE KODE_JURI = '$kode_juri')) as sudah_nilai FROM pendaftaran_kompetisi WHERE BIDANG_LOMBA = '$id_bidang' AND STATUS_SELEKSI = {$id_tahap}")->row();
+		return $this->db->query("SELECT count(*) as semua, (SELECT count(*) FROM pendaftaran_kompetisi WHERE BIDANG_LOMBA = '$id_bidang' AND KODE_PENDAFTARAN IN (SELECT KODE_PENDAFTARAN FROM tb_penilaian WHERE KODE_JURI = '$kode_juri' AND ID_TAHAP = '$id_tahap')) as sudah_nilai FROM pendaftaran_kompetisi WHERE BIDANG_LOMBA = '$id_bidang' AND STATUS_SELEKSI = {$id_tahap}")->row();
 	}
 
 	function get_dataTIM($id_tahap, $id_bidang, $kode_juri){
-		$query = $this->db->query("SELECT * FROM pendaftaran_kompetisi a JOIN tb_karya b ON a.KODE_PENDAFTARAN = b.KODE_PENDAFTARAN WHERE a.KODE_PENDAFTARAN NOT IN (SELECT KODE_PENDAFTARAN FROM tb_penilaian WHERE KODE_JURI = '$kode_juri') AND BIDANG_LOMBA = '$id_bidang' AND STATUS_SELEKSI = {$id_tahap}");
+		$query = $this->db->query("SELECT * FROM pendaftaran_kompetisi a JOIN tb_karya b ON a.KODE_PENDAFTARAN = b.KODE_PENDAFTARAN WHERE a.KODE_PENDAFTARAN NOT IN (SELECT KODE_PENDAFTARAN FROM tb_penilaian WHERE KODE_JURI = '$kode_juri' AND ID_TAHAP = '$id_tahap') AND BIDANG_LOMBA = '$id_bidang' AND STATUS_SELEKSI = {$id_tahap}");
 		if ($query->num_rows() > 0) {
 			return $query->result();
 		}else{
@@ -75,7 +75,7 @@ class M_juri extends CI_Model {
 	}
 
 	function get_timNilai($id_tahap, $id_bidang, $kode_juri){
-		$query = $this->db->query("SELECT * FROM pendaftaran_kompetisi a JOIN tb_karya b ON a.KODE_PENDAFTARAN = b.KODE_PENDAFTARAN WHERE a.KODE_PENDAFTARAN NOT IN (SELECT KODE_PENDAFTARAN FROM tb_penilaian WHERE KODE_JURI = '$kode_juri') AND BIDANG_LOMBA = '$id_bidang' AND STATUS_SELEKSI = {$id_tahap}");
+		$query = $this->db->query("SELECT * FROM pendaftaran_kompetisi a JOIN tb_karya b ON a.KODE_PENDAFTARAN = b.KODE_PENDAFTARAN WHERE a.KODE_PENDAFTARAN NOT IN (SELECT KODE_PENDAFTARAN FROM tb_penilaian WHERE KODE_JURI = '$kode_juri' AND ID_TAHAP = '$id_tahap) AND BIDANG_LOMBA = '$id_bidang' AND STATUS_SELEKSI = {$id_tahap}");
 		if ($query->num_rows() > 0) {
 			return $query->result();
 		}else{
@@ -92,12 +92,12 @@ class M_juri extends CI_Model {
 		}
 	}
 
-	function get_riwayatNilai($KODE_PENDAFTARAN){
+	function get_riwayatNilai($tahap, $KODE_PENDAFTARAN){
 		$kode_juri = $this->session->userdata('kode_user');
 		$this->db->select('*');
 		$this->db->from('tb_penilaian a');
 		$this->db->join('kriteria_penilaian b', 'a.ID_KRITERIA = b.ID_KRITERIA');
-		$this->db->where(array('a.KODE_PENDAFTARAN' => $KODE_PENDAFTARAN, 'KODE_JURI' => $kode_juri));
+		$this->db->where(array('a.KODE_PENDAFTARAN' => $KODE_PENDAFTARAN, 'KODE_JURI' => $kode_juri, 'a.ID_TAHAP' => $tahap));
 		$query = $this->db->get();
 		if ($query->num_rows() > 0) {
 			return $query->result();
@@ -140,15 +140,16 @@ class M_juri extends CI_Model {
 			$ID_KRITERIA 		= $this->input->post('ID_KRITERIA', true);
 			$BOBOT 				= $this->input->post('BOBOT', true);
 			$NILAI 				= $this->input->post('NILAI_OLAH', true);
+			$NILAI_AWAL 	    = $this->input->post('NILAI', true);
 
+			// echo var_dump($BOBOT);
 			foreach ($ID_KRITERIA as $i => $a) {
-
 				$data = array(
 					'ID_TAHAP'  		=> $id_tahap,
 					'KODE_JURI'  		=> $kode_juri,
 					'KODE_PENDAFTARAN'  => $KODE_PENDAFTARAN,
 					'ID_KRITERIA'  		=> isset($ID_KRITERIA[$i]) ? $ID_KRITERIA[$i] : '',
-					'NILAI'  			=> number_format(isset($NILAI[$i]) ? $NILAI[$i] : '',2)
+					'NILAI'  			=> ($BOBOT[$i]*$NILAI_AWAL[$i]/100),
   				);
 				$this->db->insert('tb_penilaian',$data);
 				if ((($this->db->affected_rows() != 1) ? false : true) == false) {
@@ -158,7 +159,7 @@ class M_juri extends CI_Model {
 					break;
 				}
 			}
-			return ($this->db->affected_rows() != 1) ? false : true;
+			return true;
 		}
 	}
 
@@ -170,12 +171,13 @@ class M_juri extends CI_Model {
 			$ID_KRITERIA 		= $this->input->post('ID_KRITERIA', true);
 			$BOBOT 				= $this->input->post('BOBOT', true);
 			$NILAI 				= $this->input->post('NILAI_OLAH', true);
+			$NILAI_AWAL 	    = $this->input->post('NILAI', true);
 
 			foreach ($ID_PENILAIAN as $i => $a) {
 
 				$data = array(
 					'ID_KRITERIA'  		=> isset($ID_KRITERIA[$i]) ? $ID_KRITERIA[$i] : '',
-					'NILAI'  			=> number_format(isset($NILAI[$i]) ? $NILAI[$i] : '',2)
+					'NILAI'  			=> ($BOBOT[$i]*$NILAI_AWAL[$i]/100),
   				);
 				$this->db->where('ID_PENILAIAN',$ID_PENILAIAN[$i]);
 				$this->db->update('tb_penilaian',$data);

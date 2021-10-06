@@ -51,7 +51,7 @@
             <p class="card-text">Tidak dapat menampilkan hasil penilaian, harap pilih tahap penilaian terlebih dahulu.</p>
           </div>
         <?php else:?>
-          <table id="myTable" class="table table-borderless table-thead-bordered table-nowrap table-text-center table-align-middle card-table w-100">
+          <table id="myTableNilai" class="table table-borderless table-thead-bordered table-nowrap table-text-center table-align-middle card-table w-100">
             <thead class="thead-light">
               <tr>
                 <th scope="col" style="width: 2rem;">Peringkat</th>
@@ -64,23 +64,7 @@
             <tbody>
               <?php if ($tim != false): $no = 1;foreach ($tim as $key):?>
                 <tr>
-                  <td>
-                    <?php switch ($no) {
-                      case 1:
-                        echo '<span class="text-warning" style="font-size: 1.5rem;">🥇</span>';
-                        break;
-                      case 2:
-                        echo '<span class="text-secondary" style="font-size: 1.5rem;">🥈</span>';
-                        break;
-                      case 3:
-                        echo '<span style="font-size: 1.5rem; color: #924b18;">🥉</span>';
-                        break;
-                      
-                      default:
-                        echo $no;
-                        break;
-                    };?>
-                  </td>
+                  <td></td>
                   <td class="text-left">
                     <div class="ml-3">
                       <span class="d-block h5 text-hover-primary mb-0"><?= $key->NAMA_TIM;?></span>

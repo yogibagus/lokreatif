@@ -50,7 +50,7 @@
 
   <script src="<?= base_url();?>assets/backend/vendor/hs-navbar-vertical-aside/hs-navbar-vertical-aside-mini-cache.js"></script>
   <?php $this->load->view('header/main_header.php') ?>
-  <?php if ($this->uri->segment(1) == 'juri' && $this->uri->segment(2) == 'penilaian'):?>
+  <?php if ($this->uri->segment(1) == 'juri' && $this->uri->segment(2) == 'penilaian' || $this->uri->segment(2) == 'riwayat-penilaian'):?>
     <script type="text/javascript">
       $(document).ready(function() {
         window.onload = function(){
@@ -177,6 +177,27 @@
       "scrollX": true
     } );
 
+
+    var t = $('#myTableNilai').DataTable( {
+        "columnDefs": [ {
+            "searchable": false,
+            "orderable": false,
+            "targets": 0
+        } ],
+        "language": {
+          "emptyTable": '<div class="text-center p-4">' +
+          '<img class="mb-3" src="<?= base_url() ?>assets/backend/svg/illustrations/sorry.svg" alt="Image Description" style="width: 7rem;">' +
+          '<p class="mb-0">Tidak ada data untuk ditampilkan</p>' +
+          '</div>'
+        },
+        "order": [[ 3, 'desc' ]]
+    } );
+ 
+    t.on( 'order.dt search.dt', function () {
+        t.column(0, {search:'applied', order:'applied'}).nodes().each( function (cell, i) {
+            cell.innerHTML = i+1;
+        } );
+    } ).draw();
 
   // INITIALIZATION OF MEGA MENU
   // =======================================================

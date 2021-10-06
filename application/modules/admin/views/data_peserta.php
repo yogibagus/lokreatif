@@ -9,8 +9,22 @@
           <li class="breadcrumb-item active" aria-current="page">Data Peserta</li>
         </ol>
       </nav>
-
-      <h1 class="page-header-title">Data Peserta</h1>
+      <div class="d-flex justify-content-between">
+          <h1 class="page-header-title mt-3 mb-3">Data Peserta - Bidang Lomba <span class="badge badge-primary"><?= $bidang_lomba ?></span></h1>
+          <?php if ($this->session->userdata('role') == 0) { ?>
+              <div class="dropdown mt-2">
+                  <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                      Bidang Lomba
+                  </button>
+                  <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                      <a class="dropdown-item" href="<?= base_url('data-peserta/') ?>">Semua Lomba</a>
+                      <?php foreach ($all_bidang_lomba as $row) { ?>
+                          <a class="dropdown-item" href="<?= base_url('data-peserta/' . $row->ID_BIDANG) ?>"><?= $row->BIDANG_LOMBA ?></a>
+                      <?php } ?>
+                  </div>
+              </div>
+          <?php } ?>
+      </div>
     </div>
 
     <div class="col-sm-auto">
@@ -26,11 +40,11 @@
     <!-- Card -->
     <div class="card h-100">
       <div class="card-body">
-        <h6 class="card-subtitle mb-2">Total peserta</h6>
+        <h6 class="card-subtitle mb-2">Total TIM</h6>
 
         <div class="row align-items-center gx-2">
           <div class="col">
-            <span class="js-counter display-4 text-dark"><?= number_format($countPeserta,0,",",".");?></span>
+            <span class="js-counter display-4 text-dark"><?= number_format($jmlTim->JML_TIM,0,",",".")?></span>
           </div>
         </div>
         <!-- End Row -->
@@ -43,18 +57,11 @@
     <!-- Card -->
     <div class="card h-100">
       <div class="card-body">
-        <h6 class="card-subtitle mb-2">Peserta baru</h6>
+        <h6 class="card-subtitle mb-2">Total Peserta</h6>
 
         <div class="row align-items-center gx-2">
           <div class="col">
-            <span class="js-counter display-4 text-dark"><?= number_format($NewPeserta,0,",",".");?></span>
-          </div>
-
-          <div class="col-auto">
-            <span class="badge badge-soft-<?= ($NewPeserta == 0 ? 'secondary' : ($NewPeserta > $countPeserta ? 'success' : 'danger'));?> p-1">
-              <i class="<?= ($NewPeserta == 0 ? 'tio-voice-line' : ($NewPeserta > $countPeserta ? 'tio-trending-up' : 'tio-trending-down'));?>"></i>
-              <?= ($NewPeserta == 0 ? '0' : round(((($countPeserta-$NewPeserta) / $countPeserta) * 100), 1)) ?>%
-            </span>
+            <span class="js-counter display-4 text-dark"><?= number_format($jmlMhs->JML_MHS,0,",",".")?></span>
           </div>
         </div>
         <!-- End Row -->
@@ -67,18 +74,11 @@
     <!-- Card -->
     <div class="card h-100">
       <div class="card-body">
-        <h6 class="card-subtitle mb-2">Peserta non-aktif</h6>
+        <h6 class="card-subtitle mb-2">Total PTS</h6>
 
         <div class="row align-items-center gx-2">
           <div class="col">
-            <span class="js-counter display-4 text-dark"><?= number_format($nonPeserta,0,",",".");?></span>
-          </div>
-
-          <div class="col-auto">
-            <span class="badge badge-soft-<?= ($diffNonPeserta == $nonPeserta ? 'secondary' : ($diffNonPeserta < $nonPeserta ? 'success' : 'danger'));?> p-1">
-              <i class="<?= ($diffNonPeserta == $nonPeserta ? 'tio-voice-line' : ($diffNonPeserta < $nonPeserta ? 'tio-trending-up' : 'tio-trending-down'));?>"></i>
-              <?= ($nonPeserta == 0 ? '0' : round(((($nonPeserta-$diffNonPeserta) / $nonPeserta) * 100), 1)) ?>%
-            </span>
+            <span class="js-counter display-4 text-dark"><?= number_format($jmlPTS,0,",",".")?></span>
           </div>
         </div>
         <!-- End Row -->
@@ -86,6 +86,7 @@
     </div>
     <!-- End Card -->
   </div>
+
 </div>
 <!-- End Stats -->
 
@@ -98,34 +99,60 @@
         <thead class="thead-light">
           <tr>
             <th class="table-column-pr-0">No</th>
-            <th class="table-column-pl-0">Nama</th>
-            <th>Jenis Kelamin</th>
-            <th>Telepon</th>
-            <!-- <th>Instansi/Role</th> -->
+            <th class="table-column-pl-0">Nama TIM</th>
+            <th>Asal PTS</th>
+            <th>Status</th>
             <th></th>
           </tr>
         </thead>
 
         <tbody>
-          <?php if ($countPeserta > 0): ?>
+          <?php if ($peserta != false): ?>
             <?php $no = 1; foreach ($peserta as $key): ?>
             <tr>
               <td class="table-column-pr-0"><?= $no++; ?></td>
               <td class="table-column-pl-0">
                 <a class="d-flex align-items-center" href="mailto:<?= $key->EMAIL ?>">
-                  <div class="avatar avatar-circle">
-                    <img class="avatar-img" src="<?= ($key->PROFIL == null ? base_url().'assets/frontend/img/100x100/img12.jpg' : base_url().'berkas/peserta/'.$key->KODE_USER.'/foto/'.$key->PROFIL);?>" alt="Image Description">
-                  </div>
                   <div class="ml-3">
-                    <span class="d-block h5 text-hover-primary mb-0"><?= $key->NAMA ?></span>
+                    <span class="d-block h5 text-hover-primary mb-0"><?= $key->NAMA_TIM ?></span>
                     <span class="d-block font-size-sm text-body"><?= $key->EMAIL ?></span>
                   </div>
                 </a>
               </td>
-              <td><?= ($key->JK == "L" ? "Laki-laki" : "Perempuan") ?></td>
-              <td><a href="tel:+62<?= $key->HP ?>">+62<?= $key->HP ?></a></td>
+              <td><?= $CI->M_admin->get_pesertaPendaftaran($key->KODE_USER)->namapt;?></td>
               <td>
-                <a class="btn btn-sm btn-white" data-toggle="modal" data-target="#detailUser<?= $key->KODE_USER;?>">
+                <?php if ($CI->M_admin->get_pesertaPendaftaran($key->KODE_USER) == false) :?>
+                  <span class="btn btn-sm btn-secondary">Belum mendaftar LO Kreatif 2021</span>
+                <?php else:?>
+                  <?php if($CI->M_admin->cek_pembayaranPeserta($key->KODE_PENDAFTARAN) == TRUE):?>
+                    <?php switch ($CI->M_admin->get_pesertaPendaftaran($key->KODE_USER)->STATUS) {
+                      case 0:
+                        echo '<span class="btn btn-sm btn-secondary">Menunggu verifikasi berkas</span>';
+                        break;
+
+                      case 1:
+                        echo '<span class="btn btn-sm btn-success">Berkas telah diverifikasi</span>';
+                        break;
+
+                      case 2:
+                        echo '<span class="btn btn-sm btn-danger">Berkas ditolak</span>';
+                        break;
+
+                      case 3:
+                        echo '<span class="btn btn-sm btn-warning">Masuk ke babak Final</span>';
+                        break;
+                      
+                      default:
+                        echo '<span class="btn btn-sm btn-secondary">Menunggu verifikasi berkas</span>';
+                        break;
+                    };?>
+                  <?php else:?>
+                    <span class="btn btn-sm btn-danger">Belum melakukan pembayaran</span>
+                  <?php endif;?>
+                <?php endif;?>
+              </td>
+              <td>
+                <a class="btn btn-sm btn-white pick-tim" data-toggle="modal" data-target="#detailUser<?= $key->KODE_USER;?>" id="<?= $key->KODE_USER;?>">
                   <i class="tio-eye"></i> View
                 </a>
               </td>
@@ -141,165 +168,9 @@
                     <button type="button" class="btn btn-white mr-2" data-dismiss="modal" aria-label="Close">Tutup</button>
                   </div>
                   <!-- End Header -->
-
-                  <!-- Body -->
-                  <div class="modal-body">
-                    <!-- Profile Cover -->
-                    <div class="profile-cover">
-                      <div class="profile-cover-img-wrapper">
-                        <img id="detailProfileCoverImgModal" class="profile-cover-img" src="<?= base_url() ?>assets/backend/img/1920x400/img1.jpg" alt="<?= $key->NAMA ?>">
-                      </div>
-                    </div>
-                    <!-- End Profile Cover -->
-
-                    <!-- Avatar -->
-                    <label class="avatar avatar-xxl avatar-circle avatar-border-lg profile-cover-avatar mb-5" for="detailAvatarUploaderModal">
-                      <img id="detailAvatarImgModal" class="avatar-img" src="<?= ($key->PROFIL == null ? base_url().'assets/frontend/img/100x100/img12.jpg' : base_url().'berkas/peserta/'.$key->KODE_USER.'/foto/'.$key->PROFIL);?>" alt="<?= $key->NAMA ?>">
-                    </label>
-                    <!-- End Avatar -->
-
-                    <!-- Form Group -->
-                    <div class="row form-group">
-                      <label for="detailFirstNameModalLabel" class="col-sm-3 col-form-label input-label">Nama Lengkap</label>
-
-                      <div class="col-sm-9">
-                        <div class="js-form-message input-group input-group-sm-down-break">
-                          <input type="text" class="form-control" name="detailFirstNameModal" id="detailFirstNameModalLabel" value="<?= $key->NAMA;?>" readonly>
-                        </div>
-                      </div>
-                    </div>
-                    <!-- End Form Group -->
-
-                    <!-- Form Group -->
-                    <div class="row form-group">
-                      <label for="detailEmailModalLabel" class="col-sm-3 col-form-label input-label">Email</label>
-
-                      <div class="col-sm-9">
-                        <div class="js-form-message">
-                          <!-- Input Group -->
-                          <div class="input-group input-group-merge">
-                            <input type="email" class="form-control" name="detailEmailModal" id="detailEmailModalLabel" value="<?= $key->EMAIL;?>" readonly>
-                            <a class="input-group-append" href="mailto:<?= $key->EMAIL;?>" target="_blank">
-                              <span class="input-group-text p-2">
-                                send mail
-                              </span>
-                            </a>
-                          </div>
-                          <!-- End Input Group -->
-                        </div>
-                      </div>
-                    </div>
-                    <!-- End Form Group -->
-
-                    <!-- Form Group -->
-                    <div class="row form-group">
-                      <label for="detailEmailModalLabel" class="col-sm-3 col-form-label input-label">Telepon</label>
-
-                      <div class="col-sm-4">
-                        <div class="js-form-message">
-                        </div>
-                        <!-- Input Group -->
-                        <div class="input-group input-group-merge">
-                          <input type="text" class="form-control" name="detailEmailModal" id="detailEmailModalLabel" value="+62<?= $key->HP;?>" readonly>
-                          <span class="input-group-append">
-                            <a href="https://api.whatsapp.com/send?text=Hai&phone=+62<?= $key->HP;?>" target="_blank">
-                              <span class="input-group-text" style="padding-top: .75rem !important">
-                                <i class="tio-whatsapp"></i>
-                              </span>
-                            </a>
-                            <a href="tel:+62<?= $key->HP;?>" target="_blank">
-                              <span class="input-group-text" style="padding-top: .75rem !important">
-                                <i class="tio-call-talking"></i>
-                              </span>
-                            </a>
-                          </span>
-                        </div>
-                        <!-- End Input Group -->
-                      </div>
-                      <label for="detailEmailModalLabel" class="col-sm-3 col-form-label input-label">Jenis Kelamin</label>
-
-                      <div class="col-sm-2">
-                        <div class="js-form-message">
-                          <input type="text" class="form-control" name="detailEmailModal" id="detailEmailModalLabel" value="<?= $key->JK;?>" readonly>
-                        </div>
-                      </div>
-                    </div>
-                    <!-- End Form Group -->
-                    <hr>
-                    <?php if ($CI->M_admin->get_pesertaPendaftaran($key->KODE_USER) == false) :?>
-                      <div class="alert alert-info">
-                        <p class="mb-0 text-center">Belum mendaftarkan diri dalam kompetisi LO Kreatif 2021</p>
-                      </div>
-                    <?php else:?>
-
-                    <!-- Form Group -->
-                    <div class="row form-group">
-                      <label for="detailFirstNameModalLabel" class="col-sm-3 col-form-label input-label">Bidang Lomba</label>
-
-                      <div class="col-sm-9">
-                        <div class="js-form-message input-group input-group-sm-down-break">
-                          <input type="text" class="form-control" name="detailFirstNameModal" id="detailFirstNameModalLabel" value="<?= $CI->M_admin->get_pesertaPendaftaran($key->KODE_USER)->LOMBA;?>" readonly>
-                        </div>
-                      </div>
-                    </div>
-                    <!-- End Form Group -->
-
-                    <!-- Form Group -->
-                    <div class="row form-group">
-                      <label for="detailFirstNameModalLabel" class="col-sm-3 col-form-label input-label">Asal PTS</label>
-
-                      <div class="col-sm-9">
-                        <div class="js-form-message input-group input-group-sm-down-break">
-                          <input type="text" class="form-control" name="detailFirstNameModal" id="detailFirstNameModalLabel" value="<?= $CI->M_admin->get_pesertaPendaftaran($key->KODE_USER)->namapt;?>" readonly>
-                        </div>
-                      </div>
-                    </div>
-                    <!-- End Form Group -->
-
-                    <!-- Form Group -->
-                    <div class="row form-group">
-                      <label for="detailFirstNameModalLabel" class="col-sm-3 col-form-label input-label">Nama TIM</label>
-
-                      <div class="col-sm-9">
-                        <div class="js-form-message input-group input-group-sm-down-break">
-                          <input type="text" class="form-control" name="detailFirstNameModal" id="detailFirstNameModalLabel" value="<?= $CI->M_admin->get_pesertaPendaftaran($key->KODE_USER)->NAMA_TIM;?>" readonly>
-                        </div>
-                      </div>
-                    </div>
-                    <!-- End Form Group -->
-
-                    <!-- Form Group -->
-                    <div class="row form-group">
-                      <label for="detailFirstNameModalLabel" class="col-sm-3 col-form-label input-label">Status TIM</label>
-
-                      <div class="col-sm-9">
-                        <?php switch ($CI->M_admin->get_pesertaPendaftaran($key->KODE_USER)->STATUS) {
-                          case 0:
-                            echo '<span class="btn btn-sm btn-secondary">Menunggu proses verifikasi</span>';
-                            break;
-
-                          case 1:
-                            echo '<span class="btn btn-sm btn-success">Berkas telah diverifikasi</span>';
-                            break;
-
-                          case 2:
-                            echo '<span class="btn btn-sm btn-danger">Berkas ditolak</span>';
-                            break;
-
-                          case 3:
-                            echo '<span class="btn btn-sm btn-warning">Masuk ke babak Final</span>';
-                            break;
-                          
-                          default:
-                            echo '<span class="btn btn-sm btn-secondary">Menunggu proses verifikasi</span>';
-                            break;
-                        };?>
-                      </div>
-                    </div>
-                    <!-- End Form Group -->
-                    <?php endif;?>
+                  <div id="detail-peserta<?= $key->KODE_USER;?>">
+                    
                   </div>
-                  <!-- End Form Group -->
                 </div>
                 <!-- End Body -->
               </div>
@@ -314,3 +185,20 @@
 <!-- End Table -->
 </div>
 <!-- End Card -->
+
+<script type="text/javascript">
+  $(document).ready(function() {
+    $('.pick-tim').click(function(e) {  
+      var kode = $(this).attr('id');
+      $("#detail-peserta"+kode).html(`<center class="mt-lg-10 my-auto mx-lg-10"><span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Sedang memuat data peserta...</center></br></br></br>`);
+      jQuery.ajax({
+        url: "<?= base_url('admin/get_detailPeserta/') ?>"+kode,
+        type: "GET",
+        success: function(data) {
+          $("#detail-peserta"+kode).html(data);
+        }
+      });
+      console.log(kode);
+    });
+  });
+</script>

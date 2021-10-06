@@ -11,30 +11,34 @@
         <h1 class="display-4 font-weight-bold mb-2 mt-3">
           <?= $WEB_JUDUL;?> <?= date("Y");?>
         </h1>
-        <!-- Countdown -->
-        <div class="js-countdown text-center justify-content-center row mb-1"
-             data-hs-countdown-options='{
-               "endDate": "2021/10/24"
-             }'>
-          <div class="col-2">
-            <span class="font-size-3 text-primary font-weight-bold mb-0"><?= $days;?></span>
-            <span class="h5 d-block mb-0">Days</span>
+        <?php if ($days != false) :?>
+          <!-- Countdown -->
+          <div class="js-countdown text-center justify-content-center row mb-1"
+               data-hs-countdown-options='{
+                 "endDate": "2021/10/24"
+               }'>
+            <div class="col-2">
+              <span class="font-size-3 text-primary font-weight-bold mb-0"><?= $days;?></span>
+              <span class="h5 d-block mb-0">Days</span>
+            </div>
+            <div class="col-2">
+              <span class="js-cd-hours font-size-3 text-primary font-weight-bold mb-0"></span>
+              <span class="h5 d-block mb-0">Hours</span>
+            </div>
+            <div class="col-2">
+              <span class="js-cd-minutes font-size-3 text-primary font-weight-bold mb-0"></span>
+              <span class="h5 d-block mb-0">Mins</span>
+            </div>
+            <div class="col-2">
+              <span class="js-cd-seconds font-size-3 text-primary font-weight-bold mb-0"></span>
+              <span class="h5 d-block mb-0">Secs</span>
+            </div>
           </div>
-          <div class="col-2">
-            <span class="js-cd-hours font-size-3 text-primary font-weight-bold mb-0"></span>
-            <span class="h5 d-block mb-0">Hours</span>
-          </div>
-          <div class="col-2">
-            <span class="js-cd-minutes font-size-3 text-primary font-weight-bold mb-0"></span>
-            <span class="h5 d-block mb-0">Mins</span>
-          </div>
-          <div class="col-2">
-            <span class="js-cd-seconds font-size-3 text-primary font-weight-bold mb-0"></span>
-            <span class="h5 d-block mb-0">Secs</span>
-          </div>
-        </div>
-        <!-- End Countdown -->
-        <p>Batas waktu pendaftaran dan unggah karya</p>
+          <!-- End Countdown -->
+          <p>Batas waktu pendaftaran dan unggah karya</p>
+        <?php else:?>
+          <span class="font-size-2 font-weight-bold mb-0">Pendaftaran dan upload karya telah ditutup</span>
+        <?php endif;?>
       </div>
     </div>
     <?php else:?>
@@ -44,30 +48,34 @@
         <h1 class="display-4 font-weight-bold mb-3">
           <?= $WEB_JUDUL;?> <?= date("Y");?>
         </h1>
-        <!-- Countdown -->
-        <div class="js-countdown row mb-1"
-             data-hs-countdown-options='{
-               "endDate": "2021/10/24"
-             }'>
-          <div class="col-2">
-            <span class="font-size-4 text-primary font-weight-bold mb-0"><?= $days;?></span>
-            <span class="h4 d-block mb-0">Days</span>
+        <?php if ($days != false) :?>
+          <!-- Countdown -->
+          <div class="js-countdown row mb-1"
+               data-hs-countdown-options='{
+                 "endDate": "2021/10/24"
+               }'>
+            <div class="col-2">
+              <span class="font-size-4 text-primary font-weight-bold mb-0"><?= $days;?></span>
+              <span class="h4 d-block mb-0">Days</span>
+            </div>
+            <div class="col-2">
+              <span class="js-cd-hours font-size-4 text-primary font-weight-bold mb-0"></span>
+              <span class="h4 d-block mb-0">Hours</span>
+            </div>
+            <div class="col-2">
+              <span class="js-cd-minutes font-size-4 text-primary font-weight-bold mb-0"></span>
+              <span class="h4 d-block mb-0">Mins</span>
+            </div>
+            <div class="col-2">
+              <span class="js-cd-seconds font-size-4 text-primary font-weight-bold mb-0"></span>
+              <span class="h4 d-block mb-0">Secs</span>
+            </div>
           </div>
-          <div class="col-2">
-            <span class="js-cd-hours font-size-4 text-primary font-weight-bold mb-0"></span>
-            <span class="h4 d-block mb-0">Hours</span>
-          </div>
-          <div class="col-2">
-            <span class="js-cd-minutes font-size-4 text-primary font-weight-bold mb-0"></span>
-            <span class="h4 d-block mb-0">Mins</span>
-          </div>
-          <div class="col-2">
-            <span class="js-cd-seconds font-size-4 text-primary font-weight-bold mb-0"></span>
-            <span class="h4 d-block mb-0">Secs</span>
-          </div>
-        </div>
-        <!-- End Countdown -->
-        <p>Batas waktu pendaftaran dan unggah karya</p>
+          <!-- End Countdown -->
+          <p>Batas waktu pendaftaran dan unggah karya</p>
+        <?php else:?>
+          <span class="font-size-2 font-weight-bold mb-0">Pendaftaran dan upload karya telah ditutup</span>
+        <?php endif;?>
       </div>
     </div>
 
@@ -292,3 +300,15 @@
   </svg>
 </figure>
 <!-- End SVG Top Shape -->
+    
+<!-- Bottom right menu -->
+<div class="fab-container transition-3d-hover">
+  <div class="fab-button shadow">
+    <div class="fab-content">
+      <a href="https://api.whatsapp.com/send?text=Hai&phone=62<?= $WEB_WA;?>" class="text-white" target="_blank">
+        <i class="fab fa-whatsapp"></i>
+      </a>
+    </div>
+  </div>
+</div>
+<!-- /bottom right menu -->
