@@ -43,13 +43,22 @@
 
   <script src="https://cdn.datatables.net/1.10.24/js/jquery.dataTables.min.js"></script>
   <script src="https://cdn.datatables.net/1.10.24/js/dataTables.bootstrap4.min.js"></script>
+  <script src="<?= base_url();?>assets/frontend/js/apexchart.js"></script>
 </head>
 
 <body class="footer-offset">
 
   <script src="<?= base_url();?>assets/backend/vendor/hs-navbar-vertical-aside/hs-navbar-vertical-aside-mini-cache.js"></script>
-
   <?php $this->load->view('header/main_header.php') ?>
+  <?php if ($this->uri->segment(1) == 'juri' && $this->uri->segment(2) == 'penilaian' || $this->uri->segment(2) == 'riwayat-penilaian'):?>
+    <script type="text/javascript">
+      $(document).ready(function() {
+        window.onload = function(){
+          $('#fullscreen-juri').trigger('click');
+        }
+      });
+    </script>
+  <?php endif;?>
 
   <!-- ========== MAIN CONTENT ========== -->
 
@@ -62,14 +71,8 @@
   </main>
   <!-- ========== END MAIN CONTENT ========== -->
 
-  <!-- JS Implementing Plugins -->
-  <script src="<?= base_url();?>assets/backend/vendor/chart.js/dist/Chart.min.js"></script>
-  <script src="<?= base_url();?>assets/backend/vendor/chart.js.extensions/chartjs-extensions.js"></script>
-  <script src="<?= base_url();?>assets/backend/vendor/chartjs-plugin-datalabels/dist/chartjs-plugin-datalabels.min.js"></script>
-
-
   <!-- ========== SECONDARY CONTENTS ========== -->
-
+<?php if($this->session->userdata('role') == 0):?>
   <!-- Activity -->
   <div id="activitySidebar" class="hs-unfold-content sidebar sidebar-bordered sidebar-box-shadow">
     <div class="card card-lg sidebar-card">
@@ -119,6 +122,7 @@
 </div>
 </div>
 <!-- End Activity -->
+<?php endif;?>
 <!-- ========== END SECONDARY CONTENTS ========== -->
 
 <?php if ($this->session->flashdata('warning') || $this->session->flashdata('error') || $this->session->flashdata('success')) { ?>
@@ -164,9 +168,36 @@
 
 
     $('#myTable').DataTable( {
+      "language": {
+        "emptyTable": '<div class="text-center p-4">' +
+        '<img class="mb-3" src="<?= base_url() ?>assets/backend/svg/illustrations/sorry.svg" alt="Image Description" style="width: 7rem;">' +
+        '<p class="mb-0">Tidak ada data untuk ditampilkan</p>' +
+        '</div>'
+      },
       "scrollX": true
     } );
 
+
+    var t = $('#myTableNilai').DataTable( {
+        "columnDefs": [ {
+            "searchable": false,
+            "orderable": false,
+            "targets": 0
+        } ],
+        "language": {
+          "emptyTable": '<div class="text-center p-4">' +
+          '<img class="mb-3" src="<?= base_url() ?>assets/backend/svg/illustrations/sorry.svg" alt="Image Description" style="width: 7rem;">' +
+          '<p class="mb-0">Tidak ada data untuk ditampilkan</p>' +
+          '</div>'
+        },
+        "order": [[ 3, 'desc' ]]
+    } );
+ 
+    t.on( 'order.dt search.dt', function () {
+        t.column(0, {search:'applied', order:'applied'}).nodes().each( function (cell, i) {
+            cell.innerHTML = i+1;
+        } );
+    } ).draw();
 
   // INITIALIZATION OF MEGA MENU
   // =======================================================

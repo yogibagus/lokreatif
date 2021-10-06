@@ -164,22 +164,7 @@ class M_manageKompetisi extends CI_Model {
 		$PEKERJAAN 		= $this->input->post('PEKERJAAN');
 		$EMAIL 			= htmlspecialchars($this->input->post('EMAIL'), true);
 		$HP 			= htmlspecialchars($this->input->post('HP'), true);
-		$PASSWORD 		= htmlspecialchars($this->input->post('PASSWORD'), true);
-		$BIDANG_JURI 	= htmlspecialchars($this->input->post('BIDANG_JURI'), true);
-
-		if (isset($PASSWORD) || !empty($PASSWORD) || $PASSWORD != null || $PASSWORD != "") {
-			$data = array(
-				'EMAIL'			=> $EMAIL,
-				'PASSWORD'		=> password_hash($PASSWORD, PASSWORD_DEFAULT),
-			);
-		}else{
-			$data = array(
-				'EMAIL'			=> $EMAIL,
-			);
-		}
-
-		$this->db->where('KODE_USER', $KODE_USER);
-		$this->db->update('tb_auth', $data);
+		$BIDANG_JURI 	= $this->input->post('BIDANG_JURI');
 
 		$peserta = array(
 			'NAMA'  			=> $NAMA_JURI,
@@ -200,6 +185,22 @@ class M_manageKompetisi extends CI_Model {
 		return true;
 	}
 
+	function pass_juri(){
+		$KODE_USER 		= $this->input->post('KODE_USER');
+		$PASSWORD 		= $this->input->post('PASSWORD');
+		$BIDANG_JURI 	= $this->input->post('BIDANG_JURI');
+
+		$data = array(
+			'PASSWORD'	=> password_hash($PASSWORD, PASSWORD_DEFAULT),
+		);
+
+		$this->db->where('KODE_USER', $KODE_USER);
+		$this->db->update('tb_auth', $data);
+		
+		return ($this->db->affected_rows() != 1) ? false : true;
+
+	}
+
 	function hapus_juri(){
 		$ID 			= $this->input->post('ID');
 		$KODE_USER 		= $this->input->post('KODE_USER');
@@ -211,6 +212,36 @@ class M_manageKompetisi extends CI_Model {
 		$this->db->delete('tb_auth');
 		return ($this->db->affected_rows() != 1) ? false : true;
 
+	}
+
+	// HASIL PENILAIAN
+	function get_tahapLomba_by_id($id_tahap){
+		$query = $this->db->get_where('tahap_penilaian', array('ID_TAHAP' => $id_tahap));
+		if ($query->num_rows() > 0) {
+			return $query->row();
+		}else{
+			return false;
+		}
+	}
+	function get_hasilPenilaian($id_tahap, $id_bidang){
+		// case
+		// 1. Berdasarkan nilai tertinggi (sudah ada data penilaian) / berdasarkan id tahap
+		$this->db->select('*');
+		$this->db->from('v_penilaian');
+		
+		if ($id_bidang != 0) {
+			$this->db->where('ID_BIDANG', $id_bidang);
+		}
+		
+		if ($id_tahap != 0) {
+			$this->db->where('TAHAP', $id_tahap);
+		}
+		$query = $this->db->get();
+		if ($query->num_rows() > 0) {
+			return $query->result();
+		}else{
+			return false;
+		}
 	}
 
 	//TAHAP PENILAIAN
@@ -264,6 +295,19 @@ class M_manageKompetisi extends CI_Model {
 			'DATE_END'			=> $TANGGAL_BERAKHIR,
 			'TIME_END'			=> $WAKTU_BERAKHIR,
 			'TEAM'				=> $TEAM,
+		);
+
+		$this->db->where('ID_TAHAP', $ID_TAHAP);
+		$this->db->update('tahap_penilaian', $data);
+		return ($this->db->affected_rows() != 1) ? false : true;
+	}
+
+	function update_status_tahap(){
+		$ID_TAHAP 		= $this->input->post('ID_TAHAP');
+		$STATUS 		= $this->input->post('STATUS');
+
+		$data = array(
+			'STATUS'			=> $STATUS
 		);
 
 		$this->db->where('ID_TAHAP', $ID_TAHAP);

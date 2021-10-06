@@ -3,7 +3,7 @@
   <div class="card card-frame card-frame-highlighted mb-4">
     <!-- Alert -->
     <div class="alert alert-soft-danger text-center rounded-0 mb-0" role="alert">
-      Harap melakukan aktivasi akun terlebih dahulu untuk dapat mengakses fitur NESTIVENT. <a class="alert-link" href="<?= site_url('hold-verification') ?>">AKTIVASI SEKARANG</a>
+      Harap melakukan aktivasi akun terlebih dahulu untuk dapat mengelolah akun anda. <a class="alert-link" href="<?= site_url('hold-verification') ?>">AKTIVASI SEKARANG</a>
     </div>
     <!-- End Alert -->
   </div>
@@ -11,7 +11,7 @@
 <?php endif; ?>
 
 <div class="row mb-4">
-  <div class="col-md-6 col-sm-12">
+  <div class="col-12">
     <a href="<?= site_url(($daftarKompetisi > 0 ? 'peserta/data-pendaftaran' : 'daftar-kompetisi'));?>" class="card card-frame h-100">
       <div class="card-body">
         <!-- Icon Block -->
@@ -20,25 +20,8 @@
             <img class="img-fluid" src="<?= base_url();?>assets/frontend/svg/icons/icon-7.svg" alt="SVG">
           </figure>
           <div class="media-body">
-            <h2 class="h4 <?= $daftarKompetisi > 0 ? 'text-success' : 'text-warning';?>"><?= $daftarKompetisi > 0 ? 'Terdaftar dilomba' : 'Daftar lomba sekarang';?></h2>
-            <p class="font-size-1 text-body mb-0"><?= $daftarKompetisi > 0 ? 'Telah mengikuti' : 'Belum mengikuti';?> kompetisi <?= $WEB_JUDUL;?></p>
-          </div>
-        </div>
-        <!-- End Icon Block -->
-      </div>
-    </a>
-  </div>
-  <div class="col-md-6 col-sm-12">
-    <a href="<?= site_url('peserta/kegiatan');?>" class="card card-frame h-100">
-      <div class="card-body">
-        <!-- Icon Block -->
-        <div class="media d-block d-sm-flex">
-          <figure class="w-100 max-w-8rem mb-2 mb-sm-0 mr-sm-4">
-            <img class="img-fluid" src="<?= base_url();?>assets/frontend/svg/icons/icon-18.svg" alt="SVG">
-          </figure>
-          <div class="media-body">
-            <h2 class="h4">Kegiatan</h2>
-            <p class="font-size-1 text-body mb-0"><?= $daftarKegiatan;?> Kegiatan <?= $CI->agent->is_mobile() ? '' : 'diikuti';?></p>
+            <h2 class="h4 <?= $daftarKompetisi > 0 ? 'text-success' : 'text-warning';?>"><?= $daftarKompetisi > 0 ? 'Status Pendaftaran Lomba LO-Kreatif' : 'Status Pendaftaran Lomba LO-Kreatif';?></h2>
+            <p class="font-size-1 text-body mb-0"><?= $daftarKompetisi > 0 ? 'Anda telah terdaftar dalam lomba LO-Kreatif' : 'Anda belum terdaftar dalam lomba LO-Kreatif. Daftar lomba sekarang';?> kompetisi <?= $WEB_JUDUL;?></p>
           </div>
         </div>
         <!-- End Icon Block -->

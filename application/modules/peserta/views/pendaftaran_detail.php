@@ -79,12 +79,12 @@
 				<div class="border-bottom mb-4">
 					<label class="input-label">Status berkas keperluan <i class="fa fa-question-circle text-muted" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="Keterangan mengenai, status semua berkas keperluan anda"></i></label>
 					<div class="media align-items-center mb-3">
-						<span class="d-block font-size-1 mr-3">Data PTS</span>
+						<span class="d-block font-size-1 mr-3">Data TIM anda</span>
 						<div class="media-body text-right">
-							<?php if ($dataPendaftaran->ASAL_PTS == null || $dataPendaftaran->ALAMAT_PTS == null || $dataPendaftaran->ALAMAT_PTS == null):?>
-								<span class="badge badge-danger" type="button" data-toggle="modal" data-target="#data-pts">lengkapi data</span>
+							<?php if ($dataPendaftaran->ASAL_PTS == null || $dataPendaftaran->ALAMAT_PTS == null || $dataPendaftaran->NAMA_TIM == null):?>
+								<span class="badge badge-danger" type="button" data-toggle="modal" data-target="#data-tim">lengkapi data</span>
 							<?php else:?>
-								<span class="badge badge-success" type="button" data-toggle="modal" data-target="#data-pts">lengkap</span>
+								<span class="badge badge-success" type="button" data-toggle="modal" data-target="#data-tim">lengkap</span>
 							<?php endif;?>
 						</div>
 					</div>
@@ -163,7 +163,7 @@
 
 
 <!-- MODAL -->
-<div class="modal fade" id="data-pts" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="data-anggotaLabel" aria-hidden="true">
+<div class="modal fade" id="data-tim" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="data-anggotaLabel" aria-hidden="true">
 	<div class="modal-dialog" role="document">
 		<div class="modal-content">
 			<div class="modal-header">
@@ -178,6 +178,17 @@
 				<input type="hidden" name="KODE_PENDAFTARAN" value="<?= $dataPendaftaran->KODE_PENDAFTARAN;?>">
 				<div class="modal-body">
 					<div class="row">
+						<div class="col-12">
+							<div class="form-group">
+								<label class="input-label font-weight-bold">Nama TIM<span class="text-danger">*</span></label>
+								<input type="text" name="NAMA_TIM" class="form-control" value="<?= $dataPendaftaran->NAMA_TIM;?>" required>
+							</div>
+
+						<!-- Divider -->
+						<hr class="my-0 mb-4">
+						<!-- End Divider -->
+							
+						</div>
 						<div class="col-12">
 							<div class="form-group">
 								<label class="input-label font-weight-bold">Asal PTS <small class="text-danger">*</small></label>

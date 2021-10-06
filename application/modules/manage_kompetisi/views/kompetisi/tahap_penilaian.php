@@ -51,7 +51,7 @@
                   <div class="form-group">
                     <label class="input-label font-weight-bold">Team/Peserta finalis <small class="text-danger">*</small></label>
                     <div class="js-quantity-counter input-group-quantity-counter w-100">
-                      <input type="number" class="js-result form-control form-control-sm input-group-quantity-counter-control" value="1" min="1" max="50" name="TEAM">
+                      <input type="number" class="js-result form-control form-control-sm input-group-quantity-counter-control" value="1" min="0" max="500" name="TEAM">
 
                       <div class="input-group-quantity-counter-toggle">
                         <a class="js-minus input-group-quantity-counter-btn" href="javascript:;">
@@ -62,7 +62,7 @@
                         </a>
                       </div>
                     </div>
-                    <small class="text-muted">Default: 1 finalis</small>
+                    <small class="text-muted">0: tidak ada batasan</small>
                   </div>
                 </div>
               </div>            
@@ -115,10 +115,11 @@
         <tr>
           <th>No</th>
           <th></th>
+          <th>Status</th>
           <th>Tahap Penilaian</th>
           <th>Mulai</th>
           <th>Berakhir</th>
-          <th>TEAM</th>
+          <th>Tim</th>
           <th>keterangan</th>
         </tr>
       </thead>
@@ -130,15 +131,71 @@
             <td>
               <button type="button" class="btn btn-xs btn-info" data-toggle="modal" data-target="#edit<?= $no;?>"><i class="tio-edit"></i></button>
               <button type="button" class="btn btn-xs btn-danger" data-toggle="modal" data-target="#hapus<?= $no;?>"><i class="tio-delete"></i></button>
+              <button type="button" class="btn btn-xs btn-success" data-toggle="modal" data-target="#status<?= $no;?>"><i class="tio-key"></i></button>
+            </td>
+            <td>
+              <?php
+
+                switch ($key->STATUS) {
+                  case 0:
+                    echo '<span class"badge badge-secondary">belum dimulai</span>';
+                    break;
+
+                  case 1:
+                    echo '<span class"badge badge-success">berlangsung</span>';
+                    break;
+
+                  case 2:
+                    echo '<span class"badge badge-warning">berakhir</span>';
+                    break;
+                  
+                  default:
+                    echo '<span class"badge badge-secondary">belum dimulai</span>';
+                    break;
+                };?>      
             </td>
             <td><?= $key->NAMA_TAHAP;?></td>
             <td><?= date("d F Y", strtotime($key->DATE_START));?> <?= $key->TIME_START;?></td>
             <td><?= date("d F Y", strtotime($key->DATE_END));?> <?= $key->TIME_END;?></td>
-            <td>Diambil <?= $key->TEAM;?> finalis</td>
+            <td>Diambil <?= $key->TEAM == 0 ? 'tidak ada batasan' : $key->TEAM.' TIM';?></td>
             <td>
               <button type="button" class="btn btn-xs btn-secondary" data-toggle="modal" data-target="#keterangan<?= $no;?>">keterangan</button>
             </td>
           </tr>
+
+          <div class="modal fade" id="status<?= $no;?>" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="exampleModalLabel">Ganti status - <?= $key->NAMA_TAHAP;?></h5>
+                  <button type="button" class="btn btn-xs btn-icon btn-soft-secondary" data-dismiss="modal" aria-label="Close">
+                    <svg aria-hidden="true" width="10" height="10" viewBox="0 0 18 18" xmlns="http://www.w3.org/2000/svg">
+                      <path fill="currentColor" d="M11.5,9.5l5-5c0.2-0.2,0.2-0.6-0.1-0.9l-1-1c-0.3-0.3-0.7-0.3-0.9-0.1l-5,5l-5-5C4.3,2.3,3.9,2.4,3.6,2.6l-1,1 C2.4,3.9,2.3,4.3,2.5,4.5l5,5l-5,5c-0.2,0.2-0.2,0.6,0.1,0.9l1,1c0.3,0.3,0.7,0.3,0.9,0.1l5-5l5,5c0.2,0.2,0.6,0.2,0.9-0.1l1-1 c0.3-0.3,0.3-0.7,0.1-0.9L11.5,9.5z"/>
+                    </svg>
+                  </button>
+                </div>
+                <div class="modal-body">
+                  <form action="<?= base_url('manage_kompetisi/update_status_tahap') ?>" method="POST">
+                    <input type="hidden" name="ID_TAHAP" value="<?= $key->ID_TAHAP;?>">
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label for="">Ubah Status Tahap:</label>
+                            <select class="form-control" name="STATUS">
+                              <option value="0">Belum berlangsung</option>
+                              <option value="1">Berlangsung</option>
+                              <option value="2">Berakhir</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
+                        <button type="submit" class="btn btn-primary">Ubah</button>
+                    </div>
+                  </form>
+                </div>
+              </div>
+            </div>
+          </div>
 
           <div class="modal fade" id="keterangan<?= $no;?>" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div class="modal-dialog" role="document">
@@ -188,7 +245,7 @@
                         <div class="form-group">
                           <label class="input-label font-weight-bold">Team finalis <small class="text-danger">*</small></label>
                           <div class="js-quantity-counter input-group-quantity-counter w-100">
-                            <input type="number" class="js-result form-control form-control-sm input-group-quantity-counter-control" value="<?= $key->TEAM;?>" min="1" max="50" name="TEAM">
+                            <input type="number" class="js-result form-control form-control-sm input-group-quantity-counter-control" value="<?= $key->TEAM;?>" min="0" max="500" name="TEAM">
 
                             <div class="input-group-quantity-counter-toggle">
                               <a class="js-minus input-group-quantity-counter-btn" href="javascript:;">
@@ -199,7 +256,7 @@
                               </a>
                             </div>
                           </div>
-                          <small class="text-muted">Default: 1 finalis</small>
+                          <small class="text-muted">0: tidak ada batasan</small>
                         </div>
                       </div>
                     </div>            

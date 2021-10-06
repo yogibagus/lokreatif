@@ -27,7 +27,7 @@
 
             <div class="col-md-4 mb-3 mb-md-0">
               <!-- Card -->
-              <a class="card text-center h-100 transition-3d-hover" href="https://api.whatsapp.com/send?text=Hai&phone=<?= $WEB_WA;?>">
+              <a class="card text-center h-100 transition-3d-hover" href="https://api.whatsapp.com/send?text=Hai&phone=62<?= $WEB_WA;?>">
                 <div class="card-body p-lg-5">
                   <figure class="max-w-8rem w-100 mx-auto mb-4">
                     <img class="img-fluid" src="<?= base_url();?>assets/frontend/svg/icons/icon-4.svg" alt="SVG">

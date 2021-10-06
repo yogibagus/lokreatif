@@ -70,9 +70,9 @@ class Authentication extends MX_Controller {
 	}
 
 	public function index(){
-			$data['module'] 		= "authentication";
-			$data['fileview'] 		= "login";
-			echo Modules::run('template/frontend_auth', $data);
+		$data['module'] 		= "authentication";
+		$data['fileview'] 		= "login";
+		echo Modules::run('template/frontend_auth', $data);
 	}
 
 	public function daftar(){
@@ -211,7 +211,7 @@ class Authentication extends MX_Controller {
 							redirect($this->session->userdata('redirect'));
 						} else {
 							$this->session->set_flashdata('success', "Selamat Datang, {$peserta->NAMA}");
-							redirect(base_url());
+							redirect(site_url('juri'));
 						}
 // 					ADMIN UNIV
 					}elseif ($peserta->ROLE == 3) {
@@ -222,6 +222,17 @@ class Authentication extends MX_Controller {
 						} else {
 							$this->session->set_flashdata('success', "Selamat Datang, {$nama}");
 							redirect(site_url('pts'));
+						}
+
+						// KOORDINATOR
+					}elseif ($peserta->ROLE == 4) {
+
+						if ($this->session->userdata('redirect')) {
+							$this->session->set_flashdata('success', 'Hai, anda telah login. Silahkan melanjutkan aktivitas anda !!');
+							redirect($this->session->userdata('redirect'));
+						} else {
+							$this->session->set_flashdata('success', "Selamat Datang, {$nama}");
+							redirect(site_url('koordinator/verifikasi-berkas'));
 						}
 
 					}else{
@@ -729,12 +740,12 @@ class Authentication extends MX_Controller {
 		</div>
 		</div>
 		</div>
-       <hr style="border-top: 1px dashed #CECECE; margin-top: 24px; border-bottom: none;">
-       <div style="margin-top: 13px; text-align : center; font-size:10px;">This email has been generated
-       automatically, please do not reply.</div>
-       <div style="height: 12px; background: #0B4C8A; margin-top:10px;"></div>
-       </div>
-       </body>
-       ';
-   }
+		<hr style="border-top: 1px dashed #CECECE; margin-top: 24px; border-bottom: none;">
+		<div style="margin-top: 13px; text-align : center; font-size:10px;">This email has been generated
+		automatically, please do not reply.</div>
+		<div style="height: 12px; background: #0B4C8A; margin-top:10px;"></div>
+		</div>
+		</body>
+		';
+	}
 }

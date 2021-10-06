@@ -17,11 +17,15 @@ class Home extends MX_Controller{
 		
 		$date1  = "2021-10-24";
 		$date2  = date("Y-m-d");
-
 		$diff   = abs(strtotime($date2) - strtotime($date1));
 
 		$days   = floor($diff/(60*60*24));
-		$data['days']		= $days;
+
+		if ($date2 > $date1) {
+			$data['days']		= false;
+		}else{
+			$data['days']		= $days;
+		}
 
 		$data['CI']			= $this;
 

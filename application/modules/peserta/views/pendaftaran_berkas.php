@@ -32,19 +32,6 @@
 	<input type="hidden" name="KODE_KEGIATAN" value="lokreatif">
 	<input type="hidden" name="KODE_PENDAFTARAN" value="<?= $dataPendaftaran->KODE_PENDAFTARAN;?>">
 
-	<div class="card card-frame card-body mb-4">
-		<div class="row">
-			<div class="col-12">
-				<label class="input-label">Nama TIM<span class="text-danger">*</span></label>
-				<input type="text" name="NAMA_TIM" class="form-control form-control-sm form-control-flush" value="<?= $dataPendaftaran->NAMA_TIM;?>" required>
-			</div>
-		</div>
-	</div>
-
-	<!-- Divider -->
-	<hr class="my-0 mb-4">
-	<!-- End Divider -->
-
 	<!-- META FORM -->
 	<?php $no= 1; foreach ($formulir as $key) :?>
 	<?php if ($key->TYPE == "TEXT") :?>

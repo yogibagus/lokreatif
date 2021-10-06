@@ -75,7 +75,39 @@ class M_admin extends CI_Model {
 	}
 
 	public function countSudahRefund(){
-		return $this->db->get_where('tb_refund', array('STAT_REFUND' => 1))->num_rows();
+		return $this->db->get_where('tb_refund', array('STAT_REFUND' => 2))->num_rows();
+	}
+
+	public function sumTotalRefundSukses()
+	{
+		$query = $this->db->query("SELECT SUM(a.`JML_REFUND`) AS total_refund FROM tb_refund AS a
+		WHERE a.`STAT_REFUND` = 2");
+		return $query->row();
+	}
+
+	public function get_refund()
+	{
+		$query = $this->db->query("SELECT a.*, b.`KODE_USER_BILL`, b.`ROLE_USER_BILL` FROM tb_refund AS a, tb_transaksi AS b
+		WHERE a.`KODE_TRANS` =  b.`KODE_TRANS`");
+		return $query->result();
+	}
+
+	public function get_refund_by_id($kode_refund)
+	{
+		$query = $this->db->query("SELECT * FROM tb_refund WHERE KODE_REFUND = '$kode_refund'");
+		if ($query->num_rows() > 0) {
+			return $query->row();
+		} else {
+			return false;
+		}
+	}
+
+	public function update_refund($data,$id)
+	{
+		$this->db->where('KODE_REFUND', $id);
+		$this->db->update('tb_refund', $data);
+		return ($this->db->affected_rows() != 1) ? false : true;
+
 	}
 
 
@@ -133,9 +165,37 @@ class M_admin extends CI_Model {
 
 	// PESERTA
 
-	function get_peserta(){
-		$query 	= $this->db->query("SELECT * FROM tb_auth a JOIN tb_peserta b ON a.KODE_USER = b.KODE_USER WHERE a.ROLE = 1");
+	// COUNT
+
+	function get_countMhs($bidang){
+		return $this->db->query("
+			SELECT COUNT(ta.ID_ANGGOTA) AS JML_MHS
+			FROM pendaftaran_kompetisi pk , tb_anggota ta 
+			WHERE pk.KODE_PENDAFTARAN = ta.KODE_PENDAFTARAN AND ta.PERAN IN('1','3') AND BIDANG_LOMBA = '$bidang'
+		")->row();
+	}
+	function get_countTim($bidang){
+		return $this->db->query("
+			SELECT COUNT(pk.KODE_PENDAFTARAN) AS JML_TIM
+			FROM pendaftaran_kompetisi pk WHERE pk.KODE_USER != 'USR_MHNDad2' AND BIDANG_LOMBA = '$bidang'
+		")->row();
+	}
+	function get_countPTS($bidang){
+		return $this->db->query("
+			SELECT COUNT(pk.ASAL_PTS) AS JML_PTS
+			FROM pendaftaran_kompetisi pk WHERE pk.ASAL_PTS != 000001 AND BIDANG_LOMBA = '$bidang'
+			GROUP BY pk.ASAL_PTS 
+		")->result();
+	}
+
+	function get_peserta($bidang){
+		$query 	= $this->db->query("SELECT * FROM tb_auth a JOIN tb_peserta b ON a.KODE_USER = b.KODE_USER JOIN pendaftaran_kompetisi c ON a.KODE_USER = c.KODE_USER WHERE a.ROLE = 1 AND c.BIDANG_LOMBA = '$bidang'");
 		return $query->result();
+	}
+
+	function get_dataPeserta($kode){
+		$query 	= $this->db->query("SELECT * FROM tb_auth a JOIN tb_peserta b ON a.KODE_USER = b.KODE_USER JOIN pendaftaran_kompetisi c ON a.KODE_USER = c.KODE_USER WHERE a.KODE_USER = '$kode'");
+		return $query->row();
 	}
 
 	function get_pesertaPendaftaran($KODE_USER){
@@ -145,6 +205,11 @@ class M_admin extends CI_Model {
 		}else{
 			return false;
 		}
+	}
+
+	function cek_pembayaranPeserta($KODE_PENDAFTARAN){
+		$query 	= $this->db->query("SELECT * FROM tb_order WHERE KODE_PENDAFTARAN IN (SELECT KODE_PENDAFTARAN FROM tb_transaksi WHERE STAT_BAYAR = 3) AND KODE_PENDAFTARAN = '$KODE_PENDAFTARAN'");
+		return $query->result();
 	}
 
 	// KOLEKTIF PTS
@@ -344,6 +409,134 @@ class M_admin extends CI_Model {
 			return false;
 		}
 
+	}
+
+	// SELEKSI
+
+	public function get_TotNilai($KODE_PENDAFTARAN, $id_tahap = 1){
+		$query = $this->db->query("
+			SELECT KODE_PENDAFTARAN,
+			ROUND((SUM(NILAI) /
+			(SELECT COUNT(*)  AS JML_JURI FROM (SELECT COUNT(KODE_PENDAFTARAN)
+			FROM tb_penilaian WHERE KODE_PENDAFTARAN = '$KODE_PENDAFTARAN' AND ID_TAHAP = '$id_tahap'
+			GROUP BY KODE_JURI) t)), 2) AS TOT_NILAI,
+			(SELECT COUNT(*)  AS JML_JURI FROM
+			(SELECT COUNT(KODE_PENDAFTARAN) FROM tb_penilaian
+			WHERE KODE_PENDAFTARAN = '$KODE_PENDAFTARAN' AND ID_TAHAP = '$id_tahap' GROUP BY KODE_JURI) t) AS JML_JURI
+			FROM tb_penilaian WHERE KODE_PENDAFTARAN = '$KODE_PENDAFTARAN' AND ID_TAHAP = '$id_tahap'
+			");
+		if ($query->num_rows() > 0) {
+			return $query->row();
+		}else{
+			return false;
+		}
+	}
+
+	function get_tahapPenilaian(){
+		$query = $this->db->get('tahap_penilaian');
+		if ($query->num_rows() > 0 ){
+			return $query->result();
+		}else{
+			return false;
+		}
+	}
+
+	function get_tahapData($id_tahap){
+		$query = $this->db->get_where('tahap_penilaian', array('ID_TAHAP' => $id_tahap));
+		if ($query->num_rows() > 0 ){
+			return $query->row();
+		}else{
+			return false;
+		}
+	}
+
+	function get_daftarTIM($param, $id_bidang, $id_tahap){
+		// case
+		// 0. Seluruh TIM yang telah diverifikasi / STATUS = 1 (belum dinilai)
+		// 1. Berdasarkan nilai tertinggi (sudah ada data penilaian) / berdasarkan id tahap
+		$this->db->select('*');
+		switch ($param) {
+			case 0:
+				$this->db->from('v_tim');
+				
+				if ($id_bidang != 0) {
+					$this->db->where('ID_BIDANG', $id_bidang);
+				}
+				
+				if ($id_tahap != 0) {
+					$this->db->where('TAHAP', $id_tahap);
+				}
+
+				$this->db->where('STATUS', 1);
+				break;
+			case 1:
+				$this->db->from('v_penilaian');
+				
+				if ($id_bidang != 0) {
+					$this->db->where('ID_BIDANG', $id_bidang);
+				}
+
+				$this->db->where('TAHAP', $id_tahap);
+				break;
+				
+			default:
+				$this->db->from('v_tim');
+				$this->db->where('STATUS', 1);
+				break;
+		}
+		$query = $this->db->get();
+		if ($query->num_rows() > 0) {
+			return $query->result();
+		}else{
+			return false;
+		}
+	}
+
+	function get_seleksiTIM($param, $id_bidang, $id_tahap){
+		// case
+		// 0. Seluruh TIM yang telah diverifikasi / STATUS = 1 (belum dinilai)
+		// 1. Berdasarkan nilai tertinggi (sudah ada data penilaian) / berdasarkan id tahap
+		$this->db->select('*');
+		switch ($param) {
+			case 0:
+				$this->db->from('v_tim');
+				
+				if ($id_bidang != 0) {
+					$this->db->where('ID_BIDANG', $id_bidang);
+				}
+				
+				if ($id_tahap != 0) {
+					$this->db->where('TAHAP !=', $id_tahap);
+				}
+
+				$this->db->where('STATUS', 1);
+				break;
+			case 1:
+				$this->db->from('v_penilaian');
+				
+				if ($id_bidang != 0) {
+					$this->db->where('ID_BIDANG', $id_bidang);
+				}
+
+				$this->db->where('TAHAP', $id_tahap);
+				break;
+			default:
+				$this->db->from('v_tim');
+				$this->db->where('STATUS', 1);
+				break;
+		}
+		$query = $this->db->get();
+		if ($query->num_rows() > 0) {
+			return $query->result();
+		}else{
+			return false;
+		}
+	}
+
+	public function seleksi_tim($kode, $tahap){
+		$this->db->where('KODE_PENDAFTARAN', $kode);
+		$this->db->update('pendaftaran_kompetisi', array('STATUS_SELEKSI' => $tahap));
+		
 	}
 
 
@@ -654,7 +847,7 @@ class M_admin extends CI_Model {
 	public function data_transaksi_tim()
 	{
 		$query = $this->db->query("
-		SELECT *, c.`KODE_TRANS` AS KODE_TRANSAKSI 
+		SELECT *, c.`KODE_TRANS` AS KODE_TRANSAKSI
 		FROM pendaftaran_kompetisi a
 		LEFT JOIN tb_order b ON a.`KODE_PENDAFTARAN` = b.`KODE_PENDAFTARAN`
 		LEFT JOIN tb_transaksi c ON  b.`KODE_TRANS` = c.`KODE_TRANS`
@@ -670,7 +863,7 @@ class M_admin extends CI_Model {
 	{
 		$query = $this->db->query("		
 		SELECT 
-		a.`KODE_TRANS`, a.`STAT_BAYAR` ,a.`KODE_USER_BILL`, a.`ROLE_USER_BILL`, a.`BAYAR`, a.`TOT_BAYAR`,
+		a.`KODE_TRANS`, a.`STAT_BAYAR` ,a.`KODE_USER_BILL`, a.`ROLE_USER_BILL`, a.`BAYAR`, a.`TOT_BAYAR`, a.LOG_TIME as TGL_TRANSAKSI,
 		b.`KODE_PAY`, b.`ORDER_ID`, b.`PAYMENT_ID`, b.`ID_PAY_METHOD`, b.`LOG_TIME`,
 		c.`NAMA_PAY_METHOD`, c.`IMG_PAY_METHOD`, 
 		d.`ID_STAT_PAY`, d.`NAMA_STAT_PAY`, d.`COLOR_STAT_PAY`, d.`ALIAS_STAT_PAY`,
