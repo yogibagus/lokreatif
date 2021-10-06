@@ -183,7 +183,7 @@
                                       <td>
                                           <?php if ($CI->M_koordinator->get_anggota_tim($data->KODE_PENDAFTARAN) == false) : ?>
                                               <!-- Button trigger modal -->
-                                              <button type="button" class="btn btn-secondary btn-xs" title="Cek Anggota Tim" id="btn-anggota<?= $no ?>" data-toggle="modal" data-target="#modalanggota<?= $no ?>">
+                                              <button type="button" class="btn btn-soft-danger btn-xs" title="Cek Anggota Tim" id="btn-anggota<?= $no ?>" data-toggle="modal" data-target="#modalanggota<?= $no ?>">
                                                   <i class="tio-group-senior"></i> Anggota
                                               </button>
                                           <?php else : ?>
@@ -234,20 +234,21 @@
                                               });
                                           </script>
                                       </td>
-                                      <?php $i=1; foreach ($get_form as $key) : ?>
+                                      <?php $i = 1;
+                                        foreach ($get_form as $key) : ?>
                                           <td>
                                               <?php if ($CI->M_koordinator->get_formData($data->KODE_PENDAFTARAN, $key->ID_FORM) == false) : ?>
-                                                  <button type="button" id="btn-surat<?= $key->ID_FORM ?>" class="btn btn-xs btn-secondary" title="Belum Melengkapi" disabled><i class="tio-open-in-new" data-toggle="modal" data-target="#modalsurat<?= $key->ID_FORM . $data->KODE_PENDAFTARAN ?>"></i> Belum Ada</button>
+                                                  <button type="button" id="btn-surat<?= $key->ID_FORM ?>" class="btn btn-xs btn-soft-danger" title="Belum Melengkapi" disabled><i class="tio-open-in-new" data-toggle="modal" data-target="#modalsurat<?= $key->ID_FORM . $data->KODE_PENDAFTARAN ?>"></i> Belum Ada</button>
                                               <?php else : ?>
                                                   <?php if ($i == 1) : ?>
                                                       <a href="<?= ($i == 1) ? "https://instagram.com/" . $CI->M_koordinator->get_formData($data->KODE_PENDAFTARAN, $key->ID_FORM) : $CI->M_koordinator->get_formData($data->KODE_PENDAFTARAN, $key->ID_FORM) ?>" class="btn btn-xs btn-primary" title="Instagram Content" target="_blank"><i class="tio-instagram"></i> <?= ($i == 1) ? $CI->M_koordinator->get_formData($data->KODE_PENDAFTARAN, $key->ID_FORM) : "Cek Feed" ?></a>
                                                   <?php else : ?>
-                                                      <a class="btn btn-xs btn-primary" id="btn-surat<?= $key->ID_FORM . $data->KODE_PENDAFTARAN?>" title="Cek berkas" data-toggle="modal" data-target="#modalsurat<?= $key->ID_FORM . $data->KODE_PENDAFTARAN?>"><i class="tio-open-in-new"></i> Cek Berkas</a>
+                                                      <a class="btn btn-xs btn-primary" id="btn-surat<?= $key->ID_FORM . $data->KODE_PENDAFTARAN ?>" title="Cek berkas" data-toggle="modal" data-target="#modalsurat<?= $key->ID_FORM . $data->KODE_PENDAFTARAN ?>"><i class="tio-open-in-new"></i> Cek Berkas</a>
                                                   <?php endif; ?>
                                               <?php endif; ?>
                                           </td>
                                           <!-- Modal Cek Berkas-->
-                                          <div class="modal fade modal-fullscreen" id="modalsurat<?= $key->ID_FORM . $data->KODE_PENDAFTARAN?>" tabindex="-1" role="dialog" aria-labelledby="modelTitleId" aria-hidden="true">
+                                          <div class="modal fade modal-fullscreen" id="modalsurat<?= $key->ID_FORM . $data->KODE_PENDAFTARAN ?>" tabindex="-1" role="dialog" aria-labelledby="modelTitleId" aria-hidden="true">
                                               <div class="modal-dialog modal-xl" role="document">
                                                   <div class="modal-content">
                                                       <div class="modal-header">
@@ -257,7 +258,7 @@
                                                           </button>
                                                       </div>
                                                       <div class="modal-body">
-                                                          <div id="file_surat<?= $key->ID_FORM . $data->KODE_PENDAFTARAN?>"></div>
+                                                          <div id="file_surat<?= $key->ID_FORM . $data->KODE_PENDAFTARAN ?>"></div>
                                                       </div>
                                                   </div>
                                               </div>
@@ -281,11 +282,12 @@
                                                   }
                                               });
                                           </script>
-                                      <?php $i++; endforeach; ?>
+                                      <?php $i++;
+                                        endforeach; ?>
                                       <td>
                                           <?php if ($CI->M_koordinator->get_karya_by_kode_pendaftaran($data->KODE_PENDAFTARAN) == false) : ?>
                                               <!-- Button trigger modal -->
-                                              <button type="button" class="btn btn-secondary btn-xs" title="Cek Anggota Tim" id="btn-karya<?= $no ?>" data-toggle="modal" data-target="#modakarya<?= $no ?>" disabled>
+                                              <button type="button" class="btn btn-soft-danger btn-xs" title="Cek Anggota Tim" id="btn-karya<?= $no ?>" data-toggle="modal" data-target="#modakarya<?= $no ?>" disabled>
                                                   <i class="tio-open-in-new"></i> Belum Ada
                                               </button>
                                           <?php else : ?>
