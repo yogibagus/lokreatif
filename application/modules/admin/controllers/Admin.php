@@ -20,9 +20,9 @@ class Admin extends MX_Controller
 			$this->session->set_flashdata('error', "Harap login ke akun anda, untuk melanjutkan");
 			redirect('login');
 		}
-		if ($this->session->userdata("role") != 0) {
+		if ($this->session->userdata("role") != 0 && $this->session->userdata("role") != 4) {
 			$this->session->set_flashdata('error', "Mohon maaf hak akses anda bukan admin");
-			redirect('peserta');
+			redirect(base_url());
 		}
 		$this->load->model('M_admin');
 		$this->load->model('Utilities/M_utilities');
@@ -118,6 +118,15 @@ class Admin extends MX_Controller
             break;
         }
 		echo json_encode(['tim' => ($tahap->TEAM == 0 ? 'tidak ada batasan' : $tahap->TEAM), 'status' => $status]);
+	}
+
+	function get_detailPeserta($kode){
+		$peserta 		= $this->M_admin->get_dataPeserta($kode);
+        $anggota 		= $this->M_koordinator->get_anggota_tim($peserta->KODE_PENDAFTARAN);
+		$data['CI']		= $this;
+		$data['key']	= $peserta;
+		$data['anggota']= $anggota;
+		$this->load->view('ajax/ajax_modalPeserta', $data);
 	}
 
 	public function index()
@@ -400,14 +409,30 @@ class Admin extends MX_Controller
 	}
 
 	// DATA PENGGUNA
-	public function data_peserta()
+	public function data_peserta($bidang = 1)
 	{
-		$data['peserta']				= $this->M_admin->get_peserta();
-		$data['countPeserta']			= $this->M_admin->countPeserta();
-		$data['diffPeserta']		  	= $this->M_admin->countDiffPeserta();
-		$data['nonPeserta']				= $this->M_admin->countNonPeserta();
-		$data['diffNonPeserta']  		= $this->M_admin->countDiffNonPeserta();
-		$data['NewPeserta']  	  		= $this->M_admin->countNewPeserta();
+        // if admin
+        if($this->session->userdata('role') == 0){
+            $bidang_lomba = $this->M_koordinator->get_bidangLomba_by_id($bidang);
+            if($bidang_lomba == false){
+                $data['all_bidang_lomba'] = $this->M_koordinator->get_bidangLomba();
+                $data['bidang_lomba'] = "Semua";
+            }else{
+                $data['all_bidang_lomba'] = $this->M_koordinator->get_bidangLomba();
+                $data['bidang_lomba'] = $bidang_lomba->BIDANG_LOMBA;
+            }
+			$data['peserta']		= $this->M_admin->get_peserta($bidang);
+			$data['jmlMhs'] 		= $this->M_admin->get_countMhs($bidang);
+			$data['jmlTim'] 		= $this->M_admin->get_countTim($bidang);
+			$data['jmlPTS'] 		= count($this->M_admin->get_countPTS($bidang));
+        }else{
+            $koordinator = $this->M_koordinator->get_koordinator_by_kode_user($this->session->userdata('kode_user'));
+            $data['bidang_lomba'] 	= $koordinator->BIDANG_LOMBA;
+			$data['peserta']		= $this->M_admin->get_peserta($koordinator->ID_BIDANG);
+			$data['jmlMhs'] 		= $this->M_admin->get_countMhs($koordinator->ID_BIDANG);
+			$data['jmlTim'] 		= $this->M_admin->get_countTim($koordinator->ID_BIDANG);
+			$data['jmlPTS'] 		= count($this->M_admin->get_countPTS($koordinator->ID_BIDANG));
+        }
 
 		$data['CI']				= $this;
 		$data['module'] 		= "admin";

@@ -42,7 +42,7 @@ class Koordinator extends MX_Controller
     }
 
     public function index(){
-        echo "tes";
+        $this->verifikasi_berkas();
 
     }
 

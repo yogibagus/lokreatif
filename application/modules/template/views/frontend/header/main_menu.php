@@ -42,8 +42,8 @@
               <div class="media align-items-center">
                 <img class="navbar-promo-icon" src="<?= base_url();?>assets/frontend/svg/icons/icon-7.svg" alt="SVG">
                 <div class="media-body">
-                  <span class="navbar-promo-title">Webinar</span>
-                  <small class="navbar-promo-text">Webinar LO Kreatif</small>
+                  <span class="navbar-promo-title">Kegiatan</span>
+                  <small class="navbar-promo-text">Kegiatan LO Kreatif</small>
                 </div>
               </div>
             </a>

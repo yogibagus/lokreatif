@@ -38,8 +38,18 @@ class Juri extends MX_Controller {
 		}
 	}
 
+	function get_detailTim($kode){
+		$karya = $this->M_juri->get_karyaTim($kode);
+		$nilai = $this->M_juri->get_riwayatNilai($this->tahap_aktif(1), $kode);
+		if ($karya != false || !empty($karya->FILE)) {
+			$data['berkas']			= $karya;
+			$data['status_nilai']	= $nilai;
+			$this->load->view('ajax/karya_detail', $data);
+		}
+	}
+
 	function get_riwayatNilai($kode){
-		$nilai = $this->M_juri->get_riwayatNilai($kode);
+		$nilai = $this->M_juri->get_riwayatNilai($this->tahap_aktif(1), $kode);
 		if ($nilai == false) {
 			$this->load->view('ajax/riwayatNilai_404');
 		}else{
@@ -129,16 +139,16 @@ class Juri extends MX_Controller {
 			redirect(base_url());
 		}else{
 			$data['tahap']			= $this->M_juri->get_tahapPenilaian();
+			$data['bidang_juri']    = $this->tahap_aktif(2);
 			$data['dataKriteria']   = $this->M_juri->get_kriteriaPenilaian($this->tahap_aktif(1), $this->bidang_juri(1));
 			$data['tim']			= $this->M_juri->get_countTIM($this->tahap_aktif(1), $this->bidang_juri(1), $this->session->userdata('kode_user'));
+
 			$data['daftar_tim']		= $this->M_juri->get_dataTIM($this->tahap_aktif(1), $this->bidang_juri(1), $this->session->userdata('kode_user'));
-			$data['tim']			= $this->M_juri->get_countTIM($this->tahap_aktif(1), $this->bidang_juri(1), $this->session->userdata('kode_user'));
-			$data['bidang_juri']    = $this->tahap_aktif(2);
 
 			$data['CI']				= $this;
 
 			$data['module'] 		= "juri";
-			$data['fileview'] 		= "penilaian";
+			$data['fileview'] 		= "new_penilaian";
 			echo Modules::run('template/backend_main', $data);
 		}
 	}
@@ -172,7 +182,7 @@ class Juri extends MX_Controller {
 		echo Modules::run('template/backend_main', $data);
 	}
 
-	public function riwayat_penilaian($param = 0){
+	public function riwayat_penilaian(){
 		if ($this->agent->is_mobile()) {
 			$this->session->set_flashdata('warning', "Penilaian hanya dapat dilakukan melalui dekstop browser");
 			redirect(base_url());
@@ -182,24 +192,16 @@ class Juri extends MX_Controller {
 			$data['tim']			= $this->M_juri->get_countTIM($this->tahap_aktif(1), $this->bidang_juri(1), $this->session->userdata('kode_user'));
 			$data['bidang_juri']    = $this->tahap_aktif(2);
 
-			$data['daftar_tim']		= $this->M_juri->get_timRiwayat($param, $this->bidang_juri(1), $this->session->userdata('kode_user'));
+			$data['daftar_tim']		= $this->M_juri->get_timRiwayat($this->tahap_aktif(1), $this->bidang_juri(1), $this->session->userdata('kode_user'));
 
 			$data['CI']				= $this;
 
-			$data['tahap']				= $this->M_admin->get_tahapPenilaian();
-	        $bidang_lomba 				= $this->M_koordinator->get_bidangLomba_by_id($this->bidang_juri(1));
-	        $tahap_penilaian 			= $this->M_juri->get_tahapLomba_by_id($param);
-	        $data['id_tahap'] 	= $param;
-	        $data['id_bidang'] 	= $this->bidang_juri(1);
-
-	        if($param == false){
-	            $data['tahap_penilaian'] 	= "Pilih Tahap";
-	        }else{
-	            $data['tahap_penilaian'] 	= $tahap_penilaian->NAMA_TAHAP;
-	        }
+			$data['tahap']			= $this->M_juri->get_tahapPenilaian();
+	        $data['id_tahap'] 		= $this->tahap_aktif(1);
+	        $data['id_bidang'] 		= $this->bidang_juri(1);
 
 			$data['module'] 		= "juri";
-			$data['fileview'] 		= "riwayat_penilaian";
+			$data['fileview'] 		= "new_riwayat_penilaian";
 			echo Modules::run('template/backend_main', $data);
 		}
 	}

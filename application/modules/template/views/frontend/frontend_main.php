@@ -67,18 +67,6 @@
 
   <main id="content" role="main">
     <?php $this->load->view($module.'/'.$fileview); ?>
-
-    <!-- Bottom right menu -->
-    <div class="fab-container transition-3d-hover">
-      <div class="fab-button shadow">
-        <div class="fab-content">
-          <a href="https://api.whatsapp.com/send?text=Hai&phone=62<?= $WEB_WA;?>" class="text-white" target="_blank">
-            <i class="fab fa-whatsapp"></i>
-          </a>
-        </div>
-      </div>
-    </div>
-    <!-- /bottom right menu -->
   </main>
 
   <?php $this->load->view('footer/main_footer.php') ?>

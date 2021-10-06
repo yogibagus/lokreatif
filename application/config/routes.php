@@ -89,6 +89,7 @@ $route['ajx-data-pts-all']              = 'authentication/ajx_dataPtsAll';
 $route['data-koordinator']              = 'admin/data_koordinator';
 $route['data-kolektif-pts']				= 'admin/data_kolektifPts';
 $route['data-peserta']               	= 'admin/data_peserta';
+$route['data-peserta/(:num)']           = 'admin/data_peserta/$1';
 $route['berkas-lomba']               	= 'admin/berkas_lomba';
 
 $route['data-kegiatan']    	  			= 'admin/data_kegiatan';

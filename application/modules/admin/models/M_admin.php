@@ -165,9 +165,37 @@ class M_admin extends CI_Model {
 
 	// PESERTA
 
-	function get_peserta(){
-		$query 	= $this->db->query("SELECT * FROM tb_auth a JOIN tb_peserta b ON a.KODE_USER = b.KODE_USER WHERE a.ROLE = 1");
+	// COUNT
+
+	function get_countMhs($bidang){
+		return $this->db->query("
+			SELECT COUNT(ta.ID_ANGGOTA) AS JML_MHS
+			FROM pendaftaran_kompetisi pk , tb_anggota ta 
+			WHERE pk.KODE_PENDAFTARAN = ta.KODE_PENDAFTARAN AND ta.PERAN IN('1','3') AND BIDANG_LOMBA = '$bidang'
+		")->row();
+	}
+	function get_countTim($bidang){
+		return $this->db->query("
+			SELECT COUNT(pk.KODE_PENDAFTARAN) AS JML_TIM
+			FROM pendaftaran_kompetisi pk WHERE pk.KODE_USER != 'USR_MHNDad2' AND BIDANG_LOMBA = '$bidang'
+		")->row();
+	}
+	function get_countPTS($bidang){
+		return $this->db->query("
+			SELECT COUNT(pk.ASAL_PTS) AS JML_PTS
+			FROM pendaftaran_kompetisi pk WHERE pk.ASAL_PTS != 000001 AND BIDANG_LOMBA = '$bidang'
+			GROUP BY pk.ASAL_PTS 
+		")->result();
+	}
+
+	function get_peserta($bidang){
+		$query 	= $this->db->query("SELECT * FROM tb_auth a JOIN tb_peserta b ON a.KODE_USER = b.KODE_USER JOIN pendaftaran_kompetisi c ON a.KODE_USER = c.KODE_USER WHERE a.ROLE = 1 AND c.BIDANG_LOMBA = '$bidang'");
 		return $query->result();
+	}
+
+	function get_dataPeserta($kode){
+		$query 	= $this->db->query("SELECT * FROM tb_auth a JOIN tb_peserta b ON a.KODE_USER = b.KODE_USER JOIN pendaftaran_kompetisi c ON a.KODE_USER = c.KODE_USER WHERE a.KODE_USER = '$kode'");
+		return $query->row();
 	}
 
 	function get_pesertaPendaftaran($KODE_USER){
@@ -177,6 +205,11 @@ class M_admin extends CI_Model {
 		}else{
 			return false;
 		}
+	}
+
+	function cek_pembayaranPeserta($KODE_PENDAFTARAN){
+		$query 	= $this->db->query("SELECT * FROM tb_order WHERE KODE_PENDAFTARAN IN (SELECT KODE_PENDAFTARAN FROM tb_transaksi WHERE STAT_BAYAR = 3) AND KODE_PENDAFTARAN = '$KODE_PENDAFTARAN'");
+		return $query->result();
 	}
 
 	// KOLEKTIF PTS
@@ -380,17 +413,17 @@ class M_admin extends CI_Model {
 
 	// SELEKSI
 
-	public function get_TotNilai($KODE_PENDAFTARAN){
+	public function get_TotNilai($KODE_PENDAFTARAN, $id_tahap = 1){
 		$query = $this->db->query("
 			SELECT KODE_PENDAFTARAN,
 			ROUND((SUM(NILAI) /
 			(SELECT COUNT(*)  AS JML_JURI FROM (SELECT COUNT(KODE_PENDAFTARAN)
-			FROM tb_penilaian WHERE KODE_PENDAFTARAN = '$KODE_PENDAFTARAN'
+			FROM tb_penilaian WHERE KODE_PENDAFTARAN = '$KODE_PENDAFTARAN' AND ID_TAHAP = '$id_tahap'
 			GROUP BY KODE_JURI) t)), 2) AS TOT_NILAI,
 			(SELECT COUNT(*)  AS JML_JURI FROM
 			(SELECT COUNT(KODE_PENDAFTARAN) FROM tb_penilaian
-			WHERE KODE_PENDAFTARAN = '$KODE_PENDAFTARAN' GROUP BY KODE_JURI) t) AS JML_JURI
-			FROM tb_penilaian WHERE KODE_PENDAFTARAN = '$KODE_PENDAFTARAN'
+			WHERE KODE_PENDAFTARAN = '$KODE_PENDAFTARAN' AND ID_TAHAP = '$id_tahap' GROUP BY KODE_JURI) t) AS JML_JURI
+			FROM tb_penilaian WHERE KODE_PENDAFTARAN = '$KODE_PENDAFTARAN' AND ID_TAHAP = '$id_tahap'
 			");
 		if ($query->num_rows() > 0) {
 			return $query->row();

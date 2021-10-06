@@ -62,13 +62,13 @@
 	  						"minimumResultsForSearch": "Infinity",
 	  						"placeholder": "Pilih Tahap"
 	  					}' disabled>
-	  					<option value="0">Pilih Tahap</option>
+	  					<option value="1">Pilih Tahap</option>
 	  						<?php if ($tahap != false) :?>
 		  						<?php foreach ($tahap as $key): if($key->ID_TAHAP != 1):?>
 		  							<option value="<?= $key->ID_TAHAP;?>"><?= $key->NAMA_TAHAP;?></option>
 		  						<?php endif; endforeach;?>
 	  						<?php else:?>
-	  							<option value="0">Belum ada Tahap</option>
+	  							<option value="1">Belum ada Tahap</option>
 	  						<?php endif;?>
 	  					</select>
 	  				</div>

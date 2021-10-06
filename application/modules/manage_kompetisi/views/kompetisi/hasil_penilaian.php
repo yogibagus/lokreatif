@@ -68,11 +68,10 @@
             <p class="card-text">Tidak dapat menampilkan hasil penilaian, harap pilih tahap penilaian dan bidang lomba terlebih dahulu.</p>
           </div>
         <?php else:?>
-          <table id="myTable" class="table table-borderless table-thead-bordered table-nowrap table-text-center table-align-middle card-table w-100">
+          <table id="myTableNilai" class="table table-borderless table-thead-bordered table-nowrap table-text-center table-align-middle card-table w-100">
             <thead class="thead-light">
               <tr>
                 <th scope="col" style="width: 2rem;">Peringkat</th>
-                <th scope="col" class="text-left">Bidang Lomba</th>
                 <th scope="col" class="text-left">Nama TIM</th>
                 <th scope="col">Asal PTS</th>
                 <th scope="col">Total Nilai</th>
@@ -82,24 +81,7 @@
             <tbody>
               <?php if ($tim != false): $no = 1;foreach ($tim as $key):?>
                 <tr>
-                  <td>
-                    <?php switch ($no) {
-                      case 1:
-                        echo '<span class="text-warning" style="font-size: 1.5rem;">🥇</span>';
-                        break;
-                      case 2:
-                        echo '<span class="text-secondary" style="font-size: 1.5rem;">🥈</span>';
-                        break;
-                      case 3:
-                        echo '<span style="font-size: 1.5rem; color: #924b18;">🥉</span>';
-                        break;
-                      
-                      default:
-                        echo $no;
-                        break;
-                    };?>
-                  </td>
-                  <td class="text-left"><?= $key->BIDANG_LOMBA;?></td>
+                  <td></td>
                   <td class="text-left">
                     <span class="d-block h5 text-hover-primary mb-0"><?= $key->NAMA_TIM;?></span>
                   </td>

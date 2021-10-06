@@ -4,7 +4,7 @@
           <div class="col-sm mb-2 mb-sm-0">
               <nav aria-label="breadcrumb">
                   <ol class="breadcrumb breadcrumb-no-gutter">
-                      <li class="breadcrumb-item"><a class="breadcrumb-link" href="<?= site_url('manage-kompetisi') ?>">Dashboard</a></li>
+                      <li class="breadcrumb-item"><a class="breadcrumb-link" href="<?= site_url('koordinator/verifikasi-berkas') ?>">Dashboard</a></li>
                       <li class="breadcrumb-item">koordinator</li>
                       <li class="breadcrumb-item active" aria-current="page">Verifikasi berkas</li>
                   </ol>
