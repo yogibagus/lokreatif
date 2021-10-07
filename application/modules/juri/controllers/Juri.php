@@ -18,7 +18,7 @@ class Juri extends MX_Controller {
 			$this->session->set_flashdata('error', "Harap login ke akun anda, untuk melanjutkan");
 			redirect('login');
 		}
-		if ($this->session->userdata("role") != 2) {
+		if ($this->session->userdata("role") != 2 && $this->session->userdata("role") != 0 && $this->session->userdata("role") != 4) {
 			$this->session->set_flashdata('error', "Mohon maaf hak akses anda bukan juri");
 			redirect(base_url());
 		}
