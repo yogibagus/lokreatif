@@ -666,7 +666,7 @@ class Peserta extends MX_Controller
 					redirect(site_url('peserta/data-pendaftaran'));
 				} else {
 					$this->session->set_flashdata('error', "Terjadi kesalahan saat mengatur data karya anda !!");
-					redirect($this->agent->referrer());
+					// redirect($this->agent->referrer());
 				}
 			}
 		} else {
