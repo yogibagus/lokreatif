@@ -417,25 +417,29 @@ class M_peserta extends CI_Model {
 	function kelola_karya($FILE){
 
 		$KODE_PENDAFTARAN	= $this->input->post('KODE_PENDAFTARAN');
+		$ID_BIDANG			= $this->input->post('ID_BIDANG');
+
 		$JUDUL				= htmlspecialchars($this->input->post('JUDUL'), true);
-		$KETERANGAN			= $this->input->post('KETERANGAN');
+
+		if ($ID_BIDANG == 1 || $ID_BIDANG == 4 || $ID_BIDANG ==  8 $ID_BIDANG == 9 || $ID_BIDANG == 11) {
+			if ($FILE == null) {
+				$data = array(
+					'KODE_PENDAFTARAN' 	=> $KODE_PENDAFTARAN,
+					'JUDUL' 			=> $JUDUL,
+				);
+			}else{
+				$data = array(
+					'KODE_PENDAFTARAN' 	=> $KODE_PENDAFTARAN,
+					'JUDUL' 			=> $JUDUL,
+					'FILE' 				=> $FILE,
+				);
+			}
+		}elseif ($ID_BIDANG == 3 ||$ID_BIDANG == 11 ||$ID_BIDANG == 13) {
 		$LINK				= $this->input->post('LINK');
 		$LINK_DRIVE			= $this->input->post('LINK_DRIVE');
-
-		if ($FILE == null) {
 			$data = array(
 				'KODE_PENDAFTARAN' 	=> $KODE_PENDAFTARAN,
 				'JUDUL' 			=> $JUDUL,
-				'KETERANGAN' 		=> $KETERANGAN,
-				'LINK' 				=> $LINK,
-				'LINK_DRIVE' 		=> $LINK_DRIVE,
-			);
-		}else{
-			$data = array(
-				'KODE_PENDAFTARAN' 	=> $KODE_PENDAFTARAN,
-				'JUDUL' 			=> $JUDUL,
-				'KETERANGAN' 		=> $KETERANGAN,
-				'FILE' 				=> $FILE,
 				'LINK' 				=> $LINK,
 				'LINK_DRIVE' 		=> $LINK_DRIVE,
 			);

@@ -10,6 +10,7 @@
 		<form action="<?= site_url('peserta/kelola_karya');?>" method="POST" enctype="multipart/form-data">
 			<input type="hidden" name="KODE_PENDAFTARAN" value="<?= $dataPendaftaran->KODE_PENDAFTARAN;?>">
 			<input type="hidden" name="BIDANG_LOMBA" value="<?= $dataPendaftaran->BIDANG_LOMBA;?>">
+			<input type="hidden" name="ID_BIDANG" value="<?= $dataPendaftaran->ID_BIDANG;?>">
 			<input type="hidden" name="NAMA_TIM" value="<?= $dataPendaftaran->NAMA_TIM;?>">
 			<div class="form-group">
 				<label class="input-label">Judul <small class="text-danger">*</small></label>
