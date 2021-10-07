@@ -657,7 +657,7 @@ class Peserta extends MX_Controller
 
 			if (!$this->upload->do_upload('KARYA')) {
 				$this->session->set_flashdata('error', 'Terjadi kesalahan saat menunggah Karya anda!!');
-				redirect($this->agent->referrer());
+				// redirect($this->agent->referrer());
 			} else {
 				$upload_data 	= $this->upload->data();
 
