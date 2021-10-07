@@ -387,7 +387,7 @@ body{
 /* width */
 ::-webkit-scrollbar {
   width: 10px;
-  height: 10pxx;
+  height: 10px;
   cursor: pointer;
 }
 /* Track */
@@ -398,14 +398,14 @@ body{
 
 /* Handle */
 ::-webkit-scrollbar-thumb {
-  background: #0061f2;
+  background: #0B4C8A;
   opacity: 0.5;
   cursor: pointer;
 }
 
 /* Handle on hover */
 ::-webkit-scrollbar-thumb:hover {
-  background: #0061f2;
+  background: #0B4C8A;
   opacity: 0.9;
   cursor: pointer !important;
 }
