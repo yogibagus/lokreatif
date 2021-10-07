@@ -21,9 +21,9 @@
               <?php endif;?>
             </button>
             <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                <a class="dropdown-item" href="<?= site_url('juri/hasil-penilaian/') ?>">Pilih Tahap</a>
+                <a class="dropdown-item" href="<?= site_url('koordinator/hasil-penilaian/') ?>">Pilih Tahap</a>
               <?php foreach ($tahap as $row) { ?>
-                <a class="dropdown-item" href="<?= site_url('juri/hasil-penilaian/' . $row->ID_TAHAP) ?>"><?= $row->NAMA_TAHAP ?></a>
+                <a class="dropdown-item" href="<?= site_url('koordinator/hasil-penilaian/' . $row->ID_TAHAP) ?>"><?= $row->NAMA_TAHAP ?></a>
               <?php } ?>
             </div>
           </div>
